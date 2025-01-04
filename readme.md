@@ -1,4 +1,4 @@
-# Programa de Cobros Bancarios - Banco Azul
+# Programa de Cobros Bancarios
 
 ## Descripción
 
