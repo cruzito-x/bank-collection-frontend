@@ -72,10 +72,6 @@ El sistema debe garantizar la seguridad de los datos financieros y personales, c
     npm start
     ```
 
-## Contribución
-
-Contribuciones son bienvenidas. Por favor, crea un fork, realiza tus cambios y envía un pull request.
-
 ## Licencia
 
 Este proyecto está bajo la Licencia MIT.
