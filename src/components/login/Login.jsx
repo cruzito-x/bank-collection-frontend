@@ -1,15 +1,16 @@
 import React from "react";
-import Logo from "../../assets/img/logo_rounded.png";
+import Logo from "../../assets/img/logo.png";
+import './styles/login.css';
 
 const Login = () => {
   return (
-    <section>
+    <section className="mt-5 pt-5">
       <div className="container pt-5 mt-5">
         <div className="row">
-          <div className="col-12 col-sm-8 col-md-6 m-auto">
-            <div className="card text-center">
+          <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 m-auto">
+            <div className="card shadow text-center">
               <div className="card-body">
-                <img src={Logo} className="mb-4" alt="Logo del Sistema" style={{ width: "100px", height: "100px", marginTop: "-75px" }} />
+                <img src={Logo} className="shadow mb-4" alt="Logo del Sistema" />
                 <form>
                   <div className="form-group text-start mb-3">
                     <label className="font-weight-bold">Usuario</label>
