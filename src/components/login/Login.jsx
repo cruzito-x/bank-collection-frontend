@@ -1,11 +1,45 @@
 import React, { useState } from "react";
-import { Button, Card, Form, Image, Input } from "antd";
+import { useNavigate } from "react-router-dom";
+import { Button, Card, Form, message, Image, Input } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import Logo from "../../assets/img/logo.png";
 import "./styles/login.css";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  localStorage.clear();
+
+  const onFinish = async (values) => {
+    setLoading(true);
+    try {
+      const response = await fetch("http://localhost:3001/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      const data = await response.json();
+
+      if (response.status === 200) {
+        message.success(data.message);
+        localStorage.setItem("cod_user", data.id);
+        localStorage.setItem("username", values.username);
+        localStorage.setItem("role", data.role);
+        navigate("/dashboard");
+      } else {
+        if (response.status === 401 || response.status === 500) {
+          message.error(data.message);
+        }
+      }
+    } catch (error) {
+      message.error("Ha ocurrido un error inesperado, por favor intente de nuevo");
+    }
+    setLoading(false);
+  };
 
   return (
     <div className="login-container">
@@ -29,6 +63,7 @@ const Login = () => {
           name="loginForm"
           layout={"vertical"}
           initialValues={{ remember: true }}
+          onFinish={onFinish}
           style={{ width: 300 }}
         >
           <Form.Item
