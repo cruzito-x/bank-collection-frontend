@@ -1,6 +1,7 @@
-img {
-  width: 100px;
-  height: 100px;
-  margin-top: -75px; 
-  border-radius: 50%;
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
 }
