@@ -67,7 +67,7 @@ const Login = () => {
           style={{ width: 300 }}
         >
           <Form.Item
-            label="Usuario:"
+            label="Usuario"
             name="username"
             rules={[
               {
@@ -79,7 +79,7 @@ const Login = () => {
           </Form.Item>
 
           <Form.Item
-            label="Contraseña:"
+            label="Contraseña"
             name="password"
             rules={[{ message: "Por favor introduzca su contraseña" }]}
           >
