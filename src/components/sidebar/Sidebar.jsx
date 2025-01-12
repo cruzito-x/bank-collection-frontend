@@ -3,12 +3,12 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import NotFound from "../../utils/notFound/NotFound";
 import { Content, Footer } from "antd/es/layout/layout";
 import Dashboard from "../dashboard/Dashboard";
-import {Layout } from "antd";
+import { Layout } from "antd";
 import Sider from "antd/es/layout/Sider";
 import LayoutHeader from "../../utils/layoutHeader/layoutHeader";
-import Menu from '../menu/Menu';
+import Menu from "../menu/Menu";
 import Logo from "../../utils/logo/Logo";
-import './styles/sidebar.css';
+import "./styles/sidebar.css";
 
 const Sidebar = () => {
   const [darkTheme, setDarkTheme] = useState(true);
@@ -34,6 +34,7 @@ const Sidebar = () => {
   const layoutStyle = {
     marginLeft: collapsed ? 80 : 200,
     transition: "all .25s ease-in-out",
+    backgroundColor: "#eef1f7",
   };
 
   const isSupervisor = true;
@@ -57,7 +58,7 @@ const Sidebar = () => {
   if (!renderedRoutes) {
     return (
       <Routes>
-        <Routes path="/*" element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     );
   }
@@ -73,6 +74,7 @@ const Sidebar = () => {
           overflow: "auto",
           height: "100vh",
           position: "fixed",
+          backgroundColor: "#273543",
           left: 0,
           top: 0,
           bottom: 0,
@@ -93,14 +95,20 @@ const Sidebar = () => {
         </Routes>
       </Sider>
       <Layout style={layoutStyle}>
-        <LayoutHeader />
-        <Content style={{ margin: "24px 0 0", overflow: "initial" }}>
+        {location.pathname !== "/dashboard" && <LayoutHeader />}
+        <Content style={{ margin: location.pathname !== "/dashboard" ? "24px 0 0" : "-40px 0 0", overflow: "initial" }}>
           <Routes>
             <Route path="/dashboard" element={<Dashboard />} />
             {/* <Route path="/dashboard" element={<Dashboard />} /> */}
           </Routes>
         </Content>
-        <Footer style={{ textAlign: "center" }}>
+        <Footer
+          style={{
+            textAlign: "center",
+            background: "#eef1f7",
+            marginTop: "-61px",
+          }}
+        >
           &copy; cruzito-x - {new Date().getFullYear()} All rights reserved.
         </Footer>
       </Layout>

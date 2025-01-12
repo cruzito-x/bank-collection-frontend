@@ -1,0 +1,53 @@
+.ant-card .ant-card-body {
+  padding: 0;
+}
+
+.dashboard-blue-card {
+  width: 100%;
+  background-color: #007bff;
+  border-radius: 80px 0 10px 10px;
+  padding: 10px;
+  color: #ffffff;
+}
+
+.dashboard-yellow-card {
+  width: 100%;
+  background-color: #ffac00;
+  border-radius: 80px 0 10px 10px;
+  padding: 10px;
+  color: #ffffff;
+}
+
+.dashboard-green-card {
+  width: 100%;
+  background-color: #129a56;
+  border-radius: 80px 0 10px 10px;
+  padding: 10px;
+  color: #ffffff;
+}
+
+.dashboard-red-card {
+  width: 100%;
+  background-color: #da0505;
+  border-radius: 80px 0 10px 10px;
+  padding: 10px;
+  color: #ffffff;
+}
+
+.dashboard-user-card {
+  width: 100%;
+  background-color: #273543;
+  border-radius: 80px 0 10px 10px;
+  padding: 3px;
+  color: #ffffff;
+}
+
+.user-card {
+  width: 120px;
+  height: 100px;
+  margin-left: 210px !important;
+}
+
+h1 {
+  font-size: 50px;
+}
