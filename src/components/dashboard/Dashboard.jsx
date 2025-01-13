@@ -300,17 +300,16 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           </div>
           <div className="row ms-2 mb-4">
             <label className="fw-semibold text-black mb-1"> Filtrar por </label>
-            <div className="col-xxl-4 col-lg-7 col-md-7 col-sm-12">
+            <div className="col-xxl-4 col-lg-7 col-md-7 col-sm-12 w-auto">
               <label
                 htmlFor="dashboard-year"
-                className="fw-semibold text-black"
+                className="fw-semibold text-black me-2"
               >
                 {" "}
                 Fecha{" "}
               </label>
               <Space wrap>
                 <RangePicker
-                  className="ms-2"
                   value={dates}
                   onChange={(dates) => setDates(dates)}
                   format="DD-MM-YYYY"
@@ -354,14 +353,13 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 />
               </Space>
             </div>
-            <div className="col-xxl-2 col-lg-2 col-md-2 col-sm-12">
-              <label htmlFor="" className="fw-semibold text-black">
+            <div className="col-xxl-2 col-lg-2 col-md-2 col-sm-12 w-auto">
+              <label htmlFor="" className="fw-semibold text-black me-2">
                 {" "}
                 Monto{" "}
               </label>
               <Space wrap>
                 <Select
-                  className="ms-2"
                   defaultValue="0"
                   style={{
                     width: 183,
@@ -395,14 +393,13 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 />
               </Space>
             </div>
-            <div className="col-xxl-2 col-lg-2 col-md-2 col-sm-12">
-              <label htmlFor="" className="fw-semibold text-black">
+            <div className="col-xxl-2 col-lg-2 col-md-2 col-sm-12 w-auto">
+              <label htmlFor="" className="fw-semibold text-black me-2">
                 {" "}
                 Colector{" "}
               </label>
               <Space wrap>
                 <Select
-                  className="ms-2"
                   defaultValue="0"
                   style={{
                     width: 183,
@@ -432,14 +429,13 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 />
               </Space>
             </div>
-            <div className="col-xxl-2 col-lg-2 col-md-2 col-sm-12">
-              <label htmlFor="" className="fw-semibold text-black">
+            <div className="col-xxl-2 col-lg-2 col-md-2 col-sm-12 w-auto">
+              <label htmlFor="" className="fw-semibold text-black me-2">
                 {" "}
                 Tipo{" "}
               </label>
               <Space wrap>
                 <Select
-                  className="ms-2"
                   defaultValue="0"
                   style={{
                     width: 183,
