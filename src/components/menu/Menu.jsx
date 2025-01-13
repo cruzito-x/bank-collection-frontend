@@ -6,7 +6,6 @@ import {
   BulbOutlined,
   WalletOutlined,
   TransactionOutlined,
-  DollarOutlined,
   UnorderedListOutlined,
   CheckCircleOutlined,
   UserOutlined,
@@ -60,21 +59,37 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
       <Menu.Item key="/collectors" icon={<BulbOutlined style={colorByTheme} />}>
         <span style={colorByTheme}> Colectores </span>
       </Menu.Item>
-      <Menu.Item key="/collectors-payments" icon={<WalletOutlined style={colorByTheme} />}>
-      <span style={colorByTheme}> Pagos a Colectores </span>
+      <Menu.Item
+        key="/collectors-payments"
+        icon={<WalletOutlined style={colorByTheme} />}
+      >
+        <span style={colorByTheme}> Pagos a Colectores </span>
       </Menu.Item>
       <>
-        <Menu.SubMenu title="Transacciones" icon={<TransactionOutlined style={colorByTheme} />}>
-          <Menu.Item key="/transactions" icon={<DollarOutlined style={colorByTheme} />}>
-          <span style={colorByTheme}> Transacciones </span>
+        <Menu.SubMenu
+          title="Transacciones"
+          icon={<TransactionOutlined style={colorByTheme} />}
+          style={{colorByTheme}}
+        >
+          <Menu.Item
+            key="/transactions"
+            icon={<TransactionOutlined style={colorByTheme} />}
+          >
+            <span style={colorByTheme}> Transacciones </span>
           </Menu.Item>
-          <Menu.Item key="/transactions-types" icon={<UnorderedListOutlined style={colorByTheme} />}>
-          <span style={colorByTheme}> Tipos de Transacciones </span>
+          <Menu.Item
+            key="/transactions-types"
+            icon={<UnorderedListOutlined style={colorByTheme} />}
+          >
+            <span style={colorByTheme}> Tipos de Transacciones </span>
           </Menu.Item>
         </Menu.SubMenu>
       </>
       {isSupervisor && (
-        <Menu.Item key="/approvals" icon={<CheckCircleOutlined style={colorByTheme} />}>
+        <Menu.Item
+          key="/approvals"
+          icon={<CheckCircleOutlined style={colorByTheme} />}
+        >
           <span style={colorByTheme}> Aprobaciones </span>
         </Menu.Item>
       )}
@@ -85,17 +100,29 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
         </Menu.Item>
       )}
       {isSupervisor && (
-        <Menu.Item key="/audit" icon={<DatabaseOutlined style={colorByTheme} />}>
+        <Menu.Item
+          key="/audit"
+          icon={<DatabaseOutlined style={colorByTheme} />}
+        >
           <span style={colorByTheme}> Auditoría </span>
         </Menu.Item>
       )}
       <Menu.Item
         key={"#"}
-        icon={collapsed ? <RightOutlined style={colorByTheme} /> : <LeftOutlined style={colorByTheme} />}
+        icon={
+          collapsed ? (
+            <RightOutlined style={colorByTheme} />
+          ) : (
+            <LeftOutlined style={colorByTheme} />
+          )
+        }
         onClick={() => setCollapsed(!collapsed)}
         className="toggle"
       >
-        <span style={colorByTheme}> {collapsed ? "Abrir Menú" : "Cerrar Menú"} </span>
+        <span style={colorByTheme}>
+          {" "}
+          {collapsed ? "Abrir Menú" : "Cerrar Menú"}{" "}
+        </span>
       </Menu.Item>
     </Menu>
   );

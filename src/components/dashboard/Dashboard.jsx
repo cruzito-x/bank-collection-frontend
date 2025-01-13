@@ -94,13 +94,13 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
 
         <Card className="mt-4 pt-4 shadow">
           <div className="row">
-            <div className="col-md-8 col-sm-12 text-start">
+            <div className="col-md-6 col-sm-6 text-start">
               <h2 className="fw-semibold ms-3 text-black">
                 {" "}
                 Transacciones Recientes{" "}
               </h2>
             </div>
-            <div className="col-md-4 col-sm-12 text-end pe-5">
+            <div className="col-md-6 col-sm-6 text-end pe-5">
               <Button type="primary" className="fw-semibold">
                 {" "}
                 Añadir Colector{" "}
@@ -115,159 +115,152 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               </Button>
             </div>
           </div>
-          <div className="row ms-2">
-            <div className="col-12 text-start">
-              <label className="fw-semibold text-black mb-1">
+          <div className="row ms-2 mb-4">
+            <label className="fw-semibold text-black mb-1"> Filtrar por </label>
+            <div className="col-md-5 col-sm-12">
+              <label
+                htmlFor="dashboard-year"
+                className="fw-semibold text-black"
+              >
                 {" "}
-                Filtrar por{" "}
+                Fecha{" "}
               </label>
-              <div className="row mb-4">
-                <div className="col-md-5 col-sm-12">
-                  <label
-                    htmlFor="dashboard-year"
-                    className="fw-semibold text-black"
-                  >
-                    {" "}
-                    Fecha{" "}
-                  </label>
-                  <Space wrap>
-                    <RangePicker
-                      className="ms-2"
-                      value={dates}
-                      onChange={(dates) => setDates(dates)}
-                      format="DD-MM-YYYY"
-                      placeholder={["Inicio", "Fin"]}
-                      style={{
-                        width: 220,
-                      }}
-                    />
-                    <Button
-                      className="fw-semibold"
-                      type="primary"
-                      onClick={() => quickFilter("today")}
-                    >
-                      Hoy
-                    </Button>
-                    <Button
-                      className="fw-semibold"
-                      type="primary"
-                      onClick={() => quickFilter("lastWeek")}
-                    >
-                      Última Semana
-                    </Button>
-                    <Button
-                      className="fw-semibold"
-                      type="primary"
-                      onClick={() => quickFilter("lastMonth")}
-                    >
-                      Último Mes
-                    </Button>
-                  </Space>
-                </div>
-                <div className="col-md-2 col-sm-12">
-                  <label htmlFor="" className="fw-semibold text-black">
-                    {" "}
-                    Monto{" "}
-                  </label>
-                  <Space wrap>
-                    <Select
-                      className="ms-2"
-                      defaultValue="0"
-                      style={{
-                        width: 183,
-                      }}
-                      options={[
-                        {
-                          value: "0",
-                          label: "$1 - $99",
-                        },
-                        {
-                          value: "1",
-                          label: "$100 - $499",
-                        },
-                        {
-                          value: "2",
-                          label: "$500 - $999",
-                        },
-                        {
-                          value: "3",
-                          label: "$1000 - $1999",
-                        },
-                        {
-                          value: "4",
-                          label: "$2000 - $4999",
-                        },
-                        {
-                          value: "5",
-                          label: "Mayor a $5000",
-                        },
-                      ]}
-                    />
-                  </Space>
-                </div>
-                <div className="col-md-2 col-sm-12">
-                  <label htmlFor="" className="fw-semibold text-black">
-                    {" "}
-                    Colector{" "}
-                  </label>
-                  <Space wrap>
-                    <Select
-                      className="ms-2"
-                      defaultValue="0"
-                      style={{
-                        width: 183,
-                      }}
-                      options={[
-                        {
-                          value: "0",
-                          label: "Todos",
-                        },
-                        {
-                          value: "1",
-                          label: "Servicio de Agua",
-                        },
-                        {
-                          value: "2",
-                          label: "Servicio de Luz",
-                        },
-                        {
-                          value: "3",
-                          label: "Servicio de Internet",
-                        },
-                        {
-                          value: "4",
-                          label: "Universidad",
-                        },
-                      ]}
-                    />
-                  </Space>
-                </div>
-                <div className="col-md-2 col-sm-12">
-                  <label htmlFor="" className="fw-semibold text-black">
-                    {" "}
-                    Tipo{" "}
-                  </label>
-                  <Space wrap>
-                    <Select
-                      className="ms-2"
-                      defaultValue="0"
-                      style={{
-                        width: 183,
-                      }}
-                      options={[
-                        {
-                          value: "0",
-                          label: "Depositos",
-                        },
-                        {
-                          value: "1",
-                          label: "Retiros",
-                        },
-                      ]}
-                    />
-                  </Space>
-                </div>
-              </div>
+              <Space wrap>
+                <RangePicker
+                  className="ms-2"
+                  value={dates}
+                  onChange={(dates) => setDates(dates)}
+                  format="DD-MM-YYYY"
+                  placeholder={["Inicio", "Fin"]}
+                  style={{
+                    width: 220,
+                  }}
+                />
+                <Button
+                  className="fw-semibold"
+                  type="primary"
+                  onClick={() => quickFilter("today")}
+                >
+                  Hoy
+                </Button>
+                <Button
+                  className="fw-semibold"
+                  type="primary"
+                  onClick={() => quickFilter("lastWeek")}
+                >
+                  Última Semana
+                </Button>
+                <Button
+                  className="fw-semibold"
+                  type="primary"
+                  onClick={() => quickFilter("lastMonth")}
+                >
+                  Último Mes
+                </Button>
+              </Space>
+            </div>
+            <div className="col-md-2 col-sm-12">
+              <label htmlFor="" className="fw-semibold text-black">
+                {" "}
+                Monto{" "}
+              </label>
+              <Space wrap>
+                <Select
+                  className="ms-2"
+                  defaultValue="0"
+                  style={{
+                    width: 183,
+                  }}
+                  options={[
+                    {
+                      value: "0",
+                      label: "$1 - $99",
+                    },
+                    {
+                      value: "1",
+                      label: "$100 - $499",
+                    },
+                    {
+                      value: "2",
+                      label: "$500 - $999",
+                    },
+                    {
+                      value: "3",
+                      label: "$1000 - $1999",
+                    },
+                    {
+                      value: "4",
+                      label: "$2000 - $4999",
+                    },
+                    {
+                      value: "5",
+                      label: "Mayor a $5000",
+                    },
+                  ]}
+                />
+              </Space>
+            </div>
+            <div className="col-md-2 col-sm-12">
+              <label htmlFor="" className="fw-semibold text-black">
+                {" "}
+                Colector{" "}
+              </label>
+              <Space wrap>
+                <Select
+                  className="ms-2"
+                  defaultValue="0"
+                  style={{
+                    width: 183,
+                  }}
+                  options={[
+                    {
+                      value: "0",
+                      label: "Todos",
+                    },
+                    {
+                      value: "1",
+                      label: "Servicio de Agua",
+                    },
+                    {
+                      value: "2",
+                      label: "Servicio de Luz",
+                    },
+                    {
+                      value: "3",
+                      label: "Servicio de Internet",
+                    },
+                    {
+                      value: "4",
+                      label: "Universidad",
+                    },
+                  ]}
+                />
+              </Space>
+            </div>
+            <div className="col-md-2 col-sm-12">
+              <label htmlFor="" className="fw-semibold text-black">
+                {" "}
+                Tipo{" "}
+              </label>
+              <Space wrap>
+                <Select
+                  className="ms-2"
+                  defaultValue="0"
+                  style={{
+                    width: 183,
+                  }}
+                  options={[
+                    {
+                      value: "0",
+                      label: "Depositos",
+                    },
+                    {
+                      value: "1",
+                      label: "Retiros",
+                    },
+                  ]}
+                />
+              </Space>
             </div>
           </div>
 

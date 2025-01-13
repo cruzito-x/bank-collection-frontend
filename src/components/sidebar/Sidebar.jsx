@@ -6,7 +6,7 @@ import Dashboard from "../dashboard/Dashboard";
 import { Layout } from "antd";
 import Sider from "antd/es/layout/Sider";
 import LayoutHeader from "../../utils/layoutHeader/layoutHeader";
-import Menu from "../menu/Menu";
+import MenuList from "../menu/Menu";
 import Logo from "../../utils/logo/Logo";
 import "./styles/sidebar.css";
 
@@ -85,7 +85,7 @@ const Sidebar = () => {
           <Route
             path="/*"
             element={
-              <Menu
+              <MenuList
                 darkTheme={darkTheme}
                 collapsed={collapsed}
                 setCollapsed={setCollapsed}
