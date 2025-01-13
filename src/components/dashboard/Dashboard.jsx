@@ -1,24 +1,50 @@
-import { Button, Card, Layout, Select, Space, theme } from "antd";
-import { UserOutlined } from "@ant-design/icons";
-import React from "react";
+import { Button, Card, Layout, Select, Space, DatePicker, theme } from "antd";
+import React, { useState } from "react";
 import "./styles/dashboard.css";
 import DashboardCharts from "./charts/DashboardCharts";
+import moment from "moment";
+import LogoutCard from "../../utils/logoutCard/LogoutCard";
 
-const Dashboard = () => {
+const Dashboard = ({ rangeFilter = () => {} }) => {
   const { Content } = Layout;
+  const { RangePicker } = DatePicker;
+
   const {
-    token: { colorBgContainer, borderRadiusLG },
+    token: { borderRadiusLG },
   } = theme.useToken();
 
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
+  const [dates, setDates] = useState([]);
+
+  const quickFilter = (type) => {
+    let range;
+    switch (type) {
+      case "today":
+        range = [moment().startOf("day"), moment().endOf("day")];
+        break;
+      case "lastWeek":
+        range = [
+          moment().subtract(7, "days").startOf("day"),
+          moment().endOf("day"),
+        ];
+        break;
+      case "lastMonth":
+        range = [
+          moment().subtract(1, "month").startOf("day"),
+          moment().endOf("day"),
+        ];
+        break;
+      default:
+        range = [];
+    }
+    setDates(range);
+    rangeFilter(range);
   };
 
   return (
     <Content style={{ margin: "60px 16px" }}>
       <div
         style={{
-          padding: 24,
+          padding: 10,
           minHeight: "90vh",
           background: "none",
           borderRadius: borderRadiusLG,
@@ -62,88 +88,83 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="d-flex justify-content-end">
-            <Card className="text-center user-card ms-5 shadow">
-              <UserOutlined className="fs-1 p-2" />
-              <div className="dashboard-user-card mt-2">
-                <h6 className="mt-2" style={{ fontSize: "14px" }}>
-                  {" "}
-                  David Cruz{" "}
-                </h6>
-              </div>
-            </Card>
+            <LogoutCard />
           </div>
         </div>
 
-        <Card className="mt-5 pt-4 shadow">
-          <div className="row mb-4">
+        <Card className="mt-4 pt-4 shadow">
+          <div className="row">
             <div className="col-md-8 col-sm-12 text-start">
-              <h2 className="fw-semibold ms-4 text-black">
+              <h2 className="fw-semibold ms-3 text-black">
                 {" "}
                 Transacciones Recientes{" "}
               </h2>
             </div>
             <div className="col-md-4 col-sm-12 text-end pe-5">
-              <Button type="primary"> Añadir Colector </Button>
-              <Button type="primary" className="ms-2 me-2">
+              <Button type="primary" className="fw-semibold">
+                {" "}
+                Añadir Colector{" "}
+              </Button>
+              <Button type="primary" className="fw-semibold ms-2 me-2">
                 {" "}
                 Registrar Pago{" "}
               </Button>
-              <Button type="primary"> Ver Reportes </Button>
+              <Button type="primary" className="fw-semibold">
+                {" "}
+                Ver Reportes{" "}
+              </Button>
             </div>
           </div>
           <div className="row ms-2">
             <div className="col-12 text-start">
-              <label htmlFor="" className="fw-semibold text-black">
+              <label className="fw-semibold text-black mb-1">
                 {" "}
-                Ordenar por{" "}
+                Filtrar por{" "}
               </label>
               <div className="row mb-4">
-                <div className="col-md-4 col-sm-12">
+                <div className="col-md-5 col-sm-12">
                   <label
                     htmlFor="dashboard-year"
                     className="fw-semibold text-black"
                   >
                     {" "}
-                    Año{" "}
+                    Fecha{" "}
                   </label>
                   <Space wrap>
-                    <Select
+                    <RangePicker
                       className="ms-2"
-                      defaultValue="0"
+                      value={dates}
+                      onChange={(dates) => setDates(dates)}
+                      format="DD-MM-YYYY"
+                      placeholder={["Inicio", "Fin"]}
                       style={{
-                        width: 240,
+                        width: 220,
                       }}
-                      onChange={handleChange}
-                      options={[
-                        {
-                          value: "0",
-                          label: "2025",
-                        },
-                        {
-                          value: "1",
-                          label: "2024",
-                        },
-                        {
-                          value: "2",
-                          label: "2023",
-                        },
-                        {
-                          value: "3",
-                          label: "2022",
-                        },
-                        {
-                          value: "4",
-                          label: "2021",
-                        },
-                        {
-                          value: "5",
-                          label: "2020",
-                        },
-                      ]}
                     />
+                    <Button
+                      className="fw-semibold"
+                      type="primary"
+                      onClick={() => quickFilter("today")}
+                    >
+                      Hoy
+                    </Button>
+                    <Button
+                      className="fw-semibold"
+                      type="primary"
+                      onClick={() => quickFilter("lastWeek")}
+                    >
+                      Última Semana
+                    </Button>
+                    <Button
+                      className="fw-semibold"
+                      type="primary"
+                      onClick={() => quickFilter("lastMonth")}
+                    >
+                      Último Mes
+                    </Button>
                   </Space>
                 </div>
-                <div className="col-md-4 col-sm-12">
+                <div className="col-md-2 col-sm-12">
                   <label htmlFor="" className="fw-semibold text-black">
                     {" "}
                     Monto{" "}
@@ -153,9 +174,8 @@ const Dashboard = () => {
                       className="ms-2"
                       defaultValue="0"
                       style={{
-                        width: 240,
+                        width: 183,
                       }}
-                      onChange={handleChange}
                       options={[
                         {
                           value: "0",
@@ -163,19 +183,19 @@ const Dashboard = () => {
                         },
                         {
                           value: "1",
-                          label: "$100 - $500",
+                          label: "$100 - $499",
                         },
                         {
                           value: "2",
-                          label: "$501 - $999",
+                          label: "$500 - $999",
                         },
                         {
                           value: "3",
-                          label: "$1000 - $2000",
+                          label: "$1000 - $1999",
                         },
                         {
                           value: "4",
-                          label: "$2001 - $4999",
+                          label: "$2000 - $4999",
                         },
                         {
                           value: "5",
@@ -185,7 +205,7 @@ const Dashboard = () => {
                     />
                   </Space>
                 </div>
-                <div className="col-md-4 col-sm-12">
+                <div className="col-md-2 col-sm-12">
                   <label htmlFor="" className="fw-semibold text-black">
                     {" "}
                     Colector{" "}
@@ -195,9 +215,8 @@ const Dashboard = () => {
                       className="ms-2"
                       defaultValue="0"
                       style={{
-                        width: 240,
+                        width: 183,
                       }}
-                      onChange={handleChange}
                       options={[
                         {
                           value: "0",
@@ -218,6 +237,31 @@ const Dashboard = () => {
                         {
                           value: "4",
                           label: "Universidad",
+                        },
+                      ]}
+                    />
+                  </Space>
+                </div>
+                <div className="col-md-2 col-sm-12">
+                  <label htmlFor="" className="fw-semibold text-black">
+                    {" "}
+                    Tipo{" "}
+                  </label>
+                  <Space wrap>
+                    <Select
+                      className="ms-2"
+                      defaultValue="0"
+                      style={{
+                        width: 183,
+                      }}
+                      options={[
+                        {
+                          value: "0",
+                          label: "Depositos",
+                        },
+                        {
+                          value: "1",
+                          label: "Retiros",
                         },
                       ]}
                     />

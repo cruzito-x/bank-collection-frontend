@@ -106,7 +106,7 @@ const Sidebar = () => {
           style={{
             textAlign: "center",
             background: "#eef1f7",
-            marginTop: "-61px",
+            marginTop: "-70px",
           }}
         >
           &copy; cruzito-x - {new Date().getFullYear()} All rights reserved.
