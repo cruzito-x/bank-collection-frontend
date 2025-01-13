@@ -77,7 +77,7 @@ const DashboardCharts = () => {
     };
 
     const doughnutAmountData = {
-      labels: ["Python", "JavaScript", "Java", "C++", "Data Structures"],
+      labels: ["Luz", "Agua", "Internet", "UTEC", "UNAB"],
       datasets: [
         {
           data: [30, 20, 15, 10, 25],
@@ -111,7 +111,7 @@ const DashboardCharts = () => {
     };
 
     const doughnutTransactionsData = {
-      labels: ["Python", "JavaScript", "Java", "C++", "Data Structures"],
+      labels: ["$50", "$20", "$5", "$1", "$0.25", "$0.10"],
       datasets: [
         {
           data: [30, 20, 15, 10, 25, 17],

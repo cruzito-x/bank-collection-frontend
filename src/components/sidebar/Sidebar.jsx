@@ -9,6 +9,7 @@ import LayoutHeader from "../../utils/layoutHeader/layoutHeader";
 import MenuList from "../menu/Menu";
 import Logo from "../../utils/logo/Logo";
 import "./styles/sidebar.css";
+import Customers from "../customers/Customers";
 
 const Sidebar = () => {
   const [darkTheme, setDarkTheme] = useState(true);
@@ -99,14 +100,14 @@ const Sidebar = () => {
         <Content style={{ margin: location.pathname !== "/dashboard" ? "24px 0 0" : "-40px 0 0", overflow: "initial" }}>
           <Routes>
             <Route path="/dashboard" element={<Dashboard />} />
-            {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+            <Route path="/customers" element={<Customers />} />
           </Routes>
         </Content>
         <Footer
           style={{
             textAlign: "center",
             background: "#eef1f7",
-            marginTop: "-70px",
+            marginTop: "-60px",
           }}
         >
           &copy; cruzito-x - {new Date().getFullYear()} All rights reserved.

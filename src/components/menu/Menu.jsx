@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, theme } from "antd";
+import { Menu } from "antd";
 import {
   LineChartOutlined,
   TeamOutlined,

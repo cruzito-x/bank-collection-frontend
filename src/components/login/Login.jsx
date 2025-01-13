@@ -55,7 +55,7 @@ const Login = () => {
           <Image
             src={Logo}
             preview={false}
-            style={{ width: "75px", height: "75px", borderRadius: "50%" }}
+            style={{ width: "75px", height: "75px", borderRadius: "50%", marginTop: 20 }}
             alt="Logo del Sistema"
           />
         </div>
@@ -64,7 +64,7 @@ const Login = () => {
           layout={"vertical"}
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          style={{ width: 300 }}
+          style={{ width: 300, padding: 20 }}
         >
           <Form.Item
             label="Usuario"
