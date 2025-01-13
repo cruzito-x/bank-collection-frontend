@@ -94,6 +94,7 @@ const Customers = () => {
       dataIndex: "accionesParaCliente",
       key: "accionesCliente",
       align: "center",
+      width: '32%',
     },
   ];
 
@@ -167,7 +168,7 @@ const Customers = () => {
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
               <label className="me-2 fw-semibold">
                 {" "}
-                Balance
+                Saldo
               </label>
               <Select
                 defaultValue={0}
