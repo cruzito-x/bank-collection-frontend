@@ -40,14 +40,16 @@
   border-radius: 80px 0 10px 10px;
   padding: 3px;
   color: #ffffff;
+  cursor: pointer;
+}
+
+.dashboard-user-card label {
+  cursor: pointer;
+  font-size: 13px; 
 }
 
 .user-card {
   width: 120px;
   height: 90px;
   margin-left: 210px !important;
-}
-
-h1 {
-  font-size: 50px;
 }

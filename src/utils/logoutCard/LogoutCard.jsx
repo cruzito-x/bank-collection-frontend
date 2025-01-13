@@ -18,7 +18,7 @@ const LogoutCard = () => {
       >
         <UserOutlined className="fs-1 ps-3 pe-3 pt-3 pb-2" />
         <div className="dashboard-user-card">
-          <label className="fw-semibold" style={{ fontSize: "12.5px" }}>
+          <label className="fw-semibold">
             Perfil
           </label>
         </div>
