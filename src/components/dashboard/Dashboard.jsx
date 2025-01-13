@@ -50,44 +50,44 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           borderRadius: borderRadiusLG,
         }}
       >
-        <div className="d-flex">
-          <div className="w-100">
+        <div className="row">
+          <div className="col-11">
             <div className="row">
-              <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+              <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
                 <Card className="text-center shadow">
-                  <h1 className="p-3 fw-semibold text-black"> 5 </h1>
+                  <h2 className="p-3 fw-semibold text-black"> 5 </h2>
                   <div className="dashboard-blue-card">
-                    <h6 className="p-2"> Colectores Registrados </h6>
+                    <label className="fw-semibold p-2"> Colectores Registrados </label>
                   </div>
                 </Card>
               </div>
-              <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+              <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
                 <Card className="text-center shadow">
-                  <h1 className="p-3 fw-semibold text-black">250</h1>
+                  <h2 className="p-3 fw-semibold text-black">250</h2>
                   <div className="dashboard-yellow-card">
-                    <h6 className="p-2"> Total de Pagos Realizados </h6>
+                    <label className="fw-semibold p-2"> Total de Pagos Realizados </label>
                   </div>
                 </Card>
               </div>
-              <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+              <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
                 <Card className="text-center shadow">
-                  <h1 className="p-3 fw-semibold text-black"> $1136 </h1>
+                  <h2 className="p-3 fw-semibold text-black"> $1136 </h2>
                   <div className="dashboard-green-card">
-                    <h6 className="p-2"> Monto Total Procesado </h6>
+                    <label className="fw-semibold p-2"> Monto Total Procesado </label>
                   </div>
                 </Card>
               </div>
-              <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+              <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
                 <Card className="text-center shadow">
-                  <h1 className="p-3 fw-semibold text-black">1</h1>
+                  <h2 className="p-3 fw-semibold text-black">1</h2>
                   <div className="dashboard-red-card">
-                    <h6 className="p-2"> Notificaciones </h6>
+                    <label className="fw-semibold p-2"> Notificaciones </label>
                   </div>
                 </Card>
               </div>
             </div>
           </div>
-          <div className="d-flex justify-content-end">
+          <div className="d-flex justify-content-end col-1">
             <LogoutCard />
           </div>
         </div>
@@ -117,7 +117,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           </div>
           <div className="row ms-2 mb-4">
             <label className="fw-semibold text-black mb-1"> Filtrar por </label>
-            <div className="col-md-5 col-sm-12">
+            <div className="col-xxl-5 col-lg-7 col-md-7 col-sm-12">
               <label
                 htmlFor="dashboard-year"
                 className="fw-semibold text-black"
@@ -159,7 +159,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 </Button>
               </Space>
             </div>
-            <div className="col-md-2 col-sm-12">
+            <div className="col-xxl-2 col-lg-2 col-md-2 col-sm-12">
               <label htmlFor="" className="fw-semibold text-black">
                 {" "}
                 Monto{" "}
@@ -200,7 +200,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 />
               </Space>
             </div>
-            <div className="col-md-2 col-sm-12">
+            <div className="col-xxl-2 col-lg-2 col-md-2 col-sm-12">
               <label htmlFor="" className="fw-semibold text-black">
                 {" "}
                 Colector{" "}
@@ -237,7 +237,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 />
               </Space>
             </div>
-            <div className="col-md-2 col-sm-12">
+            <div className="col-xxl-2 col-lg-2 col-md-2 col-sm-12">
               <label htmlFor="" className="fw-semibold text-black">
                 {" "}
                 Tipo{" "}
