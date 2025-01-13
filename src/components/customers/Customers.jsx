@@ -155,10 +155,10 @@ const Customers = () => {
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
               <label className="me-2 fw-semibold">
                 {" "}
-                Documento{" "}
+                Documento de Identidad{" "}
               </label>
               <Input
-                placeholder="Documento de Identidad"
+                placeholder="00000000-0"
                 prefix={<IdcardOutlined />}
                 style={{
                   width: 183,
