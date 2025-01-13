@@ -101,8 +101,8 @@ const Customers = () => {
     <Content style={{ margin: "31px 16px" }}>
       <div
         style={{
-          padding: 24,
-          minHeight: "90vh",
+          paddingTop: 24,
+          minHeight: "85vh",
           background: "none",
           borderRadius: borderRadiusLG,
         }}
@@ -131,48 +131,45 @@ const Customers = () => {
         <Card className="mt-3">
           <div className="row ms-2 pt-3 mb-2">
             <div className="col-12 text-start">
-              <label htmlFor="" className="fw-semibold">
+              <label className="fw-semibold">
                 {" "}
                 Buscar Por{" "}
               </label>
             </div>
           </div>
-          <div className="row ms-1 mb-3 pe-3">
-            <div className="col-xl-3 col-sm-12">
-              <label htmlFor="" className="fw-semibold">
+          <div className="row ms-2 mb-3 pe-3">
+            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
+              <label className="me-2 fw-semibold">
                 {" "}
                 Nombre{" "}
               </label>
               <Input
-                className="ms-2"
                 placeholder="Nombre de Cliente"
                 prefix={<UserOutlined />}
                 style={{
-                  width: "285px",
+                  width: 183,
                 }}
               />
             </div>
-            <div className="col-xl-3 col-sm-12">
-              <label htmlFor="" className="fw-semibold">
+            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
+              <label className="me-2 fw-semibold">
                 {" "}
                 Documento{" "}
               </label>
               <Input
-                className="ms-2"
                 placeholder="Documento de Identidad"
                 prefix={<IdcardOutlined />}
                 style={{
-                  width: "285px",
+                  width: 183,
                 }}
               />
             </div>
-            <div className="col-xl-3 col-sm-12">
-              <label htmlFor="" className="fw-semibold">
+            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
+              <label className="me-2 fw-semibold">
                 {" "}
                 Balance
               </label>
               <Select
-              className="ms-2"
                 defaultValue={0}
                 options={[
                   { value: 0, label: "Mayor a Menor" },
@@ -180,11 +177,11 @@ const Customers = () => {
                 ]}
                 prefix={<DollarOutlined />}
                 style={{
-                  width: "285px",
+                  width: 183,
                 }}
               />
             </div>
-            <div className="col-xl-3 col-sm-12">
+            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
               <Button type="primary"> Buscar </Button>
             </div>
           </div>
