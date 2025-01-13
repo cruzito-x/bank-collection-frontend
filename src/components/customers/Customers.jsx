@@ -138,7 +138,7 @@ const Customers = () => {
             </div>
           </div>
           <div className="row ms-1 mb-3 pe-3">
-            <div className="col-md-3 col-sm-12">
+            <div className="col-xl-3 col-sm-12">
               <label htmlFor="" className="fw-semibold">
                 {" "}
                 Nombre{" "}
@@ -152,7 +152,7 @@ const Customers = () => {
                 }}
               />
             </div>
-            <div className="col-md-3 col-sm-12">
+            <div className="col-xl-3 col-sm-12">
               <label htmlFor="" className="fw-semibold">
                 {" "}
                 Documento{" "}
@@ -166,7 +166,7 @@ const Customers = () => {
                 }}
               />
             </div>
-            <div className="col-md-3 col-sm-12">
+            <div className="col-xl-3 col-sm-12">
               <label htmlFor="" className="fw-semibold">
                 {" "}
                 Balance
@@ -184,7 +184,7 @@ const Customers = () => {
                 }}
               />
             </div>
-            <div className="col-md-3 col-sm-12">
+            <div className="col-xl-3 col-sm-12">
               <Button type="primary"> Buscar </Button>
             </div>
           </div>
