@@ -302,13 +302,13 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
             <label className="fw-semibold text-black mb-1"> Filtrar por </label>
             <div className="col-xxl-4 col-lg-7 col-md-7 col-sm-12 w-auto">
               <label
-                htmlFor="dashboard-year"
+                htmlFor="dashboard-date"
                 className="fw-semibold text-black me-2"
               >
                 {" "}
                 Fecha{" "}
               </label>
-              <Space wrap>
+              <Space wrap id="dashboard-date">
                 <RangePicker
                   value={dates}
                   onChange={(dates) => setDates(dates)}

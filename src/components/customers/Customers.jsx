@@ -196,7 +196,6 @@ const Customers = () => {
                   showSizeChanger: true,
                   showTotal: (total) => `Total: ${total} cliente(s)`,
                   showQuickJumper: true,
-                  pageSizeOptions: ["5", "10", "20", "50"],
                   onShowSizeChange: (current, size) => {
                     console.log(current, size);
                   },

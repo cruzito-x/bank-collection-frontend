@@ -53,3 +53,7 @@
   height: 90px;
   margin-left: 210px !important;
 }
+
+#dashboard-date .ant-space-item:nth-child(1) {
+  display: none;
+}
