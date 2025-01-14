@@ -181,7 +181,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       {" "}
                       <InfoCircleOutlined
                         className="fs-6"
-                        style={{ marginRight: 8, color: "#007bff" }}
+                        style={{ marginRight: 8, color: "var(--blue)" }}
                       />{" "}
                     </Col>{" "}
                     <Col>

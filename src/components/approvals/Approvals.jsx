@@ -1,16 +1,36 @@
-import { Breadcrumb, Button, Card, Input, Layout, Table, theme } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Card,
+  Col,
+  Input,
+  Layout,
+  Modal,
+  Row,
+  Table,
+  theme,
+} from "antd";
 import {
   CheckCircleOutlined,
   InfoCircleOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import React from "react";
+import React, { useState } from "react";
 
 const Approvals = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { Content } = Layout;
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
+
+  const showTransactionDetails = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeDetails = () => {
+    setIsModalOpen(false);
+  };
 
   const CollectorsDataSource = [
     {
@@ -21,7 +41,70 @@ const Approvals = () => {
       datetime: "2025-01-02 a las 10:30 am",
       actions: (
         <>
-          <Button type="primary"> Detalles </Button>
+          <Button type="primary" onClick={showTransactionDetails}>
+            {" "}
+            Detalles{" "}
+          </Button>
+          <Modal
+            title={
+              <Row align="middle">
+                {" "}
+                <Col>
+                  {" "}
+                  <InfoCircleOutlined
+                    className="fs-6"
+                    style={{ marginRight: 8, color: "var(--blue)" }}
+                  />{" "}
+                </Col>{" "}
+                <Col>
+                  <label className="fs-6">Detalles de Transacción</label>
+                </Col>{" "}
+              </Row>
+            }
+            open={isModalOpen}
+            footer={[
+              <Button key="submit" type="primary" onClick={closeDetails}>
+                Cerrar
+              </Button>,
+            ]}
+          >
+            {/* <p> Deben ir detalles como el concepto, el email del cliente y el receptor </p> */}
+            <div className="row mt-4">
+              <div className="col-12 mb-3 text-center">
+                <h1 className="fw-bold" style={{ fontSize: "60px" }}>
+                  {" "}
+                  $70{" "}
+                </h1>
+                <label className="fw-semibold">
+                  {" "}
+                  <CheckCircleOutlined style={{ color: "var(--green)" }} />{" "}
+                  ¡Transferencia Exitosa!{" "}
+                </label>
+              </div>
+              <div className="col-12 mb-3">
+                <label className="fw-semibold"> Cliente Emisor </label>
+                <p> Juan Caballo 🐴 </p>
+              </div>
+              <div className="col-12 mb-3">
+                <label className="fw-semibold"> E-mail de Cliente Emisor </label>
+                <p> juancaballodeverdadsoyyoiranomaspueswarelinchar@gmail.com </p>
+              </div>
+              <div className="col-12 mb-3">
+                <label className="fw-semibold"> Receptor </label>
+                <p> Jorgito 🫦 </p>
+              </div>
+              <div className="col-12 mb-3">
+                <label className="fw-semibold"> Concepto </label>
+                <p>
+                  {" "}
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea,
+                  exercitationem incidunt voluptatibus ipsa hic, odio adipisci
+                  quod, magnam veniam nesciunt reprehenderit! Perferendis ullam
+                  error, sapiente labore eaque rerum dignissimos rem?{" "}
+                </p>
+              </div>
+            </div>
+          </Modal>
         </>
       ),
     },

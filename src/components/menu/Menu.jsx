@@ -29,7 +29,7 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
       theme={darkTheme ? "dark" : "light"}
       style={{
         backgroundColor: darkTheme ? "#273543" : "",
-        color: darkTheme ? "#ffffff" : "#007bff",
+        color: darkTheme ? "#ffffff" : "var(--blue)",
       }}
       mode="inline"
       className="menu-bar"
