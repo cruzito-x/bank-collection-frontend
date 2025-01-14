@@ -18,18 +18,18 @@ import {
 import React, { useState } from "react";
 
 const Approvals = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTransactionDetailsModalOpen, setIsTransactionDetailsModalOpen] = useState(false);
   const { Content } = Layout;
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
 
   const showTransactionDetails = () => {
-    setIsModalOpen(true);
+    setIsTransactionDetailsModalOpen(true);
   };
 
-  const closeDetails = () => {
-    setIsModalOpen(false);
+  const closeTransactionDetails = () => {
+    setIsTransactionDetailsModalOpen(false);
   };
 
   const CollectorsDataSource = [
@@ -61,14 +61,16 @@ const Approvals = () => {
                 </Col>{" "}
               </Row>
             }
-            open={isModalOpen}
+            centered
+            width={450}
+            open={isTransactionDetailsModalOpen}
+            onCancel={closeTransactionDetails}
             footer={[
-              <Button key="submit" type="primary" onClick={closeDetails}>
+              <Button key="submit" type="primary" onClick={closeTransactionDetails}>
                 Cerrar
               </Button>,
             ]}
           >
-            {/* <p> Deben ir detalles como el concepto, el email del cliente y el receptor </p> */}
             <div className="row mt-4">
               <div className="col-12 mb-3 text-center">
                 <h1 className="fw-bold" style={{ fontSize: "60px" }}>

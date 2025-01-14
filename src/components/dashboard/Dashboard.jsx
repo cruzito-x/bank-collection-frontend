@@ -78,7 +78,8 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   const showPaymentsModal = () => {
     setOpen(true);
   };
-  const hidePaymentsModal = () => {
+
+  const closePaymentsModal = () => {
     setOpen(false);
   };
 
@@ -189,15 +190,17 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                     </Col>{" "}
                   </Row>
                 }
+                centered
+                width={450}
                 open={open}
-                onOk={hidePaymentsModal}
-                onCancel={hidePaymentsModal}
+                onOk={closePaymentsModal}
+                onCancel={closePaymentsModal}
                 footer={[
                   <Button
                     key="back"
                     type="primary"
                     danger
-                    onClick={hidePaymentsModal}
+                    onClick={closePaymentsModal}
                   >
                     Cancelar
                   </Button>,

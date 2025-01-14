@@ -1,16 +1,40 @@
-import { Breadcrumb, Button, Card, Input, Layout, Table, theme } from "antd";
 import {
+  Breadcrumb,
+  Button,
+  Card,
+  Col,
+  Input,
+  Layout,
+  Modal,
+  Row,
+  Table,
+  theme,
+} from "antd";
+import {
+  InfoCircleOutlined,
   PlusCircleOutlined,
   SolutionOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import React from "react";
+import React, { useState } from "react";
+import TextArea from "antd/es/input/TextArea";
 
 const Collectors = () => {
+  const [isCollectorModalOpen, setIsCollectorModalOpen] = useState(false);
+  
+  const { TextArea } = Input;
   const { Content } = Layout;
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
+
+  const showAddCollectorModal = () => {
+    setIsCollectorModalOpen(true);
+  };
+
+  const closeAddCollectorModal = () => {
+    setIsCollectorModalOpen(false);
+  };
 
   const CollectorsDataSource = [
     {
@@ -96,7 +120,7 @@ const Collectors = () => {
               <label className="fw-semibold"> Buscar Por </label>
             </div>
           </div>
-          <div className="row ms-2 mb-3 pe-3">
+          <div className="row ms-2 mb-3">
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
               <label className="me-2 fw-semibold"> Nombre </label>
               <Input
@@ -110,10 +134,51 @@ const Collectors = () => {
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
               <Button type="primary"> Buscar </Button>
             </div>
-            <div className="col-xxl-9 col-xl-4 col-sm-12 d-flex justify-content-end">
-              <Button type="primary">
+            <div className="col-xxl-9 col-xl-7 col-sm-12 d-flex justify-content-end">
+              <Button type="primary" onClick={showAddCollectorModal}>
                 <PlusCircleOutlined /> Añadir nuevo{" "}
               </Button>
+              <Modal
+                title={
+                  <Row align="middle">
+                    {" "}
+                    <Col>
+                      {" "}
+                      <InfoCircleOutlined
+                        className="fs-6"
+                        style={{ marginRight: 8, color: "var(--blue)" }}
+                      />{" "}
+                    </Col>{" "}
+                    <Col>
+                      <label className="fs-6">Añadir Nuevo Colector</label>
+                    </Col>{" "}
+                  </Row>
+                }
+                centered
+                width={450}
+                open={isCollectorModalOpen}
+                onCancel={closeAddCollectorModal}
+                footer={[
+                  <Button
+                    key="submit"
+                    type="primary"
+                    onClick={closeAddCollectorModal}
+                  >
+                    Cerrar
+                  </Button>
+                ]}
+              >
+                <div className="row mt-4">
+                  <div className="col-12 mb-3">
+                    <label className="fw-semibold"> Nombre del Colector </label>
+                    <Input placeholder="Nombre del Colector"/>
+                  </div>
+                  <div className="col-12">
+                    <label className="fw-semibold"> Descripción </label>
+                    <TextArea rows={7} />;
+                  </div>
+                </div>
+              </Modal>
             </div>
           </div>
           <div className="row ms-1 mb-3 pe-3">
