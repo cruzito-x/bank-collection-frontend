@@ -131,15 +131,8 @@ const Collectors = () => {
                 columns={CollectorsDataColumns}
                 pagination={{
                   pageSize: 10,
-                  showSizeChanger: true,
-                  showTotal: (total) => `Total: ${total} cliente(s)`,
-                  showQuickJumper: true,
-                  onShowSizeChange: (current, size) => {
-                    console.log(current, size);
-                  },
-                  onChange: (current, pageSize) => {
-                    console.log(current, pageSize);
-                  },
+                  showTotal: (total) => `Total: ${total} colector(es)`,
+                  hideOnSinglePage: true
                 }}
               />
             </div>

@@ -193,15 +193,8 @@ const Customers = () => {
                 columns={customersDataColumns}
                 pagination={{
                   pageSize: 10,
-                  showSizeChanger: true,
                   showTotal: (total) => `Total: ${total} cliente(s)`,
-                  showQuickJumper: true,
-                  onShowSizeChange: (current, size) => {
-                    console.log(current, size);
-                  },
-                  onChange: (current, pageSize) => {
-                    console.log(current, pageSize);
-                  },
+                  hideOnSinglePage: true
                 }}
               />
             </div>
