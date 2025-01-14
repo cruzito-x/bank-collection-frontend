@@ -2,8 +2,6 @@ import { Breadcrumb, Button, Card, Input, Layout, Table, theme } from "antd";
 import {
   AuditOutlined,
   PlusCircleOutlined,
-  SolutionOutlined,
-  UnorderedListOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import React from "react";
@@ -90,7 +88,7 @@ const TransactionTypes = () => {
               <label className="fw-semibold"> Buscar Por </label>
             </div>
           </div>
-          <div className="row ms-2 mb-3 pe-3">
+          <div className="row ms-2 mb-3">
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
               <label className="me-2 fw-semibold"> Nombre </label>
               <Input
@@ -104,7 +102,7 @@ const TransactionTypes = () => {
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
               <Button type="primary"> Buscar </Button>
             </div>
-            <div className="col-xxl-9 col-xl-4 col-sm-12 d-flex justify-content-end">
+            <div className="col-xxl-9 col-xl-7 col-sm-12 d-flex justify-content-end">
               <Button type="primary">
                 <PlusCircleOutlined /> Añadir nuevo{" "}
               </Button>
