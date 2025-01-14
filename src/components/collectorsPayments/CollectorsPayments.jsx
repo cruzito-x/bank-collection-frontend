@@ -79,7 +79,6 @@ const CollectorsPayments = () => {
       dataIndex: "actionsToCollectorPayments",
       key: "collectorPaymentsActions",
       align: "center",
-      width: "35%",
     },
   ];
 
