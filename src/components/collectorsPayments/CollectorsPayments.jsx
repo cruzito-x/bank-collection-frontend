@@ -10,21 +10,25 @@ import {
 import {
   SolutionOutlined,
   UserOutlined,
+  WalletOutlined,
 } from "@ant-design/icons";
 import React from "react";
+import CollectorsPaymentsChart from "./charts/CollectorsPaymentsChart";
 
-const Collectors = () => {
+const CollectorsPayments = () => {
   const { Content } = Layout;
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
 
-  const CollectorsDataSource = [
+  const CollectorsPaymentsDataSource = [
     {
       key: "1",
-      codigoDeServicio: "1234567890",
-      nombreDeServicio: "John Doe",
-      accionesParaServicio: (
+      customer: "Jhon Doe",
+      collector: "Universidad - UTEC",
+      amountPaid: "$143",
+      paymentDate: "2025-01-02",
+      actionsToCollectorPayments: (
         <>
           <Button
             className="edit-btn"
@@ -45,23 +49,35 @@ const Collectors = () => {
     },
   ];
 
-  const CollectorsDataColumns = [
+  const CollectorsPaymentsDataColumns = [
     {
-      title: "Código de Servicio",
-      dataIndex: "codigoDeServicio",
-      key: "codigoServicio",
+      title: "Cliente",
+      dataIndex: "customer",
+      key: "customer",
       align: "center",
     },
     {
-      title: "Servicio",
-      dataIndex: "nombreDeServicio",
-      key: "nombreServicio",
+      title: "Colector",
+      dataIndex: "collector",
+      key: "collector",
+      align: "center",
+    },
+    {
+      title: "Monto Pagado",
+      dataIndex: "amountPaid",
+      key: "amountPaid",
+      align: "center",
+    },
+    {
+      title: "Fecha de Pago",
+      dataIndex: "paymentDate",
+      key: "paymentDate",
       align: "center",
     },
     {
       title: "Acciones",
-      dataIndex: "accionesParaServicio",
-      key: "accionesServicio",
+      dataIndex: "actionsToCollectorPayments",
+      key: "collectorPaymentsActions",
       align: "center"
     },
   ];
@@ -89,8 +105,8 @@ const Collectors = () => {
             {
               title: (
                 <>
-                  <SolutionOutlined />
-                  <span>Colectores</span>
+                  <WalletOutlined />
+                  <span>Pagos a Colectores</span>
                 </>
               ),
             },
@@ -125,10 +141,10 @@ const Collectors = () => {
             </div>
           </div>
           <div className="row ms-1 mb-3 pe-3">
-            <div className="col-12">
+            <div className="col-md-8 col-sm-12">
               <Table
-                dataSource={CollectorsDataSource}
-                columns={CollectorsDataColumns}
+                dataSource={CollectorsPaymentsDataSource}
+                columns={CollectorsPaymentsDataColumns}
                 pagination={{
                   pageSize: 10,
                   showSizeChanger: true,
@@ -143,6 +159,9 @@ const Collectors = () => {
                 }}
               />
             </div>
+            <div className="col-md-4 col-sm-12">
+              <CollectorsPaymentsChart />
+            </div>
           </div>
         </Card>
       </div>
@@ -150,4 +169,4 @@ const Collectors = () => {
   );
 };
 
-export default Collectors;
+export default CollectorsPayments;
