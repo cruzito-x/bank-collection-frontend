@@ -24,7 +24,7 @@ const TransactionTypes = () => {
             className="edit-btn"
             type="primary"
             style={{
-              backgroundColor: "#ffac00",
+              backgroundColor: "var(--yellow)",
               // hover: "#ffc654"
             }}
           >

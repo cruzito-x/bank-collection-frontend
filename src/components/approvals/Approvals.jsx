@@ -83,15 +83,15 @@ const Approvals = () => {
                   ¡Transferencia Exitosa!{" "}
                 </label>
               </div>
-              <div className="col-12 mb-3">
+              <div className="col-12">
                 <label className="fw-semibold"> Cliente Emisor </label>
                 <p> Juan Caballo 🐴 </p>
               </div>
-              <div className="col-12 mb-3">
+              <div className="col-12">
                 <label className="fw-semibold"> E-mail de Cliente Emisor </label>
                 <p> juancaballodeverdadsoyyoiranomaspueswarelinchar@gmail.com </p>
               </div>
-              <div className="col-12 mb-3">
+              <div className="col-12">
                 <label className="fw-semibold"> Receptor </label>
                 <p> Jorgito 🫦 </p>
               </div>

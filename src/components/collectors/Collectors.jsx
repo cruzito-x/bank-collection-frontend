@@ -17,11 +17,10 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import React, { useState } from "react";
-import TextArea from "antd/es/input/TextArea";
 
 const Collectors = () => {
   const [isCollectorModalOpen, setIsCollectorModalOpen] = useState(false);
-  
+
   const { TextArea } = Input;
   const { Content } = Layout;
   const {
@@ -47,7 +46,7 @@ const Collectors = () => {
             className="edit-btn"
             type="primary"
             style={{
-              backgroundColor: "#ffac00",
+              backgroundColor: "var(--yellow)",
               // hover: "#ffc654"
             }}
           >
@@ -164,18 +163,25 @@ const Collectors = () => {
                     type="primary"
                     onClick={closeAddCollectorModal}
                   >
-                    Cerrar
-                  </Button>
+                    Guardar
+                  </Button>,
                 ]}
               >
                 <div className="row mt-4">
                   <div className="col-12 mb-3">
                     <label className="fw-semibold"> Nombre del Colector </label>
-                    <Input placeholder="Nombre del Colector"/>
+                    <Input placeholder="Nombre del Colector" />
                   </div>
                   <div className="col-12">
                     <label className="fw-semibold"> Descripción </label>
-                    <TextArea rows={7} />;
+                    <TextArea
+                      rows={8}
+                      size="middle"
+                      style={{
+                        resize: "none",
+                      }}
+                      placeholder="Descripción del Servicio"
+                    />
                   </div>
                 </div>
               </Modal>

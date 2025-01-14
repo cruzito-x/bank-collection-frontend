@@ -60,7 +60,6 @@ const Login = () => {
           />
         </div>
         <Form
-          name="loginForm"
           layout={"vertical"}
           initialValues={{ remember: true }}
           onFinish={onFinish}

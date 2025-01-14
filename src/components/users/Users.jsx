@@ -2,54 +2,118 @@ import {
   Breadcrumb,
   Button,
   Card,
+  Col,
+  Form,
   Input,
   Layout,
+  Modal,
+  Row,
   Select,
   Table,
   theme,
 } from "antd";
 import {
+  EyeInvisibleOutlined,
+  EyeTwoTone,
+  InfoCircleOutlined,
+  KeyOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const Users = () => {
+  const [roles, setRoles] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [editUserModalOpen, setEditUserModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const { Content } = Layout;
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
 
-  const CollectorsDataSource = [
-    {
-      key: "1",
-      user: "David Cruz",
-      email: "dcruzer92@gmail.com",
-      role: "Supervisor",
-      actions: (
-        <>
-          <Button
-            className="edit-btn"
-            type="primary"
-            style={{
-              backgroundColor: "#ffac00",
-              // hover: "#ffc654"
-            }}
-          >
-            Editar
-          </Button>
-          <Button className="ms-2 me-2" type="primary" danger>
-            Eliminar
-          </Button>
-          <Button type="primary"> Asignar Rol </Button>
-        </>
-      ),
-    },
-  ];
+  useEffect(() => {
+    getRoles();
+    getUsers();
+  }, []);
 
-  const CollectorsDataColumns = [
+  const showEditUserModal = () => {
+    setEditUserModalOpen(true);
+  };
+
+  const closeEditUserModal = () => {
+    setEditUserModalOpen(false);
+  };
+
+  const getRoles = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/users/roles", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      setRoles(data);
+    } catch (error) {
+      console.error("Error fetching roles: ", error);
+    }
+  };
+
+  const getUsers = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/users", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      const usersRow = data.map((user) => ({
+        ...user,
+        actions: (
+          <>
+            <Button
+              className="edit-btn"
+              type="primary"
+              style={{
+                backgroundColor: "var(--yellow)",
+              }}
+              onClick={showEditUserModal}
+            >
+              Editar
+            </Button>
+            <Button className="ms-2 me-2" type="primary" danger>
+              Eliminar
+            </Button>
+            <Button type="primary"> Asignar Rol </Button>
+          </>
+        ),
+      }));
+      setUsers(usersRow);
+    } catch (error) {
+      console.error("Error fetching roles: ", error);
+    }
+  };
+
+  const updateUserInfo = async (user) => {
+    setLoading(true);
+
+    try {
+
+    } catch (error) {
+      console.error("Error al actualizar la información del usuario: ", error);
+    }
+
+    setLoading(false);
+  };
+
+  const usersTableColumns = [
     {
       title: "Usuario",
-      dataIndex: "user",
+      dataIndex: "username",
       key: "user",
       align: "center",
     },
@@ -69,7 +133,7 @@ const Users = () => {
       title: "Acciones",
       dataIndex: "actions",
       key: "actions",
-      align: "center"
+      align: "center",
     },
   ];
 
@@ -107,18 +171,12 @@ const Users = () => {
         <Card className="mt-3">
           <div className="row ms-2 pt-3 mb-2">
             <div className="col-12 text-start">
-              <label className="fw-semibold">
-                {" "}
-                Buscar Por{" "}
-              </label>
+              <label className="fw-semibold"> Buscar Por </label>
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold">
-                {" "}
-                Nombre{" "}
-              </label>
+              <label className="me-2 fw-semibold"> Nombre </label>
               <Input
                 placeholder="Nombre de Usuario"
                 prefix={<UserOutlined />}
@@ -128,28 +186,16 @@ const Users = () => {
               />
             </div>
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold">
-                {" "}
-                Rol{" "}
-              </label>
+              <label className="me-2 fw-semibold"> Rol </label>
               <Select
-                  defaultValue="Supervisor"
-                  prefix={<UserOutlined />}
-                  style={{
-                    width: 183,
-                  }}
-                  // onChange={quickFilter}
-                  options={[
-                    {
-                      value: 0,
-                      label: "Supervisor",
-                    },
-                    {
-                      value: 1,
-                      label: "Cajero",
-                    },
-                  ]}
-                />
+                defaultValue="Supervisor"
+                prefix={<KeyOutlined />}
+                style={{
+                  width: 183,
+                }}
+                // onChange={quickFilter}
+                options={roles}
+              />
             </div>
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
               <Button type="primary"> Buscar </Button>
@@ -158,14 +204,92 @@ const Users = () => {
           <div className="row ms-1 mb-3 pe-3">
             <div className="col-12">
               <Table
-                dataSource={CollectorsDataSource}
-                columns={CollectorsDataColumns}
+                dataSource={users}
+                columns={usersTableColumns}
                 pagination={{
                   pageSize: 10,
                   showTotal: (total) => `Total: ${total} colector(es)`,
-                  hideOnSinglePage: true
+                  hideOnSinglePage: true,
                 }}
               />
+              <Modal
+                title={
+                  <Row align="middle">
+                    {" "}
+                    <Col>
+                      {" "}
+                      <InfoCircleOutlined
+                        className="fs-6"
+                        style={{ marginRight: 8, color: "var(--blue)" }}
+                      />{" "}
+                    </Col>{" "}
+                    <Col>
+                      <label className="fs-6">
+                        Editar Información de Usuario
+                      </label>
+                    </Col>{" "}
+                  </Row>
+                }
+                centered
+                width={450}
+                open={editUserModalOpen}
+                onCancel={closeEditUserModal}
+                footer={[
+                  <Button
+                    key="submit"
+                    type="primary"
+                    onClick={closeEditUserModal}
+                    loading={loading}
+                  >
+                    Guardar Cambios
+                  </Button>,
+                ]}
+              >
+                <Form layout={"vertical"} onFinish={updateUserInfo}>
+                  <div className="row mt-4">
+                    <div className="col-12">
+                      <label className="fw-semibold"> Nombre de Usuario </label>
+                      <Form.Item
+                        name="username"
+                        rules={[
+                          {
+                            message:
+                              "Por Favor Introduzca un Nombre de Usuario",
+                          },
+                        ]}
+                      >
+                        <Input placeholder="Nombre de Usuario" />
+                      </Form.Item>
+                    </div>
+                    <div className="col-12">
+                      <label className="fw-semibold"> E-mail </label>
+                      <Form.Item
+                        name="email"
+                        rules={[{ message: "Por Favor Introduzca un E-mail" }]}
+                      >
+                        <Input type="email" placeholder="E-mail" />
+                      </Form.Item>
+                    </div>
+                    <div className="col-12">
+                      <label className="fw-semibold"> Contraseña </label>
+                      <Form.Item
+                        name="password"
+                        rules={[
+                          { message: "Por Favor Introduzca una Contraseña" },
+                        ]}
+                      >
+                        <Input.Password
+                          placeholder="Contraseña"
+                          iconRender={(visible) =>
+                            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                          }
+                        />
+                      </Form.Item>
+                    </div>
+                    <div className="col-12 mb-3"></div>
+                  </div>
+                </Form>
+              </Modal>
             </div>
           </div>
         </Card>
