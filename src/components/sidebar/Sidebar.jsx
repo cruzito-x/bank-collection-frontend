@@ -10,6 +10,7 @@ import MenuList from "../menu/Menu";
 import Logo from "../../utils/logo/Logo";
 import "./styles/sidebar.css";
 import Customers from "../customers/Customers";
+import Collectors from "../collectors/Collectors";
 
 const Sidebar = () => {
   const [darkTheme, setDarkTheme] = useState(true);
@@ -101,6 +102,7 @@ const Sidebar = () => {
           <Routes>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/customers" element={<Customers />} />
+            <Route path="/collectors" element={<Collectors />} />
           </Routes>
         </Content>
         <Footer

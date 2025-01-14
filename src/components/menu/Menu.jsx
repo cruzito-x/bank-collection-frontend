@@ -3,7 +3,6 @@ import { Menu } from "antd";
 import {
   LineChartOutlined,
   TeamOutlined,
-  BulbOutlined,
   WalletOutlined,
   TransactionOutlined,
   UnorderedListOutlined,
@@ -12,6 +11,7 @@ import {
   DatabaseOutlined,
   LeftOutlined,
   RightOutlined,
+  SolutionOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
@@ -56,7 +56,7 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
           <span style={colorByTheme}> Clientes </span>
         </Menu.Item>
       )}
-      <Menu.Item key="/collectors" icon={<BulbOutlined style={colorByTheme} />}>
+      <Menu.Item key="/collectors" icon={<SolutionOutlined style={colorByTheme} />}>
         <span style={colorByTheme}> Colectores </span>
       </Menu.Item>
       <Menu.Item
