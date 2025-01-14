@@ -103,7 +103,7 @@ const Customers = () => {
       <div
         style={{
           paddingTop: 24,
-          minHeight: "85vh",
+          minHeight: "90vh",
           background: "none",
           borderRadius: borderRadiusLG,
         }}

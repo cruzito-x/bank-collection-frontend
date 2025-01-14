@@ -47,6 +47,257 @@ const CollectorsPayments = () => {
         </>
       ),
     },
+    {
+      key: "1",
+      customer: "Jhon Doe",
+      collector: "Universidad - UTEC",
+      amountPaid: "$143",
+      paymentDate: "2025-01-02",
+      actionsToCollectorPayments: (
+        <>
+          <Button
+            className="edit-btn"
+            type="primary"
+            style={{
+              backgroundColor: "#ffac00",
+              // hover: "#ffc654"
+            }}
+          >
+            Editar
+          </Button>
+          <Button className="ms-2 me-2" type="primary" danger>
+            Eliminar
+          </Button>
+          <Button type="primary"> Transacciones </Button>
+        </>
+      ),
+    },
+    {
+      key: "1",
+      customer: "Jhon Doe",
+      collector: "Universidad - UTEC",
+      amountPaid: "$143",
+      paymentDate: "2025-01-02",
+      actionsToCollectorPayments: (
+        <>
+          <Button
+            className="edit-btn"
+            type="primary"
+            style={{
+              backgroundColor: "#ffac00",
+              // hover: "#ffc654"
+            }}
+          >
+            Editar
+          </Button>
+          <Button className="ms-2 me-2" type="primary" danger>
+            Eliminar
+          </Button>
+          <Button type="primary"> Transacciones </Button>
+        </>
+      ),
+    },
+    {
+      key: "1",
+      customer: "Jhon Doe",
+      collector: "Universidad - UTEC",
+      amountPaid: "$143",
+      paymentDate: "2025-01-02",
+      actionsToCollectorPayments: (
+        <>
+          <Button
+            className="edit-btn"
+            type="primary"
+            style={{
+              backgroundColor: "#ffac00",
+              // hover: "#ffc654"
+            }}
+          >
+            Editar
+          </Button>
+          <Button className="ms-2 me-2" type="primary" danger>
+            Eliminar
+          </Button>
+          <Button type="primary"> Transacciones </Button>
+        </>
+      ),
+    },
+    {
+      key: "1",
+      customer: "Jhon Doe",
+      collector: "Universidad - UTEC",
+      amountPaid: "$143",
+      paymentDate: "2025-01-02",
+      actionsToCollectorPayments: (
+        <>
+          <Button
+            className="edit-btn"
+            type="primary"
+            style={{
+              backgroundColor: "#ffac00",
+              // hover: "#ffc654"
+            }}
+          >
+            Editar
+          </Button>
+          <Button className="ms-2 me-2" type="primary" danger>
+            Eliminar
+          </Button>
+          <Button type="primary"> Transacciones </Button>
+        </>
+      ),
+    },
+    {
+      key: "1",
+      customer: "Jhon Doe",
+      collector: "Universidad - UTEC",
+      amountPaid: "$143",
+      paymentDate: "2025-01-02",
+      actionsToCollectorPayments: (
+        <>
+          <Button
+            className="edit-btn"
+            type="primary"
+            style={{
+              backgroundColor: "#ffac00",
+              // hover: "#ffc654"
+            }}
+          >
+            Editar
+          </Button>
+          <Button className="ms-2 me-2" type="primary" danger>
+            Eliminar
+          </Button>
+          <Button type="primary"> Transacciones </Button>
+        </>
+      ),
+    },
+    {
+      key: "1",
+      customer: "Jhon Doe",
+      collector: "Universidad - UTEC",
+      amountPaid: "$143",
+      paymentDate: "2025-01-02",
+      actionsToCollectorPayments: (
+        <>
+          <Button
+            className="edit-btn"
+            type="primary"
+            style={{
+              backgroundColor: "#ffac00",
+              // hover: "#ffc654"
+            }}
+          >
+            Editar
+          </Button>
+          <Button className="ms-2 me-2" type="primary" danger>
+            Eliminar
+          </Button>
+          <Button type="primary"> Transacciones </Button>
+        </>
+      ),
+    },
+    {
+      key: "1",
+      customer: "Jhon Doe",
+      collector: "Universidad - UTEC",
+      amountPaid: "$143",
+      paymentDate: "2025-01-02",
+      actionsToCollectorPayments: (
+        <>
+          <Button
+            className="edit-btn"
+            type="primary"
+            style={{
+              backgroundColor: "#ffac00",
+              // hover: "#ffc654"
+            }}
+          >
+            Editar
+          </Button>
+          <Button className="ms-2 me-2" type="primary" danger>
+            Eliminar
+          </Button>
+          <Button type="primary"> Transacciones </Button>
+        </>
+      ),
+    },
+    {
+      key: "1",
+      customer: "Jhon Doe",
+      collector: "Universidad - UTEC",
+      amountPaid: "$143",
+      paymentDate: "2025-01-02",
+      actionsToCollectorPayments: (
+        <>
+          <Button
+            className="edit-btn"
+            type="primary"
+            style={{
+              backgroundColor: "#ffac00",
+              // hover: "#ffc654"
+            }}
+          >
+            Editar
+          </Button>
+          <Button className="ms-2 me-2" type="primary" danger>
+            Eliminar
+          </Button>
+          <Button type="primary"> Transacciones </Button>
+        </>
+      ),
+    },
+    {
+      key: "1",
+      customer: "Jhon Doe",
+      collector: "Universidad - UTEC",
+      amountPaid: "$143",
+      paymentDate: "2025-01-02",
+      actionsToCollectorPayments: (
+        <>
+          <Button
+            className="edit-btn"
+            type="primary"
+            style={{
+              backgroundColor: "#ffac00",
+              // hover: "#ffc654"
+            }}
+          >
+            Editar
+          </Button>
+          <Button className="ms-2 me-2" type="primary" danger>
+            Eliminar
+          </Button>
+          <Button type="primary"> Transacciones </Button>
+        </>
+      ),
+    },
+    {
+      key: "1",
+      customer: "Jhon Doe",
+      collector: "Universidad - UTEC",
+      amountPaid: "$143",
+      paymentDate: "2025-01-02",
+      actionsToCollectorPayments: (
+        <>
+          <Button
+            className="edit-btn"
+            type="primary"
+            style={{
+              backgroundColor: "#ffac00",
+              // hover: "#ffc654"
+            }}
+          >
+            Editar
+          </Button>
+          <Button className="ms-2 me-2" type="primary" danger>
+            Eliminar
+          </Button>
+          <Button type="primary"> Transacciones </Button>
+        </>
+      ),
+    },
+    
   ];
 
   const CollectorsPaymentsDataColumns = [
@@ -79,6 +330,7 @@ const CollectorsPayments = () => {
       dataIndex: "actionsToCollectorPayments",
       key: "collectorPaymentsActions",
       align: "center",
+      width: "32%",
     },
   ];
 
@@ -87,7 +339,7 @@ const CollectorsPayments = () => {
       <div
         style={{
           paddingTop: 24,
-          minHeight: "85vh",
+          minHeight: "90vh",
           background: "none",
           borderRadius: borderRadiusLG,
         }}
@@ -157,9 +409,10 @@ const CollectorsPayments = () => {
                     console.log(current, pageSize);
                   },
                 }}
+                scroll={{ y: 545 }}
               />
             </div>
-            <div className="col-md-4 col-sm-12">
+            <div className="col-md-4 col-sm-12 d-flex align-items-center">
               <CollectorsPaymentsChart />
             </div>
           </div>

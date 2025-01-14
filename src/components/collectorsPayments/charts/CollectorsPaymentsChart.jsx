@@ -67,9 +67,7 @@ const CollectorsPaymentsChart = () => {
     };
   }, []);
 
-  return <canvas ref={paymentsByCollectorChartRef} style={{
-    width: "100%"
-  }}></canvas>;
+  return <canvas ref={paymentsByCollectorChartRef}></canvas>;
 };
 
 export default CollectorsPaymentsChart;
