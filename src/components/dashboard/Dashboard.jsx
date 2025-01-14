@@ -321,7 +321,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 <Select
                   defaultValue="today"
                   style={{
-                    width: 160,
+                    width: 183,
                   }}
                   onChange={quickFilter}
                   options={[

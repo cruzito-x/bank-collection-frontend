@@ -1,12 +1,12 @@
 import { Breadcrumb, Button, Card, Input, Layout, Table, theme } from "antd";
 import {
-  PlusCircleOutlined,
-  SolutionOutlined,
+  CheckCircleOutlined,
+  InfoCircleOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import React from "react";
 
-const Collectors = () => {
+const Approvals = () => {
   const { Content } = Layout;
   const {
     token: { borderRadiusLG },
@@ -15,24 +15,13 @@ const Collectors = () => {
   const CollectorsDataSource = [
     {
       key: "1",
-      id: "1234567890",
-      service: "John Doe",
+      approvalCode: "1234567890",
+      transactionCode: "0987654321",
+      authorizedBy: "David Cruz",
+      datetime: "2025-01-02 a las 10:30 am",
       actions: (
         <>
-          <Button
-            className="edit-btn"
-            type="primary"
-            style={{
-              backgroundColor: "#ffac00",
-              // hover: "#ffc654"
-            }}
-          >
-            Editar
-          </Button>
-          <Button className="ms-2 me-2" type="primary" danger>
-            Eliminar
-          </Button>
-          <Button type="primary"> Transacciones </Button>
+          <Button type="primary"> Detalles </Button>
         </>
       ),
     },
@@ -40,15 +29,27 @@ const Collectors = () => {
 
   const CollectorsDataColumns = [
     {
-      title: "Código de Servicio",
-      dataIndex: "id",
-      key: "id",
+      title: "Código de Aprobación",
+      dataIndex: "approvalCode",
+      key: "approvalCode",
       align: "center",
     },
     {
-      title: "Servicio",
-      dataIndex: "service",
-      key: "service",
+      title: "Código de Transacción Asociada",
+      dataIndex: "transactionCode",
+      key: "transactionCode",
+      align: "center",
+    },
+    {
+      title: "Autorizado por",
+      dataIndex: "authorizedBy",
+      key: "authorizedBy",
+      align: "center",
+    },
+    {
+      title: "Fecha y Hora",
+      dataIndex: "datetime",
+      key: "datetime",
       align: "center",
     },
     {
@@ -82,8 +83,8 @@ const Collectors = () => {
             {
               title: (
                 <>
-                  <SolutionOutlined />
-                  <span>Colectores</span>
+                  <CheckCircleOutlined />
+                  <span>Aprobaciones</span>
                 </>
               ),
             },
@@ -98,10 +99,23 @@ const Collectors = () => {
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
+              <label className="me-2 fw-semibold">
+                {" "}
+                Código de Transacción{" "}
+              </label>
+              <Input
+                placeholder="00001"
+                prefix={<InfoCircleOutlined />}
+                style={{
+                  width: 183,
+                }}
+              />
+            </div>
+            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
               <label className="me-2 fw-semibold"> Nombre </label>
               <Input
-                placeholder="Nombre de Colector"
-                prefix={<SolutionOutlined />}
+                placeholder="Nombre de Usuario"
+                prefix={<UserOutlined />}
                 style={{
                   width: 183,
                 }}
@@ -109,11 +123,6 @@ const Collectors = () => {
             </div>
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
               <Button type="primary"> Buscar </Button>
-            </div>
-            <div className="col-xxl-9 col-xl-4 col-sm-12 d-flex justify-content-end">
-              <Button type="primary">
-                <PlusCircleOutlined /> Añadir nuevo{" "}
-              </Button>
             </div>
           </div>
           <div className="row ms-1 mb-3 pe-3">
@@ -135,4 +144,4 @@ const Collectors = () => {
   );
 };
 
-export default Collectors;
+export default Approvals;

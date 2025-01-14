@@ -26,9 +26,9 @@ const CollectorsPayments = () => {
       key: "1",
       customer: "Jhon Doe",
       collector: "Universidad - UTEC",
-      amountPaid: "$143",
-      paymentDate: "2025-01-02",
-      actionsToCollectorPayments: (
+      amount: "$143",
+      datetime: "2025-01-02",
+      actions: (
         <>
           <Button
             className="edit-btn"
@@ -51,9 +51,9 @@ const CollectorsPayments = () => {
       key: "1",
       customer: "Jhon Doe",
       collector: "Universidad - UTEC",
-      amountPaid: "$143",
-      paymentDate: "2025-01-02",
-      actionsToCollectorPayments: (
+      amount: "$143",
+      datetime: "2025-01-02",
+      actions: (
         <>
           <Button
             className="edit-btn"
@@ -76,9 +76,9 @@ const CollectorsPayments = () => {
       key: "1",
       customer: "Jhon Doe",
       collector: "Universidad - UTEC",
-      amountPaid: "$143",
-      paymentDate: "2025-01-02",
-      actionsToCollectorPayments: (
+      amount: "$143",
+      datetime: "2025-01-02",
+      actions: (
         <>
           <Button
             className="edit-btn"
@@ -101,9 +101,9 @@ const CollectorsPayments = () => {
       key: "1",
       customer: "Jhon Doe",
       collector: "Universidad - UTEC",
-      amountPaid: "$143",
-      paymentDate: "2025-01-02",
-      actionsToCollectorPayments: (
+      amount: "$143",
+      datetime: "2025-01-02",
+      actions: (
         <>
           <Button
             className="edit-btn"
@@ -126,9 +126,9 @@ const CollectorsPayments = () => {
       key: "1",
       customer: "Jhon Doe",
       collector: "Universidad - UTEC",
-      amountPaid: "$143",
-      paymentDate: "2025-01-02",
-      actionsToCollectorPayments: (
+      amount: "$143",
+      datetime: "2025-01-02",
+      actions: (
         <>
           <Button
             className="edit-btn"
@@ -151,9 +151,9 @@ const CollectorsPayments = () => {
       key: "1",
       customer: "Jhon Doe",
       collector: "Universidad - UTEC",
-      amountPaid: "$143",
-      paymentDate: "2025-01-02",
-      actionsToCollectorPayments: (
+      amount: "$143",
+      datetime: "2025-01-02",
+      actions: (
         <>
           <Button
             className="edit-btn"
@@ -176,9 +176,9 @@ const CollectorsPayments = () => {
       key: "1",
       customer: "Jhon Doe",
       collector: "Universidad - UTEC",
-      amountPaid: "$143",
-      paymentDate: "2025-01-02",
-      actionsToCollectorPayments: (
+      amount: "$143",
+      datetime: "2025-01-02",
+      actions: (
         <>
           <Button
             className="edit-btn"
@@ -201,9 +201,9 @@ const CollectorsPayments = () => {
       key: "1",
       customer: "Jhon Doe",
       collector: "Universidad - UTEC",
-      amountPaid: "$143",
-      paymentDate: "2025-01-02",
-      actionsToCollectorPayments: (
+      amount: "$143",
+      datetime: "2025-01-02",
+      actions: (
         <>
           <Button
             className="edit-btn"
@@ -226,9 +226,9 @@ const CollectorsPayments = () => {
       key: "1",
       customer: "Jhon Doe",
       collector: "Universidad - UTEC",
-      amountPaid: "$143",
-      paymentDate: "2025-01-02",
-      actionsToCollectorPayments: (
+      amount: "$143",
+      datetime: "2025-01-02",
+      actions: (
         <>
           <Button
             className="edit-btn"
@@ -251,9 +251,9 @@ const CollectorsPayments = () => {
       key: "1",
       customer: "Jhon Doe",
       collector: "Universidad - UTEC",
-      amountPaid: "$143",
-      paymentDate: "2025-01-02",
-      actionsToCollectorPayments: (
+      amount: "$143",
+      datetime: "2025-01-02",
+      actions: (
         <>
           <Button
             className="edit-btn"
@@ -276,9 +276,9 @@ const CollectorsPayments = () => {
       key: "1",
       customer: "Jhon Doe",
       collector: "Universidad - UTEC",
-      amountPaid: "$143",
-      paymentDate: "2025-01-02",
-      actionsToCollectorPayments: (
+      amount: "$143",
+      datetime: "2025-01-02",
+      actions: (
         <>
           <Button
             className="edit-btn"
@@ -315,20 +315,20 @@ const CollectorsPayments = () => {
     },
     {
       title: "Monto Pagado",
-      dataIndex: "amountPaid",
-      key: "amountPaid",
+      dataIndex: "amount",
+      key: "amount",
       align: "center",
     },
     {
       title: "Fecha de Pago",
-      dataIndex: "paymentDate",
-      key: "paymentDate",
+      dataIndex: "datetime",
+      key: "datetime",
       align: "center",
     },
     {
       title: "Acciones",
-      dataIndex: "actionsToCollectorPayments",
-      key: "collectorPaymentsActions",
+      dataIndex: "actions",
+      key: "actions",
       align: "center",
       width: "32%",
     },

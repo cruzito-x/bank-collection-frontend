@@ -1,60 +1,59 @@
-import { Breadcrumb, Button, Card, Input, Layout, Table, theme } from "antd";
 import {
-  PlusCircleOutlined,
-  SolutionOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+  Breadcrumb,
+  Button,
+  Card,
+  DatePicker,
+  Input,
+  Layout,
+  Table,
+  theme,
+} from "antd";
+import { DatabaseOutlined, UserOutlined } from "@ant-design/icons";
 import React from "react";
 
-const Collectors = () => {
+const Audit = () => {
   const { Content } = Layout;
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
 
+  const onChange = (date, dateString) => {
+    console.log(date, dateString);
+  };
+
   const CollectorsDataSource = [
     {
       key: "1",
-      id: "1234567890",
-      service: "John Doe",
-      actions: (
-        <>
-          <Button
-            className="edit-btn"
-            type="primary"
-            style={{
-              backgroundColor: "#ffac00",
-              // hover: "#ffc654"
-            }}
-          >
-            Editar
-          </Button>
-          <Button className="ms-2 me-2" type="primary" danger>
-            Eliminar
-          </Button>
-          <Button type="primary"> Transacciones </Button>
-        </>
-      ),
+      user: "David Cruz",
+      action: "Usuario creado",
+      datetime: "2022-10-15 a las 12:30 pm",
+      actionDetails: "Creación de cuenta",
     },
   ];
 
   const CollectorsDataColumns = [
     {
-      title: "Código de Servicio",
-      dataIndex: "id",
-      key: "id",
+      title: "Usuario",
+      dataIndex: "user",
+      key: "user",
       align: "center",
     },
     {
-      title: "Servicio",
-      dataIndex: "service",
-      key: "service",
+      title: "Acción",
+      dataIndex: "action",
+      key: "action",
       align: "center",
     },
     {
-      title: "Acciones",
-      dataIndex: "actions",
-      key: "actions",
+      title: "Fecha y Hora",
+      dataIndex: "datetime",
+      key: "datetime",
+      align: "center",
+    },
+    {
+      title: "Detalles de la Acción",
+      dataIndex: "actionDetails",
+      key: "actionDetails",
       align: "center",
     },
   ];
@@ -82,8 +81,8 @@ const Collectors = () => {
             {
               title: (
                 <>
-                  <SolutionOutlined />
-                  <span>Colectores</span>
+                  <DatabaseOutlined />
+                  <span>Auditoría</span>
                 </>
               ),
             },
@@ -100,20 +99,23 @@ const Collectors = () => {
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
               <label className="me-2 fw-semibold"> Nombre </label>
               <Input
-                placeholder="Nombre de Colector"
-                prefix={<SolutionOutlined />}
+                placeholder="Nombre de Usuario"
+                prefix={<UserOutlined />}
                 style={{
                   width: 183,
                 }}
               />
             </div>
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <Button type="primary"> Buscar </Button>
+              <label className="me-2 fw-semibold"> Fecha </label>
+              <DatePicker
+                onChange={onChange}
+                placeholder="Seleccionar fecha"
+                style={{ width: 183, cursor: "pointer" }}
+              />
             </div>
-            <div className="col-xxl-9 col-xl-4 col-sm-12 d-flex justify-content-end">
-              <Button type="primary">
-                <PlusCircleOutlined /> Añadir nuevo{" "}
-              </Button>
+            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
+              <Button type="primary"> Buscar </Button>
             </div>
           </div>
           <div className="row ms-1 mb-3 pe-3">
@@ -135,4 +137,4 @@ const Collectors = () => {
   );
 };
 
-export default Collectors;
+export default Audit;

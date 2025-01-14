@@ -12,6 +12,7 @@ import {
   LeftOutlined,
   RightOutlined,
   SolutionOutlined,
+  AuditOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
@@ -78,8 +79,8 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
             <span style={colorByTheme}> Transacciones </span>
           </Menu.Item>
           <Menu.Item
-            key="/transactions-types"
-            icon={<UnorderedListOutlined style={colorByTheme} />}
+            key="/transaction-types"
+            icon={<AuditOutlined style={colorByTheme} />}
           >
             <span style={colorByTheme}> Tipos de Transacciones </span>
           </Menu.Item>

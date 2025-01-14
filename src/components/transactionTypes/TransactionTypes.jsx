@@ -1,12 +1,14 @@
 import { Breadcrumb, Button, Card, Input, Layout, Table, theme } from "antd";
 import {
+  AuditOutlined,
   PlusCircleOutlined,
   SolutionOutlined,
+  UnorderedListOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import React from "react";
 
-const Collectors = () => {
+const TransactionTypes = () => {
   const { Content } = Layout;
   const {
     token: { borderRadiusLG },
@@ -15,8 +17,7 @@ const Collectors = () => {
   const CollectorsDataSource = [
     {
       key: "1",
-      id: "1234567890",
-      service: "John Doe",
+      transactionType: "Deposito",
       actions: (
         <>
           <Button
@@ -32,7 +33,6 @@ const Collectors = () => {
           <Button className="ms-2 me-2" type="primary" danger>
             Eliminar
           </Button>
-          <Button type="primary"> Transacciones </Button>
         </>
       ),
     },
@@ -40,15 +40,9 @@ const Collectors = () => {
 
   const CollectorsDataColumns = [
     {
-      title: "Código de Servicio",
-      dataIndex: "id",
-      key: "id",
-      align: "center",
-    },
-    {
-      title: "Servicio",
-      dataIndex: "service",
-      key: "service",
+      title: "Tipo de Transacción",
+      dataIndex: "transactionType",
+      key: "transactionType",
       align: "center",
     },
     {
@@ -82,8 +76,8 @@ const Collectors = () => {
             {
               title: (
                 <>
-                  <SolutionOutlined />
-                  <span>Colectores</span>
+                  <AuditOutlined />
+                  <span> Tipos de Transacción </span>
                 </>
               ),
             },
@@ -100,8 +94,8 @@ const Collectors = () => {
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
               <label className="me-2 fw-semibold"> Nombre </label>
               <Input
-                placeholder="Nombre de Colector"
-                prefix={<SolutionOutlined />}
+                placeholder="Tipo de Transacción"
+                prefix={<AuditOutlined />}
                 style={{
                   width: 183,
                 }}
@@ -135,4 +129,4 @@ const Collectors = () => {
   );
 };
 
-export default Collectors;
+export default TransactionTypes;

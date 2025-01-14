@@ -12,6 +12,11 @@ import "./styles/sidebar.css";
 import Customers from "../customers/Customers";
 import Collectors from "../collectors/Collectors";
 import CollectorsPayments from "../collectorsPayments/CollectorsPayments";
+import Transactions from "../transactions/Transactions";
+import TransactionTypes from "../transactionTypes/TransactionTypes";
+import Approvals from "../approvals/Approvals";
+import Users from "../users/Users";
+import Audit from "../audit/Audit";
 
 const Sidebar = () => {
   const [darkTheme, setDarkTheme] = useState(true);
@@ -49,7 +54,7 @@ const Sidebar = () => {
         "/collectors",
         "/collectors-payments",
         "/transactions",
-        "/transactions-types",
+        "/transaction-types",
         "/approvals",
         "/users",
         "/audit",
@@ -105,6 +110,11 @@ const Sidebar = () => {
             <Route path="/customers" element={<Customers />} />
             <Route path="/collectors" element={<Collectors />} />
             <Route path="/collectors-payments" element={<CollectorsPayments />} />
+            <Route path="/transactions" element={<Transactions />} />
+            <Route path="/transaction-types" element={<TransactionTypes />} />
+            <Route path="/approvals" element={<Approvals />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/audit" element={<Audit />} />
           </Routes>
         </Content>
         <Footer

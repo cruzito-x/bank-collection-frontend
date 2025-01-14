@@ -9,28 +9,22 @@ import {
   theme,
 } from "antd";
 import {
-  DollarOutlined,
-  IdcardOutlined,
-  TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import React from "react";
 
-const Customers = () => {
+const Users = () => {
   const { Content } = Layout;
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
 
-  const customersDataSource = [
+  const CollectorsDataSource = [
     {
       key: "1",
-      id: "1234567890",
-      customer: "John Doe",
-      idDocument: "1234567890",
-      email: "johndoe@example.com",
-      accountNumber: "1234567890",
-      balance: "$10000",
+      user: "David Cruz",
+      email: "dcruzer92@gmail.com",
+      role: "Supervisor",
       actions: (
         <>
           <Button
@@ -46,29 +40,17 @@ const Customers = () => {
           <Button className="ms-2 me-2" type="primary" danger>
             Eliminar
           </Button>
-          <Button type="primary"> Transacciones </Button>
+          <Button type="primary"> Asignar Rol </Button>
         </>
       ),
     },
   ];
 
-  const customersDataColumns = [
+  const CollectorsDataColumns = [
     {
-      title: "Código de Cliente",
-      dataIndex: "id",
-      key: "id",
-      align: "center",
-    },
-    {
-      title: "Nombre de Cliente",
-      dataIndex: "customer",
-      key: "customer",
-      align: "center",
-    },
-    {
-      title: "Documento de Identidad",
-      dataIndex: "idDocument",
-      key: "idDocument",
+      title: "Usuario",
+      dataIndex: "user",
+      key: "user",
       align: "center",
     },
     {
@@ -78,23 +60,16 @@ const Customers = () => {
       align: "center",
     },
     {
-      title: "Nº de Cuenta",
-      dataIndex: "accountNumber",
-      key: "accountNumber",
-      align: "center",
-    },
-    {
-      title: "Saldo",
-      dataIndex: "balance",
-      key: "balance",
+      title: "Rol",
+      dataIndex: "role",
+      key: "role",
       align: "center",
     },
     {
       title: "Acciones",
       dataIndex: "actions",
       key: "actions",
-      align: "center",
-      width: '32%',
+      align: "center"
     },
   ];
 
@@ -121,8 +96,8 @@ const Customers = () => {
             {
               title: (
                 <>
-                  <TeamOutlined />
-                  <span>Clientes</span>
+                  <UserOutlined />
+                  <span>Usuarios</span>
                 </>
               ),
             },
@@ -145,7 +120,7 @@ const Customers = () => {
                 Nombre{" "}
               </label>
               <Input
-                placeholder="Nombre de Cliente"
+                placeholder="Nombre de Usuario"
                 prefix={<UserOutlined />}
                 style={{
                   width: 183,
@@ -155,32 +130,26 @@ const Customers = () => {
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
               <label className="me-2 fw-semibold">
                 {" "}
-                Documento de Identidad{" "}
-              </label>
-              <Input
-                placeholder="00000000-0"
-                prefix={<IdcardOutlined />}
-                style={{
-                  width: 183,
-                }}
-              />
-            </div>
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold">
-                {" "}
-                Saldo
+                Rol{" "}
               </label>
               <Select
-                defaultValue={0}
-                options={[
-                  { value: 0, label: "Mayor a Menor" },
-                  { value: 1, label: "Menor a Mayor" },
-                ]}
-                prefix={<DollarOutlined />}
-                style={{
-                  width: 183,
-                }}
-              />
+                  defaultValue="Supervisor"
+                  prefix={<UserOutlined />}
+                  style={{
+                    width: 183,
+                  }}
+                  // onChange={quickFilter}
+                  options={[
+                    {
+                      value: 0,
+                      label: "Supervisor",
+                    },
+                    {
+                      value: 1,
+                      label: "Cajero",
+                    },
+                  ]}
+                />
             </div>
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
               <Button type="primary"> Buscar </Button>
@@ -189,11 +158,11 @@ const Customers = () => {
           <div className="row ms-1 mb-3 pe-3">
             <div className="col-12">
               <Table
-                dataSource={customersDataSource}
-                columns={customersDataColumns}
+                dataSource={CollectorsDataSource}
+                columns={CollectorsDataColumns}
                 pagination={{
                   pageSize: 10,
-                  showTotal: (total) => `Total: ${total} cliente(s)`,
+                  showTotal: (total) => `Total: ${total} colector(es)`,
                   hideOnSinglePage: true
                 }}
               />
@@ -205,4 +174,4 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default Users;

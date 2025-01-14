@@ -4,34 +4,27 @@ import {
   Card,
   Input,
   Layout,
-  Select,
   Table,
   theme,
 } from "antd";
 import {
-  DollarOutlined,
-  IdcardOutlined,
-  TeamOutlined,
+  SolutionOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import React from "react";
 
-const Customers = () => {
+const Transactions = () => {
   const { Content } = Layout;
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
 
-  const customersDataSource = [
+  const CollectorsDataSource = [
     {
       key: "1",
-      id: "1234567890",
-      customer: "John Doe",
-      idDocument: "1234567890",
-      email: "johndoe@example.com",
-      accountNumber: "1234567890",
-      balance: "$10000",
-      actions: (
+      codigoDeServicio: "1234567890",
+      nombreDeServicio: "John Doe",
+      accionesParaServicio: (
         <>
           <Button
             className="edit-btn"
@@ -52,49 +45,24 @@ const Customers = () => {
     },
   ];
 
-  const customersDataColumns = [
+  const CollectorsDataColumns = [
     {
-      title: "Código de Cliente",
-      dataIndex: "id",
-      key: "id",
+      title: "Código de Servicio",
+      dataIndex: "codigoDeServicio",
+      key: "codigoServicio",
       align: "center",
     },
     {
-      title: "Nombre de Cliente",
-      dataIndex: "customer",
-      key: "customer",
-      align: "center",
-    },
-    {
-      title: "Documento de Identidad",
-      dataIndex: "idDocument",
-      key: "idDocument",
-      align: "center",
-    },
-    {
-      title: "E-mail",
-      dataIndex: "email",
-      key: "email",
-      align: "center",
-    },
-    {
-      title: "Nº de Cuenta",
-      dataIndex: "accountNumber",
-      key: "accountNumber",
-      align: "center",
-    },
-    {
-      title: "Saldo",
-      dataIndex: "balance",
-      key: "balance",
+      title: "Servicio",
+      dataIndex: "nombreDeServicio",
+      key: "nombreServicio",
       align: "center",
     },
     {
       title: "Acciones",
-      dataIndex: "actions",
-      key: "actions",
-      align: "center",
-      width: '32%',
+      dataIndex: "accionesParaServicio",
+      key: "accionesServicio",
+      align: "center"
     },
   ];
 
@@ -121,8 +89,8 @@ const Customers = () => {
             {
               title: (
                 <>
-                  <TeamOutlined />
-                  <span>Clientes</span>
+                  <SolutionOutlined />
+                  <span>Colectores</span>
                 </>
               ),
             },
@@ -145,38 +113,8 @@ const Customers = () => {
                 Nombre{" "}
               </label>
               <Input
-                placeholder="Nombre de Cliente"
-                prefix={<UserOutlined />}
-                style={{
-                  width: 183,
-                }}
-              />
-            </div>
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold">
-                {" "}
-                Documento de Identidad{" "}
-              </label>
-              <Input
-                placeholder="00000000-0"
-                prefix={<IdcardOutlined />}
-                style={{
-                  width: 183,
-                }}
-              />
-            </div>
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold">
-                {" "}
-                Saldo
-              </label>
-              <Select
-                defaultValue={0}
-                options={[
-                  { value: 0, label: "Mayor a Menor" },
-                  { value: 1, label: "Menor a Mayor" },
-                ]}
-                prefix={<DollarOutlined />}
+                placeholder="Nombre de Colector"
+                prefix={<SolutionOutlined />}
                 style={{
                   width: 183,
                 }}
@@ -189,11 +127,11 @@ const Customers = () => {
           <div className="row ms-1 mb-3 pe-3">
             <div className="col-12">
               <Table
-                dataSource={customersDataSource}
-                columns={customersDataColumns}
+                dataSource={CollectorsDataSource}
+                columns={CollectorsDataColumns}
                 pagination={{
                   pageSize: 10,
-                  showTotal: (total) => `Total: ${total} cliente(s)`,
+                  showTotal: (total) => `Total: ${total} colector(es)`,
                   hideOnSinglePage: true
                 }}
               />
@@ -205,4 +143,4 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default Transactions;
