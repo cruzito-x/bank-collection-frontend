@@ -59,7 +59,6 @@ const Collectors = () => {
               type="primary"
               style={{
                 backgroundColor: "var(--yellow)",
-                // hover: "#ffc654"
               }}
             >
               Editar
@@ -73,36 +72,34 @@ const Collectors = () => {
       }));
 
       setCollectors(collectorsRow);
-    } catch (error) {}
+    } catch (error) {
+      message.error("Error fetching collectors");
+    }
   };
 
   const saveNewCollector = async (collector) => {
     setLoading(true);
 
     try {
-      const newCollector = await fetch(
-        "http://localhost:3001/collectors/save",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(collector),
-        }
-      );
-      const data = await newCollector.json();
+      const response = await fetch("http://localhost:3001/collectors/save", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(collector),
+      });
 
-      if (data.status === 200) {
-        setLoading(false);
-        message.success(data.message);
+      if (response.status === 200) {
+        message.success(response.message);
         closeAddCollectorModal();
         getCollectors();
       } else {
-        if (data.status === 500 || data.status === 400) {
-          message.error(data.message);
-        }
+        message.error(response.message);
       }
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   const CollectorsTableColumns = [
@@ -207,7 +204,7 @@ const Collectors = () => {
                 width={450}
                 open={isCollectorModalOpen}
                 onCancel={closeAddCollectorModal}
-                footer={[]}
+                footer={null}
               >
                 <Form onFinish={saveNewCollector}>
                   <div className="row mt-4">
