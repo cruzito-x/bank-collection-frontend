@@ -24,6 +24,7 @@ const Collectors = () => {
   const [collectors, setCollectors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isCollectorModalOpen, setIsCollectorModalOpen] = useState(false);
+  const [messageAlert, messageContext] = message.useMessage();
   const [form] = Form.useForm();
 
   const { TextArea } = Input;
@@ -74,7 +75,7 @@ const Collectors = () => {
 
       setCollectors(collectorsRow);
     } catch (error) {
-      message.error("Error fetching collectors");
+      messageAlert.error("Error fetching collectors");
     }
   };
 
@@ -91,12 +92,12 @@ const Collectors = () => {
       });
 
       if (response.status === 200) {
-        message.success(response.message);
+        messageAlert.success(response.message);
         closeAddCollectorModal();
         getCollectors();
         form.resetFields();
       } else {
-        message.error(response.message);
+        messageAlert.error(response.message);
       }
     } catch (error) {
     } finally {
@@ -133,6 +134,7 @@ const Collectors = () => {
 
   return (
     <Content style={{ margin: "31px 16px" }}>
+      {messageContext}
       <div
         style={{
           paddingTop: 24,
