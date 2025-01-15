@@ -105,7 +105,7 @@ const Collectors = () => {
     }
   };
 
-  const CollectorsTableColumns = [
+  const collectorsTableColumns = [
     {
       title: "Código de Servicio",
       dataIndex: "id",
@@ -211,59 +211,43 @@ const Collectors = () => {
                 footer={null}
               >
                 <Form form={form} onFinish={saveNewCollector}>
-                  <div className="row mt-4">
-                    <div className="col-12">
-                      <label className="fw-semibold">
-                        {" "}
-                        Nombre del Colector{" "}
-                      </label>
-                      <Form.Item
-                        name="service_name"
-                        rules={[
-                          {
-                            required: true,
-                            message:
-                              "Por Favor, Introduzca un Nombre de Servicio",
-                          },
-                        ]}
-                      >
-                        <Input placeholder="Nombre del Colector" />
-                      </Form.Item>
-                    </div>
-                    <div className="col-12">
-                      <label className="fw-semibold"> Descripción </label>
-                      <Form.Item
-                        name="description"
-                        rules={[
-                          {
-                            required: true,
-                            message:
-                              "Por Favor, Introduzca una Descripción de Servicio",
-                          },
-                        ]}
-                      >
-                        <TextArea
-                          rows={8}
-                          size="middle"
-                          style={{
-                            resize: "none",
-                          }}
-                          placeholder="Descripción del Servicio"
-                        />
-                      </Form.Item>
-                    </div>
-                    <div className="col-12 text-end">
-                      <Form.Item>
-                        <Button
-                          type="primary"
-                          htmlType="submit"
-                          loading={loading}
-                        >
-                          Guardar
-                        </Button>
-                      </Form.Item>
-                    </div>
-                  </div>
+                  <label className="fw-semibold"> Nombre del Colector </label>
+                  <Form.Item
+                    name="service_name"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por Favor, Introduzca un Nombre de Servicio",
+                      },
+                    ]}
+                  >
+                    <Input placeholder="Nombre del Colector" />
+                  </Form.Item>
+                  <label className="fw-semibold"> Descripción </label>
+                  <Form.Item
+                    name="description"
+                    rules={[
+                      {
+                        required: true,
+                        message:
+                          "Por Favor, Introduzca una Descripción de Servicio",
+                      },
+                    ]}
+                  >
+                    <TextArea
+                      rows={8}
+                      size="middle"
+                      style={{
+                        resize: "none",
+                      }}
+                      placeholder="Descripción del Servicio"
+                    />
+                  </Form.Item>
+                  <Form.Item className="text-end">
+                    <Button type="primary" htmlType="submit" loading={loading}>
+                      Guardar
+                    </Button>
+                  </Form.Item>
                 </Form>
               </Modal>
             </div>
@@ -272,7 +256,7 @@ const Collectors = () => {
             <div className="col-12">
               <Table
                 dataSource={collectors}
-                columns={CollectorsTableColumns}
+                columns={collectorsTableColumns}
                 pagination={{
                   pageSize: 10,
                   showTotal: (total) => `Total: ${total} colector(es)`,
