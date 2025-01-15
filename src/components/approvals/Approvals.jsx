@@ -5,6 +5,7 @@ import {
   Col,
   Input,
   Layout,
+  message,
   Modal,
   Row,
   Table,
@@ -18,7 +19,9 @@ import {
 import React, { useState } from "react";
 
 const Approvals = () => {
-  const [isTransactionDetailsModalOpen, setIsTransactionDetailsModalOpen] = useState(false);
+  const [isTransactionDetailsModalOpen, setIsTransactionDetailsModalOpen] =
+    useState(false);
+  const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const {
     token: { borderRadiusLG },
@@ -66,7 +69,11 @@ const Approvals = () => {
             open={isTransactionDetailsModalOpen}
             onCancel={closeTransactionDetails}
             footer={[
-              <Button key="submit" type="primary" onClick={closeTransactionDetails}>
+              <Button
+                key="submit"
+                type="primary"
+                onClick={closeTransactionDetails}
+              >
                 Cerrar
               </Button>,
             ]}
@@ -88,8 +95,14 @@ const Approvals = () => {
                 <p> Juan Caballo 🐴 </p>
               </div>
               <div className="col-12">
-                <label className="fw-semibold"> E-mail de Cliente Emisor </label>
-                <p> juancaballodeverdadsoyyoiranomaspueswarelinchar@gmail.com </p>
+                <label className="fw-semibold">
+                  {" "}
+                  E-mail de Cliente Emisor{" "}
+                </label>
+                <p>
+                  {" "}
+                  juancaballodeverdadsoyyoiranomaspueswarelinchar@gmail.com{" "}
+                </p>
               </div>
               <div className="col-12">
                 <label className="fw-semibold"> Receptor </label>
@@ -147,11 +160,11 @@ const Approvals = () => {
 
   return (
     <Content style={{ margin: "31px 16px" }}>
+      {messageContext}
       <div
         style={{
-          paddingTop: 24,
+          padding: "24px 0 24px 0",
           minHeight: "90vh",
-          background: "none",
           borderRadius: borderRadiusLG,
         }}
       >

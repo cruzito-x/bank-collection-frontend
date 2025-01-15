@@ -1,19 +1,9 @@
-import {
-  Breadcrumb,
-  Button,
-  Card,
-  Input,
-  Layout,
-  Table,
-  theme,
-} from "antd";
-import {
-  SolutionOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { Breadcrumb, Button, Card, Input, Layout, message, Table, theme } from "antd";
+import { SolutionOutlined, UserOutlined } from "@ant-design/icons";
 import React from "react";
 
 const Transactions = () => {
+  const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const {
     token: { borderRadiusLG },
@@ -62,17 +52,17 @@ const Transactions = () => {
       title: "Acciones",
       dataIndex: "accionesParaServicio",
       key: "accionesServicio",
-      align: "center"
+      align: "center",
     },
   ];
 
   return (
     <Content style={{ margin: "31px 16px" }}>
+      {messageContext}
       <div
         style={{
-          paddingTop: 24,
+          padding: "24px 0 24px 0",
           minHeight: "90vh",
-          background: "none",
           borderRadius: borderRadiusLG,
         }}
       >
@@ -100,18 +90,12 @@ const Transactions = () => {
         <Card className="mt-3">
           <div className="row ms-2 pt-3 mb-2">
             <div className="col-12 text-start">
-              <label className="fw-semibold">
-                {" "}
-                Buscar Por{" "}
-              </label>
+              <label className="fw-semibold"> Buscar Por </label>
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold">
-                {" "}
-                Nombre{" "}
-              </label>
+              <label className="me-2 fw-semibold"> Nombre </label>
               <Input
                 placeholder="Nombre de Colector"
                 prefix={<SolutionOutlined />}
@@ -132,7 +116,7 @@ const Transactions = () => {
                 pagination={{
                   pageSize: 10,
                   showTotal: (total) => `Total: ${total} colector(es)`,
-                  hideOnSinglePage: true
+                  hideOnSinglePage: true,
                 }}
               />
             </div>

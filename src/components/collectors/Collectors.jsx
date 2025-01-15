@@ -46,13 +46,15 @@ const Collectors = () => {
   }, []);
 
   const getCollectors = async () => {
+    setLoading(true);
+
     try {
       const response = await fetch("http://localhost:3001/collectors", {
         method: "GET",
       });
 
-      const data = await response.json();
-      const collectorsRow = data.map((collector) => ({
+      const collectorsData = await response.json();
+      const collectorsRow = collectorsData.map((collector) => ({
         ...collector,
         actions: (
           <>
@@ -74,6 +76,7 @@ const Collectors = () => {
       }));
 
       setCollectors(collectorsRow);
+      setLoading(false);
     } catch (error) {
       messageAlert.error("Error fetching collectors");
     }
@@ -91,13 +94,15 @@ const Collectors = () => {
         body: JSON.stringify(collector),
       });
 
+      const data = await response.json();
+
       if (response.status === 200) {
-        messageAlert.success(response.message);
+        messageAlert.success(data.message);
         closeAddCollectorModal();
         getCollectors();
         form.resetFields();
       } else {
-        messageAlert.error(response.message);
+        messageAlert.error(data.message);
       }
     } catch (error) {
     } finally {
@@ -137,9 +142,8 @@ const Collectors = () => {
       {messageContext}
       <div
         style={{
-          paddingTop: 24,
+          padding: "24px 0 24px 0",
           minHeight: "90vh",
-          background: "none",
           borderRadius: borderRadiusLG,
         }}
       >
@@ -257,6 +261,7 @@ const Collectors = () => {
               <Table
                 dataSource={collectors}
                 columns={collectorsTableColumns}
+                loading={loading}
                 pagination={{
                   pageSize: 10,
                   showTotal: (total) => `Total: ${total} colector(es)`,

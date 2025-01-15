@@ -6,6 +6,7 @@ import {
   Form,
   Input,
   Layout,
+  message,
   Modal,
   Row,
   Select,
@@ -26,6 +27,7 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [editUserModalOpen, setEditUserModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [messageAlert, messageContext] = message.useMessage();
 
   const { Content } = Layout;
   const {
@@ -62,6 +64,8 @@ const Users = () => {
   };
 
   const getUsers = async () => {
+    setLoading(true);
+
     try {
       const response = await fetch("http://localhost:3001/users", {
         method: "GET",
@@ -93,6 +97,7 @@ const Users = () => {
         ),
       }));
       setUsers(usersRow);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching roles: ", error);
     }
@@ -102,7 +107,6 @@ const Users = () => {
     setLoading(true);
 
     try {
-
     } catch (error) {
       console.error("Error al actualizar la información del usuario: ", error);
     }
@@ -139,11 +143,12 @@ const Users = () => {
 
   return (
     <Content style={{ margin: "31px 16px" }}>
+      {messageContext}
       <div
         style={{
-          paddingTop: 24,
+          padding: "24px 0 24px 0",
           minHeight: "90vh",
-          background: "none",
+
           borderRadius: borderRadiusLG,
         }}
       >
@@ -206,6 +211,7 @@ const Users = () => {
               <Table
                 dataSource={users}
                 columns={usersTableColumns}
+                loading={loading}
                 pagination={{
                   pageSize: 10,
                   showTotal: (total) => `Total: ${total} colector(es)`,

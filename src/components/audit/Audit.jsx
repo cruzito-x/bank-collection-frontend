@@ -5,6 +5,7 @@ import {
   DatePicker,
   Input,
   Layout,
+  message,
   Table,
   theme,
 } from "antd";
@@ -15,6 +16,7 @@ import moment from "moment";
 const Audit = () => {
   const [audit, setAudit] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [messageAlert, messageContext] = message.useMessage();
 
   const { Content } = Layout;
   const {
@@ -78,11 +80,11 @@ const Audit = () => {
 
   return (
     <Content style={{ margin: "31px 16px" }}>
+      {messageContext}
       <div
         style={{
-          paddingTop: 24,
+          padding: "24px 0 24px 0",
           minHeight: "90vh",
-          background: "none",
           borderRadius: borderRadiusLG,
         }}
       >

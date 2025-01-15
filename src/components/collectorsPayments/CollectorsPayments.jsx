@@ -1,4 +1,14 @@
-import { Breadcrumb, Button, Card, Input, Layout, Modal, Table, theme } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Card,
+  Input,
+  Layout,
+  message,
+  Modal,
+  Table,
+  theme,
+} from "antd";
 import {
   SolutionOutlined,
   UserOutlined,
@@ -8,6 +18,7 @@ import React from "react";
 import CollectorsPaymentsChart from "./charts/CollectorsPaymentsChart";
 
 const CollectorsPayments = () => {
+  const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const {
     token: { borderRadiusLG },
@@ -327,11 +338,11 @@ const CollectorsPayments = () => {
 
   return (
     <Content style={{ margin: "31px 16px" }}>
+      {messageContext}
       <div
         style={{
-          paddingTop: 24,
+          padding: "24px 0 24px 0",
           minHeight: "90vh",
-          background: "none",
           borderRadius: borderRadiusLG,
         }}
       >

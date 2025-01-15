@@ -1,4 +1,13 @@
-import { Breadcrumb, Button, Card, Input, Layout, Table, theme } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Card,
+  Input,
+  Layout,
+  message,
+  Table,
+  theme,
+} from "antd";
 import {
   AuditOutlined,
   PlusCircleOutlined,
@@ -7,6 +16,7 @@ import {
 import React from "react";
 
 const TransactionTypes = () => {
+  const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const {
     token: { borderRadiusLG },
@@ -53,11 +63,11 @@ const TransactionTypes = () => {
 
   return (
     <Content style={{ margin: "31px 16px" }}>
+      {messageContext}
       <div
         style={{
-          paddingTop: 24,
+          padding: "24px 0 24px 0",
           minHeight: "90vh",
-          background: "none",
           borderRadius: borderRadiusLG,
         }}
       >

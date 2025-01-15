@@ -12,7 +12,7 @@ import {
   InputNumber,
 } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./styles/dashboard.css";
 import DashboardCharts from "./charts/DashboardCharts";
 import moment from "moment";
@@ -25,6 +25,8 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     moment().startOf("day"),
     moment().endOf("day"),
   ]);
+  const [collectors, setCollectors] = useState([]);
+  const [transactionTypes, setTransactionTypes] = useState([]);
 
   const { Content } = Layout;
   const { RangePicker } = DatePicker;
@@ -91,13 +93,49 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     }, 3000);
   };
 
+  useEffect(() => {
+    getCollectors();
+    getTransactionTypes();
+  }, []);
+
+  const getCollectors = async () => {
+    const response = await fetch("http://localhost:3001/collectors", {
+      method: "GET",
+    });
+
+    const collectorsData = await response.json();
+    const collectors = collectorsData.map((collector) => {
+      return {
+        value: collector.id,
+        label: collector.service_name,
+      };
+    });
+
+    setCollectors(collectors);
+  };
+
+  const getTransactionTypes = async () => {
+    const response = await fetch("http://localhost:3001/transaction-types", {
+      method: "GET",
+    });
+
+    const transactionTypesData = await response.json();
+    const transactionTypes = transactionTypesData.map((transactionType) => {
+      return {
+        value: transactionType.id,
+        label: transactionType.transaction_type,
+      };
+    });
+
+    setTransactionTypes(transactionTypes);
+  };
+
   return (
     <Content style={{ margin: "60px 16px" }}>
       <div
         style={{
           padding: 10,
           minHeight: "90vh",
-          background: "none",
           borderRadius: borderRadiusLG,
         }}
       >
@@ -403,32 +441,11 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               </label>
               <Space wrap>
                 <Select
-                  defaultValue="0"
+                  defaultValue={1}
                   style={{
                     width: 183,
                   }}
-                  options={[
-                    {
-                      value: "0",
-                      label: "Todos",
-                    },
-                    {
-                      value: "1",
-                      label: "Servicio de Agua",
-                    },
-                    {
-                      value: "2",
-                      label: "Servicio de Luz",
-                    },
-                    {
-                      value: "3",
-                      label: "Servicio de Internet",
-                    },
-                    {
-                      value: "4",
-                      label: "Universidad",
-                    },
-                  ]}
+                  options={collectors}
                 />
               </Space>
             </div>
@@ -439,20 +456,11 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               </label>
               <Space wrap>
                 <Select
-                  defaultValue="0"
+                  defaultValue={1}
                   style={{
                     width: 183,
                   }}
-                  options={[
-                    {
-                      value: "0",
-                      label: "Depositos",
-                    },
-                    {
-                      value: "1",
-                      label: "Retiros",
-                    },
-                  ]}
+                  options={transactionTypes}
                 />
               </Space>
             </div>
