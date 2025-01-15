@@ -36,7 +36,9 @@ const Login = () => {
         }
       }
     } catch (error) {
-      message.error("Ha ocurrido un error inesperado, por favor intente de nuevo");
+      message.error(
+        "Ha ocurrido un error inesperado, por favor intente de nuevo"
+      );
     }
     setLoading(false);
   };
@@ -55,7 +57,12 @@ const Login = () => {
           <Image
             src={Logo}
             preview={false}
-            style={{ width: "75px", height: "75px", borderRadius: "50%", marginTop: 20 }}
+            style={{
+              width: "75px",
+              height: "75px",
+              borderRadius: "50%",
+              marginTop: 20,
+            }}
             alt="Logo del Sistema"
           />
         </div>
@@ -70,7 +77,8 @@ const Login = () => {
             name="username"
             rules={[
               {
-                message: "Por favor introduzca su usuario",
+                required: true,
+                message: "Por Favor Introduzca su Usuario",
               },
             ]}
           >
@@ -80,7 +88,9 @@ const Login = () => {
           <Form.Item
             label="Contraseña"
             name="password"
-            rules={[{ message: "Por favor introduzca su contraseña" }]}
+            rules={[
+              { required: true, message: "Por Favor Introduzca su Contraseña" },
+            ]}
           >
             <Input.Password
               placeholder="Contraseña"
