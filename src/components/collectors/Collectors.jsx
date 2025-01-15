@@ -24,6 +24,7 @@ const Collectors = () => {
   const [collectors, setCollectors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isCollectorModalOpen, setIsCollectorModalOpen] = useState(false);
+  const [form] = Form.useForm();
 
   const { TextArea } = Input;
   const { Content } = Layout;
@@ -93,6 +94,7 @@ const Collectors = () => {
         message.success(response.message);
         closeAddCollectorModal();
         getCollectors();
+        form.resetFields();
       } else {
         message.error(response.message);
       }
@@ -206,7 +208,7 @@ const Collectors = () => {
                 onCancel={closeAddCollectorModal}
                 footer={null}
               >
-                <Form onFinish={saveNewCollector}>
+                <Form form={form} onFinish={saveNewCollector}>
                   <div className="row mt-4">
                     <div className="col-12">
                       <label className="fw-semibold">
