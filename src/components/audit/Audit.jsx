@@ -9,9 +9,13 @@ import {
   theme,
 } from "antd";
 import { DatabaseOutlined, UserOutlined } from "@ant-design/icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import moment from "moment";
 
 const Audit = () => {
+  const [audit, setAudit] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const { Content } = Layout;
   const {
     token: { borderRadiusLG },
@@ -21,21 +25,35 @@ const Audit = () => {
     console.log(date, dateString);
   };
 
-  const CollectorsDataSource = [
-    {
-      key: "1",
-      user: "David Cruz",
-      action: "Usuario creado",
-      datetime: "2022-10-15 a las 12:30 pm",
-      actionDetails: "Creación de cuenta",
-    },
-  ];
+  useEffect(() => {
+    getAudits();
+  }, []);
 
-  const CollectorsDataColumns = [
+  const getAudits = async () => {
+    setLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:3001/audit", {
+        method: "GET",
+      });
+
+      const audits = await response.json();
+      const auditsRow = audits.map((audit) => {
+        return {
+          ...audit,
+          datetime: moment(audit.datetime).format("DD-MM-YYYY hh:mm a"),
+        };
+      });
+      setAudit(auditsRow);
+      setLoading(false);
+    } catch (error) {}
+  };
+
+  const auditTableColumns = [
     {
       title: "Usuario",
-      dataIndex: "user",
-      key: "user",
+      dataIndex: "username",
+      key: "username",
       align: "center",
     },
     {
@@ -52,8 +70,8 @@ const Audit = () => {
     },
     {
       title: "Detalles de la Acción",
-      dataIndex: "actionDetails",
-      key: "actionDetails",
+      dataIndex: "details",
+      key: "details",
       align: "center",
     },
   ];
@@ -121,8 +139,9 @@ const Audit = () => {
           <div className="row ms-1 mb-3 pe-3">
             <div className="col-12">
               <Table
-                dataSource={CollectorsDataSource}
-                columns={CollectorsDataColumns}
+                loading={loading}
+                dataSource={audit}
+                columns={auditTableColumns}
                 pagination={{
                   pageSize: 10,
                   showTotal: (total) => `Total: ${total} colector(es)`,
