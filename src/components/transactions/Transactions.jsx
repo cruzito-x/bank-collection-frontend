@@ -165,7 +165,7 @@ const Transactions = () => {
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
+            <div className="col-xxl-3 col-xl-3 col-sm-12 w-auto">
               <label className="me-2 fw-semibold text-black">
                 {" "}
                 Código de Transacción{" "}
@@ -178,7 +178,7 @@ const Transactions = () => {
                 }}
               />
             </div>
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
+            <div className="col-xxl-3 col-xl-3 col-sm-12 w-auto">
               <label className="me-2 fw-semibold text-black">
                 {" "}
                 Nombre de Autorizador{" "}
@@ -191,7 +191,7 @@ const Transactions = () => {
                 }}
               />
             </div>
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
+            <div className="col-xxl-3 col-xl-3 col-sm-12 w-auto">
               <label className="me-2 fw-semibold text-black"> Tipo </label>
               <Select
                 defaultValue={1}
@@ -202,7 +202,7 @@ const Transactions = () => {
                 options={transactionsTypes}
               />
             </div>
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
+            <div className="col-xxl-3 col-xl-3 col-sm-12 w-auto">
               <label className="me-2 fw-semibold text-black"> Fecha </label>
               <RangePicker
                 // value={dates}
@@ -215,7 +215,7 @@ const Transactions = () => {
               />
             </div>
 
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
+            <div className="col-xxl-3 col-xl-3 col-sm-12 w-auto">
               <Button type="primary"> Buscar </Button>
             </div>
           </div>
