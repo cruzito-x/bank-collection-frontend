@@ -136,6 +136,7 @@ const Collectors = () => {
       dataIndex: "actions",
       key: "actions",
       align: "center",
+      width: "33%",
     },
   ];
 

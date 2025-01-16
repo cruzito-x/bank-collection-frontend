@@ -111,7 +111,7 @@ const Customers = () => {
       dataIndex: "actions",
       key: "actions",
       align: "center",
-      width: "32%",
+      width: "33%",
     },
   ];
 
