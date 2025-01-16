@@ -10,6 +10,7 @@ import {
   Row,
   Col,
   InputNumber,
+  Form,
 } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
@@ -19,6 +20,7 @@ import moment from "moment";
 import LogoutCard from "../../utils/logoutCard/LogoutCard";
 
 const Dashboard = ({ rangeFilter = () => {} }) => {
+  const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [dates, setDates] = useState([
@@ -96,6 +98,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   useEffect(() => {
     getCollectors();
     getTransactionTypes();
+    getCustomers();
   }, []);
 
   const getCollectors = async () => {
@@ -128,6 +131,24 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     });
 
     setTransactionTypes(transactionTypes);
+  };
+
+  const getCustomers = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/customers", {
+        method: "GET",
+      });
+
+      const customersData = await response.json();
+      const customers = customersData.map((customer) => {
+        return {
+          value: customer.id,
+          label: customer.name + " - " + customer.account_number,
+        };
+      });
+
+      setCustomers(customers);
+    } catch (error) {}
   };
 
   return (
@@ -233,104 +254,103 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 open={open}
                 onOk={closePaymentsModal}
                 onCancel={closePaymentsModal}
-                footer={[
-                  <Button
-                    key="back"
-                    type="primary"
-                    danger
-                    onClick={closePaymentsModal}
-                  >
-                    Cancelar
-                  </Button>,
-                  <Button
-                    key="submit"
-                    type="primary"
-                    loading={loading}
-                    onClick={registerPayments}
-                  >
-                    Registrar Pago
-                  </Button>,
-                ]}
+                footer={null}
               >
-                <div className="row mt-4">
-                  <div className="col-12 mb-3">
-                    <label
-                      htmlFor="dashboard-customer-name"
-                      className="fw-semibold text-black"
-                    >
+                <Form>
+                  <Form.Item>
+                    <label className="fw-semibold text-black">
                       {" "}
                       Seleccionar Cliente{" "}
                     </label>
                     <Select
-                      defaultValue="0"
-                      id="dashboard-customer-name"
-                      options={[
-                        {
-                          value: "0",
-                          label: "Nombre Cliente - 0000 0000 0000 0000",
-                        },
-                      ]}
+                      id="customer"
+                      options={customers}
+                      showSearch
+                      placeholder="Buscar Cliente"
+                      optionFilterProp="label"
+                      filterSort={(optionA, optionB) =>
+                        (optionA?.label ?? "")
+                          .toLowerCase()
+                          .localeCompare((optionB?.label ?? "").toLowerCase())
+                      }
                       style={{
                         width: "100%",
                       }}
                     />
-                  </div>
-                  <div className="col-12 mb-3">
-                    <label
-                      htmlFor="dashboard-collector-name"
-                      className="fw-semibold text-black"
-                    >
+                  </Form.Item>
+                  <Form.Item>
+                    <label className="fw-semibold text-black">
                       {" "}
                       Seleccionar Colector{" "}
                     </label>
                     <Select
-                      defaultValue="0"
-                      id="dashboard-collector-name"
-                      options={[
-                        {
-                          value: "0",
-                          label: "Nombre Colector",
-                        },
-                      ]}
+                      name="collector"
+                      options={collectors}
+                      showSearch
+                      placeholder="Buscar Colector"
+                      optionFilterProp="label"
+                      filterSort={(optionA, optionB) =>
+                        (optionA?.label ?? "")
+                          .toLowerCase()
+                          .localeCompare((optionB?.label ?? "").toLowerCase())
+                      }
                       style={{
                         width: "100%",
                       }}
                     />
-                  </div>
-                  <div className="col-12 mb-3">
-                    <label
-                      htmlFor="dashboard-amount"
-                      className="fw-semibold text-black"
-                    >
+                  </Form.Item>
+                  <Form.Item>
+                    <label className="fw-semibold text-black">
                       {" "}
                       Monto a Depositar{" "}
                     </label>
                     <InputNumber
+                      name="amount"
                       prefix="$"
                       min={5}
                       max={10000}
+                      placeholder="0.00"
                       style={{
                         width: "100%",
                       }}
                     />
-                  </div>
-                  <div className="col-12 mb-3">
-                    <label
-                      htmlFor="dashboard-amount"
-                      className="fw-semibold text-black"
-                    >
-                      {" "}
-                      Fecha y Hora{" "}
-                    </label>
+                  </Form.Item>
+                  <label
+                    htmlFor="dashboard-amount"
+                    className="fw-semibold text-black"
+                  >
+                    {" "}
+                    Fecha y Hora{" "}
+                  </label>
+                  <Form.Item>
                     <input
                       type="text"
                       className="form-control"
                       id="date-hour"
                       value={moment().format("DD/MM/YYYY HH:mm")}
-                      disabled
+                      readOnly
                     />
-                  </div>
-                </div>
+                  </Form.Item>
+                  <Form.Item className="text-end">
+                    <Button
+                      key="back"
+                      type="primary"
+                      danger
+                      onClick={closePaymentsModal}
+                    >
+                      Cancelar
+                    </Button>
+                    <Button
+                      className="ms-2"
+                      key="submit"
+                      type="primary"
+                      loading={loading}
+                      onClick={registerPayments}
+                    >
+                      Registrar Pago
+                    </Button>
+                  </Form.Item>
+                </Form>
               </Modal>
 
               <Button type="primary" className="fw-semibold">

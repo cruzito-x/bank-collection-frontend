@@ -61,7 +61,7 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
         <span style={colorByTheme}> Colectores </span>
       </Menu.Item>
       <Menu.Item
-        key="/collectors-payments"
+        key="/payments-collectors"
         icon={<WalletOutlined style={colorByTheme} />}
       >
         <span style={colorByTheme}> Pagos a Colectores </span>

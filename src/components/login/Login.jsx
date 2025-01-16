@@ -4,12 +4,12 @@ import { Button, Card, Form, message, Image, Input } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import Logo from "../../assets/img/logo.png";
 import "./styles/login.css";
+import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  localStorage.clear();
+  const { setAuthState } = useAuth();
 
   const onFinish = async (values) => {
     setLoading(true);
@@ -26,10 +26,17 @@ const Login = () => {
 
       if (response.status === 200) {
         message.success(data.message);
-        localStorage.setItem("cod_user", data.id);
-        localStorage.setItem("username", values.username);
-        localStorage.setItem("role", data.role);
-        navigate("/dashboard");
+        setAuthState({
+          isSupervisor: data.isSupervisor,
+          user_id: data.user_id,
+          username: data.username,
+        });
+
+        if (setAuthState.isSupervisor) {
+          navigate("/dashboard");
+        } else {
+          navigate("/customers");
+        }
       } else {
         if (response.status === 401 || response.status === 500) {
           message.error(data.message);
@@ -37,7 +44,7 @@ const Login = () => {
       }
     } catch (error) {
       message.error(
-        "Ha ocurrido un error inesperado, por favor intente de nuevo"
+        "Ha Ocurrido un Error Inesperado, Por Favor Intente de Nuevo"
       );
     }
     setLoading(false);

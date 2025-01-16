@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Chart } from "chart.js";
 
-const CollectorsPaymentsChart = () => {
+const PaymentsCollectorsCharts = () => {
   const paymentsByCollectorChartRef = useRef(null);
   const paymentsByCollectorChartInstance = useRef(null);
 
@@ -70,4 +70,4 @@ const CollectorsPaymentsChart = () => {
   return <canvas ref={paymentsByCollectorChartRef}></canvas>;
 };
 
-export default CollectorsPaymentsChart;
+export default PaymentsCollectorsCharts;

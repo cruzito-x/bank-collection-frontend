@@ -256,7 +256,7 @@ const Collectors = () => {
               </Modal>
             </div>
           </div>
-          <div className="row ms-1 mb-3 pe-3">
+          <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">
               <Table
                 dataSource={collectors}
@@ -267,6 +267,7 @@ const Collectors = () => {
                   showTotal: (total) => `Total: ${total} colector(es)`,
                   hideOnSinglePage: true,
                 }}
+                scroll={{ y: 539 }}
               />
             </div>
           </div>

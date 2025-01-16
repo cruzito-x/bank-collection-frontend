@@ -6,31 +6,29 @@ import Dashboard from "../dashboard/Dashboard";
 import { Layout } from "antd";
 import Sider from "antd/es/layout/Sider";
 import LayoutHeader from "../../utils/layoutHeader/layoutHeader";
-import MenuList from "../menu/Menu";
+import MenuList from "../../utils/menu/Menu";
 import Logo from "../../utils/logo/Logo";
 import "./styles/sidebar.css";
 import Customers from "../customers/Customers";
 import Collectors from "../collectors/Collectors";
-import CollectorsPayments from "../collectorsPayments/CollectorsPayments";
+import PaymentsCollectors from "../paymentsCollectors/PaymentsCollectors";
 import Transactions from "../transactions/Transactions";
 import TransactionTypes from "../transactionTypes/TransactionTypes";
 import Approvals from "../approvals/Approvals";
 import Users from "../users/Users";
 import Audit from "../audit/Audit";
+import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const Sidebar = () => {
   const [darkTheme, setDarkTheme] = useState(true);
-  const toggleTheme = () => {
-    setDarkTheme(!darkTheme);
-  };
+  const { authState } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    const username = "David Cruz";
-    if (username && location.pathname === "/") {
+    if (authState.username && location.pathname === "/") {
       navigate("/dashboard");
-    } else if (!username && location.pathname !== "/") {
+    } else if (!authState.username && location.pathname !== "/") {
       navigate("/");
     }
   }, [location.pathname]);
@@ -45,21 +43,21 @@ const Sidebar = () => {
     backgroundColor: "#eef1f7",
   };
 
-  const isSupervisor = true;
+  const isSupervisor = authState.isSupervisor;
 
   const routes = isSupervisor
     ? [
         "/dashboard",
         "/customers",
         "/collectors",
-        "/collectors-payments",
+        "/payments-collectors",
         "/transactions",
         "/transaction-types",
         "/approvals",
         "/users",
         "/audit",
       ]
-    : ["/customers", "/collectors-payments", "/transactions"];
+    : ["/customers", "/payments-collectors", "/transactions"];
 
   const renderedRoutes = routes.includes(location.pathname);
 
@@ -104,12 +102,21 @@ const Sidebar = () => {
       </Sider>
       <Layout style={layoutStyle}>
         {location.pathname !== "/dashboard" && <LayoutHeader />}
-        <Content style={{ margin: location.pathname !== "/dashboard" ? "24px 0 0" : "-40px 0 0", overflow: "initial" }}>
+        <Content
+          style={{
+            margin:
+              location.pathname !== "/dashboard" ? "24px 0 0" : "-40px 0 0",
+            overflow: "initial",
+          }}
+        >
           <Routes>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/collectors" element={<Collectors />} />
-            <Route path="/collectors-payments" element={<CollectorsPayments />} />
+            <Route
+              path="/payments-collectors"
+              element={<PaymentsCollectors />}
+            />
             <Route path="/transactions" element={<Transactions />} />
             <Route path="/transaction-types" element={<TransactionTypes />} />
             <Route path="/approvals" element={<Approvals />} />

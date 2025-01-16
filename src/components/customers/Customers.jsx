@@ -192,7 +192,7 @@ const Customers = () => {
               <Button type="primary"> Buscar </Button>
             </div>
           </div>
-          <div className="row ms-1 mb-3 pe-3">
+          <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">
               <Table
                 dataSource={customers}
@@ -203,6 +203,7 @@ const Customers = () => {
                   showTotal: (total) => `Total: ${total} cliente(s)`,
                   hideOnSinglePage: true,
                 }}
+                scroll={{ y: 517 }}
               />
             </div>
           </div>

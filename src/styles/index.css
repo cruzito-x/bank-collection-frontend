@@ -7,6 +7,10 @@
   --yellow-hovered: #ffc654;
 }
 
+/* ::-webkit-scrollbar {
+  width: 0px;
+} */
+
 * {
   font-family: "Montserrat", sans-serif;
 }
