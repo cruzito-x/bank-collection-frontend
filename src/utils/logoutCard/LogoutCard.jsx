@@ -5,6 +5,7 @@ import React from "react";
 const LogoutCard = () => {
   const logout = () => {
     window.location.href = "/";
+    localStorage.clear();
   };
 
   const menu = (

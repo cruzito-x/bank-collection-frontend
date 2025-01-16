@@ -11,8 +11,9 @@ import {
   Col,
   InputNumber,
   Form,
+  Table,
 } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import { InfoCircleOutlined, WarningOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import "./styles/dashboard.css";
 import DashboardCharts from "./charts/DashboardCharts";
@@ -22,7 +23,8 @@ import LogoutCard from "../../utils/logoutCard/LogoutCard";
 const Dashboard = ({ rangeFilter = () => {} }) => {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [openRegisterPayment, setOpenRegisterPayment] = useState(false);
+  const [openNotificationsModal, setOpenNotificationsModal] = useState(false);
   const [dates, setDates] = useState([
     moment().startOf("day"),
     moment().endOf("day"),
@@ -80,18 +82,26 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   };
 
   const showPaymentsModal = () => {
-    setOpen(true);
+    setOpenRegisterPayment(true);
   };
 
   const closePaymentsModal = () => {
-    setOpen(false);
+    setOpenRegisterPayment(false);
+  };
+
+  const showNotificationsModal = () => {
+    setOpenNotificationsModal(true);
+  };
+
+  const closeNotificacionsModal = () => {
+    setOpenNotificationsModal(false);
   };
 
   const registerPayments = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      setOpen(false);
+      setOpenRegisterPayment(false);
     }, 3000);
   };
 
@@ -165,7 +175,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
             <div className="row">
               <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
                 <Card className="text-center shadow">
-                  <h2 className="p-3 fw-semibold text-black"> 5 </h2>
+                  <h2 className="p-3 fw-semibold text-black"> {collectors.length} </h2>
                   <div className="dashboard-blue-card">
                     <label className="fw-semibold p-2">
                       {" "}
@@ -176,7 +186,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               </div>
               <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
                 <Card className="text-center shadow">
-                  <h2 className="p-3 fw-semibold text-black">250</h2>
+                  <h2 className="p-3 fw-semibold text-black"> 0 </h2>
                   <div className="dashboard-yellow-card">
                     <label className="fw-semibold p-2">
                       {" "}
@@ -187,7 +197,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               </div>
               <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
                 <Card className="text-center shadow">
-                  <h2 className="p-3 fw-semibold text-black"> $1136 </h2>
+                  <h2 className="p-3 fw-semibold text-black"> $0 </h2>
                   <div className="dashboard-green-card">
                     <label className="fw-semibold p-2">
                       {" "}
@@ -197,12 +207,69 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 </Card>
               </div>
               <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
-                <Card className="text-center shadow">
-                  <h2 className="p-3 fw-semibold text-black">1</h2>
+                <Card
+                  className="text-center shadow"
+                  onClick={showNotificationsModal}
+                  style={{ cursor: "pointer" }}
+                >
+                  <h2 className="p-3 fw-semibold text-black"> 0 </h2>
                   <div className="dashboard-red-card">
                     <label className="fw-semibold p-2"> Notificaciones </label>
                   </div>
                 </Card>
+
+                <Modal
+                  title={
+                    <Row align="middle">
+                      {" "}
+                      <Col>
+                        {" "}
+                        <WarningOutlined
+                          className="fs-6"
+                          style={{ marginRight: 8, color: "var(--yellow)" }}
+                        />{" "}
+                      </Col>{" "}
+                      <Col>
+                        <label className="fs-6">
+                          Notificaciones Pendientes
+                        </label>
+                      </Col>{" "}
+                    </Row>
+                  }
+                  centered
+                  width={650}
+                  open={openNotificationsModal}
+                  onOk={closeNotificacionsModal}
+                  onCancel={closeNotificacionsModal}
+                  footer={null}
+                >
+                  <Form>
+                    <Table
+                      dataSource={customers}
+                      columns={[
+                        {
+                          title: "Solicitud",
+                          dataIndex: "value",
+                          key: "value",
+                          align: "center",
+                        },
+                        {
+                          title: "Fecha de Solicitud",
+                          dataIndex: "value",
+                          key: "value",
+                          align: "center",
+                        },
+                        {
+                          title: "Acción",
+                          dataIndex: "action",
+                          key: "action",
+                          align: "center",
+                        }
+                      ]}
+                      pagination={10}
+                    />
+                  </Form>
+                </Modal>
               </div>
             </div>
           </div>
@@ -251,7 +318,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 }
                 centered
                 width={450}
-                open={open}
+                open={openRegisterPayment}
                 onOk={closePaymentsModal}
                 onCancel={closePaymentsModal}
                 footer={null}

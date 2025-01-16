@@ -12,6 +12,7 @@ import {
   RightOutlined,
   SolutionOutlined,
   AuditOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext/AuthContext";
@@ -96,16 +97,14 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
       </>
 
       {isSupervisor && (
-        <Menu.Item
-          key="/approvals"
-          icon={<CheckCircleOutlined style={colorByTheme} />}
-        >
-          <span style={colorByTheme}> Aprobaciones </span>
-        </Menu.Item>
-      )}
-
-      {isSupervisor && (
         <>
+          <Menu.Item
+            key="/approvals"
+            icon={<CheckCircleOutlined style={colorByTheme} />}
+          >
+            <span style={colorByTheme}> Aprobaciones </span>
+          </Menu.Item>
+
           <Menu.Item key="/users" icon={<UserOutlined style={colorByTheme} />}>
             <span style={colorByTheme}> Usuarios </span>
           </Menu.Item>
@@ -117,6 +116,12 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
             <span style={colorByTheme}> Auditoría </span>
           </Menu.Item>
         </>
+      )}
+
+      {!isSupervisor && (
+        <Menu.Item key="/logout" icon={<LogoutOutlined style={colorByTheme} />}>
+          <span style={colorByTheme}> Cerrar Sesión </span>
+        </Menu.Item>
       )}
 
       <Menu.Item

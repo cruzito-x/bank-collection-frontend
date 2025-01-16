@@ -75,7 +75,7 @@ const Sidebar = () => {
         collapsed={collapsed}
         collapsible
         trigger={null}
-        className="sidebar"
+        className={`sidebar ${collapsed ? "overflow-hidden" : "overflow-auto"}`}
         style={{
           overflow: "auto",
           height: "100vh",

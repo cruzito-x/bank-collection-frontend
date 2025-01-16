@@ -50,7 +50,7 @@ const Transactions = () => {
     },
   ];
 
-  const CollectorsDataColumns = [
+  const transactionsTableColumns = [
     {
       title: "Código de Servicio",
       dataIndex: "codigoDeServicio",
@@ -127,7 +127,7 @@ const Transactions = () => {
             <div className="col-12">
               <Table
                 dataSource={CollectorsDataSource}
-                columns={CollectorsDataColumns}
+                columns={transactionsTableColumns}
                 pagination={{
                   pageSize: 10,
                   showTotal: (total) => `Total: ${total} colector(es)`,

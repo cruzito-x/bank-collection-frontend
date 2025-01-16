@@ -32,10 +32,10 @@ const Login = () => {
           username: data.username,
         });
 
-        if (setAuthState.isSupervisor) {
+        if (data.isSupervisor) {
           navigate("/dashboard");
         } else {
-          navigate("/collectors");
+          navigate("/customers");
         }
       } else {
         if (response.status === 401 || response.status === 500) {
