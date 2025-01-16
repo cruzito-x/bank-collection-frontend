@@ -5,7 +5,7 @@ import { Content, Footer } from "antd/es/layout/layout";
 import Dashboard from "../dashboard/Dashboard";
 import { Layout } from "antd";
 import Sider from "antd/es/layout/Sider";
-import LayoutHeader from "../../utils/layoutHeader/layoutHeader";
+import LayoutHeader from "../../utils/layoutHeader/LayoutHeader";
 import MenuList from "../../utils/menu/Menu";
 import Logo from "../../utils/logo/Logo";
 import "./styles/sidebar.css";

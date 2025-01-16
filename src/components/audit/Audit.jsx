@@ -12,8 +12,10 @@ import {
 import { DatabaseOutlined, UserOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
+import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const Audit = () => {
+  const { authState } = useAuth();
   const [audit, setAudit] = useState([]);
   const [loading, setLoading] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
@@ -94,7 +96,7 @@ const Audit = () => {
               title: (
                 <>
                   <UserOutlined />
-                  <span>Usuario</span>
+                  <span> {authState.username} </span>
                 </>
               ),
             },
@@ -146,9 +148,10 @@ const Audit = () => {
                 columns={auditTableColumns}
                 pagination={{
                   pageSize: 10,
-                  showTotal: (total) => `Total: ${total} colector(es)`,
+                  showTotal: (total) => `Total: ${total} registro(s)`,
                   hideOnSinglePage: true,
                 }}
+                scroll={{ y: 539 }}
               />
             </div>
           </div>

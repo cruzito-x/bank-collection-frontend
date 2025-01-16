@@ -19,11 +19,13 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
+import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const Collectors = () => {
   const [collectors, setCollectors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isCollectorModalOpen, setIsCollectorModalOpen] = useState(false);
+  const { authState } = useAuth();
   const [messageAlert, messageContext] = message.useMessage();
   const [form] = Form.useForm();
 
@@ -153,7 +155,7 @@ const Collectors = () => {
               title: (
                 <>
                   <UserOutlined />
-                  <span>Usuario</span>
+                  <span> {authState.username} </span>
                 </>
               ),
             },

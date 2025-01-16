@@ -21,8 +21,10 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
+import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const Users = () => {
+  const { authState } = useAuth();
   const [roles, setRoles] = useState([]);
   const [users, setUsers] = useState([]);
   const [editUserModalOpen, setEditUserModalOpen] = useState(false);
@@ -158,7 +160,7 @@ const Users = () => {
               title: (
                 <>
                   <UserOutlined />
-                  <span>Usuario</span>
+                  <span> {authState.username} </span>
                 </>
               ),
             },

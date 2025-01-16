@@ -1,8 +1,23 @@
-import { Breadcrumb, Button, Card, Input, Layout, message, Table, theme } from "antd";
-import { SolutionOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  Breadcrumb,
+  Button,
+  Card,
+  Input,
+  Layout,
+  message,
+  Table,
+  theme,
+} from "antd";
+import {
+  SolutionOutlined,
+  TransactionOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import React from "react";
+import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const Transactions = () => {
+  const { authState } = useAuth();
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const {
@@ -72,15 +87,15 @@ const Transactions = () => {
               title: (
                 <>
                   <UserOutlined />
-                  <span>Usuario</span>
+                  <span> {authState.username} </span>
                 </>
               ),
             },
             {
               title: (
                 <>
-                  <SolutionOutlined />
-                  <span>Colectores</span>
+                  <TransactionOutlined />
+                  <span>Transacciones</span>
                 </>
               ),
             },

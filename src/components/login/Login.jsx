@@ -35,7 +35,7 @@ const Login = () => {
         if (setAuthState.isSupervisor) {
           navigate("/dashboard");
         } else {
-          navigate("/customers");
+          navigate("/collectors");
         }
       } else {
         if (response.status === 401 || response.status === 500) {

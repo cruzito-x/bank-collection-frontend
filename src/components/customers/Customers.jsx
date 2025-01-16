@@ -16,8 +16,10 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
+import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const Customers = () => {
+  const { authState } = useAuth();
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
@@ -129,7 +131,7 @@ const Customers = () => {
               title: (
                 <>
                   <UserOutlined />
-                  <span>Usuario</span>
+                  <span> {authState.username} </span>
                 </>
               ),
             },

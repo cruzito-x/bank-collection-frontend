@@ -17,8 +17,10 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import React, { useState } from "react";
+import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const Approvals = () => {
+  const { authState } = useAuth();
   const [isTransactionDetailsModalOpen, setIsTransactionDetailsModalOpen] =
     useState(false);
   const [messageAlert, messageContext] = message.useMessage();
@@ -125,7 +127,7 @@ const Approvals = () => {
     },
   ];
 
-  const CollectorsDataColumns = [
+  const approvalsTableColumns = [
     {
       title: "Código de Aprobación",
       dataIndex: "approvalCode",
@@ -174,7 +176,7 @@ const Approvals = () => {
               title: (
                 <>
                   <UserOutlined />
-                  <span>Usuario</span>
+                  <span> {authState.username} </span>
                 </>
               ),
             },
@@ -227,7 +229,7 @@ const Approvals = () => {
             <div className="col-12">
               <Table
                 dataSource={CollectorsDataSource}
-                columns={CollectorsDataColumns}
+                columns={approvalsTableColumns}
                 pagination={{
                   pageSize: 10,
                   showTotal: (total) => `Total: ${total} colector(es)`,

@@ -16,8 +16,10 @@ import {
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import PaymentsCollectorsChart from "./charts/PaymentsCollectorsCharts";
+import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const PaymentsCollectors = () => {
+  const { authState } = useAuth();
   const [paymentsCollector, setPaymentsCollectors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
@@ -34,39 +36,45 @@ const PaymentsCollectors = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3001/payments-collectors", {
-        method: "GET",
-      });
+      const response = await fetch(
+        "http://localhost:3001/payments-collectors",
+        {
+          method: "GET",
+        }
+      );
 
       const paymentscollectorsData = await response.json();
-      const paymentsCollector = paymentscollectorsData.map((paymentsCollector) => {
-        return {
-          ...paymentsCollector, actions: (
-            <>
-              <Button
-                className="edit-btn"
-                type="primary"
-                style={{
-                  backgroundColor: "var(--yellow)",
-                }}
-              >
-                Editar
-              </Button>
-              <Button className="ms-2 me-2" type="primary" danger>
-                Eliminar
-              </Button>
-              <Button type="primary"> Transacciones </Button>
-            </>
-          ),
+      const paymentsCollector = paymentscollectorsData.map(
+        (paymentsCollector) => {
+          return {
+            ...paymentsCollector,
+            actions: (
+              <>
+                <Button
+                  className="edit-btn"
+                  type="primary"
+                  style={{
+                    backgroundColor: "var(--yellow)",
+                  }}
+                >
+                  Editar
+                </Button>
+                <Button className="ms-2 me-2" type="primary" danger>
+                  Eliminar
+                </Button>
+                <Button type="primary"> Transacciones </Button>
+              </>
+            ),
+          };
         }
-      });
+      );
 
       setPaymentsCollectors(paymentsCollector);
       setLoading(false);
     } catch (error) {
       messageContext.error("Error fetching collectors payments");
     }
-  }
+  };
   const paymentsCollectorsTableColumns = [
     {
       title: "Cliente",
@@ -117,7 +125,7 @@ const PaymentsCollectors = () => {
               title: (
                 <>
                   <UserOutlined />
-                  <span>Usuario</span>
+                  <span> {authState.username} </span>
                 </>
               ),
             },

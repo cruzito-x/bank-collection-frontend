@@ -14,8 +14,10 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import React from "react";
+import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const TransactionTypes = () => {
+  const { authState } = useAuth();
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const {
@@ -77,7 +79,7 @@ const TransactionTypes = () => {
               title: (
                 <>
                   <UserOutlined />
-                  <span>Usuario</span>
+                  <span> {authState.username} </span>
                 </>
               ),
             },

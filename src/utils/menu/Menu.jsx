@@ -5,7 +5,6 @@ import {
   TeamOutlined,
   WalletOutlined,
   TransactionOutlined,
-  UnorderedListOutlined,
   CheckCircleOutlined,
   UserOutlined,
   DatabaseOutlined,
@@ -15,10 +14,12 @@ import {
   AuditOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
+  const { authState } = useAuth();
   const navigate = useNavigate();
-  const isSupervisor = true;
+  const isSupervisor = authState.isSupervisor;
 
   const colorByTheme = {
     color: darkTheme ? "#ffffff" : "007bff",
@@ -28,13 +29,13 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
     <Menu
       theme={darkTheme ? "dark" : "light"}
       style={{
-        backgroundColor: darkTheme ? "#273543" : "",
+        backgroundColor: darkTheme ? "#273543" : "#273543",
         color: darkTheme ? "#ffffff" : "var(--blue)",
       }}
       mode="inline"
       className="menu-bar"
       onClick={({ key }) => {
-        if (key === "/sign-out") {
+        if (key === "/logout") {
           window.location.href = "/";
         } else {
           navigate(key);
@@ -49,28 +50,32 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
           <span style={colorByTheme}> Dashboard </span>
         </Menu.Item>
       )}
+
+      <Menu.Item key="/customers" icon={<TeamOutlined style={colorByTheme} />}>
+        <span style={colorByTheme}> Clientes </span>
+      </Menu.Item>
+
       {isSupervisor && (
         <Menu.Item
-          key="/customers"
-          icon={<TeamOutlined style={colorByTheme} />}
+          key="/collectors"
+          icon={<SolutionOutlined style={colorByTheme} />}
         >
-          <span style={colorByTheme}> Clientes </span>
+          <span style={colorByTheme}> Colectores </span>
         </Menu.Item>
       )}
-      <Menu.Item key="/collectors" icon={<SolutionOutlined style={colorByTheme} />}>
-        <span style={colorByTheme}> Colectores </span>
-      </Menu.Item>
+
       <Menu.Item
         key="/payments-collectors"
         icon={<WalletOutlined style={colorByTheme} />}
       >
         <span style={colorByTheme}> Pagos a Colectores </span>
       </Menu.Item>
+
       <>
         <Menu.SubMenu
           title="Transacciones"
           icon={<TransactionOutlined style={colorByTheme} />}
-          style={{colorByTheme}}
+          style={{ colorByTheme }}
         >
           <Menu.Item
             key="/transactions"
@@ -78,14 +83,18 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
           >
             <span style={colorByTheme}> Transacciones </span>
           </Menu.Item>
-          <Menu.Item
-            key="/transaction-types"
-            icon={<AuditOutlined style={colorByTheme} />}
-          >
-            <span style={colorByTheme}> Tipos de Transacciones </span>
-          </Menu.Item>
+
+          {isSupervisor && (
+            <Menu.Item
+              key="/transaction-types"
+              icon={<AuditOutlined style={colorByTheme} />}
+            >
+              <span style={colorByTheme}> Tipos de Transacciones </span>
+            </Menu.Item>
+          )}
         </Menu.SubMenu>
       </>
+
       {isSupervisor && (
         <Menu.Item
           key="/approvals"
@@ -96,18 +105,20 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
       )}
 
       {isSupervisor && (
-        <Menu.Item key="/users" icon={<UserOutlined style={colorByTheme} />}>
-          <span style={colorByTheme}> Usuarios </span>
-        </Menu.Item>
+        <>
+          <Menu.Item key="/users" icon={<UserOutlined style={colorByTheme} />}>
+            <span style={colorByTheme}> Usuarios </span>
+          </Menu.Item>
+
+          <Menu.Item
+            key="/audit"
+            icon={<DatabaseOutlined style={colorByTheme} />}
+          >
+            <span style={colorByTheme}> Auditoría </span>
+          </Menu.Item>
+        </>
       )}
-      {isSupervisor && (
-        <Menu.Item
-          key="/audit"
-          icon={<DatabaseOutlined style={colorByTheme} />}
-        >
-          <span style={colorByTheme}> Auditoría </span>
-        </Menu.Item>
-      )}
+
       <Menu.Item
         key={"#"}
         icon={
