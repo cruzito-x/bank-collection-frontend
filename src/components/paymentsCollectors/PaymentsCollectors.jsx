@@ -53,19 +53,7 @@ const PaymentsCollectors = () => {
             datetime: moment(paymentsCollector.date_hour).format("DD/MM/YYYY hh:mm a"),
             actions: (
               <>
-                <Button
-                  className="edit-btn"
-                  type="primary"
-                  style={{
-                    backgroundColor: "var(--yellow)",
-                  }}
-                >
-                  Editar
-                </Button>
-                <Button className="ms-2 me-2" type="primary" danger>
-                  Eliminar
-                </Button>
-                <Button type="primary"> Transacciones </Button>
+                <Button type="primary"> Ver Detalles </Button>
               </>
             ),
           };
@@ -108,7 +96,6 @@ const PaymentsCollectors = () => {
       dataIndex: "actions",
       key: "actions",
       align: "center",
-      width: "32%",
     },
   ];
 
