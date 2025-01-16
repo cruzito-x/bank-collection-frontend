@@ -14,6 +14,7 @@ import {
 import {
   CheckCircleOutlined,
   InfoCircleOutlined,
+  NumberOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import React, { useState } from "react";
@@ -205,7 +206,7 @@ const Approvals = () => {
               </label>
               <Input
                 placeholder="00001"
-                prefix={<InfoCircleOutlined />}
+                prefix={<NumberOutlined />}
                 style={{
                   width: 183,
                 }}

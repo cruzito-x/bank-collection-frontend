@@ -12,6 +12,7 @@ import {
   InputNumber,
   Form,
   Table,
+  message,
 } from "antd";
 import { InfoCircleOutlined, WarningOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
@@ -24,7 +25,10 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [openRegisterPayment, setOpenRegisterPayment] = useState(false);
+  const [sendingDataLoading, setSendingDataLoading] = useState(false);
   const [openNotificationsModal, setOpenNotificationsModal] = useState(false);
+  const [messageAlert, messageContext] = message.useMessage();
+  const [form] = Form.useForm();
   const [dates, setDates] = useState([
     moment().startOf("day"),
     moment().endOf("day"),
@@ -97,14 +101,6 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     setOpenNotificationsModal(false);
   };
 
-  const registerPayments = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setOpenRegisterPayment(false);
-    }, 3000);
-  };
-
   useEffect(() => {
     getCollectors();
     getTransactionTypes();
@@ -128,7 +124,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   };
 
   const getTransactionTypes = async () => {
-    const response = await fetch("http://localhost:3001/transaction-types", {
+    const response = await fetch("http://localhost:3001/transactions-types", {
       method: "GET",
     });
 
@@ -161,11 +157,44 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     } catch (error) {}
   };
 
+  const registerPayments = async (payment) => {
+    setSendingDataLoading(true);
+
+    try {
+      const response = await fetch(
+        "http://localhost:3001/payments-collectors/save-new-payment",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payment),
+        }
+      );
+
+      const registeredPayment = await response.json();
+
+      if (response.status === 200) {
+        messageAlert.success(registeredPayment.message);
+        form.resetFields();
+        closePaymentsModal();
+      } else {
+        messageAlert.error(registeredPayment.message);
+      }
+
+      setSendingDataLoading(false);
+    } catch (error) {
+      messageAlert.error("Error al Registrar el Pago. Intente de Nuevo");
+      setSendingDataLoading(false);
+    }
+  };
+
   return (
-    <Content style={{ margin: "60px 16px" }}>
+    <Content style={{ margin: "62px 16px" }}>
+      {messageContext}
       <div
         style={{
-          padding: 10,
+          padding: "24px 0 24px 0",
           minHeight: "90vh",
           borderRadius: borderRadiusLG,
         }}
@@ -175,7 +204,10 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
             <div className="row">
               <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
                 <Card className="text-center shadow">
-                  <h2 className="p-3 fw-semibold text-black"> {collectors.length} </h2>
+                  <h2 className="p-3 fw-semibold text-black">
+                    {" "}
+                    {collectors.length}{" "}
+                  </h2>
                   <div className="dashboard-blue-card">
                     <label className="fw-semibold p-2">
                       {" "}
@@ -264,7 +296,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                           dataIndex: "action",
                           key: "action",
                           align: "center",
-                        }
+                        },
                       ]}
                       pagination={10}
                     />
@@ -323,15 +355,23 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 onCancel={closePaymentsModal}
                 footer={null}
               >
-                <Form>
-                  <Form.Item>
+                <Form form={form} onFinish={registerPayments}>
+                  <Form.Item
+                    name="customer_id"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por Favor, Seleccione un Cliente",
+                      },
+                    ]}
+                  >
                     <label className="fw-semibold text-black">
                       {" "}
                       Seleccionar Cliente{" "}
                     </label>
                     <Select
-                      id="customer"
                       options={customers}
+                      onChange={(value) => { form.setFieldsValue({ customer_id: value }); }}
                       showSearch
                       placeholder="Buscar Cliente"
                       optionFilterProp="label"
@@ -345,14 +385,22 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       }}
                     />
                   </Form.Item>
-                  <Form.Item>
+                  <Form.Item
+                    name="collector_id"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por Favor, Seleccione un Colector",
+                      },
+                    ]}
+                  >
                     <label className="fw-semibold text-black">
                       {" "}
                       Seleccionar Colector{" "}
                     </label>
                     <Select
-                      name="collector"
                       options={collectors}
+                      onChange={(value) => { form.setFieldsValue({ collector_id: value }); }}
                       showSearch
                       placeholder="Buscar Colector"
                       optionFilterProp="label"
@@ -366,17 +414,25 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       }}
                     />
                   </Form.Item>
-                  <Form.Item>
+                  <Form.Item
+                    name="amount"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por Favor, Introduzca una Cantidad Entre $5 y $10000",
+                      },
+                    ]}
+                  >
                     <label className="fw-semibold text-black">
                       {" "}
                       Monto a Depositar{" "}
                     </label>
                     <InputNumber
-                      name="amount"
                       prefix="$"
                       min={5}
                       max={10000}
                       placeholder="0.00"
+                      onChange={(value) => { form.setFieldsValue({ amount: value }); }}
                       style={{
                         width: "100%",
                       }}
@@ -393,7 +449,6 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                     <input
                       type="text"
                       className="form-control"
-                      id="date-hour"
                       value={moment().format("DD/MM/YYYY HH:mm")}
                       readOnly
                     />
@@ -409,10 +464,9 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                     </Button>
                     <Button
                       className="ms-2"
-                      key="submit"
                       type="primary"
-                      loading={loading}
-                      onClick={registerPayments}
+                      htmlType="submit"
+                      loading={sendingDataLoading}
                     >
                       Registrar Pago
                     </Button>
@@ -554,7 +608,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           </div>
 
           <div className="row mb-4 me-2 ms-2">
-            <DashboardCharts />
+            <DashboardCharts loading={loading} />
           </div>
         </Card>
       </div>

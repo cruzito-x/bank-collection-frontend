@@ -17,6 +17,7 @@ import {
 import React, { useEffect, useState } from "react";
 import PaymentsCollectorsChart from "./charts/PaymentsCollectorsCharts";
 import { useAuth } from "../../contexts/authContext/AuthContext";
+import moment from "moment";
 
 const PaymentsCollectors = () => {
   const { authState } = useAuth();
@@ -48,6 +49,8 @@ const PaymentsCollectors = () => {
         (paymentsCollector) => {
           return {
             ...paymentsCollector,
+            amount: "$" + paymentsCollector.amount,
+            datetime: moment(paymentsCollector.date_hour).format("DD/MM/YYYY hh:mm a"),
             actions: (
               <>
                 <Button
@@ -84,8 +87,8 @@ const PaymentsCollectors = () => {
     },
     {
       title: "Colector",
-      dataIndex: "collector",
-      key: "collector",
+      dataIndex: "service",
+      key: "service",
       align: "center",
     },
     {

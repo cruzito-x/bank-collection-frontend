@@ -13,46 +13,65 @@ import {
   PlusCircleOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const TransactionTypes = () => {
   const { authState } = useAuth();
+  const [transactionsTypes, setTransactionsTypes] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
 
-  const CollectorsDataSource = [
-    {
-      key: "1",
-      transactionType: "Deposito",
-      actions: (
-        <>
-          <Button
-            className="edit-btn"
-            type="primary"
-            style={{
-              backgroundColor: "var(--yellow)",
-              // hover: "#ffc654"
-            }}
-          >
-            Editar
-          </Button>
-          <Button className="ms-2 me-2" type="primary" danger>
-            Eliminar
-          </Button>
-        </>
-      ),
-    },
-  ];
+  useEffect(() => {
+    getTransactionsTypes();
+  }, []);
 
-  const CollectorsDataColumns = [
+  const getTransactionsTypes = async () => {
+    setLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:3001/transactions-types", {
+        method: "GET",
+      });
+
+      const transactionsTypesData = await response.json();
+
+      const transactions = transactionsTypesData.map((transactionType) => {
+        return {
+          ...transactionType,
+          actions: (
+            <>
+              <Button
+                className="edit-btn"
+                type="primary"
+                style={{
+                  backgroundColor: "var(--yellow)",
+                }}
+              >
+                Editar
+              </Button>
+              <Button className="ms-2 me-2" type="primary" danger>
+                Eliminar
+              </Button>
+            </>
+          ),
+        };
+      });
+
+      setTransactionsTypes(transactions);
+      setLoading(false);
+    } catch (error) {}
+  };
+
+  const transactionsTypesTableColumns = [
     {
       title: "Tipo de Transacción",
-      dataIndex: "transactionType",
-      key: "transactionType",
+      dataIndex: "transaction_type",
+      key: "transaction_type",
       align: "center",
     },
     {
@@ -123,8 +142,9 @@ const TransactionTypes = () => {
           <div className="row ms-1 mb-3 pe-3">
             <div className="col-12">
               <Table
-                dataSource={CollectorsDataSource}
-                columns={CollectorsDataColumns}
+                dataSource={transactionsTypes}
+                columns={transactionsTypesTableColumns}
+                loading={loading}
                 pagination={{
                   pageSize: 10,
                   showTotal: (total) => `Total: ${total} colector(es)`,

@@ -80,7 +80,7 @@ const Sidebar = () => {
           overflow: "auto",
           height: "100vh",
           position: "fixed",
-          backgroundColor: "#273543",
+          backgroundColor: "var(--gray)",
           left: 0,
           top: 0,
           bottom: 0,

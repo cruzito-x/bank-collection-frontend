@@ -88,7 +88,7 @@ const Collectors = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3001/collectors/save", {
+      const response = await fetch("http://localhost:3001/collectors/save-collector", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

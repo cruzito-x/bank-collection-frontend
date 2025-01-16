@@ -28,7 +28,7 @@
 
 .dashboard-red-card {
   width: 100%;
-  background-color: #da0505;
+  background-color: var(--red);
   border-radius: 80px 0 10px 10px;
   padding: 10px;
   color: #ffffff;
@@ -36,7 +36,7 @@
 
 .dashboard-user-card {
   width: 100%;
-  background-color: #273543;
+  background-color: var(--gray);
   border-radius: 80px 0 10px 10px;
   padding: 3px;
   color: #ffffff;

@@ -2,71 +2,127 @@ import {
   Breadcrumb,
   Button,
   Card,
+  DatePicker,
   Input,
   Layout,
   message,
+  Select,
   Table,
   theme,
 } from "antd";
 import {
-  SolutionOutlined,
+  NumberOutlined,
   TransactionOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const Transactions = () => {
   const { authState } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [transactionsTypes, setTransactionTypes] = useState([]);
+  const [transactions, setTransactions] = useState([]);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
+  const { RangePicker } = DatePicker;
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
 
-  const CollectorsDataSource = [
-    {
-      key: "1",
-      codigoDeServicio: "1234567890",
-      nombreDeServicio: "John Doe",
-      accionesParaServicio: (
-        <>
-          <Button
-            className="edit-btn"
-            type="primary"
-            style={{
-              backgroundColor: "var(--yellow)",
-              // hover: "#ffc654"
-            }}
-          >
-            Editar
-          </Button>
-          <Button className="ms-2 me-2" type="primary" danger>
-            Eliminar
-          </Button>
-          <Button type="primary"> Transacciones </Button>
-        </>
-      ),
-    },
-  ];
+  useEffect(() => {
+    getTransactionsTypes();
+    getTransactions();
+  }, []);
+
+  const getTransactionsTypes = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/transactions-types", {
+        method: "GET",
+      });
+
+      const typesData = await response.json();
+      const transactionsTypes = typesData.map((transactionType) => {
+        return {
+          value: transactionType.id,
+          label: transactionType.transaction_type,
+        };
+      });
+
+      setTransactionTypes(transactionsTypes);
+    } catch (error) {}
+  };
+
+  const getTransactions = async () => {
+    setLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:3001/transactions", {
+        method: "GET",
+      });
+
+      const transactionsData = await response.json();
+      const transactions = transactionsData.map((transaction) => {
+        return {
+          ...transaction,
+          amount: "$" + transaction.amount,
+          actions: (
+            <>
+              <Button className="edit-btn" type="primary">
+                {" "}
+                Detalles{" "}
+              </Button>
+            </>
+          ),
+        };
+      });
+
+      setLoading(false);
+      setTransactions(transactions);
+    } catch (error) {}
+  };
 
   const transactionsTableColumns = [
     {
-      title: "Código de Servicio",
-      dataIndex: "codigoDeServicio",
-      key: "codigoServicio",
+      title: "Código de Transacción",
+      dataIndex: "id",
+      key: "id",
       align: "center",
     },
     {
-      title: "Servicio",
-      dataIndex: "nombreDeServicio",
-      key: "nombreServicio",
+      title: "Cliente",
+      dataIndex: "customer_name",
+      key: "customer_name",
+      align: "center",
+    },
+    {
+      title: "Tipo de Transacción",
+      dataIndex: "transaction_type",
+      key: "transaction_type",
+      align: "center",
+    },
+    {
+      title: "Monto",
+      dataIndex: "amount",
+      key: "amount",
+      align: "center",
+    },
+    {
+      title: "Autorizado por",
+      dataIndex: "authorized_by",
+      key: "authorized_by",
+      align: "center",
+    },
+    {
+      title: "Fecha y Hora",
+      dataIndex: "datetime",
+      key: "datetime",
       align: "center",
     },
     {
       title: "Acciones",
-      dataIndex: "accionesParaServicio",
-      key: "accionesServicio",
+      dataIndex: "actions",
+      key: "actions",
       align: "center",
     },
   ];
@@ -105,20 +161,60 @@ const Transactions = () => {
         <Card className="mt-3">
           <div className="row ms-2 pt-3 mb-2">
             <div className="col-12 text-start">
-              <label className="fw-semibold"> Buscar Por </label>
+              <label className="fw-semibold text-black"> Buscar Por </label>
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold"> Nombre </label>
+              <label className="me-2 fw-semibold text-black">
+                {" "}
+                Código de Transacción{" "}
+              </label>
               <Input
-                placeholder="Nombre de Colector"
-                prefix={<SolutionOutlined />}
+                placeholder="0000"
+                prefix={<NumberOutlined />}
                 style={{
                   width: 183,
                 }}
               />
             </div>
+            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
+              <label className="me-2 fw-semibold text-black">
+                {" "}
+                Nombre de Autorizador{" "}
+              </label>
+              <Input
+                placeholder="Nombre de Autorizador"
+                prefix={<UserOutlined />}
+                style={{
+                  width: 183,
+                }}
+              />
+            </div>
+            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
+              <label className="me-2 fw-semibold text-black"> Tipo </label>
+              <Select
+                defaultValue={1}
+                prefix={<TransactionOutlined />}
+                style={{
+                  width: 183,
+                }}
+                options={transactionsTypes}
+              />
+            </div>
+            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
+              <label className="me-2 fw-semibold text-black"> Fecha </label>
+              <RangePicker
+                // value={dates}
+                // onChange={(dates) => setDates(dates)}
+                format="DD-MM-YYYY"
+                placeholder={["Inicio", "Fin"]}
+                style={{
+                  width: 183,
+                }}
+              />
+            </div>
+
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
               <Button type="primary"> Buscar </Button>
             </div>
@@ -126,8 +222,9 @@ const Transactions = () => {
           <div className="row ms-1 mb-3 pe-3">
             <div className="col-12">
               <Table
-                dataSource={CollectorsDataSource}
+                dataSource={transactions}
                 columns={transactionsTableColumns}
+                loading={loading}
                 pagination={{
                   pageSize: 10,
                   showTotal: (total) => `Total: ${total} colector(es)`,

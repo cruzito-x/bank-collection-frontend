@@ -30,7 +30,7 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
     <Menu
       theme={darkTheme ? "dark" : "light"}
       style={{
-        backgroundColor: darkTheme ? "#273543" : "#273543",
+        backgroundColor: darkTheme ? "var(--gray)" : "var(--gray)",
         color: darkTheme ? "#ffffff" : "var(--blue)",
       }}
       mode="inline"
