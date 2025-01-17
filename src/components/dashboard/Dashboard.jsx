@@ -23,7 +23,10 @@ import LogoutCard from "../../utils/logoutCard/LogoutCard";
 
 const Dashboard = ({ rangeFilter = () => {} }) => {
   const [customers, setCustomers] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [collectors, setCollectors] = useState([]);
+  const [transactionTypes, setTransactionTypes] = useState([]);
+  const [totalPayments, setTotalPayments] = useState([]);
+  const [totalProcessedAmounts, setTotalProcessedAmounts] = useState([]);
   const [openRegisterPayment, setOpenRegisterPayment] = useState(false);
   const [sendingDataLoading, setSendingDataLoading] = useState(false);
   const [openNotificationsModal, setOpenNotificationsModal] = useState(false);
@@ -33,8 +36,6 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     moment().startOf("day"),
     moment().endOf("day"),
   ]);
-  const [collectors, setCollectors] = useState([]);
-  const [transactionTypes, setTransactionTypes] = useState([]);
 
   const { Content } = Layout;
   const { RangePicker } = DatePicker;
@@ -105,7 +106,15 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     getCollectors();
     getTransactionTypes();
     getCustomers();
+    getTotalPayments();
+    getTotalProcessedAmounts();
   }, []);
+
+  useEffect(() => {
+    if (collectors.length === 0) return;
+    if (totalPayments.length === 0) return;
+    if (totalProcessedAmounts.length === 0) return;
+  }, [collectors, totalPayments, totalProcessedAmounts]);
 
   const getCollectors = async () => {
     const response = await fetch("http://localhost:3001/collectors", {
@@ -121,6 +130,27 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     });
 
     setCollectors(collectors);
+  };
+
+  const getTotalPayments = async () => {
+    const response = await fetch("http://localhost:3001/payments-collectors", {
+      method: "GET",
+    });
+
+    const totalPaymentsData = await response.json();
+    setTotalPayments(totalPaymentsData);
+  };
+
+  const getTotalProcessedAmounts = async () => {
+    const response = await fetch(
+      "http://localhost:3001/payments-collectors/total-payments-amount",
+      {
+        method: "GET",
+      }
+    );
+
+    const totalProcessedAmountsData = await response.json();
+    setTotalProcessedAmounts(totalProcessedAmountsData[0].amount);
   };
 
   const getTransactionTypes = async () => {
@@ -177,6 +207,9 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
       if (response.status === 200) {
         messageAlert.success(registeredPayment.message);
         form.resetFields();
+        getCollectors();
+        getTotalPayments();
+        getTotalProcessedAmounts();
         closePaymentsModal();
       } else {
         messageAlert.error(registeredPayment.message);
@@ -218,7 +251,10 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               </div>
               <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
                 <Card className="text-center shadow">
-                  <h2 className="p-3 fw-semibold text-black"> 0 </h2>
+                  <h2 className="p-3 fw-semibold text-black">
+                    {" "}
+                    {totalPayments.length}{" "}
+                  </h2>
                   <div className="dashboard-yellow-card">
                     <label className="fw-semibold p-2">
                       {" "}
@@ -229,7 +265,10 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               </div>
               <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
                 <Card className="text-center shadow">
-                  <h2 className="p-3 fw-semibold text-black"> $0 </h2>
+                  <h2 className="p-3 fw-semibold text-black">
+                    {" "}
+                    ${totalProcessedAmounts}{" "}
+                  </h2>
                   <div className="dashboard-green-card">
                     <label className="fw-semibold p-2">
                       {" "}
@@ -371,7 +410,9 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                     </label>
                     <Select
                       options={customers}
-                      onChange={(value) => { form.setFieldsValue({ customer_id: value }); }}
+                      onChange={(value) => {
+                        form.setFieldsValue({ customer_id: value });
+                      }}
                       showSearch
                       placeholder="Buscar Cliente"
                       optionFilterProp="label"
@@ -400,7 +441,9 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                     </label>
                     <Select
                       options={collectors}
-                      onChange={(value) => { form.setFieldsValue({ collector_id: value }); }}
+                      onChange={(value) => {
+                        form.setFieldsValue({ collector_id: value });
+                      }}
                       showSearch
                       placeholder="Buscar Colector"
                       optionFilterProp="label"
@@ -419,7 +462,8 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                     rules={[
                       {
                         required: true,
-                        message: "Por Favor, Introduzca una Cantidad Entre $5 y $10000",
+                        message:
+                          "Por Favor, Introduzca una Cantidad Entre $5 y $10000",
                       },
                     ]}
                   >
@@ -432,7 +476,9 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       min={5}
                       max={10000}
                       placeholder="0.00"
-                      onChange={(value) => { form.setFieldsValue({ amount: value }); }}
+                      onChange={(value) => {
+                        form.setFieldsValue({ amount: value });
+                      }}
                       style={{
                         width: "100%",
                       }}
@@ -608,7 +654,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           </div>
 
           <div className="row mb-4 me-2 ms-2">
-            <DashboardCharts loading={loading} />
+            <DashboardCharts />
           </div>
         </Card>
       </div>

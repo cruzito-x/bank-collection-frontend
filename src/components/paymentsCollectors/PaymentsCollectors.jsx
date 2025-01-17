@@ -50,7 +50,9 @@ const PaymentsCollectors = () => {
           return {
             ...paymentsCollector,
             amount: "$" + paymentsCollector.amount,
-            datetime: moment(paymentsCollector.date_hour).format("DD/MM/YYYY hh:mm a"),
+            datetime: moment(paymentsCollector.date_hour).format(
+              "DD/MM/YYYY hh:mm a"
+            ),
             actions: (
               <>
                 <Button type="primary"> Ver Detalles </Button>
@@ -151,7 +153,7 @@ const PaymentsCollectors = () => {
               <Button type="primary"> Buscar </Button>
             </div>
           </div>
-          <div className="row ms-1 mb-3 pe-3">
+          <div className="row ms-2 mb-3 pe-3">
             <div className="col-md-8 col-sm-12">
               <Table
                 dataSource={paymentsCollector}
