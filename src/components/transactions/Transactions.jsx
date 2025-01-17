@@ -204,11 +204,11 @@ const Transactions = () => {
             </div>
             <div className="col-xxl-3 col-xl-3 col-sm-12 w-auto">
               <label className="me-2 fw-semibold text-black"> Fecha </label>
-              <RangePicker
+              <DatePicker
                 // value={dates}
                 // onChange={(dates) => setDates(dates)}
-                format="DD-MM-YYYY"
-                placeholder={["Inicio", "Fin"]}
+                format="DD/MM/YYYY"
+                placeholder={["00/00/0000"]}
                 style={{
                   width: 183,
                 }}

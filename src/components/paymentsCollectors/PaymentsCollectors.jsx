@@ -68,6 +68,7 @@ const PaymentsCollectors = () => {
       messageContext.error("Error fetching collectors payments");
     }
   };
+  
   const paymentsCollectorsTableColumns = [
     {
       title: "Cliente",

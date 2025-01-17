@@ -2,38 +2,35 @@ import {
   Breadcrumb,
   Button,
   Card,
-  Col,
-  Form,
   Input,
   Layout,
   message,
-  Modal,
-  Row,
   Table,
   theme,
 } from "antd";
 import {
-  InfoCircleOutlined,
   PlusCircleOutlined,
   SolutionOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
+import AddCollectorModal from "../../utils/modals/AddCollectorModal";
 
 const Collectors = () => {
   const [collectors, setCollectors] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [isCollectorModalOpen, setIsCollectorModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { authState } = useAuth();
   const [messageAlert, messageContext] = message.useMessage();
-  const [form] = Form.useForm();
-
-  const { TextArea } = Input;
   const { Content } = Layout;
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
+
+  useEffect(() => {
+    getCollectors();
+  }, []);
 
   const showAddCollectorModal = () => {
     setIsCollectorModalOpen(true);
@@ -42,10 +39,6 @@ const Collectors = () => {
   const closeAddCollectorModal = () => {
     setIsCollectorModalOpen(false);
   };
-
-  useEffect(() => {
-    getCollectors();
-  }, []);
 
   const getCollectors = async () => {
     setLoading(true);
@@ -72,7 +65,7 @@ const Collectors = () => {
             <Button className="ms-2 me-2" type="primary" danger>
               Eliminar
             </Button>
-            <Button type="primary"> Transacciones </Button>
+            <Button type="primary"> Ver Pagos </Button>
           </>
         ),
       }));
@@ -81,34 +74,6 @@ const Collectors = () => {
       setLoading(false);
     } catch (error) {
       messageAlert.error("Error fetching collectors");
-    }
-  };
-
-  const saveNewCollector = async (collector) => {
-    setLoading(true);
-
-    try {
-      const response = await fetch("http://localhost:3001/collectors/save-collector", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(collector),
-      });
-
-      const data = await response.json();
-
-      if (response.status === 200) {
-        messageAlert.success(data.message);
-        closeAddCollectorModal();
-        getCollectors();
-        form.resetFields();
-      } else {
-        messageAlert.error(data.message);
-      }
-    } catch (error) {
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -195,68 +160,10 @@ const Collectors = () => {
               <Button type="primary" onClick={showAddCollectorModal}>
                 <PlusCircleOutlined /> Añadir nuevo{" "}
               </Button>
-              <Modal
-                title={
-                  <Row align="middle">
-                    {" "}
-                    <Col>
-                      {" "}
-                      <InfoCircleOutlined
-                        className="fs-6"
-                        style={{ marginRight: 8, color: "var(--blue)" }}
-                      />{" "}
-                    </Col>{" "}
-                    <Col>
-                      <label className="fs-6">Añadir Nuevo Colector</label>
-                    </Col>{" "}
-                  </Row>
-                }
-                centered
-                width={450}
-                open={isCollectorModalOpen}
-                onCancel={closeAddCollectorModal}
-                footer={null}
-              >
-                <Form form={form} onFinish={saveNewCollector}>
-                  <label className="fw-semibold"> Nombre del Colector </label>
-                  <Form.Item
-                    name="service_name"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Por Favor, Introduzca un Nombre de Servicio",
-                      },
-                    ]}
-                  >
-                    <Input placeholder="Nombre del Colector" />
-                  </Form.Item>
-                  <label className="fw-semibold"> Descripción </label>
-                  <Form.Item
-                    name="description"
-                    rules={[
-                      {
-                        required: true,
-                        message:
-                          "Por Favor, Introduzca una Descripción de Servicio",
-                      },
-                    ]}
-                  >
-                    <TextArea
-                      rows={8}
-                      size="middle"
-                      style={{
-                        resize: "none",
-                      }}
-                      placeholder="Descripción del Servicio"
-                    />
-                  </Form.Item>
-                  <Form.Item className="text-end">
-                    <Button type="primary" htmlType="submit" loading={loading}>
-                      Guardar
-                    </Button>
-                  </Form.Item>
-                </Form>
-              </Modal>
+              <AddCollectorModal
+                openModal={isCollectorModalOpen}
+                closeModal={closeAddCollectorModal}
+              />
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">

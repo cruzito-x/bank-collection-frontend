@@ -20,6 +20,7 @@ import "./styles/dashboard.css";
 import DashboardCharts from "./charts/DashboardCharts";
 import moment from "moment";
 import LogoutCard from "../../utils/logoutCard/LogoutCard";
+import AddCollectorModal from "../../utils/modals/AddCollectorModal";
 
 const Dashboard = ({ rangeFilter = () => {} }) => {
   const [customers, setCustomers] = useState([]);
@@ -27,6 +28,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   const [transactionTypes, setTransactionTypes] = useState([]);
   const [totalPayments, setTotalPayments] = useState([]);
   const [totalProcessedAmounts, setTotalProcessedAmounts] = useState([]);
+  const [isCollectorModalOpen, setIsCollectorModalOpen] = useState(false);
   const [openRegisterPayment, setOpenRegisterPayment] = useState(false);
   const [sendingDataLoading, setSendingDataLoading] = useState(false);
   const [openNotificationsModal, setOpenNotificationsModal] = useState(false);
@@ -84,6 +86,14 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     }
     setDates(range);
     rangeFilter(range);
+  };
+
+  const showAddCollectorModal = () => {
+    setIsCollectorModalOpen(true);
+  };
+
+  const closeAddCollectorModal = () => {
+    setIsCollectorModalOpen(false);
   };
 
   const showPaymentsModal = () => {
@@ -317,26 +327,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                   <Form>
                     <Table
                       dataSource={customers}
-                      columns={[
-                        {
-                          title: "Solicitud",
-                          dataIndex: "value",
-                          key: "value",
-                          align: "center",
-                        },
-                        {
-                          title: "Fecha de Solicitud",
-                          dataIndex: "value",
-                          key: "value",
-                          align: "center",
-                        },
-                        {
-                          title: "Acción",
-                          dataIndex: "action",
-                          key: "action",
-                          align: "center",
-                        },
-                      ]}
+                      columns={[]}
                       pagination={10}
                     />
                   </Form>
@@ -358,10 +349,16 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               </h2>
             </div>
             <div className="col-md-6 col-sm-6 text-end pe-5">
-              <Button type="primary" className="fw-semibold">
+              <Button type="primary" className="fw-semibold" onClick={showAddCollectorModal}>
                 {" "}
                 Añadir Colector{" "}
               </Button>
+
+              <AddCollectorModal
+                openModal={isCollectorModalOpen}
+                closeModal={closeAddCollectorModal}
+              />
+
               <Button
                 type="primary"
                 className="fw-semibold ms-2 me-2"

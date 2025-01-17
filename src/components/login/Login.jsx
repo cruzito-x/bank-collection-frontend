@@ -8,6 +8,7 @@ import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
+  const [messageAlert, messageContext] = message.useMessage();
   const navigate = useNavigate();
   const { setAuthState } = useAuth();
 
@@ -25,7 +26,7 @@ const Login = () => {
       const data = await response.json();
 
       if (response.status === 200) {
-        message.success(data.message);
+        messageAlert.success(data.message);
         setAuthState({
           isSupervisor: data.isSupervisor,
           user_id: data.user_id,
@@ -39,11 +40,11 @@ const Login = () => {
         }
       } else {
         if (response.status === 401 || response.status === 500) {
-          message.error(data.message);
+          messageAlert.error(data.message);
         }
       }
     } catch (error) {
-      message.error(
+      messageAlert.error(
         "Ha Ocurrido un Error Inesperado, Por Favor Intente de Nuevo"
       );
     }
@@ -52,6 +53,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
+      {messageContext}
       <Card>
         <div
           style={{
