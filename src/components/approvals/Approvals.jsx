@@ -87,18 +87,18 @@ const Approvals = () => {
                   {" "}
                   $70{" "}
                 </h1>
-                <label className="fw-semibold">
+                <label className="fw-semibold text-black">
                   {" "}
                   <CheckCircleOutlined style={{ color: "var(--green)" }} />{" "}
                   ¡Transferencia Exitosa!{" "}
                 </label>
               </div>
               <div className="col-12">
-                <label className="fw-semibold"> Cliente Emisor </label>
+                <label className="fw-semibold text-black"> Cliente Emisor </label>
                 <p> Juan Caballo 🐴 </p>
               </div>
               <div className="col-12">
-                <label className="fw-semibold">
+                <label className="fw-semibold text-black">
                   {" "}
                   E-mail de Cliente Emisor{" "}
                 </label>
@@ -108,11 +108,11 @@ const Approvals = () => {
                 </p>
               </div>
               <div className="col-12">
-                <label className="fw-semibold"> Receptor </label>
+                <label className="fw-semibold text-black"> Receptor </label>
                 <p> Jorgito 🫦 </p>
               </div>
               <div className="col-12 mb-3">
-                <label className="fw-semibold"> Concepto </label>
+                <label className="fw-semibold text-black"> Concepto </label>
                 <p>
                   {" "}
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea,
@@ -195,12 +195,12 @@ const Approvals = () => {
         <Card className="mt-3">
           <div className="row ms-2 pt-3 mb-2">
             <div className="col-12 text-start">
-              <label className="fw-semibold"> Buscar Por </label>
+              <label className="fw-semibold text-black"> Buscar Por </label>
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold">
+              <label className="me-2 fw-semibold text-black">
                 {" "}
                 Código de Transacción{" "}
               </label>
@@ -213,7 +213,7 @@ const Approvals = () => {
               />
             </div>
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold"> Nombre </label>
+              <label className="me-2 fw-semibold text-black"> Nombre </label>
               <Input
                 placeholder="Nombre de Usuario"
                 prefix={<UserOutlined />}

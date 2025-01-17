@@ -178,12 +178,12 @@ const Users = () => {
         <Card className="mt-3">
           <div className="row ms-2 pt-3 mb-2">
             <div className="col-12 text-start">
-              <label className="fw-semibold"> Buscar Por </label>
+              <label className="fw-semibold text-black"> Buscar Por </label>
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold"> Nombre </label>
+              <label className="me-2 fw-semibold text-black"> Nombre </label>
               <Input
                 placeholder="Nombre de Usuario"
                 prefix={<UserOutlined />}
@@ -193,7 +193,7 @@ const Users = () => {
               />
             </div>
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold"> Rol </label>
+              <label className="me-2 fw-semibold text-black"> Rol </label>
               <Select
                 defaultValue="Supervisor"
                 prefix={<KeyOutlined />}
@@ -256,7 +256,7 @@ const Users = () => {
                 <Form layout={"vertical"} onFinish={updateUserInfo}>
                   <div className="row mt-4">
                     <div className="col-12">
-                      <label className="fw-semibold"> Nombre de Usuario </label>
+                      <label className="fw-semibold text-black"> Nombre de Usuario </label>
                       <Form.Item
                         name="username"
                         rules={[
@@ -270,7 +270,7 @@ const Users = () => {
                       </Form.Item>
                     </div>
                     <div className="col-12">
-                      <label className="fw-semibold"> E-mail </label>
+                      <label className="fw-semibold text-black"> E-mail </label>
                       <Form.Item
                         name="email"
                         rules={[{ message: "Por Favor Introduzca un E-mail" }]}
@@ -279,7 +279,7 @@ const Users = () => {
                       </Form.Item>
                     </div>
                     <div className="col-12">
-                      <label className="fw-semibold"> Contraseña </label>
+                      <label className="fw-semibold text-black"> Contraseña </label>
                       <Form.Item
                         name="password"
                         rules={[

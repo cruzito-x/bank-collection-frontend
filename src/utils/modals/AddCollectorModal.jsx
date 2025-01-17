@@ -69,7 +69,7 @@ const AddCollectorModal = ({ openModal, closeModal }) => {
     >
       {messageContext}
       <Form form={form} onFinish={saveNewCollector}>
-        <label className="fw-semibold"> Nombre de Colector </label>
+        <label className="fw-semibold text-black"> Nombre de Colector </label>
         <Form.Item
           name="service_name"
           rules={[
@@ -81,7 +81,7 @@ const AddCollectorModal = ({ openModal, closeModal }) => {
         >
           <Input placeholder="Nombre de Colector" />
         </Form.Item>
-        <label className="fw-semibold"> Descripción del Servicio </label>
+        <label className="fw-semibold text-black"> Descripción del Servicio </label>
         <Form.Item
           name="description"
           rules={[

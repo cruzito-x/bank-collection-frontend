@@ -343,7 +343,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
         <Card className="mt-4 pt-4 shadow">
           <div className="row">
             <div className="col-md-6 col-sm-6 text-start">
-              <h2 className="fw-semibold ms-3 text-black">
+              <h2 className="fw-semibold text-black ms-3 text-black">
                 {" "}
                 Transacciones Recientes{" "}
               </h2>

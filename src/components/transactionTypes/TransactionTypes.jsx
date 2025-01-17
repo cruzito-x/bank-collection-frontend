@@ -116,12 +116,12 @@ const TransactionTypes = () => {
         <Card className="mt-3">
           <div className="row ms-2 pt-3 mb-2">
             <div className="col-12 text-start">
-              <label className="fw-semibold"> Buscar Por </label>
+              <label className="fw-semibold text-black"> Buscar Por </label>
             </div>
           </div>
           <div className="row ms-2 mb-3">
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold"> Nombre </label>
+              <label className="me-2 fw-semibold text-black"> Nombre </label>
               <Input
                 placeholder="Tipo de Transacción"
                 prefix={<AuditOutlined />}
