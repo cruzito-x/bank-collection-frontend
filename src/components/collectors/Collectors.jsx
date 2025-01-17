@@ -120,7 +120,7 @@ const Collectors = () => {
       align: "center",
     },
     {
-      title: "Servicio",
+      title: "Colector",
       dataIndex: "service_name",
       key: "service_name",
       align: "center",
