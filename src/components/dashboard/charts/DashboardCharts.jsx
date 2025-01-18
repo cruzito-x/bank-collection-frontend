@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Chart } from "chart.js/auto";
 import { Card } from "antd";
 
 const DashboardCharts = () => {
+  const [transactionsByCollector, setTransactionsByCollector] = useState([]);
   const barTransactionsCanvasRef = useRef(null);
   const barTransactionsChartInstance = useRef(null);
 
@@ -12,7 +13,33 @@ const DashboardCharts = () => {
   const doughnutAmountCanvasRef = useRef(null);
   const doughnutAmountChartInstance = useRef(null);
 
+  const getTransactionsByCollector = async () => {
+    const response = await fetch(
+      "http://localhost:3001/dashboard/transactions-by-collector",
+      {
+        method: "GET",
+      }
+    );
+
+    const transactionsByCollectorData = await response.json();
+    setTransactionsByCollector(transactionsByCollectorData);
+  };
+
   useEffect(() => {
+    getTransactionsByCollector();
+  }, []);
+
+  useEffect(() => {
+    if (transactionsByCollector.length === 0) return;
+
+    const collectors = transactionsByCollector.map(
+      (transactionByCollector) => transactionByCollector.collector
+    );
+
+    const totals = transactionsByCollector.map(
+      (transactionByCollector) => transactionByCollector.transactionsByCollector
+    );
+
     const barTransactionsChart =
       barTransactionsCanvasRef.current.getContext("2d");
     const doughnutTransactionsChart =
@@ -91,10 +118,10 @@ const DashboardCharts = () => {
     };
 
     const doughnutAmountData = {
-      labels: ["Luz", "Agua", "Internet", "UTEC", "UNAB"],
+      labels: collectors,
       datasets: [
         {
-          data: [30, 20, 15, 10, 25],
+          data: totals,
           backgroundColor: [
             "#3e9bff",
             "#6f99ff",
@@ -226,7 +253,7 @@ const DashboardCharts = () => {
         doughnutTransactionsChartInstance.current.destroy();
       }
     };
-  }, []);
+  }, [transactionsByCollector]);
 
   return (
     <div className="row">

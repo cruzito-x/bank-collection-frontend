@@ -116,7 +116,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   useEffect(() => {
     getCustomers();
     getCollectors();
-    getServices();
+    getServicesByCollector();
     getTransactionTypes();
     getTotalPayments();
     getTotalProcessedAmounts();
@@ -125,7 +125,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   useEffect(() => {
     if (collectors.length === 0) return;
     if (totalPayments.length === 0) return;
-    // if (totalProcessedAmounts.length === 0) return;
+    if (totalProcessedAmounts.length === 0) return;
   }, [collectors, totalPayments, totalProcessedAmounts]);
 
   const getCustomers = async () => {
@@ -162,21 +162,29 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     setCollectors(collectors);
   };
 
-  const getServices = async () => {
-    const response = await fetch("http://localhost:3001/services", {
-      method: "GET",
-    });
+  const getServicesByCollector = async (collectorId) => {
+    const response = await fetch(
+      `http://localhost:3001/services/services-by-collector/${collectorId}`,
+      {
+        method: "GET",
+      }
+    );
 
     const servicesData = await response.json();
     const services = servicesData.map((service) => {
       return {
         value: service.id,
-        label: service.service_name,        
-      }
+        label: service.service_name,
+      };
     });
 
     setServices(services);
-  }
+  };
+
+  const getServiceOnCollectorsChange = (value) => {
+    form.setFieldsValue({ collector_id: value });
+    getServicesByCollector(value);
+  };
 
   const getTotalPayments = async () => {
     const response = await fetch("http://localhost:3001/payments-collectors", {
@@ -460,9 +468,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                     </label>
                     <Select
                       options={collectors}
-                      onChange={(value) => {
-                        form.setFieldsValue({ collector_id: value });
-                      }}
+                      onChange={getServiceOnCollectorsChange}
                       showSearch
                       placeholder="Buscar Colector"
                       optionFilterProp="label"
