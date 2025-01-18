@@ -162,7 +162,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     setCollectors(collectors);
   };
 
-  const getServicesByCollector = async (collectorId) => {
+  const getServicesByCollector = async (collectorId = 0) => {
     const response = await fetch(
       `http://localhost:3001/services/services-by-collector/${collectorId}`,
       {

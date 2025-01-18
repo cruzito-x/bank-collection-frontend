@@ -26,6 +26,102 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
     color: darkTheme ? "#ffffff" : "007bff",
   };
 
+  const menuItems = [
+    isSupervisor
+      ? {
+          key: "/dashboard",
+          icon: <LineChartOutlined style={colorByTheme} />,
+          label: "Dashboard",
+          style: { colorByTheme },
+        }
+      : null,
+    {
+      key: "/customers",
+      icon: <TeamOutlined style={colorByTheme} />,
+      label: "Clientes",
+      style: { colorByTheme },
+    },
+    isSupervisor
+      ? {
+          key: "/collectors",
+          icon: <SolutionOutlined style={colorByTheme} />,
+          label: "Colectores",
+          style: { colorByTheme },
+        }
+      : null,
+    {
+      key: "/payments-collectors",
+      icon: <WalletOutlined style={colorByTheme} />,
+      label: "Pagos a Colectores",
+      style: { colorByTheme },
+    },
+    {
+      key: "/transactions-menu",
+      icon: <TransactionOutlined style={colorByTheme} />,
+      label: "Transacciones",
+      style: { colorByTheme },
+      children: [
+        {
+          key: "/transactions",
+          icon: <TransactionOutlined style={colorByTheme} />,
+          label: "Transacciones",
+          style: { colorByTheme },
+        },
+        isSupervisor
+          ? {
+              key: "/transaction-types",
+              icon: <AuditOutlined style={colorByTheme} />,
+              label: "Tipos de Transacciones",
+              style: { colorByTheme },
+            }
+          : null,
+      ].filter(Boolean),
+    },
+    isSupervisor
+      ? {
+          key: "/approvals",
+          icon: <CheckCircleOutlined style={colorByTheme} />,
+          label: "Aprobaciones",
+          style: { colorByTheme },
+        }
+      : null,
+    isSupervisor
+      ? {
+          key: "/users",
+          icon: <UserOutlined style={colorByTheme} />,
+          label: "Usuarios",
+          style: { colorByTheme },
+        }
+      : null,
+    isSupervisor
+      ? {
+          key: "/audit",
+          icon: <DatabaseOutlined style={colorByTheme} />,
+          label: "Auditoría",
+          style: { colorByTheme },
+        }
+      : null,
+    !isSupervisor
+      ? {
+          key: "/logout",
+          icon: <LogoutOutlined style={colorByTheme} />,
+          label: "Cerrar Sesión",
+          style: { colorByTheme },
+        }
+      : null,
+    {
+      key: "#",
+      icon: collapsed ? (
+        <RightOutlined style={colorByTheme} />
+      ) : (
+        <LeftOutlined style={colorByTheme} />
+      ),
+      label: collapsed ? "Abrir Menú" : "Cerrar Menú",
+      className: "toggle",
+      onClick: () => setCollapsed(!collapsed),
+    },
+  ];
+
   return (
     <Menu
       theme={darkTheme ? "dark" : "light"}
@@ -34,6 +130,7 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
         color: darkTheme ? "#ffffff" : "var(--blue)",
       }}
       mode="inline"
+      items={menuItems}
       className="menu-bar"
       onClick={({ key }) => {
         if (key === "/logout") {
@@ -42,106 +139,7 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
           navigate(key);
         }
       }}
-    >
-      {isSupervisor && (
-        <Menu.Item
-          key="/dashboard"
-          icon={<LineChartOutlined style={colorByTheme} />}
-        >
-          <span style={colorByTheme}> Dashboard </span>
-        </Menu.Item>
-      )}
-
-      <Menu.Item key="/customers" icon={<TeamOutlined style={colorByTheme} />}>
-        <span style={colorByTheme}> Clientes </span>
-      </Menu.Item>
-
-      {isSupervisor && (
-        <Menu.Item
-          key="/collectors"
-          icon={<SolutionOutlined style={colorByTheme} />}
-        >
-          <span style={colorByTheme}> Colectores </span>
-        </Menu.Item>
-      )}
-
-      <Menu.Item
-        key="/payments-collectors"
-        icon={<WalletOutlined style={colorByTheme} />}
-      >
-        <span style={colorByTheme}> Pagos a Colectores </span>
-      </Menu.Item>
-
-      <>
-        <Menu.SubMenu
-          title="Transacciones"
-          icon={<TransactionOutlined style={colorByTheme} />}
-          style={{ colorByTheme }}
-        >
-          <Menu.Item
-            key="/transactions"
-            icon={<TransactionOutlined style={colorByTheme} />}
-          >
-            <span style={colorByTheme}> Transacciones </span>
-          </Menu.Item>
-
-          {isSupervisor && (
-            <Menu.Item
-              key="/transaction-types"
-              icon={<AuditOutlined style={colorByTheme} />}
-            >
-              <span style={colorByTheme}> Tipos de Transacciones </span>
-            </Menu.Item>
-          )}
-        </Menu.SubMenu>
-      </>
-
-      {isSupervisor && (
-        <>
-          <Menu.Item
-            key="/approvals"
-            icon={<CheckCircleOutlined style={colorByTheme} />}
-          >
-            <span style={colorByTheme}> Aprobaciones </span>
-          </Menu.Item>
-
-          <Menu.Item key="/users" icon={<UserOutlined style={colorByTheme} />}>
-            <span style={colorByTheme}> Usuarios </span>
-          </Menu.Item>
-
-          <Menu.Item
-            key="/audit"
-            icon={<DatabaseOutlined style={colorByTheme} />}
-          >
-            <span style={colorByTheme}> Auditoría </span>
-          </Menu.Item>
-        </>
-      )}
-
-      {!isSupervisor && (
-        <Menu.Item key="/logout" icon={<LogoutOutlined style={colorByTheme} />}>
-          <span style={colorByTheme}> Cerrar Sesión </span>
-        </Menu.Item>
-      )}
-
-      <Menu.Item
-        key={"#"}
-        icon={
-          collapsed ? (
-            <RightOutlined style={colorByTheme} />
-          ) : (
-            <LeftOutlined style={colorByTheme} />
-          )
-        }
-        onClick={() => setCollapsed(!collapsed)}
-        className="toggle"
-      >
-        <span style={colorByTheme}>
-          {" "}
-          {collapsed ? "Abrir Menú" : "Cerrar Menú"}{" "}
-        </span>
-      </Menu.Item>
-    </Menu>
+    />
   );
 };
 
