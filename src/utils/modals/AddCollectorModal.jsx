@@ -62,7 +62,7 @@ const AddCollectorModal = ({ openModal, closeModal }) => {
         </Row>
       }
       centered
-      width={450}
+      width={550}
       open={openModal}
       onCancel={closeModal}
       footer={null}
@@ -71,7 +71,7 @@ const AddCollectorModal = ({ openModal, closeModal }) => {
       <Form form={form} onFinish={saveNewCollector}>
         <label className="fw-semibold text-black"> Nombre de Colector </label>
         <Form.Item
-          name="service_name"
+          name="collector_name"
           rules={[
             {
               required: true,
@@ -81,9 +81,46 @@ const AddCollectorModal = ({ openModal, closeModal }) => {
         >
           <Input placeholder="Nombre de Colector" />
         </Form.Item>
-        <label className="fw-semibold text-black"> Descripción del Servicio </label>
+        <label className="fw-semibold text-black">
+          {" "}
+          Descripción del Colector{" "}
+        </label>
         <Form.Item
-          name="description"
+          name="collector_description"
+          rules={[
+            {
+              required: true,
+              message: "Por Favor, Introduzca una Descripción Para el Colector",
+            },
+          ]}
+        >
+          <TextArea
+            rows={4}
+            size="middle"
+            style={{
+              resize: "none",
+            }}
+            placeholder="Descripción del Servicio"
+          />
+        </Form.Item>
+        <label className="fw-semibold text-black"> Servicio </label>
+        <Form.Item
+          name="service_name"
+          rules={[
+            {
+              required: true,
+              message: "Por Favor, Introduzca un Nombre de Servicio",
+            },
+          ]}
+        >
+          <Input placeholder="Nombre de Colector" />
+        </Form.Item>
+        <label className="fw-semibold text-black">
+          {" "}
+          Descripción del Servicio{" "}
+        </label>
+        <Form.Item
+          name="service_description"
           rules={[
             {
               required: true,
@@ -92,7 +129,7 @@ const AddCollectorModal = ({ openModal, closeModal }) => {
           ]}
         >
           <TextArea
-            rows={8}
+            rows={4}
             size="middle"
             style={{
               resize: "none",

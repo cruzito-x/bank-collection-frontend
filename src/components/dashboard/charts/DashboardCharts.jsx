@@ -162,6 +162,13 @@ const DashboardCharts = () => {
             text: "Transacciones por Colector",
             color: "#000000",
           },
+          tooltip: {
+            callbacks: {
+              label: function (total, data) {
+                return "Total de Pago(s): " + total.formattedValue;
+              },
+            },
+          },
         },
         borderWidth: 0,
       },
