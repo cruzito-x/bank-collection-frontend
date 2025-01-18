@@ -113,7 +113,7 @@ const AddCollectorModal = ({ openModal, closeModal }) => {
             },
           ]}
         >
-          <Input placeholder="Nombre de Colector" />
+          <Input placeholder="Nombre de Servicio" />
         </Form.Item>
         <label className="fw-semibold text-black">
           {" "}
