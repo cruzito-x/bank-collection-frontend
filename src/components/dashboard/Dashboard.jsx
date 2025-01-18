@@ -25,6 +25,7 @@ import AddCollectorModal from "../../utils/modals/AddCollectorModal";
 const Dashboard = ({ rangeFilter = () => {} }) => {
   const [customers, setCustomers] = useState([]);
   const [collectors, setCollectors] = useState([]);
+  const [services, setServices] = useState([]);
   const [transactionTypes, setTransactionTypes] = useState([]);
   const [totalPayments, setTotalPayments] = useState([]);
   const [totalProcessedAmounts, setTotalProcessedAmounts] = useState([]);
@@ -113,9 +114,10 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   };
 
   useEffect(() => {
-    getCollectors();
-    getTransactionTypes();
     getCustomers();
+    getCollectors();
+    getServices();
+    getTransactionTypes();
     getTotalPayments();
     getTotalProcessedAmounts();
   }, []);
@@ -123,8 +125,26 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   useEffect(() => {
     if (collectors.length === 0) return;
     if (totalPayments.length === 0) return;
-    if (totalProcessedAmounts.length === 0) return;
+    // if (totalProcessedAmounts.length === 0) return;
   }, [collectors, totalPayments, totalProcessedAmounts]);
+
+  const getCustomers = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/customers", {
+        method: "GET",
+      });
+
+      const customersData = await response.json();
+      const customers = customersData.map((customer) => {
+        return {
+          value: customer.id,
+          label: customer.name + " - " + customer.account_number,
+        };
+      });
+
+      setCustomers(customers);
+    } catch (error) {}
+  };
 
   const getCollectors = async () => {
     const response = await fetch("http://localhost:3001/collectors", {
@@ -135,12 +155,28 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     const collectors = collectorsData.map((collector) => {
       return {
         value: collector.id,
-        label: collector.service_name,
+        label: collector.collector,
       };
     });
 
     setCollectors(collectors);
   };
+
+  const getServices = async () => {
+    const response = await fetch("http://localhost:3001/services", {
+      method: "GET",
+    });
+
+    const servicesData = await response.json();
+    const services = servicesData.map((service) => {
+      return {
+        value: service.id,
+        label: service.service_name,        
+      }
+    });
+
+    setServices(services);
+  }
 
   const getTotalPayments = async () => {
     const response = await fetch("http://localhost:3001/payments-collectors", {
@@ -177,24 +213,6 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     });
 
     setTransactionTypes(transactionTypes);
-  };
-
-  const getCustomers = async () => {
-    try {
-      const response = await fetch("http://localhost:3001/customers", {
-        method: "GET",
-      });
-
-      const customersData = await response.json();
-      const customers = customersData.map((customer) => {
-        return {
-          value: customer.id,
-          label: customer.name + " - " + customer.account_number,
-        };
-      });
-
-      setCustomers(customers);
-    } catch (error) {}
   };
 
   const registerPayments = async (payment) => {
@@ -249,7 +267,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 <Card className="text-center shadow">
                   <h2 className="p-3 fw-semibold text-black">
                     {" "}
-                    {collectors.length}{" "}
+                    {collectors.length || 0}{" "}
                   </h2>
                   <div className="dashboard-blue-card">
                     <label className="fw-semibold p-2">
@@ -263,7 +281,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 <Card className="text-center shadow">
                   <h2 className="p-3 fw-semibold text-black">
                     {" "}
-                    {totalPayments.length}{" "}
+                    {totalPayments.length || 0}{" "}
                   </h2>
                   <div className="dashboard-yellow-card">
                     <label className="fw-semibold p-2">
@@ -277,7 +295,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 <Card className="text-center shadow">
                   <h2 className="p-3 fw-semibold text-black">
                     {" "}
-                    ${totalProcessedAmounts}{" "}
+                    ${totalProcessedAmounts || 0}{" "}
                   </h2>
                   <div className="dashboard-green-card">
                     <label className="fw-semibold p-2">
@@ -293,7 +311,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                   onClick={showNotificationsModal}
                   style={{ cursor: "pointer" }}
                 >
-                  <h2 className="p-3 fw-semibold text-black"> 0 </h2>
+                  <h2 className="p-3 fw-semibold text-black"> {0 || 0} </h2>
                   <div className="dashboard-red-card">
                     <label className="fw-semibold p-2"> Notificaciones </label>
                   </div>
@@ -349,7 +367,11 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               </h2>
             </div>
             <div className="col-md-6 col-sm-6 text-end pe-5">
-              <Button type="primary" className="fw-semibold" onClick={showAddCollectorModal}>
+              <Button
+                type="primary"
+                className="fw-semibold"
+                onClick={showAddCollectorModal}
+              >
                 {" "}
                 Añadir Colector{" "}
               </Button>
@@ -365,7 +387,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 onClick={showPaymentsModal}
               >
                 {" "}
-                Registrar Pago{" "}
+                Pagar Servicio{" "}
               </Button>
 
               <Modal
@@ -380,7 +402,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       />{" "}
                     </Col>{" "}
                     <Col>
-                      <label className="fs-6">Registrar Pago</label>
+                      <label className="fs-6">Pagar Servicio</label>
                     </Col>{" "}
                   </Row>
                 }
@@ -455,6 +477,37 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                     />
                   </Form.Item>
                   <Form.Item
+                    name="service_id"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por Favor, Seleccione un Servicio",
+                      },
+                    ]}
+                  >
+                    <label className="fw-semibold text-black">
+                      {" "}
+                      Seleccionar Servicio{" "}
+                    </label>
+                    <Select
+                      options={services}
+                      onChange={(value) => {
+                        form.setFieldsValue({ service_id: value });
+                      }}
+                      showSearch
+                      placeholder="Buscar Servicio"
+                      optionFilterProp="label"
+                      filterSort={(optionA, optionB) =>
+                        (optionA?.label ?? "")
+                          .toLowerCase()
+                          .localeCompare((optionB?.label ?? "").toLowerCase())
+                      }
+                      style={{
+                        width: "100%",
+                      }}
+                    />
+                  </Form.Item>
+                  <Form.Item
                     name="amount"
                     rules={[
                       {
@@ -511,7 +564,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       htmlType="submit"
                       loading={sendingDataLoading}
                     >
-                      Registrar Pago
+                      Pagar
                     </Button>
                   </Form.Item>
                 </Form>

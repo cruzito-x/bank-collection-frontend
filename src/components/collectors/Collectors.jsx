@@ -86,8 +86,8 @@ const Collectors = () => {
     },
     {
       title: "Colector",
-      dataIndex: "service_name",
-      key: "service_name",
+      dataIndex: "collector",
+      key: "collector",
       align: "center",
     },
     {

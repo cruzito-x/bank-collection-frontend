@@ -34,14 +34,14 @@ const DashboardCharts = () => {
         {
           data: [100, 150, 120, 180, 130, 140, 72],
           backgroundColor: [
-            "#007bff",
+            "#3e9bff",
             "#6f99ff",
             "#b0cfff",
             "#d3e7ff",
             "#ff7b7b",
             "#ffb7b7",
             "#ffd3d3",
-            "#7bffb5",
+            "#41d17f",
             "#b7ffd1",
             "#d3ffe3",
             "#ffdc7b",
@@ -96,7 +96,7 @@ const DashboardCharts = () => {
         {
           data: [30, 20, 15, 10, 25],
           backgroundColor: [
-            "#007bff",
+            "#3e9bff",
             "#6f99ff",
             "#b0cfff",
             "#d3e7ff",
@@ -146,7 +146,7 @@ const DashboardCharts = () => {
         {
           data: [30, 20, 15, 10, 25, 17],
           backgroundColor: [
-            "#007bff",
+            "#3e9bff",
             "#6f99ff",
             "#b0cfff",
             "#d3e7ff",

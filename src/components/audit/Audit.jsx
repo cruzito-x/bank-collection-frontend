@@ -140,7 +140,7 @@ const Audit = () => {
               <Button type="primary"> Buscar </Button>
             </div>
           </div>
-          <div className="row ms-1 mb-3 pe-3">
+          <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">
               <Table
                 loading={loading}

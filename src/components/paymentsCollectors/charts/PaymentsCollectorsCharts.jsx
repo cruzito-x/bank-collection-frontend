@@ -43,7 +43,7 @@ const PaymentsCollectorsCharts = () => {
         {
           data: percentage,
           backgroundColor: [
-            "#007bff", // Azul Intenso
+            "#3e9bff", // Azul Intenso
             "#6f99ff", // Azul Pastel
             "#b0cfff", // Azul Claro
             "#d3e7ff", // Azul Hielo

@@ -45,30 +45,33 @@ const PaymentsCollectors = () => {
       );
 
       const paymentscollectorsData = await response.json();
-      const paymentsCollector = paymentscollectorsData.map(
-        (paymentsCollector) => {
-          return {
-            ...paymentsCollector,
-            amount: "$" + paymentsCollector.amount,
-            datetime: moment(paymentsCollector.date_hour).format(
-              "DD/MM/YYYY hh:mm a"
-            ),
-            actions: (
-              <>
-                <Button type="primary"> Ver Detalles </Button>
-              </>
-            ),
-          };
-        }
-      );
+      if (paymentscollectorsData.length > 0) {
+        const paymentsCollector = paymentscollectorsData.map(
+          (paymentsCollector) => {
+            return {
+              ...paymentsCollector,
+              amount: "$" + paymentsCollector.amount,
+              datetime: moment(paymentsCollector.date_hour).format(
+                "DD/MM/YYYY hh:mm a"
+              ),
+              actions: (
+                <>
+                  <Button type="primary"> Ver Detalles </Button>
+                </>
+              ),
+            };
+          }
+        );
 
-      setPaymentsCollectors(paymentsCollector);
+        setPaymentsCollectors(paymentsCollector);
+      }
+
       setLoading(false);
     } catch (error) {
-      messageContext.error("Error fetching collectors payments");
+      messageAlert.error("Error fetching collectors payments");
     }
   };
-  
+
   const paymentsCollectorsTableColumns = [
     {
       title: "Cliente",
@@ -78,14 +81,20 @@ const PaymentsCollectors = () => {
     },
     {
       title: "Colector",
-      dataIndex: "service",
-      key: "service",
+      dataIndex: "collector",
+      key: "collector",
       align: "center",
     },
     {
       title: "Monto Pagado",
       dataIndex: "amount",
       key: "amount",
+      align: "center",
+    },
+    {
+      title: "Concepto",
+      dataIndex: "service",
+      key: "service",
       align: "center",
     },
     {

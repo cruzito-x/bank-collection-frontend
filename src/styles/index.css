@@ -1,12 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
 :root {
-  --blue: #007bff;
-  --green: #129a56;
-  --yellow: #ffac00;
-  --red: #da0505;
+  --blue: #3e9bff;
+  --green: #1ed87b;
+  --yellow: #ffc248;
+  --red: #ff3131;
   --gray: #273543;
-  --yellow-hovered: #ffc654;
+  --yellow-hovered: #ffd786;
 }
 
 /* ::-webkit-scrollbar {
