@@ -100,7 +100,7 @@ const AddCollectorModal = ({ openModal, closeModal }) => {
             style={{
               resize: "none",
             }}
-            placeholder="Descripción del Servicio"
+            placeholder="Descripción del Colector"
           />
         </Form.Item>
         <label className="fw-semibold text-black"> Servicio </label>
