@@ -88,7 +88,7 @@ const PaymentsCollectorsCharts = () => {
           tooltip: {
             callbacks: {
               label: function (percentage, data) {
-                return Math.round(percentage.formattedValue) + "% de los Pagos";
+                return Math.round(percentage.formattedValue) + "% del Total de Ganancias por Pagos";
               },
             },
           },
