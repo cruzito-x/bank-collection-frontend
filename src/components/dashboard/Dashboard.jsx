@@ -175,6 +175,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
       return {
         value: service.id,
         label: service.service_name,
+        price: service.price,
       };
     });
 
@@ -532,6 +533,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       min={5}
                       max={10000}
                       placeholder="0.00"
+                      value={services[0]?.price > 0 ? services[0].price : ""}
                       onChange={(value) => {
                         form.setFieldsValue({ amount: value });
                       }}
@@ -551,7 +553,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                     <input
                       type="text"
                       className="form-control"
-                      value={moment().format("DD/MM/YYYY HH:mm")}
+                      value={moment().format("DD/MM/YYYY hh:mm a")}
                       readOnly
                     />
                   </Form.Item>
