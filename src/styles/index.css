@@ -9,9 +9,9 @@
   --yellow-hovered: #ffd786;
 }
 
-/* ::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 0px;
-} */
+}
 
 * {
   font-family: "Montserrat", sans-serif;
