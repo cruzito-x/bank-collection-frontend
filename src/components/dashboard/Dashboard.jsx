@@ -533,7 +533,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       min={5}
                       max={10000}
                       placeholder="0.00"
-                      value={services[0]?.price > 0 ? services[0].price : ""}
+                      // value={services[0]?.price > 0 ? services[0].price : ""}
                       onChange={(value) => {
                         form.setFieldsValue({ amount: value });
                       }}
