@@ -43,9 +43,13 @@
   cursor: pointer;
 }
 
+.dashboard-red-card label,
 .dashboard-user-card label {
   cursor: pointer;
-  font-size: 13px; 
+}
+
+.dashboard-user-card label {
+  font-size: 13px;
 }
 
 .user-card {
