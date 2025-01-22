@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, Form, message, Image, Input } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
-import Logo from "../../assets/img/logo.png";
 import "./styles/login.css";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 
@@ -64,7 +63,7 @@ const Login = () => {
           }}
         >
           <Image
-            src={Logo}
+            src={`${process.env.PUBLIC_URL}/logo.png`}
             preview={false}
             style={{
               width: "75px",

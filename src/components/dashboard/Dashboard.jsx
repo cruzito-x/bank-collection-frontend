@@ -13,8 +13,14 @@ import {
   Form,
   Table,
   message,
+  Progress,
+  Flex,
 } from "antd";
-import { InfoCircleOutlined, WarningOutlined } from "@ant-design/icons";
+import {
+  CloseOutlined,
+  InfoCircleOutlined,
+  WarningOutlined,
+} from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import "./styles/dashboard.css";
 import DashboardCharts from "./charts/DashboardCharts";
@@ -31,6 +37,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   const [totalProcessedAmounts, setTotalProcessedAmounts] = useState([]);
   const [isCollectorModalOpen, setIsCollectorModalOpen] = useState(false);
   const [openRegisterPayment, setOpenRegisterPayment] = useState(false);
+  const [percentage, setPercentage] = useState(0);
   const [sendingDataLoading, setSendingDataLoading] = useState(false);
   const [openNotificationsModal, setOpenNotificationsModal] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
@@ -39,6 +46,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     moment().startOf("day"),
     moment().endOf("day"),
   ]);
+  let cancelPaymentTimeOut;
 
   const { Content } = Layout;
   const { RangePicker } = DatePicker;
@@ -225,38 +233,85 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   };
 
   const registerPayments = async (payment) => {
+    if (sendingDataLoading) {
+      return;
+    }
+
     setSendingDataLoading(true);
 
-    try {
-      const response = await fetch(
-        "http://localhost:3001/payments-collectors/save-new-payment",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payment),
-        }
-      );
+    let n = 0;
+    let isCancelled = false;
 
-      const registeredPayment = await response.json();
-
-      if (response.status === 200) {
-        messageAlert.success(registeredPayment.message);
-        form.resetFields();
-        getCollectors();
-        getTotalPayments();
-        getTotalProcessedAmounts();
-        closePaymentsModal();
-      } else {
-        messageAlert.error(registeredPayment.message);
+    const updatePercentage = () => {
+      if (isCancelled) {
+        return;
       }
 
+      if (n < 100) {
+        setPercentage(n);
+        n++;
+        cancelPaymentTimeOut = setTimeout(updatePercentage, 50);
+      } else if (n === 100) {
+        completePaymentRegistration(payment);
+      }
+    };
+
+    const completePaymentRegistration = async (payment) => {
+      if (isCancelled) {
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          "http://localhost:3001/payments-collectors/save-new-payment",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payment),
+          }
+        );
+
+        if (isCancelled) {
+          return;
+        }
+
+        const registeredPayment = await response.json();
+
+        if (response.status === 200) {
+          messageAlert.success(registeredPayment.message);
+          form.resetFields();
+          getCollectors();
+          getTotalPayments();
+          getTotalProcessedAmounts();
+          closePaymentsModal();
+          setPercentage(0);
+        } else {
+          messageAlert.error(registeredPayment.message);
+        }
+      } catch (error) {
+        messageAlert.error("Error al Registrar el Pago. Intente de Nuevo");
+      } finally {
+        if (!isCancelled) {
+          setSendingDataLoading(false);
+        }
+      }
+    };
+
+    updatePercentage();
+    cancelPayment = () => {
+      isCancelled = true;
+      clearTimeout(cancelPaymentTimeOut);
+      setPercentage(0);
       setSendingDataLoading(false);
-    } catch (error) {
-      messageAlert.error("Error al Registrar el Pago. Intente de Nuevo");
-      setSendingDataLoading(false);
-    }
+    };
+  };
+
+  let cancelPayment = () => {
+    clearTimeout(cancelPaymentTimeOut);
+    setPercentage(0);
+    setSendingDataLoading(false);
   };
 
   return (
@@ -422,7 +477,31 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 onCancel={closePaymentsModal}
                 footer={null}
               >
+                <div className={percentage === 0 ? "d-none" : "d-block"}>
+                  <Flex vertical gap="small">
+                    <div className="d-flex">
+                      <Progress
+                        percent={percentage}
+                        type="line"
+                        status="active"
+                        showInfo={false}
+                      />
+                      <Button
+                        className="ms-3"
+                        type="primary"
+                        danger
+                        onClick={cancelPayment}
+                      >
+                        <CloseOutlined />
+                      </Button>
+                    </div>
+                  </Flex>
+                </div>
                 <Form form={form} onFinish={registerPayments}>
+                  <label className="fw-semibold text-black">
+                    {" "}
+                    Seleccionar Cliente{" "}
+                  </label>
                   <Form.Item
                     name="customer_id"
                     rules={[
@@ -432,10 +511,6 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       },
                     ]}
                   >
-                    <label className="fw-semibold text-black">
-                      {" "}
-                      Seleccionar Cliente{" "}
-                    </label>
                     <Select
                       options={customers}
                       onChange={(value) => {
@@ -454,6 +529,10 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       }}
                     />
                   </Form.Item>
+                  <label className="fw-semibold text-black">
+                    {" "}
+                    Seleccionar Colector{" "}
+                  </label>
                   <Form.Item
                     name="collector_id"
                     rules={[
@@ -463,10 +542,6 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       },
                     ]}
                   >
-                    <label className="fw-semibold text-black">
-                      {" "}
-                      Seleccionar Colector{" "}
-                    </label>
                     <Select
                       options={collectors}
                       onChange={getServiceOnCollectorsChange}
@@ -483,6 +558,10 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       }}
                     />
                   </Form.Item>
+                  <label className="fw-semibold text-black">
+                    {" "}
+                    Seleccionar Servicio{" "}
+                  </label>
                   <Form.Item
                     name="service_id"
                     rules={[
@@ -492,10 +571,6 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       },
                     ]}
                   >
-                    <label className="fw-semibold text-black">
-                      {" "}
-                      Seleccionar Servicio{" "}
-                    </label>
                     <Select
                       options={services}
                       onChange={(value) => {
@@ -514,6 +589,10 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       }}
                     />
                   </Form.Item>
+                  <label className="fw-semibold text-black">
+                    {" "}
+                    Monto a Depositar{" "}
+                  </label>
                   <Form.Item
                     name="amount"
                     rules={[
@@ -524,10 +603,6 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       },
                     ]}
                   >
-                    <label className="fw-semibold text-black">
-                      {" "}
-                      Monto a Depositar{" "}
-                    </label>
                     <InputNumber
                       prefix="$"
                       min={5}
