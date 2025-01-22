@@ -260,7 +260,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   };
 
   return (
-    <Content style={{ margin: "62px 16px" }}>
+    <Content style={{ margin: "31px 16px" }}>
       {messageContext}
       <div
         style={{
