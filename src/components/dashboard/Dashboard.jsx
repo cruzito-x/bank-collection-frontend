@@ -17,7 +17,6 @@ import {
   Flex,
 } from "antd";
 import {
-  CloseOutlined,
   InfoCircleOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
@@ -304,7 +303,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   };
 
   const submitPaymentRegister = (values) => {
-    setSendingDataLoading(false);
+    setSendingDataLoading(true);
     startProgress(values);
   };
 
@@ -472,27 +471,24 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 footer={null}
               >
                 <div className={percentage <= 0 ? "d-none" : "d-block"}>
-                  <label className="fw-semibold mb-1"> Si Necesitas Modificar Datos, Puedes Cancelar el Pago </label>
-                  <Flex className="mb-3" gap="small">
+                  <label className="fw-semibold mb-1 text-danger">
+                    {" "}
+                    ¿Desea Cancelar el Pago?{" "}
+                  </label>
+                  <Flex className="mb-2" vertical gap="small">
                     <div className="d-flex">
                       <Progress
                         percent={percentage}
                         type="line"
                         status="active"
-                        percentPosition={{
-                          align: 'center',
-                          type: 'inner',
-                        }}
-                        size={[340, 20]}
+                        showInfo={false}
                       />
-                      <Button
-                        className="ms-3"
-                        type="primary"
-                        danger
+                      <label
+                        className="fw-semibold ms-3 text-danger"
                         onClick={cancelPayment}
                       >
-                        <CloseOutlined />
-                      </Button>
+                        Cancelar
+                      </label>
                     </div>
                   </Flex>
                 </div>
@@ -638,7 +634,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       danger
                       onClick={closePaymentsModal}
                     >
-                      Cancelar
+                      Cerrar
                     </Button>
                     <Button
                       className="ms-2"
