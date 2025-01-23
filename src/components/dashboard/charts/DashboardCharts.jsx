@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Chart } from "chart.js/auto";
-import { Card } from "antd";
+import { Card, Carousel } from "antd";
 
 const DashboardCharts = () => {
   const [transactionsByCollector, setTransactionsByCollector] = useState([]);
+  const [transactionsByDenomination, setTransactionsByDenomination] = useState([]);
+
   const barTransactionsCanvasRef = useRef(null);
   const barTransactionsChartInstance = useRef(null);
 
@@ -25,12 +27,27 @@ const DashboardCharts = () => {
     setTransactionsByCollector(transactionsByCollectorData);
   };
 
+  const getTransactionsByDenomination = async () => {
+    const response = await fetch(
+      "http://localhost:3001/dashboard/transactions-by-denomination",
+      {
+        method: "GET",
+      }
+    );
+
+    const transactionsByDenominationData = await response.json();
+    setTransactionsByDenomination(transactionsByDenominationData);
+    console.log(transactionsByDenominationData);
+  };
+
   useEffect(() => {
     getTransactionsByCollector();
+    getTransactionsByDenomination();
   }, []);
 
   useEffect(() => {
     if (transactionsByCollector.length === 0) return;
+    if (transactionsByDenomination.length === 0) return;
 
     const collectors = transactionsByCollector.map(
       (transactionByCollector) => transactionByCollector.collector
@@ -38,6 +55,14 @@ const DashboardCharts = () => {
 
     const totals = transactionsByCollector.map(
       (transactionByCollector) => transactionByCollector.transactionsByCollector
+    );
+
+    const denominations = transactionsByDenomination.map(
+      (transactionByDenomination) => transactionByDenomination.denomination
+    );
+
+    const totalByDenomination = transactionsByDenomination.map(
+      (transactionByDenomination) => transactionByDenomination.total
     );
 
     const barTransactionsChart =
@@ -175,10 +200,10 @@ const DashboardCharts = () => {
     };
 
     const doughnutTransactionsData = {
-      labels: ["$50", "$20", "$5", "$1", "$0.25", "$0.10"],
+      labels: denominations,
       datasets: [
         {
-          data: [30, 20, 15, 10, 25, 17],
+          data: totalByDenomination,
           backgroundColor: [
             "#3e9bff",
             "#6f99ff",
@@ -216,7 +241,7 @@ const DashboardCharts = () => {
         plugins: {
           title: {
             display: true,
-            text: "Monto Procesado - Denominaciones",
+            text: "Total de Pagos a Colectores - Denominaciones",
             color: "#000000",
           },
         },
@@ -260,7 +285,7 @@ const DashboardCharts = () => {
         doughnutTransactionsChartInstance.current.destroy();
       }
     };
-  }, [transactionsByCollector]);
+  }, [transactionsByCollector, transactionsByDenomination]);
 
   return (
     <div className="row">
@@ -281,12 +306,19 @@ const DashboardCharts = () => {
             style={{ width: "100%" }}
           ></canvas>
         </Card>
-        <Card className="shadow mt-2">
-          <canvas
-            className="mb-2"
-            ref={doughnutTransactionsCanvasRef}
-            style={{ width: "100%" }}
-          ></canvas>
+        <Card className="shadow mt-1">
+          <Carousel arrows infinite={false} dotPosition="bottom">
+            <div>
+              <canvas
+                className="mb-2"
+                ref={doughnutTransactionsCanvasRef}
+                style={{ width: "100%" }}
+              ></canvas>
+            </div>
+            <div>
+
+            </div>
+          </Carousel>
         </Card>
       </div>
     </div>

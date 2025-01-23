@@ -61,3 +61,10 @@
 #dashboard-date .ant-space-item:nth-child(1) {
   display: none;
 }
+
+.slick-arrow.slick-prev {
+  color: var(--gray);
+}
+.slick-arrow.slick-next {
+  color: var(--gray);
+}

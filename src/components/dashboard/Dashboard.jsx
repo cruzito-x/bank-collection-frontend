@@ -108,6 +108,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
 
   const closePaymentsModal = () => {
     setOpenRegisterPayment(false);
+    form.resetFields();
   };
 
   const showNotificationsModal = () => {
@@ -229,6 +230,8 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     setTransactionTypes(transactionTypes);
   };
 
+  let isProcessing = false;
+
   const registerPayments = async (payment) => {
     try {
       const response = await fetch(
@@ -243,8 +246,8 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
       const registeredPayment = await response.json();
       if (response.status === 200) {
         messageAlert.success(registeredPayment.message);
-        form.resetFields();
         setPercentage(0);
+        closePaymentsModal();
       } else {
         messageAlert.error(registeredPayment.message);
       }
@@ -252,6 +255,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
       messageAlert.error("Error al registrar el pago. Intente de nuevo.");
     } finally {
       setSendingDataLoading(false);
+      isProcessing = false;
     }
   };
 
@@ -265,7 +269,8 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
 
         if (newPercentage >= 100) {
           clearInterval(interval);
-          if (!isPaymentCancelled) {
+          if (!isPaymentCancelled && !isProcessing) {
+            isProcessing = true;
             registerPayments(paymentData);
           }
           return 100;
@@ -283,13 +288,20 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
       clearInterval(cancelPaymentTimeout);
       setCancelPaymentTimeout(null);
     }
+
     setPercentage(0);
     setIsPaymentCancelled(true);
     setSendingDataLoading(false);
+    isProcessing = false;
     messageAlert.info("El Pago Ha Sido Cancelado");
   };
 
   const submitPaymentRegister = (values) => {
+    if (isProcessing) {
+      messageAlert.warning("El registro de pago ya está en curso.");
+      return;
+    }
+
     setSendingDataLoading(true);
     startRegisterProgress(values);
   };
@@ -473,6 +485,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       <label
                         className="fw-semibold ms-3 text-danger"
                         onClick={cancelPayment}
+                        style={{ cursor: "pointer" }}
                       >
                         Cancelar
                       </label>
@@ -500,6 +513,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       }}
                       showSearch
                       placeholder="Buscar Cliente"
+                      disabled={sendingDataLoading ? true : false}
                       optionFilterProp="label"
                       filterSort={(optionA, optionB) =>
                         (optionA?.label ?? "")
@@ -529,6 +543,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       onChange={getServiceOnCollectorsChange}
                       showSearch
                       placeholder="Buscar Colector"
+                      disabled={sendingDataLoading ? true : false}
                       optionFilterProp="label"
                       filterSort={(optionA, optionB) =>
                         (optionA?.label ?? "")
@@ -560,6 +575,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       }}
                       showSearch
                       placeholder="Buscar Servicio"
+                      disabled={sendingDataLoading ? true : false}
                       optionFilterProp="label"
                       filterSort={(optionA, optionB) =>
                         (optionA?.label ?? "")
@@ -590,6 +606,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       min={5}
                       max={10000}
                       placeholder="0.00"
+                      disabled={sendingDataLoading ? true : false}
                       // value={services[0]?.price > 0 ? services[0].price : ""}
                       onChange={(value) => {
                         form.setFieldsValue({ amount: value });
@@ -611,6 +628,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       type="text"
                       className="form-control"
                       value={moment().format("DD/MM/YYYY hh:mm a")}
+                      disabled={sendingDataLoading ? true : false}
                       readOnly
                     />
                   </Form.Item>
@@ -620,6 +638,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       type="primary"
                       danger
                       onClick={closePaymentsModal}
+                      disabled={sendingDataLoading ? true : false}
                     >
                       Cerrar
                     </Button>
@@ -743,11 +762,11 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               </label>
               <Space wrap>
                 <Select
+                  options={collectors}
                   defaultValue={1}
                   style={{
                     width: 183,
                   }}
-                  options={collectors}
                 />
               </Space>
             </div>
