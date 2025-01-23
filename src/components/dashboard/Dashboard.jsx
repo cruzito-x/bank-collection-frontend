@@ -16,10 +16,7 @@ import {
   Progress,
   Flex,
 } from "antd";
-import {
-  InfoCircleOutlined,
-  WarningOutlined,
-} from "@ant-design/icons";
+import { InfoCircleOutlined, WarningOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import "./styles/dashboard.css";
 import DashboardCharts from "./charts/DashboardCharts";
@@ -232,10 +229,35 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     setTransactionTypes(transactionTypes);
   };
 
-  const startProgress = (paymentData) => {
+  const registerPayments = async (payment) => {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/payments-collectors/save-new-payment",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payment),
+        }
+      );
+
+      const registeredPayment = await response.json();
+      if (response.status === 200) {
+        messageAlert.success(registeredPayment.message);
+        form.resetFields();
+        setPercentage(0);
+      } else {
+        messageAlert.error(registeredPayment.message);
+      }
+    } catch (error) {
+      messageAlert.error("Error al registrar el pago. Intente de nuevo.");
+    } finally {
+      setSendingDataLoading(false);
+    }
+  };
+
+  const startRegisterProgress = (paymentData) => {
     setPercentage(0);
     setIsPaymentCancelled(false);
-    let isPaymentRegistered = false;
 
     const interval = setInterval(() => {
       setPercentage((prev) => {
@@ -243,14 +265,9 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
 
         if (newPercentage >= 100) {
           clearInterval(interval);
-
-          if (!isPaymentCancelled && !isPaymentRegistered) {
-            isPaymentRegistered = true;
+          if (!isPaymentCancelled) {
             registerPayments(paymentData);
-          } else {
-            setSendingDataLoading(false);
           }
-
           return 100;
         }
 
@@ -266,45 +283,15 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
       clearInterval(cancelPaymentTimeout);
       setCancelPaymentTimeout(null);
     }
-
     setPercentage(0);
     setIsPaymentCancelled(true);
     setSendingDataLoading(false);
     messageAlert.info("El Pago Ha Sido Cancelado");
   };
 
-  const registerPayments = async (payment) => {
-    try {
-      const response = await fetch(
-        "http://localhost:3001/payments-collectors/save-new-payment",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payment),
-        }
-      );
-
-      const registeredPayment = await response.json();
-
-      if (response.status === 200) {
-        messageAlert.success(registeredPayment.message);
-        form.resetFields();
-        setPercentage(0);
-      } else {
-        messageAlert.error(registeredPayment.message);
-      }
-    } catch (error) {
-      messageAlert.error("Error al registrar el pago. Intente de nuevo.");
-    } finally {
-      setSendingDataLoading(false);
-    }
-  };
-
   const submitPaymentRegister = (values) => {
     setSendingDataLoading(true);
-    startProgress(values);
+    startRegisterProgress(values);
   };
 
   return (
