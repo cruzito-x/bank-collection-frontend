@@ -15,7 +15,7 @@ const LogoutCard = () => {
   );
 
   return (
-    <Dropdown overlay={menu} trigger={["click"]}>
+    <Dropdown menu={menu} trigger={["click"]}>
       <Card
         hoverable
         className="text-center user-card ms-5 shadow"

@@ -38,6 +38,8 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   const [isCollectorModalOpen, setIsCollectorModalOpen] = useState(false);
   const [openRegisterPayment, setOpenRegisterPayment] = useState(false);
   const [percentage, setPercentage] = useState(0);
+  const [cancelPaymentTimeout, setCancelPaymentTimeout] = useState(null);
+  const [isPaymentCancelled, setIsPaymentCancelled] = useState(false);
   const [sendingDataLoading, setSendingDataLoading] = useState(false);
   const [openNotificationsModal, setOpenNotificationsModal] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
@@ -46,7 +48,6 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     moment().startOf("day"),
     moment().endOf("day"),
   ]);
-  let cancelPaymentTimeOut;
 
   const { Content } = Layout;
   const { RangePicker } = DatePicker;
@@ -232,86 +233,79 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     setTransactionTypes(transactionTypes);
   };
 
-  const registerPayments = async (payment) => {
-    if (sendingDataLoading) {
-      return;
-    }
+  const startProgress = (paymentData) => {
+    setPercentage(0);
+    setIsPaymentCancelled(false); // Reinicia el estado de cancelación
+    let isPaymentRegistered = false; // Variable para evitar duplicación de pagos
 
-    setSendingDataLoading(true);
+    const interval = setInterval(() => {
+      setPercentage((prev) => {
+        const newPercentage = prev + 2;
 
-    let n = 0;
-    let isCancelled = false;
+        if (newPercentage >= 100) {
+          clearInterval(interval);
 
-    const updatePercentage = () => {
-      if (isCancelled) {
-        return;
-      }
-
-      if (n < 100) {
-        setPercentage(n);
-        n++;
-        cancelPaymentTimeOut = setTimeout(updatePercentage, 50);
-      } else if (n === 100) {
-        completePaymentRegistration(payment);
-      }
-    };
-
-    const completePaymentRegistration = async (payment) => {
-      if (isCancelled) {
-        return;
-      }
-
-      try {
-        const response = await fetch(
-          "http://localhost:3001/payments-collectors/save-new-payment",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payment),
+          if (!isPaymentCancelled && !isPaymentRegistered) {
+            isPaymentRegistered = true; // Evita duplicación de pagos
+            registerPayments(paymentData);
+          } else {
+            setSendingDataLoading(false);
           }
-        );
 
-        if (isCancelled) {
-          return;
+          return 100;
         }
 
-        const registeredPayment = await response.json();
+        return newPercentage;
+      });
+    }, 100);
 
-        if (response.status === 200) {
-          messageAlert.success(registeredPayment.message);
-          form.resetFields();
-          getCollectors();
-          getTotalPayments();
-          getTotalProcessedAmounts();
-          closePaymentsModal();
-          setPercentage(0);
-        } else {
-          messageAlert.error(registeredPayment.message);
-        }
-      } catch (error) {
-        messageAlert.error("Error al Registrar el Pago. Intente de Nuevo");
-      } finally {
-        if (!isCancelled) {
-          setSendingDataLoading(false);
-        }
-      }
-    };
-
-    updatePercentage();
-    cancelPayment = () => {
-      isCancelled = true;
-      clearTimeout(cancelPaymentTimeOut);
-      setPercentage(0);
-      setSendingDataLoading(false);
-    };
+    setCancelPaymentTimeout(interval);
   };
 
-  let cancelPayment = () => {
-    clearTimeout(cancelPaymentTimeOut);
+  const cancelPayment = () => {
+    if (cancelPaymentTimeout) {
+      clearInterval(cancelPaymentTimeout);
+      setCancelPaymentTimeout(null);
+    }
+
     setPercentage(0);
+    setIsPaymentCancelled(true);
     setSendingDataLoading(false);
+    messageAlert.warning("El pago ha sido cancelado.");
+  };
+
+  const registerPayments = async (payment) => {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/payments-collectors/save-new-payment",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payment),
+        }
+      );
+
+      const registeredPayment = await response.json();
+
+      if (response.status === 200) {
+        messageAlert.success(registeredPayment.message);
+        form.resetFields();
+        setPercentage(0);
+      } else {
+        messageAlert.error(registeredPayment.message);
+      }
+    } catch (error) {
+      messageAlert.error("Error al registrar el pago. Intente de nuevo.");
+    } finally {
+      setSendingDataLoading(false);
+    }
+  };
+
+  const submitPaymentRegister = (values) => {
+    setSendingDataLoading(false);
+    startProgress(values);
   };
 
   return (
@@ -477,14 +471,19 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 onCancel={closePaymentsModal}
                 footer={null}
               >
-                <div className={percentage === 0 ? "d-none" : "d-block"}>
-                  <Flex vertical gap="small">
+                <div className={percentage <= 0 ? "d-none" : "d-block"}>
+                  <label className="fw-semibold mb-1"> Si Necesitas Modificar Datos, Puedes Cancelar el Pago </label>
+                  <Flex className="mb-3" gap="small">
                     <div className="d-flex">
                       <Progress
                         percent={percentage}
                         type="line"
                         status="active"
-                        showInfo={false}
+                        percentPosition={{
+                          align: 'center',
+                          type: 'inner',
+                        }}
+                        size={[340, 20]}
                       />
                       <Button
                         className="ms-3"
@@ -497,7 +496,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                     </div>
                   </Flex>
                 </div>
-                <Form form={form} onFinish={registerPayments}>
+                <Form form={form} onFinish={submitPaymentRegister}>
                   <label className="fw-semibold text-black">
                     {" "}
                     Seleccionar Cliente{" "}
