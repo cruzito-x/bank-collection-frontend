@@ -235,8 +235,8 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
 
   const startProgress = (paymentData) => {
     setPercentage(0);
-    setIsPaymentCancelled(false); // Reinicia el estado de cancelación
-    let isPaymentRegistered = false; // Variable para evitar duplicación de pagos
+    setIsPaymentCancelled(false);
+    let isPaymentRegistered = false;
 
     const interval = setInterval(() => {
       setPercentage((prev) => {
@@ -246,7 +246,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           clearInterval(interval);
 
           if (!isPaymentCancelled && !isPaymentRegistered) {
-            isPaymentRegistered = true; // Evita duplicación de pagos
+            isPaymentRegistered = true;
             registerPayments(paymentData);
           } else {
             setSendingDataLoading(false);
@@ -271,7 +271,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     setPercentage(0);
     setIsPaymentCancelled(true);
     setSendingDataLoading(false);
-    messageAlert.warning("El pago ha sido cancelado.");
+    messageAlert.info("El Pago Ha Sido Cancelado");
   };
 
   const registerPayments = async (payment) => {
