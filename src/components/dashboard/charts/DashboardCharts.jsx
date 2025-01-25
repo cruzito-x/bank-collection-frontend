@@ -4,7 +4,9 @@ import { Card, Carousel } from "antd";
 
 const DashboardCharts = () => {
   const [transactionsByCollector, setTransactionsByCollector] = useState([]);
-  const [transactionsByDenomination, setTransactionsByDenomination] = useState([]);
+  const [transactionsByDenomination, setTransactionsByDenomination] = useState(
+    []
+  );
 
   const barTransactionsCanvasRef = useRef(null);
   const barTransactionsChartInstance = useRef(null);
@@ -14,6 +16,30 @@ const DashboardCharts = () => {
 
   const doughnutAmountCanvasRef = useRef(null);
   const doughnutAmountChartInstance = useRef(null);
+
+  const colors = [
+    "#3e9bff",
+    "#6f99ff",
+    "#b0cfff",
+    "#d3e7ff",
+    "#ff7b7b",
+    "#ffb7b7",
+    "#ffd3d3",
+    "#7bffb5",
+    "#b7ffd1",
+    "#d3ffe3",
+    "#ffdc7b",
+    "#ffe6b7",
+    "#fff3d3",
+    "#7bdcff",
+    "#b7e9ff",
+    "#d3f3ff",
+    "#c17bff",
+    "#d9b7ff",
+    "#eed3ff",
+    "#7bffd6",
+    "#b7ffe3",
+  ];
 
   const getTransactionsByCollector = async () => {
     const response = await fetch(
@@ -37,7 +63,6 @@ const DashboardCharts = () => {
 
     const transactionsByDenominationData = await response.json();
     setTransactionsByDenomination(transactionsByDenominationData);
-    console.log(transactionsByDenominationData);
   };
 
   useEffect(() => {
@@ -85,29 +110,7 @@ const DashboardCharts = () => {
       datasets: [
         {
           data: [100, 150, 120, 180, 130, 140, 72],
-          backgroundColor: [
-            "#3e9bff",
-            "#6f99ff",
-            "#b0cfff",
-            "#d3e7ff",
-            "#ff7b7b",
-            "#ffb7b7",
-            "#ffd3d3",
-            "#41d17f",
-            "#b7ffd1",
-            "#d3ffe3",
-            "#ffdc7b",
-            "#ffe6b7",
-            "#fff3d3",
-            "#7bdcff",
-            "#b7e9ff",
-            "#d3f3ff",
-            "#c17bff",
-            "#d9b7ff",
-            "#eed3ff",
-            "#7bffd6",
-            "#b7ffe3",
-          ],
+          backgroundColor: colors,
         },
       ],
     };
@@ -147,29 +150,7 @@ const DashboardCharts = () => {
       datasets: [
         {
           data: totals,
-          backgroundColor: [
-            "#3e9bff",
-            "#6f99ff",
-            "#b0cfff",
-            "#d3e7ff",
-            "#ff7b7b",
-            "#ffb7b7",
-            "#ffd3d3",
-            "#7bffb5",
-            "#b7ffd1",
-            "#d3ffe3",
-            "#ffdc7b",
-            "#ffe6b7",
-            "#fff3d3",
-            "#7bdcff",
-            "#b7e9ff",
-            "#d3f3ff",
-            "#c17bff",
-            "#d9b7ff",
-            "#eed3ff",
-            "#7bffd6",
-            "#b7ffe3",
-          ],
+          backgroundColor: colors,
         },
       ],
     };
@@ -204,29 +185,7 @@ const DashboardCharts = () => {
       datasets: [
         {
           data: totalByDenomination,
-          backgroundColor: [
-            "#3e9bff",
-            "#6f99ff",
-            "#b0cfff",
-            "#d3e7ff",
-            "#ff7b7b",
-            "#ffb7b7",
-            "#ffd3d3",
-            "#7bffb5",
-            "#b7ffd1",
-            "#d3ffe3",
-            "#ffdc7b",
-            "#ffe6b7",
-            "#fff3d3",
-            "#7bdcff",
-            "#b7e9ff",
-            "#d3f3ff",
-            "#c17bff",
-            "#d9b7ff",
-            "#eed3ff",
-            "#7bffd6",
-            "#b7ffe3",
-          ],
+          backgroundColor: colors,
         },
       ],
     };
@@ -315,9 +274,7 @@ const DashboardCharts = () => {
                 style={{ width: "100%" }}
               ></canvas>
             </div>
-            <div>
-
-            </div>
+            <div></div>
           </Carousel>
         </Card>
       </div>

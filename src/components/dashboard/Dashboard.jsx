@@ -369,7 +369,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 >
                   <h2 className="p-3 fw-semibold text-black"> {0 || 0} </h2>
                   <div className="dashboard-red-card">
-                    <label className="fw-semibold p-2"> Notificaciones </label>
+                    <label className="fw-semibold p-2"> Notificaciones Pendientes </label>
                   </div>
                 </Card>
 
@@ -787,7 +787,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
             </div>
           </div>
 
-          <div className="row mb-4 me-2 ms-2">
+          <div className="row mb-4 ms-2">
             <DashboardCharts />
           </div>
         </Card>
