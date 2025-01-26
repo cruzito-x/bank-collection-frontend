@@ -23,6 +23,7 @@ import EditCustomerModal from "../../utils/modals/customers/EditCustomerModal";
 const Customers = () => {
   const { authState } = useAuth();
   const [customers, setCustomers] = useState([]);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [isCustomerModalOpen, setIsCustomerModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
@@ -41,6 +42,10 @@ const Customers = () => {
 
   const showEditCustomerModal = () => {
     setIsCustomerModalOpen(true);
+  };
+
+  const clickedCustomer = (record) => {
+    setSelectedCustomer(record);
   };
 
   const getCustomers = async () => {
@@ -220,6 +225,9 @@ const Customers = () => {
                 dataSource={customers}
                 columns={customersTableColumns}
                 loading={loading}
+                onRow={(record) => ({
+                  onClick: () => clickedCustomer(record),
+                })}
                 pagination={{
                   pageSize: 10,
                   showTotal: (total) => `Total: ${total} cliente(s)`,
@@ -230,7 +238,10 @@ const Customers = () => {
             </div>
           </div>
         </Card>
-        <EditCustomerModal isOpen={isCustomerModalOpen} />
+        <EditCustomerModal
+          isOpen={isCustomerModalOpen}
+          customerData={selectedCustomer}
+        />
       </div>
     </Content>
   );
