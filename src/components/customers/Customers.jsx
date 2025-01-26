@@ -44,10 +44,6 @@ const Customers = () => {
     setIsCustomerModalOpen(true);
   };
 
-  const clickedCustomer = (record) => {
-    setSelectedCustomer(record);
-  };
-
   const getCustomers = async () => {
     setLoading(true);
     try {
@@ -226,7 +222,7 @@ const Customers = () => {
                 columns={customersTableColumns}
                 loading={loading}
                 onRow={(record) => ({
-                  onClick: () => clickedCustomer(record),
+                  onClick: () => setSelectedCustomer(record),
                 })}
                 pagination={{
                   pageSize: 10,
@@ -240,6 +236,7 @@ const Customers = () => {
         </Card>
         <EditCustomerModal
           isOpen={isCustomerModalOpen}
+          isClosed={() => setIsCustomerModalOpen(false)}
           customerData={selectedCustomer}
         />
       </div>

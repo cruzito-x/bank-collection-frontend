@@ -2,11 +2,17 @@ import { Button, Col, Form, Input, Modal, Row } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { useState } from "react";
 
-const EditCustomerModal = ({ isOpen, customerData }) => {
+const EditCustomerModal = ({ isOpen, isClosed, customerData }) => {
   const [sendingData, setSendingData] = useState(false);
-  const closeEditCustomerModal = () => {
-    isOpen = false;
+  const [form] = Form.useForm();
+
+  const updateCustomer = async (customer) => {
+    setSendingData(true);
   };
+
+  if(isClosed) {
+    form.resetFields();
+  }
 
   return (
     <Modal
@@ -28,11 +34,11 @@ const EditCustomerModal = ({ isOpen, customerData }) => {
       centered
       open={isOpen}
       width={450}
-      onCancel={closeEditCustomerModal}
+      onCancel={isClosed}
       footer={null}
     >
       {customerData && (
-        <Form>
+        <Form form={form} onFinish={updateCustomer}>
           <label className="fw-semibold text-black"> Nombre de Cliente </label>
           <Form.Item
             name="name"
@@ -42,8 +48,9 @@ const EditCustomerModal = ({ isOpen, customerData }) => {
                 message: "Por Favor, Introduzca un Nombre de Cliente",
               },
             ]}
+            initialValue={customerData.name}
           >
-            <Input placeholder="Nombre de Cliente" value={customerData.name} />
+            <Input placeholder="Nombre de Cliente" />
           </Form.Item>
           <label className="fw-semibold text-black">
             {" "}
@@ -58,8 +65,9 @@ const EditCustomerModal = ({ isOpen, customerData }) => {
                   "Por Favor, Introduzca un Documento de Identidad Válido",
               },
             ]}
+            initialValue={customerData.identity_doc}
           >
-            <Input placeholder="00000000-0" value={customerData.identity_doc} />
+            <Input placeholder="00000000-0" />
           </Form.Item>
           <label className="fw-semibold text-black"> E-mail </label>
           <Form.Item
@@ -71,11 +79,12 @@ const EditCustomerModal = ({ isOpen, customerData }) => {
                   "Por Favor, Introduzca una Dirección de Correo Electrónico",
               },
             ]}
+            initialValue={customerData.email}
           >
-            <Input placeholder="email@gmail.com" value={customerData.email} />
+            <Input placeholder="email@gmail.com" />
           </Form.Item>
           <Form.Item className="text-end">
-            <Button type="primary" danger onClick={closeEditCustomerModal}>
+            <Button type="primary" danger onClick={isClosed}>
               Cerrar
             </Button>
             <Button
