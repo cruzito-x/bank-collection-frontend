@@ -22,7 +22,7 @@ import "./styles/dashboard.css";
 import DashboardCharts from "./charts/DashboardCharts";
 import moment from "moment";
 import LogoutCard from "../../utils/logoutCard/LogoutCard";
-import AddCollectorModal from "../../utils/modals/AddCollectorModal";
+import AddCollectorModal from "../../utils/modals/dashboard/AddCollectorModal";
 
 const Dashboard = ({ rangeFilter = () => {} }) => {
   const [customers, setCustomers] = useState([]);
@@ -369,7 +369,10 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 >
                   <h2 className="p-3 fw-semibold text-black"> {0 || 0} </h2>
                   <div className="dashboard-red-card">
-                    <label className="fw-semibold p-2"> Notificaciones Pendientes </label>
+                    <label className="fw-semibold p-2">
+                      {" "}
+                      Notificaciones Pendientes{" "}
+                    </label>
                   </div>
                 </Card>
 
@@ -458,7 +461,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       />{" "}
                     </Col>{" "}
                     <Col>
-                      <label className="fs-6">Pagar Servicio</label>
+                      <label className="fs-6 text-black">Pagar Servicio</label>
                     </Col>{" "}
                   </Row>
                 }
@@ -616,10 +619,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                       }}
                     />
                   </Form.Item>
-                  <label
-                    htmlFor="dashboard-amount"
-                    className="fw-semibold text-black"
-                  >
+                  <label className="fw-semibold text-black">
                     {" "}
                     Fecha y Hora{" "}
                   </label>
@@ -663,13 +663,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           <div className="row ms-2 mb-4">
             <label className="fw-semibold text-black mb-1"> Filtrar por </label>
             <div className="col-xxl-4 col-lg-7 col-md-7 col-sm-12 w-auto">
-              <label
-                htmlFor="dashboard-date"
-                className="fw-semibold text-black me-2"
-              >
-                {" "}
-                Fecha{" "}
-              </label>
+              <label className="fw-semibold text-black me-2"> Fecha </label>
               <Space wrap id="dashboard-date">
                 <RangePicker
                   value={dates}
@@ -716,10 +710,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               </Space>
             </div>
             <div className="col-xxl-2 col-lg-2 col-md-2 col-sm-12 w-auto">
-              <label htmlFor="" className="fw-semibold text-black me-2">
-                {" "}
-                Monto{" "}
-              </label>
+              <label className="fw-semibold text-black me-2"> Monto </label>
               <Space wrap>
                 <Select
                   defaultValue="0"
@@ -756,10 +747,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               </Space>
             </div>
             <div className="col-xxl-2 col-lg-2 col-md-2 col-sm-12 w-auto">
-              <label htmlFor="" className="fw-semibold text-black me-2">
-                {" "}
-                Colector{" "}
-              </label>
+              <label className="fw-semibold text-black me-2"> Colector </label>
               <Space wrap>
                 <Select
                   options={collectors}
@@ -771,10 +759,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               </Space>
             </div>
             <div className="col-xxl-2 col-lg-2 col-md-2 col-sm-12 w-auto">
-              <label htmlFor="" className="fw-semibold text-black me-2">
-                {" "}
-                Tipo{" "}
-              </label>
+              <label className="fw-semibold text-black me-2"> Tipo </label>
               <Space wrap>
                 <Select
                   defaultValue={1}

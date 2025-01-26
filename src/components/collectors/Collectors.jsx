@@ -15,7 +15,7 @@ import {
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
-import AddCollectorModal from "../../utils/modals/AddCollectorModal";
+import AddCollectorModal from "../../utils/modals/dashboard/AddCollectorModal";
 
 const Collectors = () => {
   const [collectors, setCollectors] = useState([]);

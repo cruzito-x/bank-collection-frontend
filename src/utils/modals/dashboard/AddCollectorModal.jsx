@@ -57,7 +57,7 @@ const AddCollectorModal = ({ openModal, closeModal }) => {
             />{" "}
           </Col>{" "}
           <Col>
-            <label className="fs-6">Añadir Nuevo Colector</label>
+            <label className="fs-6 text-black">Añadir Nuevo Colector</label>
           </Col>{" "}
         </Row>
       }

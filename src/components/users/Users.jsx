@@ -232,7 +232,7 @@ const Users = () => {
                       />{" "}
                     </Col>{" "}
                     <Col>
-                      <label className="fs-6">
+                      <label className="fs-6 text-black">
                         Editar Información de Usuario
                       </label>
                     </Col>{" "}

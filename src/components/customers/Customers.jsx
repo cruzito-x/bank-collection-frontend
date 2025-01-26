@@ -5,6 +5,7 @@ import {
   Input,
   Layout,
   message,
+  Popconfirm,
   Select,
   Table,
   theme,
@@ -17,10 +18,12 @@ import {
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
+import EditCustomerModal from "../../utils/modals/customers/EditCustomerModal";
 
 const Customers = () => {
   const { authState } = useAuth();
   const [customers, setCustomers] = useState([]);
+  const [isCustomerModalOpen, setIsCustomerModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
@@ -31,6 +34,14 @@ const Customers = () => {
   useEffect(() => {
     getCustomers();
   }, []);
+
+  const deleteCustomer = async (event) => {};
+
+  const cancelCustomerDeletion = async (event) => {};
+
+  const showEditCustomerModal = () => {
+    setIsCustomerModalOpen(true);
+  };
 
   const getCustomers = async () => {
     setLoading(true);
@@ -51,12 +62,22 @@ const Customers = () => {
               style={{
                 backgroundColor: "var(--yellow)",
               }}
+              onClick={showEditCustomerModal}
             >
               Editar
             </Button>
-            <Button className="ms-2 me-2" type="primary" danger>
-              Eliminar
-            </Button>
+            <Popconfirm
+              title="Eliminar Registro"
+              description="¿Está Seguro de Eliminar este Registro?"
+              onConfirm={deleteCustomer}
+              onCancel={cancelCustomerDeletion}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button className="ms-2 me-2" type="primary" danger>
+                Eliminar
+              </Button>
+            </Popconfirm>
             <Button type="primary"> Transacciones </Button>
           </>
         ),
@@ -145,16 +166,15 @@ const Customers = () => {
             },
           ]}
         />
-
         <Card className="mt-3">
           <div className="row ms-2 pt-3 mb-2">
             <div className="col-12 text-start">
-              <label className="fw-semibold"> Buscar Por </label>
+              <label className="fw-semibold text-black"> Buscar Por </label>
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold"> Nombre </label>
+              <label className="me-2 fw-semibold text-black"> Nombre </label>
               <Input
                 placeholder="Nombre de Cliente"
                 prefix={<UserOutlined />}
@@ -164,7 +184,7 @@ const Customers = () => {
               />
             </div>
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold">
+              <label className="me-2 fw-semibold text-black">
                 {" "}
                 Documento de Identidad{" "}
               </label>
@@ -177,7 +197,7 @@ const Customers = () => {
               />
             </div>
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold"> Saldo</label>
+              <label className="me-2 fw-semibold text-black"> Saldo</label>
               <Select
                 defaultValue={0}
                 options={[
@@ -210,6 +230,7 @@ const Customers = () => {
             </div>
           </div>
         </Card>
+        <EditCustomerModal isOpen={isCustomerModalOpen} />
       </div>
     </Content>
   );
