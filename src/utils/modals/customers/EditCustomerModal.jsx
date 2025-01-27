@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, message, Modal, Row } from "antd";
+import { Button, Col, Form, Input, Modal, Row } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 
@@ -48,8 +48,6 @@ const EditCustomerModal = ({
         identity_doc: customerData.identity_doc,
         email: customerData.email,
       });
-    } else {
-      form.resetFields();
     }
   }, [isOpen, customerData, form]);
 

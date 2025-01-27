@@ -2,6 +2,7 @@ import {
   Breadcrumb,
   Button,
   Card,
+  Form,
   Input,
   Layout,
   message,
@@ -19,15 +20,20 @@ import {
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import EditCustomerModal from "../../utils/modals/customers/EditCustomerModal";
+import { useForm } from "antd/es/form/Form";
+import TransactionsModal from "../../utils/modals/customers/TransactionsModal";
 
 const Customers = () => {
   const { authState } = useAuth();
   const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [isCustomerModalOpen, setIsCustomerModalOpen] = useState(false);
+  const [isTransactionsModalOpen, setIsTransactionsModalOpen] = useState(false);
+  const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
+  const [form] = useForm();
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
@@ -36,23 +42,50 @@ const Customers = () => {
     getCustomers();
   }, []);
 
-  const deleteCustomer = async (event) => {};
+  const deleteCustomer = async (customer) => {
+    setLoading(true);
 
-  const cancelCustomerDeletion = async (event) => {};
+    try {
+      const response = await fetch(
+        `http://localhost:3001/customers/delete-customer/${customer.id}`,
+        {
+          method: "PUT",
+        }
+      );
+
+      const deletedCustomer = await response.json();
+
+      if (response.status === 200) {
+        messageAlert.success(deletedCustomer.message);
+        setCustomers(
+          customers.filter((customer) => customer.id !== deletedCustomer.id)
+        );
+      } else {
+        messageAlert.error("Error al Eliminar Cliente");
+      }
+    } catch (error) {
+      messageAlert.error("Error al Eliminar Cliente");
+    }
+  };
 
   const showEditCustomerModal = () => {
     setIsCustomerModalOpen(true);
   };
 
+  const showTransactionsModal = () => {
+    setIsTransactionsModalOpen(true);
+  };
+
   const getCustomers = async () => {
     setLoading(true);
+
     try {
       const response = await fetch("http://localhost:3001/customers", {
         method: "GET",
       });
 
       const customersData = await response.json();
-      const customersRow = customersData.map((customer) => ({
+      const customers = customersData.map((customer) => ({
         ...customer,
         balance: "$" + customer.balance,
         actions: (
@@ -70,24 +103,93 @@ const Customers = () => {
             <Popconfirm
               title="Eliminar Registro"
               description="¿Está Seguro de Eliminar este Registro?"
-              onConfirm={deleteCustomer}
-              onCancel={cancelCustomerDeletion}
-              okText="Yes"
+              onConfirm={() => deleteCustomer(customer)}
+              onCancel={() => {}}
+              okText="Sí"
               cancelText="No"
+              okButtonProps={{
+                loading: loading,
+              }}
             >
               <Button className="ms-2 me-2" type="primary" danger>
                 Eliminar
               </Button>
             </Popconfirm>
-            <Button type="primary"> Transacciones </Button>
+            <Button type="primary" onClick={showTransactionsModal}>
+              {" "}
+              Transacciones{" "}
+            </Button>
           </>
         ),
       }));
 
-      setCustomers(customersRow);
+      setCustomers(customers);
       setLoading(false);
     } catch (error) {
       messageAlert.error("Error al Obtener los Datos de Clientes");
+    }
+  };
+
+  const searchCustomers = async (customer) => {
+    setLoading(true);
+
+    console.log(customer);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/customers/search-customer?name=${customer.name}&identity_doc=${customer.identity_doc}&balance=${balance}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const customersData = await response.json();
+      const customers = customersData.map((customer) => ({
+        ...customer,
+        balance: "$" + customer.balance,
+        actions: (
+          <>
+            <Button
+              className="edit-btn"
+              type="primary"
+              style={{
+                backgroundColor: "var(--yellow)",
+              }}
+              onClick={showEditCustomerModal}
+            >
+              Editar
+            </Button>
+            <Popconfirm
+              title="Eliminar Registro"
+              description="¿Está Seguro de Eliminar este Registro?"
+              onConfirm={() => deleteCustomer(customer)}
+              onCancel={() => {}}
+              okText="Sí"
+              cancelText="No"
+              okButtonProps={{
+                loading: loading,
+              }}
+            >
+              <Button className="ms-2 me-2" type="primary" danger>
+                Eliminar
+              </Button>
+            </Popconfirm>
+            <Button type="primary" onClick={showTransactionsModal}>
+              {" "}
+              Transacciones{" "}
+            </Button>
+          </>
+        ),
+      }));
+
+      setCustomers(customers);
+      setLoading(false);
+    } catch (error) {
+      messageAlert.error("Error al Obtener los Datos de Clientes");
+      setLoading(false);
     }
   };
 
@@ -174,46 +276,66 @@ const Customers = () => {
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold text-black"> Nombre </label>
-              <Input
-                placeholder="Nombre de Cliente"
-                prefix={<UserOutlined />}
-                style={{
-                  width: 183,
-                }}
-              />
-            </div>
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold text-black">
+            <Form layout="inline" form={form} onFinish={searchCustomers}>
+              <label className="me-2 fw-semibold text-black d-flex align-items-center">
+                {" "}
+                Nombre{" "}
+              </label>
+              <Form.Item
+                className="col-xxl-3 col-xl-4 col-sm-12 w-auto"
+                name="name"
+              >
+                <Input
+                  placeholder="Nombre de Cliente"
+                  prefix={<UserOutlined />}
+                  style={{
+                    width: 183,
+                  }}
+                />
+              </Form.Item>
+              <label className="me-2 fw-semibold text-black d-flex align-items-center">
                 {" "}
                 Documento de Identidad{" "}
               </label>
-              <Input
-                placeholder="00000000-0"
-                prefix={<IdcardOutlined />}
-                style={{
-                  width: 183,
-                }}
-              />
-            </div>
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold text-black"> Saldo</label>
-              <Select
-                defaultValue={0}
-                options={[
-                  { value: 0, label: "Mayor a Menor" },
-                  { value: 1, label: "Menor a Mayor" },
-                ]}
-                prefix={<DollarOutlined />}
-                style={{
-                  width: 183,
-                }}
-              />
-            </div>
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <Button type="primary"> Buscar </Button>
-            </div>
+              <Form.Item
+                className="col-xxl-3 col-xl-4 col-sm-12 w-auto"
+                name="identity_doc"
+              >
+                <Input
+                  placeholder="00000000-0"
+                  prefix={<IdcardOutlined />}
+                  style={{
+                    width: 183,
+                  }}
+                />
+              </Form.Item>
+              <label className="me-2 fw-semibold text-black d-flex align-items-center">
+                {" "}
+                Saldo
+              </label>
+              <Form.Item
+                className="col-xxl-3 col-xl-4 col-sm-12 w-auto"
+                name="balance"
+              >
+                <Select
+                  onChange={(value) => setBalance(value)}
+                  options={[
+                    { value: 0, label: "Mayor a Menor" },
+                    { value: 1, label: "Menor a Mayor" },
+                  ]}
+                  prefix={<DollarOutlined />}
+                  style={{
+                    width: 183,
+                  }}
+                />
+              </Form.Item>
+              <Form.Item className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
+                <Button type="primary" htmlType="submit">
+                  {" "}
+                  Buscar{" "}
+                </Button>
+              </Form.Item>
+            </Form>
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">
@@ -229,7 +351,6 @@ const Customers = () => {
                   showTotal: (total) => `Total: ${total} cliente(s)`,
                   hideOnSinglePage: true,
                 }}
-                // scroll={{ y: 575 }}
               />
             </div>
           </div>
@@ -237,6 +358,13 @@ const Customers = () => {
         <EditCustomerModal
           isOpen={isCustomerModalOpen}
           isClosed={() => setIsCustomerModalOpen(false)}
+          customerData={selectedCustomer}
+          setAlertMessage={messageAlert}
+        />
+
+        <TransactionsModal
+          isOpen={isTransactionsModalOpen}
+          isClosed={() => setIsTransactionsModalOpen(false)}
           customerData={selectedCustomer}
           setAlertMessage={messageAlert}
         />

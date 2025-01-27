@@ -100,7 +100,7 @@ const Sidebar = () => {
           />
         </Routes>
         <Footer
-          className="text-center text-white p-4"
+          className={`text-center text-white p-4 ${collapsed ? "d-none" : ""}`}
           style={{
             background: "transparent",
             marginTop: "-100px",
