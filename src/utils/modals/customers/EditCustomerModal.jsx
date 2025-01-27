@@ -2,9 +2,13 @@ import { Button, Col, Form, Input, message, Modal, Row } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 
-const EditCustomerModal = ({ isOpen, isClosed, customerData }) => {
+const EditCustomerModal = ({
+  isOpen,
+  isClosed,
+  customerData,
+  setAlertMessage,
+}) => {
   const [sendingData, setSendingData] = useState(false);
-  const [messageAlert, messageContext] = message.useMessage();
   const [form] = Form.useForm();
 
   const updateCustomer = async (customer) => {
@@ -25,10 +29,10 @@ const EditCustomerModal = ({ isOpen, isClosed, customerData }) => {
       const updatedCustomer = await response.json();
 
       if (response.status === 200) {
-        messageAlert.success(updatedCustomer.message);
+        setAlertMessage.success(updatedCustomer.message);
         isClosed();
       } else {
-        messageAlert.error(updatedCustomer.message);
+        setAlertMessage.error(updatedCustomer.message);
       }
 
       setSendingData(false);
@@ -39,7 +43,11 @@ const EditCustomerModal = ({ isOpen, isClosed, customerData }) => {
 
   useEffect(() => {
     if (isOpen) {
-      form.setFieldsValue(customerData);
+      form.setFieldsValue({
+        name: customerData.name,
+        identity_doc: customerData.identity_doc,
+        email: customerData.email,
+      });
     } else {
       form.resetFields();
     }

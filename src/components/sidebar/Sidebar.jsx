@@ -99,6 +99,16 @@ const Sidebar = () => {
             }
           />
         </Routes>
+        <Footer
+          className="text-center text-white p-4"
+          style={{
+            background: "transparent",
+            marginTop: "-100px",
+          }}
+        >
+          &copy; cruzito-x - {new Date().getFullYear()} <br /> All Rights
+          Reserved.
+        </Footer>
       </Sider>
       <Layout style={layoutStyle}>
         {location.pathname !== "/dashboard" && <LayoutHeader />}
@@ -124,15 +134,6 @@ const Sidebar = () => {
             <Route path="/audit" element={<Audit />} />
           </Routes>
         </Content>
-        <Footer
-          style={{
-            textAlign: "center",
-            background: "#eef1f7",
-            marginTop: "-60px",
-          }}
-        >
-          &copy; cruzito-x - {new Date().getFullYear()} All rights reserved.
-        </Footer>
       </Layout>
     </Layout>
   );

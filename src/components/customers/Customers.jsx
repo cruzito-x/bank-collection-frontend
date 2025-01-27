@@ -143,7 +143,7 @@ const Customers = () => {
       <div
         style={{
           padding: "24px 0 24px 0",
-          minHeight: "90vh",
+          height: "90vh",
           borderRadius: borderRadiusLG,
         }}
       >
@@ -229,7 +229,7 @@ const Customers = () => {
                   showTotal: (total) => `Total: ${total} cliente(s)`,
                   hideOnSinglePage: true,
                 }}
-                scroll={{ y: 517 }}
+                // scroll={{ y: 575 }}
               />
             </div>
           </div>
@@ -238,6 +238,7 @@ const Customers = () => {
           isOpen={isCustomerModalOpen}
           isClosed={() => setIsCustomerModalOpen(false)}
           customerData={selectedCustomer}
+          setAlertMessage={messageAlert}
         />
       </div>
     </Content>
