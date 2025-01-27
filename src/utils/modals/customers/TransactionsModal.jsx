@@ -2,6 +2,7 @@ import { Button, Col, Modal, Row, Table } from "antd";
 import { DollarCircleOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
+import { CSVLink } from "react-csv";
 
 const TransactionsModal = ({
   isOpen,
@@ -24,7 +25,12 @@ const TransactionsModal = ({
       );
 
       const transactionsData = await response.json();
-      setTransactions(transactionsData);
+      const transactions = transactionsData.map((transaction) => ({
+        ...transaction,
+        amount: "$" + transaction.amount,
+      }));
+
+      setTransactions(transactions);
     } catch (error) {
       console.error("Error al obtener las transacciones del cliente: ", error);
     } finally {
@@ -41,33 +47,38 @@ const TransactionsModal = ({
       title: "Enviado Por",
       dataIndex: "customer",
       key: "customer",
+      align: "center",
     },
     {
       title: "Recibido Por",
       dataIndex: "receiver",
       key: "receiver",
+      align: "center",
     },
     {
       title: "Tipo de Transacción",
-      dataIndex: "type",
-      key: "type",
+      dataIndex: "transaction_type",
+      key: "transaction_type",
+      align: "center",
     },
     {
       title: "Monto",
       dataIndex: "amount",
       key: "amount",
-      render: (amount) => `$${amount.toFixed(2)}`,
+      align: "center",
     },
     {
       title: "Fecha",
-      dataIndex: "date",
-      key: "date",
+      dataIndex: "datetime",
+      key: "datetime",
       render: (date) => moment(date).format("DD/MM/YYYY HH:mm:ss"),
+      align: "center",
     },
     {
       title: "Autorizado Por",
       dataIndex: "authorized_by",
       key: "authorized_by",
+      align: "center",
     },
   ];
 
@@ -80,7 +91,7 @@ const TransactionsModal = ({
             {" "}
             <DollarCircleOutlined
               className="fs-6"
-              style={{ marginRight: 8, color: "var(--green)" }}
+              style={{ marginRight: 8, color: "var(--blue)" }}
             />{" "}
           </Col>{" "}
           <Col>
@@ -97,13 +108,17 @@ const TransactionsModal = ({
       <div className="row">
         <div className="col-12 mb-3">
           <Table
-            columns={transactionsColumns}
             dataSource={transactions}
+            columns={transactionsColumns}
             loading={loading}
+            pagination={{
+              pageSize: 10,
+              hideOnSinglePage: true,
+            }}
           />
         </div>
         <div className="col-6">
-          <label className="fw-semibold text-black">Saldo Actual: ${0}</label>
+          <label className="fw-semibold text-black">Saldo Actual: {0}</label>
         </div>
         <div className="col-6">
           <div className="text-end">
@@ -111,16 +126,23 @@ const TransactionsModal = ({
               {" "}
               Cerrar{" "}
             </Button>
-            <Button
-              className="ms-2"
-              type="primary"
-              onClick={isClosed}
-              style={{
-                backgroundColor: "var(--green)",
-              }}
+
+            <CSVLink
+              filename={`${0}_${moment(new Date()).format(
+                "YYYYMMDDHHmmss"
+              )} - Transactions.csv`}
+              data={transactions}
             >
-              Exportar CSV
-            </Button>
+              <Button
+                className="ms-2"
+                type="primary"
+                style={{
+                  backgroundColor: "var(--green)",
+                }}
+              >
+                Exportar CSV
+              </Button>
+            </CSVLink>
           </div>
         </div>
       </div>

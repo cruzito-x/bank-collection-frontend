@@ -318,6 +318,7 @@ const Customers = () => {
                 name="balance"
               >
                 <Select
+                  defaultValue={0}
                   onChange={(value) => setBalance(value)}
                   options={[
                     { value: 0, label: "Mayor a Menor" },
