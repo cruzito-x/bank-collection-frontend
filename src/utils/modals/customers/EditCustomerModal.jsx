@@ -1,18 +1,49 @@
-import { Button, Col, Form, Input, Modal, Row } from "antd";
+import { Button, Col, Form, Input, message, Modal, Row } from "antd";
 import { EditOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const EditCustomerModal = ({ isOpen, isClosed, customerData }) => {
   const [sendingData, setSendingData] = useState(false);
+  const [messageAlert, messageContext] = message.useMessage();
   const [form] = Form.useForm();
 
   const updateCustomer = async (customer) => {
     setSendingData(true);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/customers/update-customer/${customerData.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(customer),
+        }
+      );
+
+      const updatedCustomer = await response.json();
+
+      if (response.status === 200) {
+        messageAlert.success(updatedCustomer.message);
+        isClosed();
+      } else {
+        messageAlert.error(updatedCustomer.message);
+      }
+
+      setSendingData(false);
+    } catch (error) {
+      console.error("Error al actualizar los datos del cliente: ", error);
+    }
   };
 
-  if(isClosed) {
-    form.resetFields();
-  }
+  useEffect(() => {
+    if (isOpen) {
+      form.setFieldsValue(customerData);
+    } else {
+      form.resetFields();
+    }
+  }, [isOpen, customerData, form]);
 
   return (
     <Modal
