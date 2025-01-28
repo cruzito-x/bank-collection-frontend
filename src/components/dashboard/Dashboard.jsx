@@ -44,15 +44,18 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     moment().startOf("day"),
     moment().endOf("day"),
   ]);
+  const [amountRangeFilter, setAmountRangeFilter] = useState(1);
+  const [transactionTypeFilter, setTransactionTypeFilter] = useState(1);
+  let isProcessing = false;
 
   const { Content } = Layout;
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
 
-  const datesFilter = (type) => {
+  const datesFilter = (filter) => {
     let range;
-    switch (type) {
+    switch (filter) {
       case "today":
         range = [moment().startOf("day"), moment().endOf("day")];
         break;
@@ -88,6 +91,14 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     }
     setDates(range);
     rangeFilter(range);
+  };
+
+  const amountRangeFilters = (filter) => {
+    setAmountRangeFilter(filter);
+  };
+
+  const transactionTypeFilters = (filter) => {
+    setTransactionTypeFilter(filter);
   };
 
   const showAddCollectorModal = () => {
@@ -225,8 +236,6 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
 
     setTransactionTypes(transactionTypes);
   };
-
-  let isProcessing = false;
 
   const registerPayments = async (payment) => {
     try {
@@ -700,36 +709,50 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               <label className="fw-semibold text-black me-2"> Monto </label>
               <Space wrap>
                 <Select
-                  defaultValue={0}
+                  defaultValue={1}
                   style={{
                     width: 183,
                   }}
+                  onChange={amountRangeFilters}
                   options={[
                     {
-                      value: 0,
+                      value: 1,
                       label: "$1 - $99",
                     },
                     {
-                      value: 1,
+                      value: 2,
                       label: "$100 - $499",
                     },
                     {
-                      value: 2,
+                      value: 3,
                       label: "$500 - $999",
                     },
                     {
-                      value: 3,
+                      value: 4,
                       label: "$1000 - $1999",
                     },
                     {
-                      value: 4,
+                      value: 5,
                       label: "$2000 - $4999",
                     },
                     {
-                      value: 5,
-                      label: "Mayor a $5000",
+                      value: 6,
+                      label: "$5000 en Adelante",
                     },
                   ]}
+                />
+              </Space>
+            </div>
+            <div className="col-xxl-2 col-lg-2 col-md-2 col-sm-12 w-auto">
+              <label className="fw-semibold text-black me-2"> Tipo </label>
+              <Space wrap>
+                <Select
+                  defaultValue={1}
+                  style={{
+                    width: 183,
+                  }}
+                  onChange={transactionTypeFilters}
+                  options={transactionTypes}
                 />
               </Space>
             </div>
@@ -745,22 +768,14 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 />
               </Space>
             </div>
-            <div className="col-xxl-2 col-lg-2 col-md-2 col-sm-12 w-auto">
-              <label className="fw-semibold text-black me-2"> Tipo </label>
-              <Space wrap>
-                <Select
-                  defaultValue={1}
-                  style={{
-                    width: 183,
-                  }}
-                  options={transactionTypes}
-                />
-              </Space>
-            </div>
           </div>
 
           <div className="row mb-4 ms-2">
-            <DashboardCharts datesRange={dates} amountFilterRange={0} transactionTypeFilter={3} />
+            <DashboardCharts
+              datesRange={dates}
+              amountRangeFilter={amountRangeFilter}
+              transactionTypeFilter={transactionTypeFilter}
+            />
           </div>
         </Card>
       </div>

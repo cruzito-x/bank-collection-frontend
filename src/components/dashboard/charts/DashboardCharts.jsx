@@ -5,7 +5,7 @@ import moment from "moment";
 
 const DashboardCharts = ({
   datesRange,
-  amountFilterRange,
+  amountRangeFilter,
   transactionTypeFilter,
 }) => {
   const [transactionsByDate, setTransactionsByDate] = useState([]);
@@ -52,13 +52,12 @@ const DashboardCharts = ({
     end = datesRange[1].format("YYYY-MM-DD")
   ) => {
     const response = await fetch(
-      `http://localhost:3001/dashboard/transactions-by-dates/${start}/${end}/${amountFilterRange}/${transactionTypeFilter}`,
+      `http://localhost:3001/dashboard/transactions-by-dates/${start}/${end}/${amountRangeFilter}/${transactionTypeFilter}`,
       {
         method: "GET",
       }
     );
 
-    console.log(start, end, amountFilterRange, transactionTypeFilter);
     const transactionsByDateAndTypeData = await response.json();
     setTransactionsByDate(transactionsByDateAndTypeData);
   };
@@ -89,6 +88,9 @@ const DashboardCharts = ({
 
   useEffect(() => {
     getTransactionsByDateAndAmountRangeAndType();
+  }, [datesRange[0], datesRange[1], amountRangeFilter, transactionTypeFilter]);
+
+  useEffect(() => {
     getTransactionsByCollector();
     getTransactionsByDenomination();
   }, []);
