@@ -46,12 +46,11 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   ]);
 
   const { Content } = Layout;
-  const { RangePicker } = DatePicker;
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
 
-  const quickFilter = (type) => {
+  const datesFilter = (type) => {
     let range;
     switch (type) {
       case "today":
@@ -82,13 +81,10 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
         ];
         break;
       case "lastYear":
-        range = [
-          moment().subtract(12, "month").startOf("day"),
-          moment().endOf("day"),
-        ];
+        range = "lastYear";
         break;
       default:
-        range = [moment().startOf("day"), moment().endOf("day")];
+        range = "today";
     }
     setDates(range);
     rangeFilter(range);
@@ -627,7 +623,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                     <input
                       type="text"
                       className="form-control"
-                      value={moment().format("DD/MM/YYYY hh:mm a")}
+                      value={moment().format("DD/MM/YYYY - HH:mm A")}
                       disabled={sendingDataLoading ? true : false}
                       readOnly
                     />
@@ -664,22 +660,13 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
             <label className="fw-semibold text-black mb-1"> Filtrar por </label>
             <div className="col-xxl-4 col-lg-7 col-md-7 col-sm-12 w-auto">
               <label className="fw-semibold text-black me-2"> Fecha </label>
-              <Space wrap id="dashboard-date">
-                <RangePicker
-                  value={dates}
-                  onChange={(dates) => setDates(dates)}
-                  format="DD-MM-YYYY"
-                  placeholder={["Inicio", "Fin"]}
-                  style={{
-                    width: 220,
-                  }}
-                />
+              <Space wrap>
                 <Select
                   defaultValue="today"
                   style={{
                     width: 183,
                   }}
-                  onChange={quickFilter}
+                  onChange={datesFilter}
                   options={[
                     {
                       value: "today",
@@ -713,33 +700,33 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               <label className="fw-semibold text-black me-2"> Monto </label>
               <Space wrap>
                 <Select
-                  defaultValue="0"
+                  defaultValue={0}
                   style={{
                     width: 183,
                   }}
                   options={[
                     {
-                      value: "0",
+                      value: 0,
                       label: "$1 - $99",
                     },
                     {
-                      value: "1",
+                      value: 1,
                       label: "$100 - $499",
                     },
                     {
-                      value: "2",
+                      value: 2,
                       label: "$500 - $999",
                     },
                     {
-                      value: "3",
+                      value: 3,
                       label: "$1000 - $1999",
                     },
                     {
-                      value: "4",
+                      value: 4,
                       label: "$2000 - $4999",
                     },
                     {
-                      value: "5",
+                      value: 5,
                       label: "Mayor a $5000",
                     },
                   ]}
@@ -773,7 +760,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           </div>
 
           <div className="row mb-4 ms-2">
-            <DashboardCharts />
+            <DashboardCharts datesRange={dates} amountFilterRange={0} transactionTypeFilter={3} />
           </div>
         </Card>
       </div>

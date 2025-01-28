@@ -45,7 +45,7 @@ const Audit = () => {
       const auditsRow = audits.map((audit) => {
         return {
           ...audit,
-          datetime: moment(audit.datetime).format("DD/MM/YYYY hh:mm a"),
+          datetime: moment(audit.datetime).format("DD/MM/YYYY - HH:mm A"),
         };
       });
       setAudit(auditsRow);

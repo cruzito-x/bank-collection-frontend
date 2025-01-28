@@ -221,7 +221,7 @@ const Transactions = () => {
             <div className="col-xxl-2 col-xl-2 col-sm-12 w-auto">
               <Button type="primary"> Buscar </Button>
             </div>
-            <div className="col-xxl-2 col-xl-2 col-sm-12 w-auto">
+            <div className="col-xxl-2 col-xl-2 col-sm-12 text-end">
               <Button type="primary">
                 <PlusCircleOutlined /> Nueva Transacción{" "}
               </Button>

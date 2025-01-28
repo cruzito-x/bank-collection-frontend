@@ -52,7 +52,7 @@ const PaymentsCollectors = () => {
               ...paymentsCollector,
               amount: "$" + paymentsCollector.amount,
               datetime: moment(paymentsCollector.date_hour).format(
-                "DD/MM/YYYY hh:mm a"
+                "DD/MM/YYYY - HH:mm A"
               ),
               actions: (
                 <>

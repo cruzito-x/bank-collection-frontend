@@ -1,4 +1,4 @@
-import { Button, Col, Modal, Row, Table } from "antd";
+import { Button, Col, Modal, Row, Table, Tag } from "antd";
 import { DollarCircleOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
@@ -27,7 +27,15 @@ const TransactionsModal = ({
       const transactionsData = await response.json();
       const transactions = transactionsData.map((transaction) => ({
         ...transaction,
+        transaction_type: (
+          <>
+          <Tag color={transaction.transaction_type === "Deposito" ? "green" : transaction.transaction_type === "Retiro" ? "red" : "blue"}>
+            {transaction.transaction_type}
+          </Tag>
+          </>
+        ),
         amount: "$" + transaction.amount,
+        datetime: moment(transaction.datetime).format("DD/MM/YYYY - HH:mm A"),
       }));
 
       setTransactions(transactions);
@@ -71,7 +79,6 @@ const TransactionsModal = ({
       title: "Fecha",
       dataIndex: "datetime",
       key: "datetime",
-      render: (date) => moment(date).format("DD/MM/YYYY HH:mm:ss"),
       align: "center",
     },
     {
@@ -80,6 +87,15 @@ const TransactionsModal = ({
       key: "authorized_by",
       align: "center",
     },
+  ];
+
+  const transactionsHeader = [
+    { label: "#", key: "id" },
+    { label: "Cliente", key: "customer" },
+    { label: "Tipo de Transacción", key: "transaction_type" },
+    { label: "Monto", key: "amount" },
+    { label: "Fecha y Hora", key: "datetime" },
+    { label: "Autorizado Por", key: "authorized_by" },
   ];
 
   return (
@@ -117,10 +133,7 @@ const TransactionsModal = ({
             }}
           />
         </div>
-        <div className="col-6">
-          <label className="fw-semibold text-black">Saldo Actual: {0}</label>
-        </div>
-        <div className="col-6">
+        <div className="col-12">
           <div className="text-end">
             <Button type="primary" danger onClick={isClosed}>
               {" "}
@@ -131,15 +144,10 @@ const TransactionsModal = ({
               filename={`${0}_${moment(new Date()).format(
                 "YYYYMMDDHHmmss"
               )} - Transactions.csv`}
+              headers={transactionsHeader}
               data={transactions}
             >
-              <Button
-                className="ms-2"
-                type="primary"
-                style={{
-                  backgroundColor: "var(--green)",
-                }}
-              >
+              <Button className="ms-2" type="primary">
                 Exportar CSV
               </Button>
             </CSVLink>

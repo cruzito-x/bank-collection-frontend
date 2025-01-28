@@ -1,8 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Chart } from "chart.js/auto";
-import { Card, Carousel } from "antd";
+import { Card, Carousel, Empty } from "antd";
+import moment from "moment";
 
-const DashboardCharts = () => {
+const DashboardCharts = ({
+  datesRange,
+  amountFilterRange,
+  transactionTypeFilter,
+}) => {
+  const [transactionsByDate, setTransactionsByDate] = useState([]);
   const [transactionsByCollector, setTransactionsByCollector] = useState([]);
   const [transactionsByDenomination, setTransactionsByDenomination] = useState(
     []
@@ -41,6 +47,22 @@ const DashboardCharts = () => {
     "#b7ffe3",
   ];
 
+  const getTransactionsByDateAndAmountRangeAndType = async (
+    start = datesRange[0].format("YYYY-MM-DD"),
+    end = datesRange[1].format("YYYY-MM-DD")
+  ) => {
+    const response = await fetch(
+      `http://localhost:3001/dashboard/transactions-by-dates/${start}/${end}/${amountFilterRange}/${transactionTypeFilter}`,
+      {
+        method: "GET",
+      }
+    );
+
+    console.log(start, end, amountFilterRange, transactionTypeFilter);
+    const transactionsByDateAndTypeData = await response.json();
+    setTransactionsByDate(transactionsByDateAndTypeData);
+  };
+
   const getTransactionsByCollector = async () => {
     const response = await fetch(
       "http://localhost:3001/dashboard/transactions-by-collector",
@@ -66,176 +88,185 @@ const DashboardCharts = () => {
   };
 
   useEffect(() => {
+    getTransactionsByDateAndAmountRangeAndType();
     getTransactionsByCollector();
     getTransactionsByDenomination();
   }, []);
 
   useEffect(() => {
-    if (transactionsByCollector.length === 0) return;
-    if (transactionsByDenomination.length === 0) return;
+    // Transactions
+    if (transactionsByDate.length > 0) {
+      const dates = transactionsByDate.map((transactionByDate) =>
+        moment(transactionByDate.date).format("dddd")
+      );
 
-    const collectors = transactionsByCollector.map(
-      (transactionByCollector) => transactionByCollector.collector
-    );
+      const totalsByDates = transactionsByDate.map(
+        (transactionByDate) => transactionByDate.amount
+      );
 
-    const totals = transactionsByCollector.map(
-      (transactionByCollector) => transactionByCollector.transactionsByCollector
-    );
+      const barTransactionsChart =
+        barTransactionsCanvasRef.current.getContext("2d");
 
-    const denominations = transactionsByDenomination.map(
-      (transactionByDenomination) => transactionByDenomination.denomination
-    );
-
-    const totalByDenomination = transactionsByDenomination.map(
-      (transactionByDenomination) => transactionByDenomination.total
-    );
-
-    const barTransactionsChart =
-      barTransactionsCanvasRef.current.getContext("2d");
-    const doughnutTransactionsChart =
-      doughnutTransactionsCanvasRef.current.getContext("2d");
-    const doughnutAmountChart =
-      doughnutAmountCanvasRef.current.getContext("2d");
-
-    const barTransactionsData = {
-      labels: [
-        "Lunes",
-        "Martes",
-        "Miércoles",
-        "Jueves",
-        "Viernes",
-        "Sábado",
-        "Domingo",
-      ],
-      datasets: [
-        {
-          data: [100, 150, 120, 180, 130, 140, 72],
-          backgroundColor: colors,
-        },
-      ],
-    };
-
-    const barTransactionsConfig = {
-      type: "bar",
-      data: barTransactionsData,
-      options: {
-        responsive: true,
-        plugins: {
-          title: {
-            display: true,
-            text: "Transacciones",
-            color: "#000000",
+      const barTransactionsData = {
+        labels: dates,
+        datasets: [
+          {
+            data: totalsByDates,
+            backgroundColor: colors,
           },
-          legend: {
-            display: false,
-          },
-        },
-        scales: {
-          x: {
-            grid: {
+        ],
+      };
+
+      const barTransactionsConfig = {
+        type: "bar",
+        data: barTransactionsData,
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: "Transacciones",
+              color: "#000000",
+            },
+            legend: {
               display: false,
             },
-          },
-          y: {
-            grid: {
-              display: false,
+            tooltip: {
+              callbacks: {
+                label: function (total, data) {
+                  return `Total Transferido $` + total.formattedValue;
+                },
+              },
             },
           },
-        },
-      },
-    };
-
-    const doughnutAmountData = {
-      labels: collectors,
-      datasets: [
-        {
-          data: totals,
-          backgroundColor: colors,
-        },
-      ],
-    };
-
-    const doughnutAmountConfig = {
-      type: "doughnut",
-      data: doughnutAmountData,
-      options: {
-        aspectRatio: 2,
-        maintainAspectRatio: true,
-        responsive: true,
-        plugins: {
-          title: {
-            display: true,
-            text: "Transacciones por Colector",
-            color: "#000000",
-          },
-          tooltip: {
-            callbacks: {
-              label: function (total, data) {
-                return "Total de Pago(s): " + total.formattedValue;
+          scales: {
+            x: {
+              grid: {
+                display: false,
+              },
+            },
+            y: {
+              grid: {
+                display: false,
               },
             },
           },
         },
-        borderWidth: 0,
-      },
-    };
+      };
 
-    const doughnutTransactionsData = {
-      labels: denominations,
-      datasets: [
-        {
-          data: totalByDenomination,
-          backgroundColor: colors,
-        },
-      ],
-    };
+      barTransactionsChartInstance.current = new Chart(
+        barTransactionsChart,
+        barTransactionsConfig
+      );
+    }
 
-    const doughnutTransactionsConfig = {
-      type: "doughnut",
-      data: doughnutTransactionsData,
-      options: {
-        aspectRatio: 2,
-        maintainAspectRatio: true,
-        responsive: true,
-        plugins: {
-          title: {
-            display: true,
-            text: "Total de Pagos a Colectores - Denominaciones",
-            color: "#000000",
+    // Transactions by Collector Chart
+    if (transactionsByCollector.length > 0) {
+      const collectors = transactionsByCollector.map(
+        (transactionByCollector) => transactionByCollector.collector
+      );
+
+      const totals = transactionsByCollector.map(
+        (transactionByCollector) =>
+          transactionByCollector.transactionsByCollector
+      );
+
+      const doughnutAmountChart =
+        doughnutAmountCanvasRef.current.getContext("2d");
+
+      const doughnutAmountData = {
+        labels: collectors,
+        datasets: [
+          {
+            data: totals,
+            backgroundColor: colors,
           },
+        ],
+      };
+
+      const doughnutAmountConfig = {
+        type: "doughnut",
+        data: doughnutAmountData,
+        options: {
+          aspectRatio: 2,
+          maintainAspectRatio: true,
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: "Transacciones por Colector",
+              color: "#000000",
+            },
+            tooltip: {
+              callbacks: {
+                label: function (total, data) {
+                  return "Total de Pago(s): " + total.formattedValue;
+                },
+              },
+            },
+          },
+          borderWidth: 0,
         },
-        borderWidth: 0,
-      },
-    };
+      };
 
-    if (barTransactionsChartInstance.current) {
-      barTransactionsChartInstance.current.destroy();
+      doughnutAmountChartInstance.current = new Chart(
+        doughnutAmountChart,
+        doughnutAmountConfig
+      );
     }
 
-    if (doughnutAmountChartInstance.current) {
-      doughnutAmountChartInstance.current.destroy();
+    // Transactions by Denominations
+    if (transactionsByDenomination.length > 0) {
+      const denominations = transactionsByDenomination.map(
+        (transactionByDenomination) => transactionByDenomination.denomination
+      );
+
+      const totalByDenomination = transactionsByDenomination.map(
+        (transactionByDenomination) => transactionByDenomination.total
+      );
+
+      const doughnutTransactionsChart =
+        doughnutTransactionsCanvasRef.current.getContext("2d");
+
+      const doughnutTransactionsData = {
+        labels: denominations,
+        datasets: [
+          {
+            data: totalByDenomination,
+            backgroundColor: colors,
+          },
+        ],
+      };
+
+      const doughnutTransactionsConfig = {
+        type: "doughnut",
+        data: doughnutTransactionsData,
+        options: {
+          aspectRatio: 2,
+          maintainAspectRatio: true,
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: "Total de Pagos a Colectores - Denominaciones",
+              color: "#000000",
+            },
+          },
+          borderWidth: 0,
+        },
+      };
+
+      doughnutTransactionsChartInstance.current = new Chart(
+        doughnutTransactionsChart,
+        doughnutTransactionsConfig
+      );
     }
-
-    if (doughnutTransactionsChartInstance.current) {
-      doughnutTransactionsChartInstance.current.destroy();
-    }
-
-    barTransactionsChartInstance.current = new Chart(
-      barTransactionsChart,
-      barTransactionsConfig
-    );
-
-    doughnutAmountChartInstance.current = new Chart(
-      doughnutAmountChart,
-      doughnutAmountConfig
-    );
-
-    doughnutTransactionsChartInstance.current = new Chart(
-      doughnutTransactionsChart,
-      doughnutTransactionsConfig
-    );
 
     return () => {
+      if (barTransactionsChartInstance.current) {
+        barTransactionsChartInstance.current.destroy();
+      }
+
       if (doughnutAmountChartInstance.current) {
         doughnutAmountChartInstance.current.destroy();
       }
@@ -244,38 +275,66 @@ const DashboardCharts = () => {
         doughnutTransactionsChartInstance.current.destroy();
       }
     };
-  }, [transactionsByCollector, transactionsByDenomination]);
+  }, [transactionsByDate, transactionsByCollector, transactionsByDenomination]);
 
   return (
     <div className="row">
       <div className="col-xl-8 col-lg-8 col-md-8 col-sm-12">
-        <Card className="shadow mb-2">
-          <canvas
-            className="ms-3 me-3 mb-4"
-            ref={barTransactionsCanvasRef}
-            style={{ width: "100%" }}
-          ></canvas>
+        <Card
+          className={`shadow mb-2 ${
+            transactionsByDate.length === 0
+              ? "d-flex justify-content-center align-items-center h-100"
+              : ""
+          }`}
+        >
+          {transactionsByDate.length === 0 ? (
+            <Empty />
+          ) : (
+            <canvas
+              className="ms-3 me-3 mb-4"
+              ref={barTransactionsCanvasRef}
+              style={{ width: "100%" }}
+            ></canvas>
+          )}
         </Card>
       </div>
       <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-        <Card className="shadow">
-          <canvas
-            className="mb-2"
-            ref={doughnutAmountCanvasRef}
-            style={{ width: "100%" }}
-          ></canvas>
+        <Card
+          className={`shadow mb-1 ${
+            transactionsByCollector.length === 0
+              ? "d-flex justify-content-center align-items-center h-100"
+              : ""
+          }`}
+        >
+          {transactionsByCollector.length === 0 ? (
+            <Empty />
+          ) : (
+            <canvas
+              className="mb-2"
+              ref={doughnutAmountCanvasRef}
+              style={{ width: "100%" }}
+            ></canvas>
+          )}
         </Card>
-        <Card className="shadow mt-1">
-          <Carousel arrows infinite={false} dotPosition="bottom">
-            <div>
-              <canvas
-                className="mb-2"
-                ref={doughnutTransactionsCanvasRef}
-                style={{ width: "100%" }}
-              ></canvas>
-            </div>
-            <div></div>
-          </Carousel>
+        <Card
+          className={`shadow ${
+            transactionsByDenomination.length === 0 ? "" : ""
+          }`}
+        >
+          {transactionsByDenomination.length === 0 ? (
+            <Empty />
+          ) : (
+            <Carousel arrows infinite={false} dotPosition="bottom">
+              <div>
+                <canvas
+                  className="mb-2"
+                  ref={doughnutTransactionsCanvasRef}
+                  style={{ width: "100%" }}
+                ></canvas>
+              </div>
+              <div></div>
+            </Carousel>
+          )}
         </Card>
       </div>
     </div>
