@@ -194,7 +194,7 @@ const DashboardCharts = ({
           plugins: {
             title: {
               display: true,
-              text: "Transacciones por Colector",
+              text: "Pagos por Colector",
               color: "#000000",
             },
             tooltip: {
@@ -248,8 +248,18 @@ const DashboardCharts = ({
           plugins: {
             title: {
               display: true,
-              text: "Total de Pagos a Colectores - Denominaciones",
+              text: "Pagos a Colectores - Denominaciones",
               color: "#000000",
+              margin: {
+                bottom: 20,
+              },
+            },
+            legend: {
+              position: "left",
+              labels: {
+                boxWidth: 20,
+                padding: 10,
+              },
             },
           },
           borderWidth: 0,
@@ -293,7 +303,6 @@ const DashboardCharts = ({
             <canvas
               className="ms-3 me-3 mb-4"
               ref={barTransactionsCanvasRef}
-              style={{ width: "100%" }}
             ></canvas>
           )}
         </Card>
@@ -309,11 +318,7 @@ const DashboardCharts = ({
           {transactionsByCollector.length === 0 ? (
             <Empty />
           ) : (
-            <canvas
-              className="mb-2"
-              ref={doughnutAmountCanvasRef}
-              style={{ width: "100%" }}
-            ></canvas>
+            <canvas className="mb-2" ref={doughnutAmountCanvasRef}></canvas>
           )}
         </Card>
         <Card
@@ -329,7 +334,6 @@ const DashboardCharts = ({
                 <canvas
                   className="mb-2"
                   ref={doughnutTransactionsCanvasRef}
-                  style={{ width: "100%" }}
                 ></canvas>
               </div>
               <div></div>

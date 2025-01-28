@@ -80,8 +80,8 @@ const Login = () => {
           onFinish={onFinish}
           style={{ width: 300, padding: 20 }}
         >
+          <label className="text-black"> Usuario </label>
           <Form.Item
-            label="Usuario"
             name="username"
             rules={[
               {
@@ -93,8 +93,8 @@ const Login = () => {
             <Input placeholder="Usuario" />
           </Form.Item>
 
+          <label className="text-black"> Contraseña </label>
           <Form.Item
-            label="Contraseña"
             name="password"
             rules={[
               { required: true, message: "Por Favor Introduzca su Contraseña" },
