@@ -84,7 +84,10 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
         ];
         break;
       case "lastYear":
-        range = "lastYear";
+        range = [
+          moment().subtract(1, "year").startOf("day"),
+          moment().endOf("day"),
+        ];
         break;
       default:
         range = "today";
