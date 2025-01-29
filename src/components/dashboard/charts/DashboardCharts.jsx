@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Chart } from "chart.js/auto";
 import { Card, Carousel, Empty } from "antd";
-import moment from "moment";
 
 const DashboardCharts = ({
   datesRange,
@@ -98,12 +97,12 @@ const DashboardCharts = ({
   useEffect(() => {
     // Transactions
     if (transactionsByDate.length > 0) {
-      const dates = transactionsByDate.map((transactionByDate) =>
-        moment(transactionByDate.date).format("dddd")
+      const dates = transactionsByDate.map(
+        (transactionByDate) => transactionByDate.label
       );
 
       const totalsByDates = transactionsByDate.map(
-        (transactionByDate) => transactionByDate.amount
+        (transactionByDate) => transactionByDate.totalAmount
       );
 
       const barTransactionsChart =
@@ -127,7 +126,14 @@ const DashboardCharts = ({
           plugins: {
             title: {
               display: true,
-              text: "Transacciones",
+              text:
+                transactionTypeFilter === 1
+                  ? "Depositos"
+                  : transactionTypeFilter === 2
+                  ? "Retiros"
+                  : transactionTypeFilter === 3
+                  ? "Transacciones"
+                  : "",
               color: "#000000",
             },
             legend: {
@@ -136,7 +142,17 @@ const DashboardCharts = ({
             tooltip: {
               callbacks: {
                 label: function (total, data) {
-                  return `Total Transferido $` + total.formattedValue;
+                  return (
+                    `Total ${
+                      transactionTypeFilter === 1
+                        ? "Depositado"
+                        : transactionTypeFilter === 2
+                        ? "Retirdo"
+                        : transactionTypeFilter === 3
+                        ? "Transferido"
+                        : ""
+                    } $` + total.formattedValue
+                  );
                 },
               },
             },
