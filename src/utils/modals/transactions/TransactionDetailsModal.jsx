@@ -2,7 +2,7 @@ import { Button, Col, Modal, Row } from "antd";
 import { CheckCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import React, { useEffect } from "react";
 
-const TransactionDetails = ({ isOpen, isClosed, transactionData }) => {
+const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
   useEffect(() => {}, [isOpen, transactionData]);
 
   return (
@@ -98,4 +98,4 @@ const TransactionDetails = ({ isOpen, isClosed, transactionData }) => {
   );
 };
 
-export default TransactionDetails;
+export default TransactionDetailsModal;

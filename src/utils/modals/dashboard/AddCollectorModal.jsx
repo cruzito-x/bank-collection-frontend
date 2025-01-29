@@ -125,6 +125,8 @@ const AddCollectorModal = ({ openModal, closeModal }) => {
             {
               required: true,
               message: "Por Favor, Introduzca una Descripción Para el Servicio",
+              min: 5,
+              max: 255,
             },
           ]}
         >

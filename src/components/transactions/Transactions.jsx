@@ -20,7 +20,8 @@ import {
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import moment from "moment";
-import TransactionDetails from "../../utils/modals/transactions/TransactionDetails";
+import TransactionDetailsModal from "../../utils/modals/transactions/TransactionDetailsModal";
+import NewTransactionModal from "../../utils/modals/transactions/NewTransactionModal";
 
 const Transactions = () => {
   const { authState } = useAuth();
@@ -28,6 +29,8 @@ const Transactions = () => {
   const [transactionsTypes, setTransactionTypes] = useState([]);
   const [transactions, setTransactions] = useState([]);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const [isNewTransactionModalOpen, setIsNewTransactionModalOpen] =
+    useState(false);
   const [isTransactionDetailsModalOpen, setIsTransactionDetailsModalOpen] =
     useState(false);
   const [messageAlert, messageContext] = message.useMessage();
@@ -118,6 +121,10 @@ const Transactions = () => {
 
   const showTransactionDetailsModal = () => {
     setIsTransactionDetailsModalOpen(true);
+  };
+
+  const showNewTransactionModal = () => {
+    setIsNewTransactionModalOpen(true);
   };
 
   const transactionsTableColumns = [
@@ -237,10 +244,10 @@ const Transactions = () => {
             <div className="col-xxl-2 col-xl-2 col-sm-12 w-auto">
               <label className="me-2 fw-semibold text-black"> Fecha </label>
               <DatePicker
-                // value={dates}
-                // onChange={(dates) => setDates(dates)}
+                // value={date}
+                // onChange={(date) => setDate(date)}
                 format="DD/MM/YYYY"
-                placeholder={["00/00/0000"]}
+                placeholder="00/00/0000"
                 style={{
                   width: 183,
                 }}
@@ -251,7 +258,7 @@ const Transactions = () => {
               <Button type="primary"> Buscar </Button>
             </div>
             <div className="col-xxl-2 col-xl-2 col-sm-12 text-end">
-              <Button type="primary">
+              <Button type="primary" onClick={showNewTransactionModal}>
                 <PlusCircleOutlined /> Nueva Transacción{" "}
               </Button>
             </div>
@@ -273,7 +280,12 @@ const Transactions = () => {
               />
             </div>
           </div>
-          <TransactionDetails
+          <NewTransactionModal
+            isOpen={isNewTransactionModalOpen}
+            isClosed={() => setIsNewTransactionModalOpen(false)}
+            transactionTypes={transactionsTypes}
+          />
+          <TransactionDetailsModal
             isOpen={isTransactionDetailsModalOpen}
             isClosed={() => setIsTransactionDetailsModalOpen(false)}
             transactionData={selectedTransaction}
