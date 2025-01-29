@@ -8,6 +8,7 @@ import {
   message,
   Select,
   Table,
+  Tag,
   theme,
 } from "antd";
 import {
@@ -19,15 +20,18 @@ import {
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import moment from "moment";
+import TransactionDetails from "../../utils/modals/transactions/TransactionDetails";
 
 const Transactions = () => {
   const { authState } = useAuth();
   const [loading, setLoading] = useState(false);
   const [transactionsTypes, setTransactionTypes] = useState([]);
   const [transactions, setTransactions] = useState([]);
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const [isTransactionDetailsModalOpen, setIsTransactionDetailsModalOpen] =
+    useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
-  const { RangePicker } = DatePicker;
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
@@ -68,10 +72,37 @@ const Transactions = () => {
         return {
           ...transaction,
           amount: "$" + transaction.amount,
-          datetime: moment(transaction.datetime).format("YYYY/MM/DD hh:mm a"),
+          status: (
+            <>
+              <Tag
+                color={`${
+                  transaction.status === 1
+                    ? "warning"
+                    : transaction.status === 2
+                    ? "green"
+                    : "red"
+                }`}
+              >
+                {transaction.status === 1
+                  ? "En Proceso"
+                  : transaction.status === 2
+                  ? "Aprobado"
+                  : "Denegado"}
+              </Tag>
+            </>
+          ),
+          datetime: moment(transaction.datetime).format("YYYY/MM/DD hh:mm A"),
           actions: (
             <>
-              <Button className="edit-btn" type="primary">
+              <Button
+                type="primary"
+                onClick={showTransactionDetailsModal}
+                disabled={
+                  transaction.status === 1 || transaction.status === 3
+                    ? true
+                    : false
+                }
+              >
                 {" "}
                 Detalles{" "}
               </Button>
@@ -83,6 +114,10 @@ const Transactions = () => {
       setLoading(false);
       setTransactions(transactions);
     } catch (error) {}
+  };
+
+  const showTransactionDetailsModal = () => {
+    setIsTransactionDetailsModalOpen(true);
   };
 
   const transactionsTableColumns = [
@@ -105,15 +140,9 @@ const Transactions = () => {
       align: "center",
     },
     {
-      title: "Monto",
-      dataIndex: "amount",
-      key: "amount",
-      align: "center",
-    },
-    {
-      title: "Autorizado por",
-      dataIndex: "authorized_by",
-      key: "authorized_by",
+      title: "Estado",
+      dataIndex: "status",
+      key: "status",
       align: "center",
     },
     {
@@ -233,14 +262,22 @@ const Transactions = () => {
                 dataSource={transactions}
                 columns={transactionsTableColumns}
                 loading={loading}
+                onRow={(record) => ({
+                  onClick: () => setSelectedTransaction(record),
+                })}
                 pagination={{
                   pageSize: 10,
-                  showTotal: (total) => `Total: ${total} colector(es)`,
+                  showTotal: (total) => `Total: ${total} transferencia(s)`,
                   hideOnSinglePage: true,
                 }}
               />
             </div>
           </div>
+          <TransactionDetails
+            isOpen={isTransactionDetailsModalOpen}
+            isClosed={() => setIsTransactionDetailsModalOpen(false)}
+            transactionData={selectedTransaction}
+          />
         </Card>
       </div>
     </Content>
