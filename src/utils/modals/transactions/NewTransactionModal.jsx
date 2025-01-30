@@ -141,9 +141,35 @@ const NewTransactionModal = ({
             }}
           />
         </Form.Item>
-        <label className="fw-semibold text-black"> Receptor </label>
+        <label className="fw-semibold text-black"> Cuenta de Origen </label>
         <Form.Item
-          name="account_number"
+          name="sender_account_number"
+          rules={[
+            {
+              required: true,
+              message: "Por Favor, Introduzca un Número de Cuenta",
+            },
+          ]}
+        >
+          <Select
+            options={accounts}
+            showSearch
+            placeholder="Introduzca un Número de Cuenta"
+            // disabled={sendingDataLoading ? true : false}
+            optionFilterProp="label"
+            filterSort={(optionA, optionB) =>
+              (optionA?.label ?? "")
+                .toLowerCase()
+                .localeCompare((optionB?.label ?? "").toLowerCase())
+            }
+            style={{
+              width: "100%",
+            }}
+          />
+        </Form.Item>
+        <label className="fw-semibold text-black"> Cuenta de Destino </label>
+        <Form.Item
+          name="receiver_account_number"
           rules={[
             {
               required: true,
