@@ -37,7 +37,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   const [cancelPaymentTimeout, setCancelPaymentTimeout] = useState(null);
   const [isPaymentCancelled, setIsPaymentCancelled] = useState(false);
   const [sendingDataLoading, setSendingDataLoading] = useState(false);
-  const [updatingStatus, setUpdatingStatus] = useState([]);
+  const [updatingStatus, setUpdatingStatus] = useState(false);
   const [openNotificationsModal, setOpenNotificationsModal] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const [form] = Form.useForm();
@@ -157,7 +157,9 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
         return {
           ...notification,
           amount: "$" + notification.amount,
-          datetime: moment(notification.datetime).format("YYYY-MM-DD HH:mm A"),
+          datetime: moment(notification.datetime).format(
+            "YYYY/MM/DD - hh:mm A"
+          ),
           actions: (
             <>
               <Button
@@ -171,6 +173,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                     1
                   )
                 }
+                loading={updatingStatus}
               >
                 Rechazar
               </Button>
@@ -185,6 +188,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                     1
                   )
                 }
+                loading={updatingStatus}
               >
                 Aprobar
               </Button>

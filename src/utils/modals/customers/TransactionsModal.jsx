@@ -29,9 +29,17 @@ const TransactionsModal = ({
         ...transaction,
         transaction_type: (
           <>
-          <Tag color={transaction.transaction_type === "Deposito" ? "green" : transaction.transaction_type === "Retiro" ? "red" : "blue"}>
-            {transaction.transaction_type}
-          </Tag>
+            <Tag
+              color={
+                transaction.transaction_type === "Deposito"
+                  ? "green"
+                  : transaction.transaction_type === "Retiro"
+                  ? "red"
+                  : "blue"
+              }
+            >
+              {transaction.transaction_type}
+            </Tag>
           </>
         ),
         amount: "$" + transaction.amount,

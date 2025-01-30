@@ -1,11 +1,11 @@
 import { Button, Col, Modal, Row, Tag } from "antd";
-import { CheckCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { InfoCircleOutlined, TransactionOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef } from "react";
 
-const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
+const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
   const printRef = useRef(null);
 
-  useEffect(() => {}, [isOpen, transactionData]);
+  useEffect(() => {}, [isOpen, approvalData]);
 
   const printDetails = () => {
     if (printRef.current) {
@@ -33,39 +33,46 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
             />{" "}
           </Col>{" "}
           <Col>
-            <label className="fs-6 text-black">Detalles de Transacción</label>
+            <label className="fs-6 text-black">Detalles de Aprobación / Denegación</label>
           </Col>{" "}
         </Row>
       }
       centered
-      width={450}
+      width={500}
       open={isOpen}
       onCancel={isClosed}
       footer={null}
     >
-      {transactionData && (
+      {approvalData && (
         <>
           <div ref={printRef} className="row mt-4">
             <div className="col-12 mb-3 text-center">
               <h1 className="fw-bold text-black" style={{ fontSize: "60px" }}>
-                {transactionData.amount}
+                {approvalData.amount}
               </h1>
               <label className="fw-semibold text-black">
                 {" "}
-                <CheckCircleOutlined style={{ color: "var(--green)" }} />{" "}
-                ¡Transacción Exitosa!{" "}
+                <TransactionOutlined style={{ color: "var(--blue)" }} />{" "}
+                Detalles de la Transacción{" "}
               </label>{" "}
               <br />
               <label style={{ color: "var(--gray)", fontSize: "13px" }}>
-                {transactionData.datetime}
+                Autorizado: {approvalData.authorized_at}
               </label>
+            </div>
+            <div className="col-12">
+              <label className="fw-semibold text-black">
+                {" "}
+                Código de Aprobación{" "}
+              </label>
+              <p> {approvalData.approval_id} </p>
             </div>
             <div className="col-12">
               <label className="fw-semibold text-black">
                 {" "}
                 Código de Transacción{" "}
               </label>
-              <p> {transactionData.id} </p>
+              <p> {approvalData.transaction_id} </p>
             </div>
             <div className="col-12">
               <label className="fw-semibold text-black">
@@ -75,44 +82,51 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
               <p>
                 <Tag
                   color={`${
-                    transactionData.transaction_type === "Deposito"
+                    approvalData.transaction_type === "Deposito"
                       ? "green"
-                      : transactionData.transaction_type === "Retiro"
+                      : approvalData.transaction_type === "Retiro"
                       ? "red"
                       : "blue"
                   }`}
                 >
                   {" "}
-                  {transactionData.transaction_type}{" "}
+                  {approvalData.transaction_type}{" "}
                 </Tag>
               </p>
             </div>
             <div className="col-12">
               <label className="fw-semibold text-black"> Remitente </label>
-              <p> {transactionData.customer} </p>
+              <p> {approvalData.sender_name} </p>
             </div>
             <div className="col-12">
               <label className="fw-semibold text-black">
                 {" "}
                 E-mail de Remitente{" "}
               </label>
-              <p> {transactionData.customer_email} </p>
+              <p> {approvalData.sender_email} </p>
             </div>
             <div className="col-12">
               <label className="fw-semibold text-black"> Receptor </label>
-              <p> {transactionData.receiver} </p>
+              <p> {approvalData.receiver_name} </p>
             </div>
             <div className="col-12">
-              <label className="fw-semibold text-black"> E-mail de Receptor </label>
-              <p> {transactionData.receiver_email} </p>
+              <label className="fw-semibold text-black">
+                {" "}
+                E-mail de Receptor{" "}
+              </label>
+              <p> {approvalData.receiver_email} </p>
             </div>
             <div className="col-12">
               <label className="fw-semibold text-black"> Concepto </label>
-              <p> {transactionData.concept} </p>
+              <p> {approvalData.concept} </p>
+            </div>
+            <div className="col-12">
+              <label className="fw-semibold text-black"> Realizado Por </label>
+              <p> {approvalData.authorized_by} </p>
             </div>
             <div className="col-12">
               <label className="fw-semibold text-black"> Autorizado Por </label>
-              <p> {transactionData.authorized_by} </p>
+              <p> {approvalData.authorized_by} </p>
             </div>
           </div>
           <div className="text-end">
@@ -130,4 +144,4 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
   );
 };
 
-export default TransactionDetailsModal;
+export default ApprovalTransactionDetails;

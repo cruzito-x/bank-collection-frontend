@@ -75,7 +75,10 @@ const NotificationsModal = ({ isOpen, isClose, notificationsData }) => {
       <Table
         dataSource={notificationsData}
         columns={notificationColumns}
-        pagination={10}
+        pagination={{
+          pageSize: 10,
+          hideOnSinglePage: true,
+        }}
       />
     </Modal>
   );

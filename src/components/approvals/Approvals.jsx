@@ -2,155 +2,174 @@ import {
   Breadcrumb,
   Button,
   Card,
-  Col,
   Input,
   Layout,
   message,
-  Modal,
-  Row,
+  Popconfirm,
   Table,
   theme,
 } from "antd";
 import {
   CheckCircleOutlined,
-  InfoCircleOutlined,
   NumberOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
+import moment from "moment";
+import ApprovalTransactionDetails from "../../utils/modals/approvals/ApprovalTransactionDetails";
 
 const Approvals = () => {
   const { authState } = useAuth();
+  const [approvals, setApprovals] = useState([]);
   const [isTransactionDetailsModalOpen, setIsTransactionDetailsModalOpen] =
     useState(false);
+  const [selectedApproval, setSelectedApproval] = useState([]);
+  const [updatingStatus, setUpdatingStatus] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
 
-  const showTransactionDetails = () => {
+  useEffect(() => {
+    getApprovals();
+  }, []);
+
+  const showApprovalDetailsModal = () => {
     setIsTransactionDetailsModalOpen(true);
   };
 
-  const closeTransactionDetails = () => {
-    setIsTransactionDetailsModalOpen(false);
+  const getApprovals = async () => {
+    const response = await fetch("http://localhost:3001/approvals", {
+      method: "GET",
+    });
+
+    const approvalsData = await response.json();
+    const approvals = approvalsData.map((approval) => {
+      return {
+        ...approval,
+        amount: "$" + approval.amount,
+        authorized_by:
+          approval.authorized_by === null
+            ? "En Espera de Aprobación"
+            : approval.authorized_by,
+        datetime: moment(approval.datetime).format("YYYY/MM/DD - hh:mm A"),
+        authorized_at: approval.authorized_at === null ? "0000/00/00 - 00:00" : moment(approval.authorized_at).format("YYYY/MM/DD - hh:mm A"),
+        actions:
+          approval.authorized_by != null ? (
+            <>
+              <Button type="primary" onClick={showApprovalDetailsModal}>
+                Ver Detalles
+              </Button>
+            </>
+          ) : (
+            <>
+              <Popconfirm
+                title="¿Desea Rechazar Esta Transacción?"
+                onConfirm={() => {
+                  updateTransactionStatus(
+                    approval.approval_id,
+                    approval.transaction_id,
+                    0,
+                    1
+                  );
+                }}
+                onCancel={() => {}}
+                okText="Sí"
+                cancelText="No"
+                okButtonProps={{
+                  loading: updatingStatus,
+                }}
+                cancelButtonProps={{
+                  loading: updatingStatus,
+                }}
+              >
+                <Button type="primary" danger loading={updatingStatus}>
+                  Rechazar
+                </Button>
+              </Popconfirm>
+              <Button
+                className="ms-2"
+                type="primary"
+                onClick={() =>
+                  updateTransactionStatus(
+                    approval.approval_id,
+                    approval.transaction_id,
+                    1,
+                    1
+                  )
+                }
+                loading={updatingStatus}
+              >
+                Aprobar
+              </Button>
+            </>
+          ),
+      };
+    });
+
+    setApprovals(approvals);
   };
 
-  const CollectorsDataSource = [
-    {
-      key: "1",
-      approvalCode: "1234567890",
-      transactionCode: "0987654321",
-      authorizedBy: "David Cruz",
-      datetime: "2025-01-02 a las 10:30 am",
-      actions: (
-        <>
-          <Button type="primary" onClick={showTransactionDetails}>
-            {" "}
-            Detalles{" "}
-          </Button>
-          <Modal
-            title={
-              <Row align="middle">
-                {" "}
-                <Col>
-                  {" "}
-                  <InfoCircleOutlined
-                    className="fs-6"
-                    style={{ marginRight: 8, color: "var(--blue)" }}
-                  />{" "}
-                </Col>{" "}
-                <Col>
-                  <label className="fs-6">Detalles de Transacción</label>
-                </Col>{" "}
-              </Row>
-            }
-            centered
-            width={450}
-            open={isTransactionDetailsModalOpen}
-            onCancel={closeTransactionDetails}
-            footer={[
-              <Button
-                key="submit"
-                type="primary"
-                onClick={closeTransactionDetails}
-              >
-                Cerrar
-              </Button>,
-            ]}
-          >
-            <div className="row mt-4">
-              <div className="col-12 mb-3 text-center">
-                <h1 className="fw-bold" style={{ fontSize: "60px" }}>
-                  {" "}
-                  $70{" "}
-                </h1>
-                <label className="fw-semibold text-black">
-                  {" "}
-                  <CheckCircleOutlined style={{ color: "var(--green)" }} />{" "}
-                  ¡Transferencia Exitosa!{" "}
-                </label>
-              </div>
-              <div className="col-12">
-                <label className="fw-semibold text-black"> Cliente Emisor </label>
-                <p> Juan Caballo 🐴 </p>
-              </div>
-              <div className="col-12">
-                <label className="fw-semibold text-black">
-                  {" "}
-                  E-mail de Cliente Emisor{" "}
-                </label>
-                <p>
-                  {" "}
-                  juancaballodeverdadsoyyoiranomaspueswarelinchar@gmail.com{" "}
-                </p>
-              </div>
-              <div className="col-12">
-                <label className="fw-semibold text-black"> Receptor </label>
-                <p> Jorgito 🫦 </p>
-              </div>
-              <div className="col-12 mb-3">
-                <label className="fw-semibold text-black"> Concepto </label>
-                <p>
-                  {" "}
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea,
-                  exercitationem incidunt voluptatibus ipsa hic, odio adipisci
-                  quod, magnam veniam nesciunt reprehenderit! Perferendis ullam
-                  error, sapiente labore eaque rerum dignissimos rem?{" "}
-                </p>
-              </div>
-            </div>
-          </Modal>
-        </>
-      ),
-    },
-  ];
+  const updateTransactionStatus = async (
+    approvalId,
+    transactionId,
+    isApproved,
+    authorizer
+  ) => {
+    setUpdatingStatus(true);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/approvals/approve-or-reject-transaction/${approvalId}/transaction/${transactionId}/approved/${isApproved}/authorized-by/${authorizer}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const transactionStatus = await response.json();
+
+      if (response.status === 200) {
+        messageAlert.success(transactionStatus.message);
+        setUpdatingStatus(false);
+        getApprovals();
+      } else {
+        messageAlert.error(transactionStatus.message);
+        setUpdatingStatus(false);
+      }
+    } catch (error) {
+      messageAlert.error("Error al actualizar el estado de la transacción.");
+      setUpdatingStatus(false);
+    }
+  };
 
   const approvalsTableColumns = [
     {
       title: "Código de Aprobación",
-      dataIndex: "approvalCode",
-      key: "approvalCode",
+      dataIndex: "approval_id",
+      key: "approval_id",
       align: "center",
     },
     {
       title: "Código de Transacción Asociada",
-      dataIndex: "transactionCode",
-      key: "transactionCode",
+      dataIndex: "transaction_id",
+      key: "transaction_id",
       align: "center",
     },
     {
       title: "Autorizado por",
-      dataIndex: "authorizedBy",
-      key: "authorizedBy",
+      dataIndex: "authorized_by",
+      key: "authorized_by",
       align: "center",
     },
     {
       title: "Fecha y Hora",
-      dataIndex: "datetime",
-      key: "datetime",
+      dataIndex: "authorized_at",
+      key: "authorized_at",
       align: "center",
     },
     {
@@ -229,17 +248,25 @@ const Approvals = () => {
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">
               <Table
-                dataSource={CollectorsDataSource}
+                dataSource={approvals}
                 columns={approvalsTableColumns}
+                onRow={(record) => ({
+                  onClick: () => setSelectedApproval(record),
+                })}
                 pagination={{
                   pageSize: 10,
-                  showTotal: (total) => `Total: ${total} colector(es)`,
                   hideOnSinglePage: true,
                 }}
               />
             </div>
           </div>
         </Card>
+
+        <ApprovalTransactionDetails
+          isOpen={isTransactionDetailsModalOpen}
+          isClosed={() => setIsTransactionDetailsModalOpen(false)}
+          approvalData={selectedApproval}
+        />
       </div>
     </Content>
   );
