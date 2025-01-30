@@ -16,6 +16,7 @@ import {
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext/AuthContext";
+import { Footer } from "antd/es/layout/layout";
 
 const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
   const { authState } = useAuth();
@@ -123,23 +124,40 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
   ];
 
   return (
-    <Menu
-      theme={darkTheme ? "dark" : "light"}
-      style={{
-        backgroundColor: darkTheme ? "var(--gray)" : "var(--gray)",
-        color: darkTheme ? "#ffffff" : "var(--blue)",
-      }}
-      mode="inline"
-      items={menuItems}
-      className="menu-bar"
-      onClick={({ key }) => {
-        if (key === "/logout") {
-          window.location.href = "/";
-        } else {
-          navigate(key);
-        }
-      }}
-    />
+    <>
+      <Menu
+        theme={darkTheme ? "dark" : "light"}
+        style={{
+          backgroundColor: darkTheme ? "var(--gray)" : "var(--gray)",
+          color: darkTheme ? "#ffffff" : "var(--blue)",
+        }}
+        mode="inline"
+        items={menuItems}
+        className="menu-bar"
+        onClick={({ key }) => {
+          if (key === "/logout") {
+            window.location.href = "/";
+          } else {
+            navigate(key);
+          }
+        }}
+      />
+
+      {!collapsed && (
+        <Footer
+          className="text-center text-white p-4"
+          style={{
+            background: "transparent",
+            position: "absolute",
+            bottom: 0,
+            width: "100%",
+          }}
+        >
+          &copy; cruzito-x - {new Date().getFullYear()} <br /> All Rights
+          Reserved.
+        </Footer>
+      )}
+    </>
   );
 };
 
