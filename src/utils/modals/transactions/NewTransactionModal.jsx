@@ -16,6 +16,7 @@ const NewTransactionModal = ({
   isOpen,
   isClosed,
   transactionTypes,
+  getTransactions,
   setAlertMessage,
 }) => {
   const [customers, setCustomers] = useState([]);
@@ -64,6 +65,7 @@ const NewTransactionModal = ({
         setSendingTransaction(false);
         form.resetFields();
         isClosed();
+        getTransactions();
         setAlertMessage.success(transactionData.message);
       } else {
         setSendingTransaction(false);
@@ -141,7 +143,7 @@ const NewTransactionModal = ({
             }}
           />
         </Form.Item>
-        <label className="fw-semibold text-black"> Cuenta de Origen </label>
+        <label className="fw-semibold text-black"> No. Cuenta Origen </label>
         <Form.Item
           name="sender_account_number"
           rules={[
@@ -167,7 +169,7 @@ const NewTransactionModal = ({
             }}
           />
         </Form.Item>
-        <label className="fw-semibold text-black"> Cuenta de Destino </label>
+        <label className="fw-semibold text-black"> No. Cuenta Destino </label>
         <Form.Item
           name="receiver_account_number"
           rules={[

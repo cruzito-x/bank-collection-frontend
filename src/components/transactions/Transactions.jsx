@@ -284,6 +284,7 @@ const Transactions = () => {
             isOpen={isNewTransactionModalOpen}
             isClosed={() => setIsNewTransactionModalOpen(false)}
             transactionTypes={transactionsTypes}
+            getTransactions={getTransactions}
             setAlertMessage={messageAlert}
           />
           <TransactionDetailsModal

@@ -89,26 +89,62 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
             </div>
             <div className="col-12">
               <label className="fw-semibold text-black"> Remitente </label>
-              <p> {transactionData.customer} </p>
+              <p>
+                {" "}
+                {transactionData.customer}
+                {" - "}
+                <span
+                  style={{
+                    color: "var(--gray)",
+                    fontSize: "13px",
+                  }}
+                >
+                  {transactionData.customer_email}
+                </span>{" "}
+              </p>
             </div>
             <div className="col-12">
               <label className="fw-semibold text-black">
                 {" "}
-                E-mail de Remitente{" "}
+                No. Cuenta Remitente{" "}
               </label>
-              <p> {transactionData.customer_email} </p>
+              <p> {transactionData.sender_account} </p>
             </div>
             <div className="col-12">
-              <label className="fw-semibold text-black"> Receptor </label>
-              <p> {transactionData.receiver} </p>
+              <label className="fw-semibold text-black"> Destinatario </label>
+              <p>
+                {" "}
+                {transactionData.receiver}
+                {" - "}
+                <span
+                  style={{
+                    color: "var(--gray)",
+                    fontSize: "13px",
+                  }}
+                >
+                  {transactionData.receiver_email}
+                </span>{" "}
+              </p>
             </div>
             <div className="col-12">
-              <label className="fw-semibold text-black"> E-mail de Receptor </label>
-              <p> {transactionData.receiver_email} </p>
+              <label className="fw-semibold text-black">
+                {" "}
+                No. Cuenta Destino{" "}
+              </label>
+              <p> {transactionData.receiver_account} </p>
             </div>
             <div className="col-12">
               <label className="fw-semibold text-black"> Concepto </label>
-              <p> {transactionData.concept} </p>
+              <p>
+                {" "}
+                {transactionData.concept === null
+                  ? transactionData.concept
+                  : "Sin concepto"}{" "}
+              </p>
+            </div>
+            <div className="col-12">
+              <label className="fw-semibold text-black"> Realizado Por </label>
+              <p> {transactionData.realized_by} </p>
             </div>
             <div className="col-12">
               <label className="fw-semibold text-black"> Autorizado Por </label>
