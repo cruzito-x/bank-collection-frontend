@@ -2,21 +2,82 @@ import {
   Button,
   Col,
   Form,
-  Input,
   InputNumber,
   Modal,
   Row,
   Select,
 } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
 
-const NewTransactionModal = ({ isOpen, isClosed, transactionTypes }) => {
+const NewTransactionModal = ({
+  isOpen,
+  isClosed,
+  transactionTypes,
+  setAlertMessage,
+}) => {
+  const [customers, setCustomers] = useState([]);
+  const [accounts, setAccounts] = useState([]);
+  const [sendingTransaction, setSendingTransaction] = useState(false);
   const [form] = useForm();
 
-  const registerTransaction = async (transaction) => {};
+  const getCustomers = async () => {
+    const response = await fetch(
+      "http://localhost:3001/transactions/customers"
+    );
+    const customersData = await response.json();
+
+    const names = customersData.map((customer) => ({
+      label: customer.name + " " + customer.identity_doc,
+      value: customer.id,
+    }));
+
+    const account_numbers = customersData.map((customer) => ({
+      label: customer.account_number + " " + customer.name,
+      value: customer.account_number,
+    }));
+
+    setCustomers(names);
+    setAccounts(account_numbers);
+  };
+
+  const registerTransaction = async (transaction) => {
+    setSendingTransaction(true);
+
+    try {
+      const response = await fetch(
+        "http://localhost:3001/transactions/save-new-transaction",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(transaction),
+        }
+      );
+
+      const transactionData = await response.json();
+
+      if (response.status === 200) {
+        setSendingTransaction(false);
+        form.resetFields();
+        isClosed();
+        setAlertMessage.success(transactionData.message);
+      } else {
+        setSendingTransaction(false);
+        setAlertMessage.error(transactionData.message);
+      }
+    } catch (error) {
+      setSendingTransaction(false);
+      setAlertMessage.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getCustomers();
+  }, []);
 
   return (
     <Modal
@@ -61,16 +122,11 @@ const NewTransactionModal = ({ isOpen, isClosed, transactionTypes }) => {
             {
               required: true,
               message: "Por Favor, Introduzca un Número de Identificación",
-              min: 5,
-              max: 10000,
             },
           ]}
         >
           <Select
-            // options={services}
-            onChange={(value) => {
-              form.setFieldsValue({ service_id: value });
-            }}
+            options={customers}
             showSearch
             placeholder="Introduzca un Número de Identificación"
             // disabled={sendingDataLoading ? true : false}
@@ -87,21 +143,16 @@ const NewTransactionModal = ({ isOpen, isClosed, transactionTypes }) => {
         </Form.Item>
         <label className="fw-semibold text-black"> Cuenta </label>
         <Form.Item
-          name="customer"
+          name="account_number"
           rules={[
             {
               required: true,
               message: "Por Favor, Introduzca un Número de Cuenta",
-              min: 5,
-              max: 10000,
             },
           ]}
         >
           <Select
-            // options={services}
-            onChange={(value) => {
-              form.setFieldsValue({ service_id: value });
-            }}
+            options={accounts}
             showSearch
             placeholder="Introduzca un Número de Cuenta"
             // disabled={sendingDataLoading ? true : false}
@@ -123,15 +174,13 @@ const NewTransactionModal = ({ isOpen, isClosed, transactionTypes }) => {
             {
               required: true,
               message: "Por Favor, Introduzca un Monto Mínimo de $5",
-              min: 5,
-              max: 10000,
             },
           ]}
         >
           <InputNumber
             prefix="$"
             min={5}
-            max={10000}
+            max={100000}
             placeholder="0.00"
             onChange={(value) => {
               form.setFieldsValue({ amount: value });
@@ -163,7 +212,7 @@ const NewTransactionModal = ({ isOpen, isClosed, transactionTypes }) => {
           />
         </Form.Item>
         <Form.Item className="text-end">
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={sendingTransaction}>
             Realizar Transferencia
           </Button>
         </Form.Item>

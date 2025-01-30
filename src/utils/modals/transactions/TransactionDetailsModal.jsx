@@ -1,9 +1,24 @@
-import { Button, Col, Modal, Row } from "antd";
+import { Button, Col, Modal, Row, Tag } from "antd";
 import { CheckCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
+  const printRef = useRef(null);
+
   useEffect(() => {}, [isOpen, transactionData]);
+
+  const printDetails = () => {
+    if (printRef.current) {
+      const printContents = printRef.current.innerHTML;
+      const originalContents = document.body.innerHTML;
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+      window.location.reload();
+    } else {
+      console.error("printRef.current is undefined");
+    }
+  };
 
   return (
     <Modal
@@ -30,7 +45,7 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
     >
       {transactionData && (
         <>
-          <div className="row mt-4">
+          <div ref={printRef} className="row mt-4">
             <div className="col-12 mb-3 text-center">
               <h1 className="fw-bold" style={{ fontSize: "60px" }}>
                 {transactionData.amount}
@@ -38,7 +53,7 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
               <label className="fw-semibold text-black">
                 {" "}
                 <CheckCircleOutlined style={{ color: "var(--green)" }} />{" "}
-                ¡Transferencia Exitosa!{" "}
+                ¡Transacción Exitosa!{" "}
               </label>{" "}
               <br />
               <label style={{ color: "var(--gray)", fontSize: "13px" }}>
@@ -57,22 +72,39 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
                 {" "}
                 Tipo de Transacción{" "}
               </label>
-              <p> {transactionData.transaction_type} </p>
+              <p>
+                <Tag
+                  color={`${
+                    transactionData.transaction_type === "Deposito"
+                      ? "green"
+                      : transactionData.transaction_type === "Retiro"
+                      ? "red"
+                      : "blue"
+                  }`}
+                >
+                  {" "}
+                  {transactionData.transaction_type}{" "}
+                </Tag>
+              </p>
             </div>
             <div className="col-12">
-              <label className="fw-semibold text-black"> Envíado Por </label>
+              <label className="fw-semibold text-black"> Remitente </label>
               <p> {transactionData.customer} </p>
             </div>
             <div className="col-12">
               <label className="fw-semibold text-black">
                 {" "}
-                E-mail de Cliente{" "}
+                E-mail de Remitente{" "}
               </label>
               <p> {transactionData.customer_email} </p>
             </div>
             <div className="col-12">
-              <label className="fw-semibold text-black"> Recibido Por </label>
+              <label className="fw-semibold text-black"> Receptor </label>
               <p> {transactionData.receiver} </p>
+            </div>
+            <div className="col-12">
+              <label className="fw-semibold text-black"> E-mail de Receptor </label>
+              <p> {transactionData.receiver_email} </p>
             </div>
             <div className="col-12">
               <label className="fw-semibold text-black"> Concepto </label>
@@ -88,8 +120,8 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
               {" "}
               Cerrar{" "}
             </Button>
-            <Button className="ms-2" type="primary">
-              Imprimir PDF
+            <Button className="ms-2" type="primary" onClick={printDetails}>
+              Imprimir
             </Button>
           </div>
         </>

@@ -4,27 +4,27 @@ import {
   Layout,
   Select,
   Space,
-  DatePicker,
   theme,
   Modal,
   Row,
   Col,
   InputNumber,
   Form,
-  Table,
   message,
   Progress,
   Flex,
 } from "antd";
-import { InfoCircleOutlined, WarningOutlined } from "@ant-design/icons";
+import { InfoCircleOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import "./styles/dashboard.css";
 import DashboardCharts from "./charts/DashboardCharts";
 import moment from "moment";
 import LogoutCard from "../../utils/logoutCard/LogoutCard";
 import AddCollectorModal from "../../utils/modals/dashboard/AddCollectorModal";
+import NotificationsModal from "../../utils/modals/dashboard/NotificationsModal";
 
 const Dashboard = ({ rangeFilter = () => {} }) => {
+  const [notifications, setNotifications] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [collectors, setCollectors] = useState([]);
   const [services, setServices] = useState([]);
@@ -37,6 +37,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   const [cancelPaymentTimeout, setCancelPaymentTimeout] = useState(null);
   const [isPaymentCancelled, setIsPaymentCancelled] = useState(false);
   const [sendingDataLoading, setSendingDataLoading] = useState(false);
+  const [updatingStatus, setUpdatingStatus] = useState([]);
   const [openNotificationsModal, setOpenNotificationsModal] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const [form] = Form.useForm();
@@ -125,11 +126,8 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     setOpenNotificationsModal(true);
   };
 
-  const closeNotificacionsModal = () => {
-    setOpenNotificationsModal(false);
-  };
-
   useEffect(() => {
+    getNotifications();
     getCustomers();
     getCollectors();
     getServicesByCollector();
@@ -142,7 +140,98 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     if (collectors.length === 0) return;
     if (totalPayments.length === 0) return;
     if (totalProcessedAmounts.length === 0) return;
-  }, [collectors, totalPayments, totalProcessedAmounts]);
+    if (notifications.length === 0) return;
+  }, [collectors, totalPayments, totalProcessedAmounts, notifications]);
+
+  const getNotifications = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/approvals/notifications",
+        {
+          method: "GET",
+        }
+      );
+
+      const notificationsData = await response.json();
+      const notifications = notificationsData.map((notification) => {
+        return {
+          ...notification,
+          amount: "$" + notification.amount,
+          datetime: moment(notification.datetime).format("YYYY-MM-DD HH:mm A"),
+          actions: (
+            <>
+              <Button
+                type="primary"
+                danger
+                onClick={() =>
+                  updateTransactionStatus(
+                    notification.approval_id,
+                    notification.transaction_id,
+                    0,
+                    1
+                  )
+                }
+              >
+                Rechazar
+              </Button>
+              <Button
+                className="ms-2"
+                type="primary"
+                onClick={() =>
+                  updateTransactionStatus(
+                    notification.approval_id,
+                    notification.transaction_id,
+                    1,
+                    1
+                  )
+                }
+              >
+                Aprobar
+              </Button>
+            </>
+          ),
+        };
+      });
+      setNotifications(notifications);
+    } catch (error) {
+      console.error("Error: ", error);
+    }
+  };
+
+  const updateTransactionStatus = async (
+    approvalId,
+    transactionId,
+    isApproved,
+    authorizer
+  ) => {
+    setUpdatingStatus(true);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/approvals/approve-or-reject-transaction/${approvalId}/transaction/${transactionId}/approved/${isApproved}/authorized-by/${authorizer}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const transactionStatus = await response.json();
+
+      if (response.status === 200) {
+        messageAlert.success(transactionStatus.message);
+        setUpdatingStatus(false);
+        getNotifications();
+      } else {
+        messageAlert.error(transactionStatus.message);
+        setUpdatingStatus(false);
+      }
+    } catch (error) {
+      messageAlert.error("Error al actualizar el estado de la transacción.");
+      setUpdatingStatus(false);
+    }
+  };
 
   const getCustomers = async () => {
     try {
@@ -375,7 +464,10 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                   onClick={showNotificationsModal}
                   style={{ cursor: "pointer" }}
                 >
-                  <h2 className="p-3 fw-semibold text-black"> {0 || 0} </h2>
+                  <h2 className="p-3 fw-semibold text-black">
+                    {" "}
+                    {notifications.length || 0}{" "}
+                  </h2>
                   <div className="dashboard-red-card">
                     <label className="fw-semibold p-2">
                       {" "}
@@ -383,40 +475,6 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                     </label>
                   </div>
                 </Card>
-
-                <Modal
-                  title={
-                    <Row align="middle">
-                      {" "}
-                      <Col>
-                        {" "}
-                        <WarningOutlined
-                          className="fs-6"
-                          style={{ marginRight: 8, color: "var(--yellow)" }}
-                        />{" "}
-                      </Col>{" "}
-                      <Col>
-                        <label className="fs-6">
-                          Notificaciones Pendientes
-                        </label>
-                      </Col>{" "}
-                    </Row>
-                  }
-                  centered
-                  width={650}
-                  open={openNotificationsModal}
-                  onOk={closeNotificacionsModal}
-                  onCancel={closeNotificacionsModal}
-                  footer={null}
-                >
-                  <Form>
-                    <Table
-                      dataSource={customers}
-                      columns={[]}
-                      pagination={10}
-                    />
-                  </Form>
-                </Modal>
               </div>
             </div>
           </div>
@@ -781,6 +839,12 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
             />
           </div>
         </Card>
+        <NotificationsModal
+          isOpen={openNotificationsModal}
+          isClose={() => setOpenNotificationsModal(false)}
+          setAlertMessage={messageAlert}
+          notificationsData={notifications}
+        />
       </div>
     </Content>
   );
