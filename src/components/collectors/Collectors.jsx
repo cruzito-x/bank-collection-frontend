@@ -211,7 +211,6 @@ const Collectors = () => {
                   showTotal: (total) => `Total: ${total} colector(es)`,
                   hideOnSinglePage: true,
                 }}
-                scroll={{ y: 539 }}
               />
             </div>
           </div>
