@@ -137,7 +137,7 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
               <label className="fw-semibold text-black"> Concepto </label>
               <p>
                 {" "}
-                {transactionData.concept === null
+                {transactionData.concept !== null
                   ? transactionData.concept
                   : "Sin concepto"}{" "}
               </p>

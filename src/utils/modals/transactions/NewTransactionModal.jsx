@@ -1,12 +1,4 @@
-import {
-  Button,
-  Col,
-  Form,
-  InputNumber,
-  Modal,
-  Row,
-  Select,
-} from "antd";
+import { Button, Col, Form, InputNumber, Modal, Row, Select } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { useForm } from "antd/es/form/Form";
@@ -223,7 +215,6 @@ const NewTransactionModal = ({
           name="concept"
           rules={[
             {
-              required: true,
               message: "Por Favor, Introduzca un Concepto",
               min: 5,
               max: 255,
