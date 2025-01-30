@@ -5,6 +5,7 @@ import {
   Input,
   Layout,
   message,
+  Popconfirm,
   Table,
   theme,
 } from "antd";
@@ -49,7 +50,7 @@ const Collectors = () => {
       });
 
       const collectorsData = await response.json();
-      const collectorsRow = collectorsData.map((collector) => ({
+      const collectors = collectorsData.map((collector) => ({
         ...collector,
         actions: (
           <>
@@ -62,18 +63,51 @@ const Collectors = () => {
             >
               Editar
             </Button>
-            <Button className="ms-2 me-2" type="primary" danger>
-              Eliminar
-            </Button>
+            <Popconfirm
+              title="Eliminar Colector"
+              description="¿Está seguro de Eliminar este Registro?"
+              onConfirm={() => deleteCollector(collector)}
+              onCancel={() => {}}
+              okText="Sí"
+              cancelText="No"
+            >
+              <Button className="ms-2 me-2" type="primary" danger>
+                Eliminar
+              </Button>
+            </Popconfirm>
             <Button type="primary"> Ver Pagos </Button>
           </>
         ),
       }));
 
-      setCollectors(collectorsRow);
+      setCollectors(collectors);
       setLoading(false);
     } catch (error) {
       messageAlert.error("Error fetching collectors");
+    }
+  };
+
+  const deleteCollector = async (collector) => {
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/collectors/delete-customer/${collector.id}`,
+        {
+          method: "PUT",
+        }
+      );
+
+      const deletedCollector = await response.json();
+
+      if (response.status === 200) {
+        messageAlert.success(deletedCollector.message);
+        getCollectors();
+      } else {
+        messageAlert.error(deletedCollector.message);
+      }
+    } catch (error) {
+      messageAlert.error("Error al Eliminar Cliente");
     }
   };
 

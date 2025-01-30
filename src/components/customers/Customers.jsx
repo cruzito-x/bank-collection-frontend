@@ -61,7 +61,7 @@ const Customers = () => {
           customers.filter((customer) => customer.id !== deletedCustomer.id)
         );
       } else {
-        messageAlert.error("Error al Eliminar Cliente");
+        messageAlert.error(deletedCustomer.message);
       }
     } catch (error) {
       messageAlert.error("Error al Eliminar Cliente");
@@ -101,7 +101,7 @@ const Customers = () => {
               Editar
             </Button>
             <Popconfirm
-              title="Eliminar Registro"
+              title="Eliminar Cliente"
               description="¿Está Seguro de Eliminar este Registro?"
               onConfirm={() => deleteCustomer(customer)}
               onCancel={() => {}}
