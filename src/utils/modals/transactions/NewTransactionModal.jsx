@@ -115,7 +115,7 @@ const NewTransactionModal = ({
         >
           <Select defaultValue={1} options={transactionTypes} />
         </Form.Item>
-        <label className="fw-semibold text-black"> Cliente </label>
+        <label className="fw-semibold text-black"> Remitente </label>
         <Form.Item
           name="customer"
           rules={[
@@ -141,7 +141,7 @@ const NewTransactionModal = ({
             }}
           />
         </Form.Item>
-        <label className="fw-semibold text-black"> Cuenta </label>
+        <label className="fw-semibold text-black"> Receptor </label>
         <Form.Item
           name="account_number"
           rules={[
