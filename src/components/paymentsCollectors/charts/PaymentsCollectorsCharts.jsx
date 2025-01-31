@@ -79,16 +79,20 @@ const PaymentsCollectorsCharts = () => {
         plugins: {
           title: {
             display: true,
-            text: "Pagos Obtenidos por Colector",
+            text: "Porcentaje de Pagos Obtenidos por Colector",
             color: "#000000",
           },
           legend: {
-            display: false,
+            display: true,
+            position: "left",
           },
           tooltip: {
             callbacks: {
               label: function (percentage, data) {
-                return Math.round(percentage.formattedValue) + "% del Total de Ganancias por Pagos";
+                return (
+                  Math.round(percentage.formattedValue) +
+                  "% del Total de Ganancias por Pagos"
+                );
               },
             },
           },

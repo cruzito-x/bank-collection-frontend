@@ -15,17 +15,25 @@ const NewTransactionModal = ({
   const [accounts, setAccounts] = useState([]);
   const [sendingTransaction, setSendingTransaction] = useState(false);
   const [form] = useForm();
+  const [showSenderAccount, setShowSenderAccount] = useState(true);
 
   const getCustomers = async () => {
     const response = await fetch(
       "http://localhost:3001/transactions/customers"
     );
     const customersData = await response.json();
+    const uniqueCustomer = new Map();
 
-    const names = customersData.map((customer) => ({
-      label: customer.name + " " + customer.identity_doc,
-      value: customer.id,
-    }));
+    customersData.forEach((customer) => {
+      if (!uniqueCustomer.has(customer.id)) {
+        uniqueCustomer.set(customer.id, {
+          label: `${customer.name} ${customer.identity_doc}`,
+          value: customer.id,
+        });
+      }
+    });
+
+    const names = Array.from(uniqueCustomer.values());
 
     const account_numbers = customersData.map((customer) => ({
       label: customer.account_number + " " + customer.name,
@@ -77,17 +85,15 @@ const NewTransactionModal = ({
     <Modal
       title={
         <Row align="middle">
-          {" "}
           <Col>
-            {" "}
             <PlusCircleOutlined
               className="fs-6"
               style={{ marginRight: 8, color: "var(--blue)" }}
-            />{" "}
-          </Col>{" "}
+            />
+          </Col>
           <Col>
             <label className="fs-6 text-black">Nueva Transacción</label>
-          </Col>{" "}
+          </Col>
         </Row>
       }
       centered
@@ -96,7 +102,35 @@ const NewTransactionModal = ({
       onCancel={isClosed}
       footer={null}
     >
-      <Form form={form} onFinish={registerTransaction}>
+      <Form
+        form={form}
+        onFinish={registerTransaction}
+        initialValues={{ transaction_type: 1 }}
+        onValuesChange={(changedValues) => {
+          if (changedValues.transaction_type !== undefined) {
+            const selectedType = changedValues.transaction_type;
+            setShowSenderAccount(selectedType === 3);
+
+            if (selectedType !== 3) {
+              form.setFieldsValue({
+                sender_account_number: form.getFieldValue(
+                  "receiver_account_number"
+                ),
+              });
+            }
+          }
+
+          if (changedValues.receiver_account_number !== undefined) {
+            const selectedType = form.getFieldValue("transaction_type");
+
+            if (selectedType !== 3) {
+              form.setFieldsValue({
+                sender_account_number: changedValues.receiver_account_number,
+              });
+            }
+          }
+        }}
+      >
         <label className="fw-semibold text-black"> Tipo de Transacción </label>
         <Form.Item
           name="transaction_type"
@@ -109,6 +143,7 @@ const NewTransactionModal = ({
         >
           <Select defaultValue={1} options={transactionTypes} />
         </Form.Item>
+
         <label className="fw-semibold text-black"> Remitente </label>
         <Form.Item
           name="customer"
@@ -123,7 +158,6 @@ const NewTransactionModal = ({
             options={customers}
             showSearch
             placeholder="Introduzca un Número de Identificación"
-            // disabled={sendingDataLoading ? true : false}
             optionFilterProp="label"
             filterSort={(optionA, optionB) =>
               (optionA?.label ?? "")
@@ -135,32 +169,40 @@ const NewTransactionModal = ({
             }}
           />
         </Form.Item>
-        <label className="fw-semibold text-black"> No. Cuenta Origen </label>
-        <Form.Item
-          name="sender_account_number"
-          rules={[
-            {
-              required: true,
-              message: "Por Favor, Introduzca un Número de Cuenta",
-            },
-          ]}
-        >
-          <Select
-            options={accounts}
-            showSearch
-            placeholder="Introduzca un Número de Cuenta"
-            // disabled={sendingDataLoading ? true : false}
-            optionFilterProp="label"
-            filterSort={(optionA, optionB) =>
-              (optionA?.label ?? "")
-                .toLowerCase()
-                .localeCompare((optionB?.label ?? "").toLowerCase())
-            }
-            style={{
-              width: "100%",
-            }}
-          />
-        </Form.Item>
+
+        {showSenderAccount && (
+          <>
+            <label className="fw-semibold text-black">
+              {" "}
+              No. Cuenta Origen{" "}
+            </label>
+            <Form.Item
+              name="sender_account_number"
+              rules={[
+                {
+                  required: true,
+                  message: "Por Favor, Introduzca un Número de Cuenta",
+                },
+              ]}
+            >
+              <Select
+                options={accounts}
+                showSearch
+                placeholder="Introduzca un Número de Cuenta"
+                optionFilterProp="label"
+                filterSort={(optionA, optionB) =>
+                  (optionA?.label ?? "")
+                    .toLowerCase()
+                    .localeCompare((optionB?.label ?? "").toLowerCase())
+                }
+                style={{
+                  width: "100%",
+                }}
+              />
+            </Form.Item>
+          </>
+        )}
+
         <label className="fw-semibold text-black"> No. Cuenta Destino </label>
         <Form.Item
           name="receiver_account_number"
@@ -175,7 +217,6 @@ const NewTransactionModal = ({
             options={accounts}
             showSearch
             placeholder="Introduzca un Número de Cuenta"
-            // disabled={sendingDataLoading ? true : false}
             optionFilterProp="label"
             filterSort={(optionA, optionB) =>
               (optionA?.label ?? "")
@@ -187,6 +228,7 @@ const NewTransactionModal = ({
             }}
           />
         </Form.Item>
+
         <label className="fw-semibold text-black"> Monto </label>
         <Form.Item
           name="amount"
@@ -202,14 +244,12 @@ const NewTransactionModal = ({
             min={5}
             max={100000}
             placeholder="0.00"
-            onChange={(value) => {
-              form.setFieldsValue({ amount: value });
-            }}
             style={{
               width: "100%",
             }}
           />
         </Form.Item>
+
         <label className="fw-semibold text-black"> Concepto </label>
         <Form.Item
           name="concept"
@@ -224,12 +264,11 @@ const NewTransactionModal = ({
           <TextArea
             rows={4}
             size="middle"
-            style={{
-              resize: "none",
-            }}
+            style={{ resize: "none" }}
             placeholder="Concepto"
           />
         </Form.Item>
+
         <Form.Item className="text-end">
           <Button type="primary" htmlType="submit" loading={sendingTransaction}>
             Realizar Transferencia

@@ -1,15 +1,10 @@
 import { Button, Col, Modal, Row, Table, Tag } from "antd";
-import { DollarCircleOutlined } from "@ant-design/icons";
+import { TransactionOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { CSVLink } from "react-csv";
 
-const TransactionsModal = ({
-  isOpen,
-  isClosed,
-  customerData,
-  setAlertMessage,
-}) => {
+const TransactionsModal = ({ isOpen, isClosed, customerData }) => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -18,7 +13,7 @@ const TransactionsModal = ({
 
     try {
       const response = await fetch(
-        `http://localhost:3001/transactions/transactions-by-customer/${customerData.id}`,
+        `http://localhost:3001/transactions/transactions-by-customer/${customerData.id}/account/${customerData.account_number}`,
         {
           method: "GET",
         }
@@ -43,7 +38,7 @@ const TransactionsModal = ({
           </>
         ),
         amount: "$" + transaction.amount,
-        datetime: moment(transaction.datetime).format("DD/MM/YYYY - HH:mm A"),
+        datetime: moment(transaction.datetime).format("DD/MM/YYYY - hh:mm A"),
       }));
 
       setTransactions(transactions);
@@ -113,7 +108,7 @@ const TransactionsModal = ({
           {" "}
           <Col>
             {" "}
-            <DollarCircleOutlined
+            <TransactionOutlined
               className="fs-6"
               style={{ marginRight: 8, color: "var(--blue)" }}
             />{" "}
@@ -137,6 +132,7 @@ const TransactionsModal = ({
             loading={loading}
             pagination={{
               pageSize: 10,
+              showTotal: (total) => `Total: ${total} transacción(es)`,
               hideOnSinglePage: true,
             }}
           />

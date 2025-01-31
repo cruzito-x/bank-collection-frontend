@@ -5,7 +5,6 @@ import {
   Input,
   Layout,
   message,
-  Modal,
   Table,
   theme,
 } from "antd";
@@ -18,10 +17,16 @@ import React, { useEffect, useState } from "react";
 import PaymentsCollectorsChart from "./charts/PaymentsCollectorsCharts";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import moment from "moment";
+import PaymentsCollectorsDetailsModal from "../../utils/modals/paymentsCollectors/PaymentsCollectorsDetailsModal";
 
 const PaymentsCollectors = () => {
   const { authState } = useAuth();
   const [paymentsCollector, setPaymentsCollectors] = useState([]);
+  const [
+    isPaymentsCollectorsDetailsModalOpen,
+    setIsPaymentsCollectorsDetailsModalOpen,
+  ] = useState(false);
+  const [selectedPaymentCollector, setSelectedPaymentCollector] = useState([]);
   const [loading, setLoading] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
@@ -56,7 +61,13 @@ const PaymentsCollectors = () => {
               ),
               actions: (
                 <>
-                  <Button type="primary"> Ver Detalles </Button>
+                  <Button
+                    type="primary"
+                    onClick={showPaymentsCollectorsDetailsModal}
+                  >
+                    {" "}
+                    Ver Detalles{" "}
+                  </Button>
                 </>
               ),
             };
@@ -70,6 +81,10 @@ const PaymentsCollectors = () => {
     } catch (error) {
       messageAlert.error("Error fetching collectors payments");
     }
+  };
+
+  const showPaymentsCollectorsDetailsModal = (collector) => {
+    setIsPaymentsCollectorsDetailsModalOpen(true);
   };
 
   const paymentsCollectorsTableColumns = [
@@ -89,12 +104,6 @@ const PaymentsCollectors = () => {
       title: "Monto Pagado",
       dataIndex: "amount",
       key: "amount",
-      align: "center",
-    },
-    {
-      title: "Concepto",
-      dataIndex: "service",
-      key: "service",
       align: "center",
     },
     {
@@ -169,12 +178,14 @@ const PaymentsCollectors = () => {
                 dataSource={paymentsCollector}
                 columns={paymentsCollectorsTableColumns}
                 loading={loading}
+                onRow={(record) => ({
+                  onClick: () => setSelectedPaymentCollector(record),
+                })}
                 pagination={{
                   pageSize: 10,
                   showTotal: (total) => `Total: ${total} pago(s) registrado(s)`,
                   hideOnSinglePage: true,
                 }}
-                scroll={{ y: 539 }}
               />
             </div>
             <div className="col-md-4 col-sm-12 d-flex align-items-center">
@@ -182,6 +193,11 @@ const PaymentsCollectors = () => {
             </div>
           </div>
         </Card>
+        <PaymentsCollectorsDetailsModal
+          isOpen={isPaymentsCollectorsDetailsModalOpen}
+          isClosed={() => setIsPaymentsCollectorsDetailsModalOpen(false)}
+          paymentsCollectorsData={selectedPaymentCollector}
+        />
       </div>
     </Content>
   );

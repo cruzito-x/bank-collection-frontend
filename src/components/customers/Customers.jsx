@@ -367,7 +367,6 @@ const Customers = () => {
           isOpen={isTransactionsModalOpen}
           isClosed={() => setIsTransactionsModalOpen(false)}
           customerData={selectedCustomer}
-          setAlertMessage={messageAlert}
         />
       </div>
     </Content>

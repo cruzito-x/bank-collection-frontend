@@ -158,7 +158,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           ...notification,
           amount: "$" + notification.amount,
           datetime: moment(notification.datetime).format(
-            "YYYY/MM/DD - hh:mm A"
+            "DD/MM/YYYY - hh:mm A"
           ),
           actions: (
             <>
@@ -244,12 +244,18 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
       });
 
       const customersData = await response.json();
-      const customers = customersData.map((customer) => {
-        return {
-          value: customer.id,
-          label: customer.name + " - " + customer.account_number,
-        };
+      const uniqueCustomer = new Map();
+
+      customersData.forEach((customer) => {
+        if (!uniqueCustomer.has(customer.id)) {
+          uniqueCustomer.set(customer.id, {
+            label: `${customer.name} ${customer.identity_doc}`,
+            value: customer.id,
+          });
+        }
       });
+
+      const customers = Array.from(uniqueCustomer.values());
 
       setCustomers(customers);
     } catch (error) {}

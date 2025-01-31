@@ -94,7 +94,7 @@ const Transactions = () => {
               </Tag>
             </>
           ),
-          datetime: moment(transaction.datetime).format("YYYY/MM/DD - hh:mm A"),
+          datetime: moment(transaction.datetime).format("DD/MM/YYYY - hh:mm A"),
           actions: (
             <>
               <Button
@@ -107,7 +107,7 @@ const Transactions = () => {
                 }
               >
                 {" "}
-                Detalles{" "}
+                Ver Detalles{" "}
               </Button>
             </>
           ),

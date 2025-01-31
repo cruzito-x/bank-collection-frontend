@@ -54,8 +54,11 @@ const Approvals = () => {
           approval.authorized_by === null
             ? "En Espera de Aprobación"
             : approval.authorized_by,
-        datetime: moment(approval.datetime).format("YYYY/MM/DD - hh:mm A"),
-        authorized_at: approval.authorized_at === null ? "0000/00/00 - 00:00" : moment(approval.authorized_at).format("YYYY/MM/DD - hh:mm A"),
+        datetime: moment(approval.datetime).format("DD/MM/YYYY - hh:mm A"),
+        authorized_at:
+          approval.authorized_at === null
+            ? "0000/00/00 - 00:00"
+            : moment(approval.authorized_at).format("DD/MM/YYYY - hh:mm A"),
         actions:
           approval.authorized_by != null ? (
             <>
@@ -255,6 +258,8 @@ const Approvals = () => {
                 })}
                 pagination={{
                   pageSize: 10,
+                  showTotal: (total) =>
+                    `Total: ${total} Aprobaciones / Denegaciones`,
                   hideOnSinglePage: true,
                 }}
               />
