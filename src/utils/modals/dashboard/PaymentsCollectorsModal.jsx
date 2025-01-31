@@ -13,17 +13,18 @@ import { DollarCircleOutlined } from "@ant-design/icons";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useForm } from "antd/es/form/Form";
+import { useCollectorsData } from "../../../contexts/collectorsDataContext/CollectorsDataContext";
 
 const PaymentsCollectorsModal = ({
   isOpen,
   isClosed,
-  collectors,
   setAlertMessage,
 }) => {
   const [percentage, setPercentage] = useState(0);
   const [sendingDataLoading, setSendingDataLoading] = useState(false);
   const [cancelPaymentTimeout, setCancelPaymentTimeout] = useState(null);
   const [isPaymentCancelled, setIsPaymentCancelled] = useState(false);
+  const { collectors, getCollectors } = useCollectorsData();
   const [customers, setCustomers] = useState([]);
   const [services, setServices] = useState([]);
   const [form] = useForm();
@@ -36,6 +37,7 @@ const PaymentsCollectorsModal = ({
   }, [isClosed]);
 
   useEffect(() => {
+    getCollectors();
     getCustomers();
   },[]);
 

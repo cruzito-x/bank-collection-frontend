@@ -7,10 +7,10 @@ import LogoutCard from "../../utils/logoutCard/LogoutCard";
 import AddCollectorModal from "../../utils/modals/dashboard/AddCollectorModal";
 import NotificationsModal from "../../utils/modals/dashboard/NotificationsModal";
 import PaymentsCollectorsModal from "../../utils/modals/dashboard/PaymentsCollectorsModal";
+import { useCollectorsData } from "../../contexts/collectorsDataContext/CollectorsDataContext";
 
 const Dashboard = ({ rangeFilter = () => {} }) => {
   const [notifications, setNotifications] = useState([]);
-  const [collectors, setCollectors] = useState([]);
   const [transactionTypes, setTransactionTypes] = useState([]);
   const [totalPayments, setTotalPayments] = useState([]);
   const [totalProcessedAmounts, setTotalProcessedAmounts] = useState([]);
@@ -19,6 +19,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   const [updatingStatus, setUpdatingStatus] = useState(false);
   const [openNotificationsModal, setOpenNotificationsModal] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
+  const { collectors, getCollectors } = useCollectorsData();
   const [dates, setDates] = useState([
     moment().startOf("day"),
     moment().endOf("day"),
@@ -189,22 +190,6 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
       messageAlert.error("Error al actualizar el estado de la transacción.");
       setUpdatingStatus(false);
     }
-  };
-
-  const getCollectors = async () => {
-    const response = await fetch("http://localhost:3001/collectors", {
-      method: "GET",
-    });
-
-    const collectorsData = await response.json();
-    const collectors = collectorsData.map((collector) => {
-      return {
-        value: collector.id,
-        label: collector.collector,
-      };
-    });
-
-    setCollectors(collectors);
   };
 
   const getTotalPayments = async () => {
