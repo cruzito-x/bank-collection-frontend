@@ -62,7 +62,7 @@ const PaymentsCollectorsDetailsModal = ({
               </label>{" "}
               <br />
               <label style={{ color: "var(--gray)", fontSize: "13px" }}>
-                {paymentsCollectorsData.datetime}
+                Realizado: {paymentsCollectorsData.datetime}
               </label>
             </div>
             <div className="col-12">

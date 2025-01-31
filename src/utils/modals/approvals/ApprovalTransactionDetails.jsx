@@ -53,10 +53,11 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
               <label className="fw-semibold text-black">
                 {" "}
                 <TransactionOutlined style={{ color: "var(--blue)" }} />{" "}
-                Detalles de la Transacción{" "}
+                Detalle de Transacción{" "}
               </label>{" "}
               <br />
               <label style={{ color: "var(--gray)", fontSize: "13px" }}>
+                Realizado: {approvalData.datetime} <br />
                 Autorizado: {approvalData.authorized_at}
               </label>
             </div>
@@ -106,23 +107,25 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
               <p> {approvalData.sender_email} </p>
             </div>
             <div className="col-12">
-              <label className="fw-semibold text-black"> Receptor </label>
+              <label className="fw-semibold text-black"> Destinatario </label>
               <p> {approvalData.receiver_name} </p>
             </div>
             <div className="col-12">
               <label className="fw-semibold text-black">
                 {" "}
-                E-mail de Receptor{" "}
+                E-mail de Destinatario{" "}
               </label>
               <p> {approvalData.receiver_email} </p>
             </div>
-            <div className="col-12">
-              <label className="fw-semibold text-black"> Concepto </label>
-              <p> {approvalData.concept} </p>
-            </div>
+            {approvalData.concept !== "" && (
+              <div className="col-12">
+                <label className="fw-semibold text-black"> Concepto </label>
+                <p> {approvalData.concept} </p>
+              </div>
+            )}
             <div className="col-12">
               <label className="fw-semibold text-black"> Realizado Por </label>
-              <p> {approvalData.authorized_by} </p>
+              <p> {approvalData.realized_by} </p>
             </div>
             <div className="col-12">
               <label className="fw-semibold text-black"> Autorizado Por </label>

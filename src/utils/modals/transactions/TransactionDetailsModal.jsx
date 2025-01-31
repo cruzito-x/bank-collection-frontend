@@ -57,7 +57,7 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
               </label>{" "}
               <br />
               <label style={{ color: "var(--gray)", fontSize: "13px" }}>
-                {transactionData.datetime}
+                Realizado: {transactionData.datetime}
               </label>
             </div>
             <div className="col-12">
@@ -92,34 +92,37 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
               <p>
                 {" "}
                 {transactionData.customer}
-                {" - "}
+                <br />
                 <span
                   style={{
                     color: "var(--gray)",
-                    fontSize: "13px",
+                    fontSize: "12px",
                   }}
                 >
                   {transactionData.customer_email}
                 </span>{" "}
               </p>
             </div>
-            <div className="col-12">
-              <label className="fw-semibold text-black">
-                {" "}
-                No. Cuenta Remitente{" "}
-              </label>
-              <p> {transactionData.sender_account} </p>
-            </div>
+            {transactionData.sender_account !==
+              transactionData.receiver_account && (
+              <div className="col-12">
+                <label className="fw-semibold text-black">
+                  {" "}
+                  No. Cuenta Remitente{" "}
+                </label>
+                <p> {transactionData.sender_account} </p>
+              </div>
+            )}
             <div className="col-12">
               <label className="fw-semibold text-black"> Destinatario </label>
               <p>
                 {" "}
                 {transactionData.receiver}
-                {" - "}
+                <br />
                 <span
                   style={{
                     color: "var(--gray)",
-                    fontSize: "13px",
+                    fontSize: "12px",
                   }}
                 >
                   {transactionData.receiver_email}
@@ -133,15 +136,18 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
               </label>
               <p> {transactionData.receiver_account} </p>
             </div>
-            <div className="col-12">
-              <label className="fw-semibold text-black"> Concepto </label>
-              <p>
-                {" "}
-                {transactionData.concept !== null
-                  ? transactionData.concept
-                  : "Sin concepto"}{" "}
-              </p>
-            </div>
+            {transactionData.transaction_type === "Transferencia" && (
+              <div className="col-12">
+                <label className="fw-semibold text-black"> Concepto </label>
+                <p>
+                  {" "}
+                  {transactionData.concept === "" ||
+                  transactionData.concept === null
+                    ? "Sin Concepto"
+                    : transactionData.concept}{" "}
+                </p>
+              </div>
+            )}
             <div className="col-12">
               <label className="fw-semibold text-black"> Realizado Por </label>
               <p> {transactionData.realized_by} </p>
