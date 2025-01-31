@@ -130,7 +130,7 @@ const EditCustomerModal = ({
               htmlType="submit"
               loading={sendingData}
             >
-              Guardar
+              Guardar Cambios
             </Button>
           </Form.Item>
         </Form>

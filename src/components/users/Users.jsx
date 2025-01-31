@@ -2,32 +2,27 @@ import {
   Breadcrumb,
   Button,
   Card,
-  Col,
-  Form,
   Input,
   Layout,
   message,
-  Modal,
-  Row,
   Select,
   Table,
   theme,
 } from "antd";
-import {
-  EyeInvisibleOutlined,
-  EyeTwoTone,
-  InfoCircleOutlined,
-  KeyOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { KeyOutlined, UserOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
+import EditUserModal from "../../utils/modals/users/EditUserModal";
+import SetNewUserRoleModal from "../../utils/modals/users/SetNewUserRoleModal";
 
 const Users = () => {
   const { authState } = useAuth();
   const [roles, setRoles] = useState([]);
   const [users, setUsers] = useState([]);
-  const [editUserModalOpen, setEditUserModalOpen] = useState(false);
+  const [showEditUserModalOpen, setShowEditUserModalOpen] = useState(false);
+  const [showSetNewUserRoleModalOpen, setShowSetNewUserRoleModalOpen] =
+    useState(false);
+  const [selectedUser, setSelectedUser] = useState([]);
   const [loading, setLoading] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
 
@@ -79,14 +74,20 @@ const Users = () => {
               style={{
                 backgroundColor: "var(--yellow)",
               }}
-              onClick={() => setEditUserModalOpen(true)}
+              onClick={() => setShowEditUserModalOpen(true)}
             >
               Editar
             </Button>
             <Button className="ms-2 me-2" type="primary" danger>
               Eliminar
             </Button>
-            <Button type="primary"> Asignar Rol </Button>
+            <Button
+              type="primary"
+              onClick={() => setShowSetNewUserRoleModalOpen(true)}
+            >
+              {" "}
+              Asignar Rol{" "}
+            </Button>
           </>
         ),
       }));
@@ -95,17 +96,6 @@ const Users = () => {
     } catch (error) {
       console.error("Error fetching roles: ", error);
     }
-  };
-
-  const updateUserInfo = async (user) => {
-    setLoading(true);
-
-    try {
-    } catch (error) {
-      console.error("Error al actualizar la información del usuario: ", error);
-    }
-
-    setLoading(false);
   };
 
   const usersTableColumns = [
@@ -206,99 +196,34 @@ const Users = () => {
                 dataSource={users}
                 columns={usersTableColumns}
                 loading={loading}
+                onRow={(record) => ({
+                  onClick: () => setSelectedUser(record),
+                })}
                 pagination={{
                   pageSize: 10,
                   showTotal: (total) => `Total: ${total} colector(es)`,
                   hideOnSinglePage: true,
                 }}
               />
-              <Modal
-                title={
-                  <Row align="middle">
-                    {" "}
-                    <Col>
-                      {" "}
-                      <InfoCircleOutlined
-                        className="fs-6"
-                        style={{ marginRight: 8, color: "var(--blue)" }}
-                      />{" "}
-                    </Col>{" "}
-                    <Col>
-                      <label className="fs-6 text-black">
-                        Editar Información de Usuario
-                      </label>
-                    </Col>{" "}
-                  </Row>
-                }
-                centered
-                width={450}
-                open={editUserModalOpen}
-                onCancel={() => setEditUserModalOpen(false)}
-                footer={[
-                  <Button
-                    key="submit"
-                    type="primary"
-                    onClick={() => setEditUserModalOpen(false)}
-                    loading={loading}
-                  >
-                    Guardar Cambios
-                  </Button>,
-                ]}
-              >
-                <Form layout={"vertical"} onFinish={updateUserInfo}>
-                  <div className="row mt-4">
-                    <div className="col-12">
-                      <label className="fw-semibold text-black">
-                        {" "}
-                        Nombre de Usuario{" "}
-                      </label>
-                      <Form.Item
-                        name="username"
-                        rules={[
-                          {
-                            message:
-                              "Por Favor Introduzca un Nombre de Usuario",
-                          },
-                        ]}
-                      >
-                        <Input placeholder="Nombre de Usuario" />
-                      </Form.Item>
-                    </div>
-                    <div className="col-12">
-                      <label className="fw-semibold text-black"> E-mail </label>
-                      <Form.Item
-                        name="email"
-                        rules={[{ message: "Por Favor Introduzca un E-mail" }]}
-                      >
-                        <Input type="email" placeholder="E-mail" />
-                      </Form.Item>
-                    </div>
-                    <div className="col-12">
-                      <label className="fw-semibold text-black">
-                        {" "}
-                        Contraseña{" "}
-                      </label>
-                      <Form.Item
-                        name="password"
-                        rules={[
-                          { message: "Por Favor Introduzca una Contraseña" },
-                        ]}
-                      >
-                        <Input.Password
-                          placeholder="Contraseña"
-                          iconRender={(visible) =>
-                            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                          }
-                        />
-                      </Form.Item>
-                    </div>
-                    <div className="col-12 mb-3"></div>
-                  </div>
-                </Form>
-              </Modal>
             </div>
           </div>
         </Card>
+
+        <EditUserModal
+          isOpen={showEditUserModalOpen}
+          isClosed={() => setShowEditUserModalOpen(false)}
+          userData={selectedUser}
+          setAlertMessage={messageAlert}
+          getUsers={getUsers}
+        />
+        <SetNewUserRoleModal
+          isOpen={showSetNewUserRoleModalOpen}
+          isClosed={() => setShowSetNewUserRoleModalOpen(false)}
+          userData={selectedUser}
+          setAlertMessage={messageAlert}
+          getUsers={getUsers}
+          roles={roles}
+        />
       </div>
     </Content>
   );

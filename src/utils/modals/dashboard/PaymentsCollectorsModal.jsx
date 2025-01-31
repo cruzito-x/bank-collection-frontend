@@ -31,10 +31,10 @@ const PaymentsCollectorsModal = ({
   let isProcessing = false;
 
   useEffect(() => {
-    if (isClosed) {
+    if (isOpen) {
       form.resetFields();
     }
-  }, [isClosed]);
+  }, [isOpen]);
 
   useEffect(() => {
     getCollectors();
