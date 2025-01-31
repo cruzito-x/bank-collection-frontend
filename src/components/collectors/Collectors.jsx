@@ -33,14 +33,6 @@ const Collectors = () => {
     getCollectors();
   }, []);
 
-  const showAddCollectorModal = () => {
-    setIsCollectorModalOpen(true);
-  };
-
-  const closeAddCollectorModal = () => {
-    setIsCollectorModalOpen(false);
-  };
-
   const getCollectors = async () => {
     setLoading(true);
 
@@ -191,12 +183,15 @@ const Collectors = () => {
               <Button type="primary"> Buscar </Button>
             </div>
             <div className="col-xxl-9 col-xl-7 col-sm-12 d-flex justify-content-end">
-              <Button type="primary" onClick={showAddCollectorModal}>
+              <Button
+                type="primary"
+                onClick={() => setIsCollectorModalOpen(true)}
+              >
                 <PlusCircleOutlined /> Añadir nuevo{" "}
               </Button>
               <AddCollectorModal
                 openModal={isCollectorModalOpen}
-                closeModal={closeAddCollectorModal}
+                closeModal={() => setIsCollectorModalOpen(false)}
               />
             </div>
           </div>

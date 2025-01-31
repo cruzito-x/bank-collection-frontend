@@ -18,6 +18,7 @@ import PaymentsCollectorsChart from "./charts/PaymentsCollectorsCharts";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import moment from "moment";
 import PaymentsCollectorsDetailsModal from "../../utils/modals/paymentsCollectors/PaymentsCollectorsDetailsModal";
+import PaymentsCollectorsModal from "../../utils/modals/dashboard/PaymentsCollectorsModal";
 
 const PaymentsCollectors = () => {
   const { authState } = useAuth();
@@ -27,6 +28,7 @@ const PaymentsCollectors = () => {
     setIsPaymentsCollectorsDetailsModalOpen,
   ] = useState(false);
   const [selectedPaymentCollector, setSelectedPaymentCollector] = useState([]);
+  const [openRegisterPayment, setOpenRegisterPayment] = useState(false);
   const [loading, setLoading] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
@@ -63,7 +65,9 @@ const PaymentsCollectors = () => {
                 <>
                   <Button
                     type="primary"
-                    onClick={showPaymentsCollectorsDetailsModal}
+                    onClick={() =>
+                      setIsPaymentsCollectorsDetailsModalOpen(true)
+                    }
                   >
                     {" "}
                     Ver Detalles{" "}
@@ -81,10 +85,6 @@ const PaymentsCollectors = () => {
     } catch (error) {
       messageAlert.error("Error fetching collectors payments");
     }
-  };
-
-  const showPaymentsCollectorsDetailsModal = (collector) => {
-    setIsPaymentsCollectorsDetailsModalOpen(true);
   };
 
   const paymentsCollectorsTableColumns = [
@@ -171,6 +171,15 @@ const PaymentsCollectors = () => {
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
               <Button type="primary"> Buscar </Button>
             </div>
+            <div className="col-xxl-5 col-xl-4 col-sm-12 text-end">
+              <Button
+                type="primary"
+                onClick={() => setOpenRegisterPayment(true)}
+              >
+                {" "}
+                Pagar Servicio{" "}
+              </Button>
+            </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-md-8 col-sm-12">
@@ -193,6 +202,10 @@ const PaymentsCollectors = () => {
             </div>
           </div>
         </Card>
+        <PaymentsCollectorsModal
+          isOpen={openRegisterPayment}
+          isClosed={() => setOpenRegisterPayment(false)}
+        />
         <PaymentsCollectorsDetailsModal
           isOpen={isPaymentsCollectorsDetailsModalOpen}
           isClosed={() => setIsPaymentsCollectorsDetailsModalOpen(false)}

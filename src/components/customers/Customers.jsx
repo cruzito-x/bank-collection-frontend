@@ -68,14 +68,6 @@ const Customers = () => {
     }
   };
 
-  const showEditCustomerModal = () => {
-    setIsCustomerModalOpen(true);
-  };
-
-  const showTransactionsModal = () => {
-    setIsTransactionsModalOpen(true);
-  };
-
   const getCustomers = async () => {
     setLoading(true);
 
@@ -96,7 +88,7 @@ const Customers = () => {
               style={{
                 backgroundColor: "var(--yellow)",
               }}
-              onClick={showEditCustomerModal}
+              onClick={() => setIsCustomerModalOpen(true)}
             >
               Editar
             </Button>
@@ -115,7 +107,10 @@ const Customers = () => {
                 Eliminar
               </Button>
             </Popconfirm>
-            <Button type="primary" onClick={showTransactionsModal}>
+            <Button
+              type="primary"
+              onClick={() => setIsTransactionsModalOpen(true)}
+            >
               {" "}
               Transacciones{" "}
             </Button>
@@ -158,7 +153,7 @@ const Customers = () => {
               style={{
                 backgroundColor: "var(--yellow)",
               }}
-              onClick={showEditCustomerModal}
+              onClick={() => setIsCustomerModalOpen(true)}
             >
               Editar
             </Button>
@@ -177,7 +172,7 @@ const Customers = () => {
                 Eliminar
               </Button>
             </Popconfirm>
-            <Button type="primary" onClick={showTransactionsModal}>
+            <Button type="primary" onClick={() => setIsTransactionsModalOpen(true)}>
               {" "}
               Transacciones{" "}
             </Button>

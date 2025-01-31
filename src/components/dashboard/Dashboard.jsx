@@ -1,20 +1,4 @@
-import {
-  Button,
-  Card,
-  Layout,
-  Select,
-  Space,
-  theme,
-  Modal,
-  Row,
-  Col,
-  InputNumber,
-  Form,
-  message,
-  Progress,
-  Flex,
-} from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import { Button, Card, Layout, Select, Space, theme, message } from "antd";
 import React, { useEffect, useState } from "react";
 import "./styles/dashboard.css";
 import DashboardCharts from "./charts/DashboardCharts";
@@ -22,32 +6,25 @@ import moment from "moment";
 import LogoutCard from "../../utils/logoutCard/LogoutCard";
 import AddCollectorModal from "../../utils/modals/dashboard/AddCollectorModal";
 import NotificationsModal from "../../utils/modals/dashboard/NotificationsModal";
+import PaymentsCollectorsModal from "../../utils/modals/dashboard/PaymentsCollectorsModal";
 
 const Dashboard = ({ rangeFilter = () => {} }) => {
   const [notifications, setNotifications] = useState([]);
-  const [customers, setCustomers] = useState([]);
   const [collectors, setCollectors] = useState([]);
-  const [services, setServices] = useState([]);
   const [transactionTypes, setTransactionTypes] = useState([]);
   const [totalPayments, setTotalPayments] = useState([]);
   const [totalProcessedAmounts, setTotalProcessedAmounts] = useState([]);
   const [isCollectorModalOpen, setIsCollectorModalOpen] = useState(false);
   const [openRegisterPayment, setOpenRegisterPayment] = useState(false);
-  const [percentage, setPercentage] = useState(0);
-  const [cancelPaymentTimeout, setCancelPaymentTimeout] = useState(null);
-  const [isPaymentCancelled, setIsPaymentCancelled] = useState(false);
-  const [sendingDataLoading, setSendingDataLoading] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(false);
   const [openNotificationsModal, setOpenNotificationsModal] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
-  const [form] = Form.useForm();
   const [dates, setDates] = useState([
     moment().startOf("day"),
     moment().endOf("day"),
   ]);
   const [amountRangeFilter, setAmountRangeFilter] = useState(1);
   const [transactionTypeFilter, setTransactionTypeFilter] = useState(1);
-  let isProcessing = false;
 
   const { Content } = Layout;
   const {
@@ -105,32 +82,9 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     setTransactionTypeFilter(filter);
   };
 
-  const showAddCollectorModal = () => {
-    setIsCollectorModalOpen(true);
-  };
-
-  const closeAddCollectorModal = () => {
-    setIsCollectorModalOpen(false);
-  };
-
-  const showPaymentsModal = () => {
-    setOpenRegisterPayment(true);
-  };
-
-  const closePaymentsModal = () => {
-    setOpenRegisterPayment(false);
-    form.resetFields();
-  };
-
-  const showNotificationsModal = () => {
-    setOpenNotificationsModal(true);
-  };
-
   useEffect(() => {
     getNotifications();
-    getCustomers();
     getCollectors();
-    getServicesByCollector();
     getTransactionTypes();
     getTotalPayments();
     getTotalProcessedAmounts();
@@ -237,30 +191,6 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     }
   };
 
-  const getCustomers = async () => {
-    try {
-      const response = await fetch("http://localhost:3001/customers", {
-        method: "GET",
-      });
-
-      const customersData = await response.json();
-      const uniqueCustomer = new Map();
-
-      customersData.forEach((customer) => {
-        if (!uniqueCustomer.has(customer.id)) {
-          uniqueCustomer.set(customer.id, {
-            label: `${customer.name} ${customer.identity_doc}`,
-            value: customer.id,
-          });
-        }
-      });
-
-      const customers = Array.from(uniqueCustomer.values());
-
-      setCustomers(customers);
-    } catch (error) {}
-  };
-
   const getCollectors = async () => {
     const response = await fetch("http://localhost:3001/collectors", {
       method: "GET",
@@ -275,31 +205,6 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     });
 
     setCollectors(collectors);
-  };
-
-  const getServicesByCollector = async (collectorId = 0) => {
-    const response = await fetch(
-      `http://localhost:3001/services/services-by-collector/${collectorId}`,
-      {
-        method: "GET",
-      }
-    );
-
-    const servicesData = await response.json();
-    const services = servicesData.map((service) => {
-      return {
-        value: service.id,
-        label: service.service_name,
-        price: service.price,
-      };
-    });
-
-    setServices(services);
-  };
-
-  const getServiceOnCollectorsChange = (value) => {
-    form.setFieldsValue({ collector_id: value });
-    getServicesByCollector(value);
   };
 
   const getTotalPayments = async () => {
@@ -337,80 +242,6 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     });
 
     setTransactionTypes(transactionTypes);
-  };
-
-  const registerPayments = async (payment) => {
-    try {
-      const response = await fetch(
-        "http://localhost:3001/payments-collectors/save-new-payment",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payment),
-        }
-      );
-
-      const registeredPayment = await response.json();
-      if (response.status === 200) {
-        messageAlert.success(registeredPayment.message);
-        setPercentage(0);
-        closePaymentsModal();
-      } else {
-        messageAlert.error(registeredPayment.message);
-      }
-    } catch (error) {
-      messageAlert.error("Error al registrar el pago. Intente de nuevo.");
-    } finally {
-      setSendingDataLoading(false);
-      isProcessing = false;
-    }
-  };
-
-  const startRegisterProgress = (paymentData) => {
-    setPercentage(0);
-    setIsPaymentCancelled(false);
-
-    const interval = setInterval(() => {
-      setPercentage((prev) => {
-        const newPercentage = prev + 2;
-
-        if (newPercentage >= 100) {
-          clearInterval(interval);
-          if (!isPaymentCancelled && !isProcessing) {
-            isProcessing = true;
-            registerPayments(paymentData);
-          }
-          return 100;
-        }
-
-        return newPercentage;
-      });
-    }, 100);
-
-    setCancelPaymentTimeout(interval);
-  };
-
-  const cancelPayment = () => {
-    if (cancelPaymentTimeout) {
-      clearInterval(cancelPaymentTimeout);
-      setCancelPaymentTimeout(null);
-    }
-
-    setPercentage(0);
-    setIsPaymentCancelled(true);
-    setSendingDataLoading(false);
-    isProcessing = false;
-    messageAlert.info("El Pago Ha Sido Cancelado");
-  };
-
-  const submitPaymentRegister = (values) => {
-    if (isProcessing) {
-      messageAlert.warning("El registro de pago ya está en curso.");
-      return;
-    }
-
-    setSendingDataLoading(true);
-    startRegisterProgress(values);
   };
 
   return (
@@ -471,7 +302,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
                 <Card
                   className="text-center shadow"
-                  onClick={showNotificationsModal}
+                  onClick={() => setOpenNotificationsModal(true)}
                   style={{ cursor: "pointer" }}
                 >
                   <h2 className="p-3 fw-semibold text-black">
@@ -505,231 +336,19 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               <Button
                 type="primary"
                 className="fw-semibold"
-                onClick={showAddCollectorModal}
+                onClick={() => setIsCollectorModalOpen(true)}
               >
                 {" "}
                 Añadir Colector{" "}
               </Button>
-
-              <AddCollectorModal
-                openModal={isCollectorModalOpen}
-                closeModal={closeAddCollectorModal}
-              />
-
               <Button
                 type="primary"
                 className="fw-semibold ms-2 me-2"
-                onClick={showPaymentsModal}
+                onClick={() => setOpenRegisterPayment(true)}
               >
                 {" "}
                 Pagar Servicio{" "}
               </Button>
-
-              <Modal
-                title={
-                  <Row align="middle">
-                    {" "}
-                    <Col>
-                      {" "}
-                      <InfoCircleOutlined
-                        className="fs-6"
-                        style={{ marginRight: 8, color: "var(--blue)" }}
-                      />{" "}
-                    </Col>{" "}
-                    <Col>
-                      <label className="fs-6 text-black">Pagar Servicio</label>
-                    </Col>{" "}
-                  </Row>
-                }
-                centered
-                width={450}
-                open={openRegisterPayment}
-                onOk={closePaymentsModal}
-                onCancel={closePaymentsModal}
-                footer={null}
-              >
-                <div className={percentage <= 0 ? "d-none" : "d-block"}>
-                  <label className="fw-semibold mb-1 text-danger">
-                    {" "}
-                    ¿Desea Cancelar el Pago?{" "}
-                  </label>
-                  <Flex className="mb-2" vertical gap="small">
-                    <div className="d-flex">
-                      <Progress
-                        percent={percentage}
-                        type="line"
-                        status="active"
-                        showInfo={false}
-                      />
-                      <label
-                        className="fw-semibold ms-3 text-danger"
-                        onClick={cancelPayment}
-                        style={{ cursor: "pointer" }}
-                      >
-                        Cancelar
-                      </label>
-                    </div>
-                  </Flex>
-                </div>
-                <Form form={form} onFinish={submitPaymentRegister}>
-                  <label className="fw-semibold text-black">
-                    {" "}
-                    Seleccionar Cliente{" "}
-                  </label>
-                  <Form.Item
-                    name="customer_id"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Por Favor, Seleccione un Cliente",
-                      },
-                    ]}
-                  >
-                    <Select
-                      options={customers}
-                      onChange={(value) => {
-                        form.setFieldsValue({ customer_id: value });
-                      }}
-                      showSearch
-                      placeholder="Buscar Cliente"
-                      disabled={sendingDataLoading ? true : false}
-                      optionFilterProp="label"
-                      filterSort={(optionA, optionB) =>
-                        (optionA?.label ?? "")
-                          .toLowerCase()
-                          .localeCompare((optionB?.label ?? "").toLowerCase())
-                      }
-                      style={{
-                        width: "100%",
-                      }}
-                    />
-                  </Form.Item>
-                  <label className="fw-semibold text-black">
-                    {" "}
-                    Seleccionar Colector{" "}
-                  </label>
-                  <Form.Item
-                    name="collector_id"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Por Favor, Seleccione un Colector",
-                      },
-                    ]}
-                  >
-                    <Select
-                      options={collectors}
-                      onChange={getServiceOnCollectorsChange}
-                      showSearch
-                      placeholder="Buscar Colector"
-                      disabled={sendingDataLoading ? true : false}
-                      optionFilterProp="label"
-                      filterSort={(optionA, optionB) =>
-                        (optionA?.label ?? "")
-                          .toLowerCase()
-                          .localeCompare((optionB?.label ?? "").toLowerCase())
-                      }
-                      style={{
-                        width: "100%",
-                      }}
-                    />
-                  </Form.Item>
-                  <label className="fw-semibold text-black">
-                    {" "}
-                    Seleccionar Servicio{" "}
-                  </label>
-                  <Form.Item
-                    name="service_id"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Por Favor, Seleccione un Servicio",
-                      },
-                    ]}
-                  >
-                    <Select
-                      options={services}
-                      onChange={(value) => {
-                        form.setFieldsValue({ service_id: value });
-                      }}
-                      showSearch
-                      placeholder="Buscar Servicio"
-                      disabled={sendingDataLoading ? true : false}
-                      optionFilterProp="label"
-                      filterSort={(optionA, optionB) =>
-                        (optionA?.label ?? "")
-                          .toLowerCase()
-                          .localeCompare((optionB?.label ?? "").toLowerCase())
-                      }
-                      style={{
-                        width: "100%",
-                      }}
-                    />
-                  </Form.Item>
-                  <label className="fw-semibold text-black">
-                    {" "}
-                    Monto a Depositar{" "}
-                  </label>
-                  <Form.Item
-                    name="amount"
-                    rules={[
-                      {
-                        required: true,
-                        message:
-                          "Por Favor, Introduzca una Cantidad Entre $5 y $10000",
-                      },
-                    ]}
-                  >
-                    <InputNumber
-                      prefix="$"
-                      min={5}
-                      max={10000}
-                      placeholder="0.00"
-                      disabled={sendingDataLoading ? true : false}
-                      // value={services[0]?.price > 0 ? services[0].price : ""}
-                      onChange={(value) => {
-                        form.setFieldsValue({ amount: value });
-                      }}
-                      style={{
-                        width: "100%",
-                      }}
-                    />
-                  </Form.Item>
-                  <label className="fw-semibold text-black">
-                    {" "}
-                    Fecha y Hora{" "}
-                  </label>
-                  <Form.Item>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={moment().format("DD/MM/YYYY - HH:mm A")}
-                      disabled={sendingDataLoading ? true : false}
-                      readOnly
-                    />
-                  </Form.Item>
-                  <Form.Item className="text-end">
-                    <Button
-                      key="back"
-                      type="primary"
-                      danger
-                      onClick={closePaymentsModal}
-                      disabled={sendingDataLoading ? true : false}
-                    >
-                      Cerrar
-                    </Button>
-                    <Button
-                      className="ms-2"
-                      type="primary"
-                      htmlType="submit"
-                      loading={sendingDataLoading}
-                    >
-                      Pagar
-                    </Button>
-                  </Form.Item>
-                </Form>
-              </Modal>
-
               <Button type="primary" className="fw-semibold">
                 {" "}
                 Ver Reportes{" "}
@@ -854,6 +473,16 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           isClose={() => setOpenNotificationsModal(false)}
           setAlertMessage={messageAlert}
           notificationsData={notifications}
+        />
+        <AddCollectorModal
+          isOpen={isCollectorModalOpen}
+          isClosed={() => setIsCollectorModalOpen(false)}
+        />
+        <PaymentsCollectorsModal
+          isOpen={openRegisterPayment}
+          isClosed={() => setOpenRegisterPayment(false)}
+          collectors={collectors}
+          setAlertMessage={messageAlert}
         />
       </div>
     </Content>

@@ -99,7 +99,7 @@ const Transactions = () => {
             <>
               <Button
                 type="primary"
-                onClick={showTransactionDetailsModal}
+                onClick={() => setIsTransactionDetailsModalOpen(true)}
                 disabled={
                   transaction.status === 1 || transaction.status === 3
                     ? true
@@ -117,14 +117,6 @@ const Transactions = () => {
       setLoading(false);
       setTransactions(transactions);
     } catch (error) {}
-  };
-
-  const showTransactionDetailsModal = () => {
-    setIsTransactionDetailsModalOpen(true);
-  };
-
-  const showNewTransactionModal = () => {
-    setIsNewTransactionModalOpen(true);
   };
 
   const transactionsTableColumns = [
@@ -258,7 +250,10 @@ const Transactions = () => {
               <Button type="primary"> Buscar </Button>
             </div>
             <div className="col-xxl-2 col-xl-2 col-sm-12 text-end">
-              <Button type="primary" onClick={showNewTransactionModal}>
+              <Button
+                type="primary"
+                onClick={() => setIsNewTransactionModalOpen(true)}
+              >
                 <PlusCircleOutlined /> Nueva Transacción{" "}
               </Button>
             </div>

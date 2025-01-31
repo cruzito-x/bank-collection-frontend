@@ -1,9 +1,9 @@
 import { Button, Col, Form, Input, message, Modal, Row } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import { PlusCircleOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 
-const AddCollectorModal = ({ openModal, closeModal }) => {
+const AddCollectorModal = ({ isOpen, isClosed }) => {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const [messageAlert, messageContext] = message.useMessage();
@@ -27,7 +27,7 @@ const AddCollectorModal = ({ openModal, closeModal }) => {
 
       if (response.status === 200) {
         messageAlert.success(data.message);
-        closeModal();
+        isClosed();
         form.resetFields();
       } else {
         messageAlert.error(data.message);
@@ -39,10 +39,10 @@ const AddCollectorModal = ({ openModal, closeModal }) => {
   };
 
   useEffect(() => {
-    if (openModal) {
+    if (isOpen) {
       form.resetFields();
     }
-  }, [openModal]);
+  }, [isOpen]);
 
   return (
     <Modal
@@ -51,7 +51,7 @@ const AddCollectorModal = ({ openModal, closeModal }) => {
           {" "}
           <Col>
             {" "}
-            <InfoCircleOutlined
+            <PlusCircleOutlined
               className="fs-6"
               style={{ marginRight: 8, color: "var(--blue)" }}
             />{" "}
@@ -63,8 +63,8 @@ const AddCollectorModal = ({ openModal, closeModal }) => {
       }
       centered
       width={550}
-      open={openModal}
-      onCancel={closeModal}
+      open={isOpen}
+      onCancel={isClosed}
       footer={null}
     >
       {messageContext}
@@ -140,7 +140,7 @@ const AddCollectorModal = ({ openModal, closeModal }) => {
           />
         </Form.Item>
         <Form.Item className="text-end">
-          <Button type="primary" danger onClick={closeModal}>
+          <Button type="primary" danger onClick={isClosed}>
             Cancelar
           </Button>
           <Button

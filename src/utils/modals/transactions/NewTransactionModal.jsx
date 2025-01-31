@@ -235,7 +235,7 @@ const NewTransactionModal = ({
           rules={[
             {
               required: true,
-              message: "Por Favor, Introduzca un Monto Mínimo de $5",
+              message: "Por Favor, Introduzca una Cantidad Mínima de $5",
             },
           ]}
         >

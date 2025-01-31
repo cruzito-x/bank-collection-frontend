@@ -41,14 +41,6 @@ const Users = () => {
     getUsers();
   }, []);
 
-  const showEditUserModal = () => {
-    setEditUserModalOpen(true);
-  };
-
-  const closeEditUserModal = () => {
-    setEditUserModalOpen(false);
-  };
-
   const getRoles = async () => {
     try {
       const response = await fetch("http://localhost:3001/users/roles", {
@@ -87,7 +79,7 @@ const Users = () => {
               style={{
                 backgroundColor: "var(--yellow)",
               }}
-              onClick={showEditUserModal}
+              onClick={() => setEditUserModalOpen(true)}
             >
               Editar
             </Button>
@@ -241,12 +233,12 @@ const Users = () => {
                 centered
                 width={450}
                 open={editUserModalOpen}
-                onCancel={closeEditUserModal}
+                onCancel={() => setEditUserModalOpen(false)}
                 footer={[
                   <Button
                     key="submit"
                     type="primary"
-                    onClick={closeEditUserModal}
+                    onClick={() => setEditUserModalOpen(false)}
                     loading={loading}
                   >
                     Guardar Cambios
@@ -256,7 +248,10 @@ const Users = () => {
                 <Form layout={"vertical"} onFinish={updateUserInfo}>
                   <div className="row mt-4">
                     <div className="col-12">
-                      <label className="fw-semibold text-black"> Nombre de Usuario </label>
+                      <label className="fw-semibold text-black">
+                        {" "}
+                        Nombre de Usuario{" "}
+                      </label>
                       <Form.Item
                         name="username"
                         rules={[
@@ -279,7 +274,10 @@ const Users = () => {
                       </Form.Item>
                     </div>
                     <div className="col-12">
-                      <label className="fw-semibold text-black"> Contraseña </label>
+                      <label className="fw-semibold text-black">
+                        {" "}
+                        Contraseña{" "}
+                      </label>
                       <Form.Item
                         name="password"
                         rules={[

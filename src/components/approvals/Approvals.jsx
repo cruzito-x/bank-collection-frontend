@@ -36,10 +36,6 @@ const Approvals = () => {
     getApprovals();
   }, []);
 
-  const showApprovalDetailsModal = () => {
-    setIsTransactionDetailsModalOpen(true);
-  };
-
   const getApprovals = async () => {
     const response = await fetch("http://localhost:3001/approvals", {
       method: "GET",
@@ -62,7 +58,10 @@ const Approvals = () => {
         actions:
           approval.authorized_by != null ? (
             <>
-              <Button type="primary" onClick={showApprovalDetailsModal}>
+              <Button
+                type="primary"
+                onClick={() => setIsTransactionDetailsModalOpen(true)}
+              >
                 Ver Detalles
               </Button>
             </>
