@@ -33,12 +33,12 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
             />{" "}
           </Col>{" "}
           <Col>
-            <label className="fs-6 text-black">Detalles de Aprobación / Denegación</label>
+            <label className="fs-6 text-black">Detalles de Aprobación</label>
           </Col>{" "}
         </Row>
       }
       centered
-      width={500}
+      width={450}
       open={isOpen}
       onCancel={isClosed}
       footer={null}

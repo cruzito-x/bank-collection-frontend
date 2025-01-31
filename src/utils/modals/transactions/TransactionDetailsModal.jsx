@@ -1,5 +1,5 @@
 import { Button, Col, Modal, Row, Tag } from "antd";
-import { CheckCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { InfoCircleOutlined, TransactionOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef } from "react";
 
 const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
@@ -52,7 +52,7 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
               </h1>
               <label className="fw-semibold text-black">
                 {" "}
-                <CheckCircleOutlined style={{ color: "var(--green)" }} />{" "}
+                <TransactionOutlined style={{ color: "var(--blue)" }} />{" "}
                 ¡Transacción Exitosa!{" "}
               </label>{" "}
               <br />

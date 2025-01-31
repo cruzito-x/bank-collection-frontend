@@ -1,9 +1,5 @@
 import { Button, Col, Modal, Row } from "antd";
-import {
-  CheckCircleOutlined,
-  DollarCircleOutlined,
-  InfoCircleOutlined,
-} from "@ant-design/icons";
+import { InfoCircleOutlined, TransactionOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef } from "react";
 
 const PaymentsCollectorsDetailsModal = ({
@@ -61,8 +57,8 @@ const PaymentsCollectorsDetailsModal = ({
               </h1>
               <label className="fw-semibold text-black">
                 {" "}
-                <DollarCircleOutlined style={{ color: "var(--yellow)" }} />{" "}
-                ¡Pago Exitoso!{" "}
+                <TransactionOutlined style={{ color: "var(--blue)" }} /> ¡Pago
+                Exitoso!{" "}
               </label>{" "}
               <br />
               <label style={{ color: "var(--gray)", fontSize: "13px" }}>
