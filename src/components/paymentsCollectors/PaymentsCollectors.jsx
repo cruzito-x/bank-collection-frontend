@@ -9,6 +9,7 @@ import {
   theme,
 } from "antd";
 import {
+  PlusCircleOutlined,
   SolutionOutlined,
   UserOutlined,
   WalletOutlined,
@@ -176,8 +177,7 @@ const PaymentsCollectors = () => {
                 type="primary"
                 onClick={() => setOpenRegisterPayment(true)}
               >
-                {" "}
-                Pagar Servicio{" "}
+                <PlusCircleOutlined /> Nuevo Pago a Colector{" "}
               </Button>
             </div>
           </div>

@@ -175,7 +175,7 @@ const PaymentsCollectorsModal = ({
             />{" "}
           </Col>{" "}
           <Col>
-            <label className="fs-6 text-black">Pagar Servicio</label>
+            <label className="fs-6 text-black">Pagar a Colector</label>
           </Col>{" "}
         </Row>
       }

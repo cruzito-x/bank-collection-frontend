@@ -187,7 +187,7 @@ const Collectors = () => {
                 type="primary"
                 onClick={() => setIsCollectorModalOpen(true)}
               >
-                <PlusCircleOutlined /> Añadir nuevo{" "}
+                <PlusCircleOutlined /> Nuevo Colector{" "}
               </Button>
               <AddCollectorModal
                 openModal={isCollectorModalOpen}
