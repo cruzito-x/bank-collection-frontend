@@ -113,7 +113,8 @@ const TransactionsModal = ({
 
   const transactionsHeader = [
     { label: "#", key: "id" },
-    { label: "Cliente", key: "customer" },
+    { label: "Enviado Por", key: "customer" },
+    { label: "Recibido Por", key: "receiver" },
     { label: "Tipo de Transacción", key: "transaction_type" },
     { label: "Cuenta de Origen", key: "sender_account" },
     { label: "Monto", key: "amount" },
