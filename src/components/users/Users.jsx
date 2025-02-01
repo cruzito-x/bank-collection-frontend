@@ -9,7 +9,7 @@ import {
   Table,
   theme,
 } from "antd";
-import { KeyOutlined, UserOutlined } from "@ant-design/icons";
+import { BankOutlined, KeyOutlined, UserOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import EditUserModal from "../../utils/modals/users/EditUserModal";
@@ -138,6 +138,14 @@ const Users = () => {
       >
         <Breadcrumb
           items={[
+            {
+              title: (
+                <>
+                  <BankOutlined />
+                  <span> Banco Bambú </span>
+                </>
+              ),
+            },
             {
               title: (
                 <>

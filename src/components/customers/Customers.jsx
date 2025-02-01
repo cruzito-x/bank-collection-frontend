@@ -12,6 +12,7 @@ import {
   theme,
 } from "antd";
 import {
+  BankOutlined,
   DollarOutlined,
   IdcardOutlined,
   TeamOutlined,
@@ -123,8 +124,6 @@ const Customers = () => {
 
   const searchCustomers = async (customer) => {
     setLoading(true);
-
-    console.log(customer);
 
     try {
       const response = await fetch(
@@ -242,6 +241,14 @@ const Customers = () => {
       >
         <Breadcrumb
           items={[
+            {
+              title: (
+                <>
+                  <BankOutlined />
+                  <span> Banco Bambú </span>
+                </>
+              ),
+            },
             {
               title: (
                 <>

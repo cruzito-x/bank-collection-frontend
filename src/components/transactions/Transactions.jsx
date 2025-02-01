@@ -16,6 +16,7 @@ import {
   TransactionOutlined,
   UserOutlined,
   PlusCircleOutlined,
+  BankOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
@@ -170,6 +171,14 @@ const Transactions = () => {
       >
         <Breadcrumb
           items={[
+            {
+              title: (
+                <>
+                  <BankOutlined />
+                  <span> Banco Bambú </span>
+                </>
+              ),
+            },
             {
               title: (
                 <>

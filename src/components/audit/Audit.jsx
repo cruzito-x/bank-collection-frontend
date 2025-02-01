@@ -9,7 +9,11 @@ import {
   Table,
   theme,
 } from "antd";
-import { DatabaseOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  BankOutlined,
+  DatabaseOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { useAuth } from "../../contexts/authContext/AuthContext";
@@ -92,6 +96,14 @@ const Audit = () => {
       >
         <Breadcrumb
           items={[
+            {
+              title: (
+                <>
+                  <BankOutlined />
+                  <span> Banco Bambú </span>
+                </>
+              ),
+            },
             {
               title: (
                 <>

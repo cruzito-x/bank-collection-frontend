@@ -10,6 +10,7 @@ import {
   theme,
 } from "antd";
 import {
+  BankOutlined,
   PlusCircleOutlined,
   SolutionOutlined,
   UserOutlined,
@@ -142,6 +143,14 @@ const Collectors = () => {
       >
         <Breadcrumb
           items={[
+            {
+              title: (
+                <>
+                  <BankOutlined />
+                  <span> Banco Bambú </span>
+                </>
+              ),
+            },
             {
               title: (
                 <>

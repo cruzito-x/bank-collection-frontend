@@ -11,6 +11,7 @@ import {
 } from "antd";
 import {
   AuditOutlined,
+  BankOutlined,
   PlusCircleOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -142,6 +143,14 @@ const TransactionTypes = () => {
       >
         <Breadcrumb
           items={[
+            {
+              title: (
+                <>
+                  <BankOutlined />
+                  <span> Banco Bambú </span>
+                </>
+              ),
+            },
             {
               title: (
                 <>
