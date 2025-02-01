@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 const EditCustomerModal = ({
   isOpen,
   isClosed,
-  customerData,
+  selectedCustomer,
   setAlertMessage,
 }) => {
   const [sendingData, setSendingData] = useState(false);
@@ -14,19 +14,19 @@ const EditCustomerModal = ({
   useEffect(() => {
     if (isOpen) {
       form.setFieldsValue({
-        name: customerData.name,
-        identity_doc: customerData.identity_doc,
-        email: customerData.email,
+        name: selectedCustomer.name,
+        identity_doc: selectedCustomer.identity_doc,
+        email: selectedCustomer.email,
       });
     }
-  }, [isOpen, customerData, form]);
+  }, [isOpen, selectedCustomer, form]);
 
   const updateCustomer = async (customer) => {
     setSendingData(true);
 
     try {
       const response = await fetch(
-        `http://localhost:3001/customers/update-customer/${customerData.id}`,
+        `http://localhost:3001/customers/update-customer/${selectedCustomer.id}`,
         {
           method: "PUT",
           headers: {
@@ -74,7 +74,7 @@ const EditCustomerModal = ({
       onCancel={isClosed}
       footer={null}
     >
-      {customerData && (
+      {selectedCustomer && (
         <Form form={form} onFinish={updateCustomer}>
           <label className="fw-semibold text-black"> Nombre de Cliente </label>
           <Form.Item
@@ -85,7 +85,7 @@ const EditCustomerModal = ({
                 message: "Por Favor, Introduzca un Nombre de Cliente",
               },
             ]}
-            initialValue={customerData.name}
+            initialValue={selectedCustomer.name}
           >
             <Input placeholder="Nombre de Cliente" />
           </Form.Item>
@@ -102,7 +102,7 @@ const EditCustomerModal = ({
                   "Por Favor, Introduzca un Documento de Identidad Válido",
               },
             ]}
-            initialValue={customerData.identity_doc}
+            initialValue={selectedCustomer.identity_doc}
           >
             <Input placeholder="00000000-0" />
           </Form.Item>
@@ -116,7 +116,7 @@ const EditCustomerModal = ({
                   "Por Favor, Introduzca una Dirección de Correo Electrónico",
               },
             ]}
-            initialValue={customerData.email}
+            initialValue={selectedCustomer.email}
           >
             <Input placeholder="email@gmail.com" />
           </Form.Item>

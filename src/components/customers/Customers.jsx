@@ -22,14 +22,15 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import EditCustomerModal from "../../utils/modals/customers/EditCustomerModal";
 import { useForm } from "antd/es/form/Form";
-import TransactionsModal from "../../utils/modals/customers/TransactionsModal";
+import AccountsByCustomer from "../../utils/modals/customers/AccountsByCustomer";
 
 const Customers = () => {
   const { authState } = useAuth();
   const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [isCustomerModalOpen, setIsCustomerModalOpen] = useState(false);
-  const [isTransactionsModalOpen, setIsTransactionsModalOpen] = useState(false);
+  const [isAccountsByCustomerModalOpen, setIsAccountsByCustomerModalOpen] =
+    useState(false);
   const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
@@ -106,10 +107,10 @@ const Customers = () => {
             </Popconfirm>
             <Button
               type="primary"
-              onClick={() => setIsTransactionsModalOpen(true)}
+              onClick={() => setIsAccountsByCustomerModalOpen(true)}
             >
               {" "}
-              Transacciones{" "}
+              Ver Cuentas{" "}
             </Button>
           </>
         ),
@@ -156,7 +157,6 @@ const Customers = () => {
               title="Eliminar Registro"
               description="¿Está Seguro de Eliminar este Registro?"
               onConfirm={() => deleteCustomer(customer)}
-              
               okText="Sí"
               cancelText="No"
               okButtonProps={{
@@ -167,9 +167,12 @@ const Customers = () => {
                 Eliminar
               </Button>
             </Popconfirm>
-            <Button type="primary" onClick={() => setIsTransactionsModalOpen(true)}>
+            <Button
+              type="primary"
+              onClick={() => setIsAccountsByCustomerModalOpen(true)}
+            >
               {" "}
-              Transacciones{" "}
+              Ver Cuentas{" "}
             </Button>
           </>
         ),
@@ -206,18 +209,6 @@ const Customers = () => {
       title: "E-mail",
       dataIndex: "email",
       key: "email",
-      align: "center",
-    },
-    {
-      title: "Nº de Cuenta",
-      dataIndex: "account_number",
-      key: "account_number",
-      align: "center",
-    },
-    {
-      title: "Saldo",
-      dataIndex: "balance",
-      key: "balance",
       align: "center",
     },
     {
@@ -357,14 +348,15 @@ const Customers = () => {
         <EditCustomerModal
           isOpen={isCustomerModalOpen}
           isClosed={() => setIsCustomerModalOpen(false)}
-          customerData={selectedCustomer}
+          selectedCustomer={selectedCustomer}
           setAlertMessage={messageAlert}
         />
 
-        <TransactionsModal
-          isOpen={isTransactionsModalOpen}
-          isClosed={() => setIsTransactionsModalOpen(false)}
+        <AccountsByCustomer
+          isOpen={isAccountsByCustomerModalOpen}
+          isClosed={() => setIsAccountsByCustomerModalOpen(false)}
           selectedCustomer={selectedCustomer}
+          setAlertMessage={messageAlert}
         />
       </div>
     </Content>

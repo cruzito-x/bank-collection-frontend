@@ -4,16 +4,23 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { CSVLink } from "react-csv";
 
-const TransactionsModal = ({ isOpen, isClosed, selectedCustomer }) => {
+const TransactionsModal = ({
+  isOpen,
+  isClosed,
+  selectedCustomerId,
+  selectedCustomerAccountNumber,
+}) => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const transactionsByCustomer = async () => {
     setLoading(true);
 
+    console.log(selectedCustomerAccountNumber);
+
     try {
       const response = await fetch(
-        `http://localhost:3001/transactions/transactions-by-customer/${selectedCustomer.id}/account/${selectedCustomer.account_number}`,
+        `http://localhost:3001/transactions/transactions-by-customer/${selectedCustomerId}/account/${selectedCustomerAccountNumber.account_number}`,
         {
           method: "GET",
         }
@@ -51,7 +58,7 @@ const TransactionsModal = ({ isOpen, isClosed, selectedCustomer }) => {
 
   useEffect(() => {
     transactionsByCustomer();
-  }, [isOpen, selectedCustomer]);
+  }, [isOpen, selectedCustomerId, selectedCustomerAccountNumber]);
 
   const transactionsColumns = [
     {
@@ -73,9 +80,21 @@ const TransactionsModal = ({ isOpen, isClosed, selectedCustomer }) => {
       align: "center",
     },
     {
+      title: "Cuenta de Origen",
+      dataIndex: "sender_account",
+      key: "sender_account",
+      align: "center",
+    },
+    {
       title: "Monto",
       dataIndex: "amount",
       key: "amount",
+      align: "center",
+    },
+    {
+      title: "Cuenta Destino",
+      dataIndex: "receiver_account",
+      key: "receiver_account",
       align: "center",
     },
     {
@@ -96,7 +115,9 @@ const TransactionsModal = ({ isOpen, isClosed, selectedCustomer }) => {
     { label: "#", key: "id" },
     { label: "Cliente", key: "customer" },
     { label: "Tipo de Transacción", key: "transaction_type" },
+    { label: "Cuenta de Origen", key: "sender_account" },
     { label: "Monto", key: "amount" },
+    { label: "Cuenta Destino", key: "receiver_account" },
     { label: "Fecha y Hora", key: "datetime" },
     { label: "Autorizado Por", key: "authorized_by" },
   ];
@@ -120,7 +141,7 @@ const TransactionsModal = ({ isOpen, isClosed, selectedCustomer }) => {
       }
       centered
       open={isOpen}
-      width={900}
+      width={1350}
       onCancel={isClosed}
       footer={null}
     >

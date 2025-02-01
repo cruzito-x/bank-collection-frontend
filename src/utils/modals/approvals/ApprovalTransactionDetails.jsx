@@ -1,5 +1,5 @@
 import { Button, Col, Modal, Row, Tag } from "antd";
-import { InfoCircleOutlined, TransactionOutlined } from "@ant-design/icons";
+import { ContainerOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef } from "react";
 
 const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
@@ -52,7 +52,7 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
               </h1>
               <label className="fw-semibold text-black">
                 {" "}
-                <TransactionOutlined style={{ color: "var(--blue)" }} />{" "}
+                <ContainerOutlined style={{ color: "var(--blue)" }} />{" "}
                 Detalle de Transacción{" "}
               </label>{" "}
               <br />
