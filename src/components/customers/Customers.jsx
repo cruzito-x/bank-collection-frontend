@@ -364,7 +364,7 @@ const Customers = () => {
         <TransactionsModal
           isOpen={isTransactionsModalOpen}
           isClosed={() => setIsTransactionsModalOpen(false)}
-          customerData={selectedCustomer}
+          selectedCustomer={selectedCustomer}
         />
       </div>
     </Content>

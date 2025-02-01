@@ -18,10 +18,14 @@ import {
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import AddNewCollectorModal from "../../utils/modals/dashboard/AddNewCollectorModal";
+import PaymentsDetailsModal from "../../utils/modals/collectors/PaymentsDetailsModal";
 
 const Collectors = () => {
   const [collectors, setCollectors] = useState([]);
   const [isCollectorModalOpen, setIsCollectorModalOpen] = useState(false);
+  const [isPaymentsDetailsModalOpen, setIsPaymentsDetailsModalOpen] =
+    useState(false);
+  const [selectedCollector, setSelectedCollector] = useState([]);
   const [loading, setLoading] = useState(false);
   const { authState } = useAuth();
   const [messageAlert, messageContext] = message.useMessage();
@@ -67,7 +71,13 @@ const Collectors = () => {
                 Eliminar
               </Button>
             </Popconfirm>
-            <Button type="primary"> Ver Pagos </Button>
+            <Button
+              type="primary"
+              onClick={() => setIsPaymentsDetailsModalOpen(true)}
+            >
+              {" "}
+              Ver Pagos{" "}
+            </Button>
           </>
         ),
       }));
@@ -105,12 +115,6 @@ const Collectors = () => {
 
   const collectorsTableColumns = [
     {
-      title: "Código de Servicio",
-      dataIndex: "id",
-      key: "id",
-      align: "center",
-    },
-    {
       title: "Colector",
       dataIndex: "collector",
       key: "collector",
@@ -120,6 +124,12 @@ const Collectors = () => {
       title: "Descripción",
       dataIndex: "description",
       key: "description",
+      align: "center",
+    },
+    {
+      title: "Servicios",
+      dataIndex: "services_names",
+      key: "services_names",
       align: "center",
     },
     {
@@ -205,6 +215,9 @@ const Collectors = () => {
                 dataSource={collectors}
                 columns={collectorsTableColumns}
                 loading={loading}
+                onRow={(record) => ({
+                  onClick: () => setSelectedCollector(record),
+                })}
                 pagination={{
                   pageSize: 10,
                   showTotal: (total) => `Total: ${total} colector(es)`,
@@ -215,8 +228,13 @@ const Collectors = () => {
           </div>
         </Card>
         <AddNewCollectorModal
-          openModal={isCollectorModalOpen}
-          closeModal={() => setIsCollectorModalOpen(false)}
+          isOpen={isCollectorModalOpen}
+          isClosed={() => setIsCollectorModalOpen(false)}
+        />
+        <PaymentsDetailsModal
+          isOpen={isPaymentsDetailsModalOpen}
+          isClosed={() => setIsPaymentsDetailsModalOpen(false)}
+          selectedCollector={selectedCollector}
         />
       </div>
     </Content>

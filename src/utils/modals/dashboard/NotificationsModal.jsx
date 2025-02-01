@@ -35,7 +35,7 @@ const NotificationsModal = ({ isOpen, isClosed, notificationsData }) => {
       align: "center",
     },
     {
-      title: "Fecha",
+      title: "Fecha y Hora",
       dataIndex: "datetime",
       key: "datetime",
       align: "center",

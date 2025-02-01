@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { CSVLink } from "react-csv";
 
-const TransactionsModal = ({ isOpen, isClosed, customerData }) => {
+const TransactionsModal = ({ isOpen, isClosed, selectedCustomer }) => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -13,7 +13,7 @@ const TransactionsModal = ({ isOpen, isClosed, customerData }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/transactions/transactions-by-customer/${customerData.id}/account/${customerData.account_number}`,
+        `http://localhost:3001/transactions/transactions-by-customer/${selectedCustomer.id}/account/${selectedCustomer.account_number}`,
         {
           method: "GET",
         }
@@ -51,7 +51,7 @@ const TransactionsModal = ({ isOpen, isClosed, customerData }) => {
 
   useEffect(() => {
     transactionsByCustomer();
-  }, [isOpen, customerData]);
+  }, [isOpen, selectedCustomer]);
 
   const transactionsColumns = [
     {
@@ -79,7 +79,7 @@ const TransactionsModal = ({ isOpen, isClosed, customerData }) => {
       align: "center",
     },
     {
-      title: "Fecha",
+      title: "Fecha y Hora",
       dataIndex: "datetime",
       key: "datetime",
       align: "center",
@@ -145,7 +145,7 @@ const TransactionsModal = ({ isOpen, isClosed, customerData }) => {
             </Button>
 
             <CSVLink
-              filename={`${0}_${moment(new Date()).format(
+              filename={`${moment(new Date()).format(
                 "YYYYMMDDHHmmss"
               )} - Transactions.csv`}
               headers={transactionsHeader}

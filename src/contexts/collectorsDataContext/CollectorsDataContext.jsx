@@ -12,12 +12,18 @@ export const CollectorsDataProvider = ({ children }) => {
     });
 
     const collectorsData = await response.json();
-    const collectors = collectorsData.map((collector) => {
-      return {
-        value: collector.id,
-        label: collector.collector,
-      };
+    const uniqueCollector = new Map();
+
+    collectorsData.forEach((collector) => {
+      if (!uniqueCollector.has(collector.id)) {
+        uniqueCollector.set(collector.id, {
+          label: collector.collector,
+          value: collector.id,
+        });
+      }
     });
+
+    const collectors = Array.from(uniqueCollector.values());
 
     setCollectors(collectors);
   };

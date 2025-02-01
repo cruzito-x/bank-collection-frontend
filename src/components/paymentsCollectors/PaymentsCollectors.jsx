@@ -109,7 +109,7 @@ const PaymentsCollectors = () => {
       align: "center",
     },
     {
-      title: "Fecha de Pago",
+      title: "Fecha y Hora",
       dataIndex: "datetime",
       key: "datetime",
       align: "center",
