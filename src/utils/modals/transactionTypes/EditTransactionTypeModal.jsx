@@ -1,19 +1,31 @@
 import { Button, Col, Form, Input, Modal, Row } from "antd";
-import { PlusCircleOutlined } from "@ant-design/icons";
-import React, { useState } from "react";
+import { EditOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
 
-const AddNewTransactionTypeModal = ({ isOpen, isClosed, setAlertMessage, getTransactionsTypes }) => {
+const EditTransactionTypeModal = ({
+  isOpen,
+  isClosed,
+  setAlertMessage,
+  selectedTransactionType,
+  getTransactionsTypes,
+}) => {
   const [sendingData, setSendingData] = useState(false);
   const [form] = Form.useForm();
 
-  const saveNewTransactionType = async (transactionType) => {
+  useEffect(() => {
+    form.setFieldsValue({
+      transactionType: selectedTransactionType.transaction_type,
+    });
+  }, [isOpen, selectedTransactionType, form]);
+
+  const updateTransactionType = async (transactionType) => {
     setSendingData(true);
 
     try {
       const response = await fetch(
-        "http://localhost:3001/transactions-types/save-new-transaction-type",
+        `http://localhost:3001/transactions-types/update-transaction-type/${selectedTransactionType.id}`,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
@@ -21,20 +33,20 @@ const AddNewTransactionTypeModal = ({ isOpen, isClosed, setAlertMessage, getTran
         }
       );
 
-      const savedTransactionType = await response.json();
+      const updatedTransactionType = await response.json();
 
       if (response.status === 200) {
-        setAlertMessage.success(savedTransactionType.message);
+        setAlertMessage.success(updatedTransactionType.message);
         setSendingData(false);
         isClosed();
         getTransactionsTypes();
         form.resetFields();
       } else {
-        setAlertMessage.error(savedTransactionType.message);
+        setAlertMessage.error(updatedTransactionType.message);
         setSendingData(false);
       }
     } catch (error) {
-      setAlertMessage.error("Error al Guardar el Nuevo Tipo de Transacción");
+      setAlertMessage.error("Error al Actualizar el Tipo de Transacción");
       setSendingData(false);
     }
   };
@@ -44,13 +56,15 @@ const AddNewTransactionTypeModal = ({ isOpen, isClosed, setAlertMessage, getTran
       title={
         <Row align="middle">
           <Col>
-            <PlusCircleOutlined
+            <EditOutlined
               className="fs-6"
               style={{ marginRight: 8, color: "var(--blue)" }}
             />
           </Col>
           <Col>
-            <label className="fs-6 text-black">Nuevo Tipo de Transacción</label>
+            <label className="fs-6 text-black">
+              Editar Tipo de Transacción
+            </label>
           </Col>
         </Row>
       }
@@ -60,7 +74,7 @@ const AddNewTransactionTypeModal = ({ isOpen, isClosed, setAlertMessage, getTran
       onCancel={isClosed}
       footer={null}
     >
-      <Form form={form} onFinish={saveNewTransactionType}>
+      <Form form={form} onFinish={updateTransactionType}>
         <label className="fw-semibold text-black"> Tipo de Transacción </label>
         <Form.Item
           name="transactionType"
@@ -70,6 +84,7 @@ const AddNewTransactionTypeModal = ({ isOpen, isClosed, setAlertMessage, getTran
               message: "Introduzca un Nombre para el Tipo de Transacción",
             },
           ]}
+          initialValue={selectedTransactionType.transaction_type}
         >
           <Input placeholder="Tipo de Transacción" />
         </Form.Item>
@@ -89,7 +104,7 @@ const AddNewTransactionTypeModal = ({ isOpen, isClosed, setAlertMessage, getTran
             htmlType="submit"
             loading={sendingData}
           >
-            Guardar
+            Guardar Cambios
           </Button>
         </Form.Item>
       </Form>
@@ -97,4 +112,4 @@ const AddNewTransactionTypeModal = ({ isOpen, isClosed, setAlertMessage, getTran
   );
 };
 
-export default AddNewTransactionTypeModal;
+export default EditTransactionTypeModal;

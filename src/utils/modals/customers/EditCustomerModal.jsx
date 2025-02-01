@@ -11,6 +11,16 @@ const EditCustomerModal = ({
   const [sendingData, setSendingData] = useState(false);
   const [form] = Form.useForm();
 
+  useEffect(() => {
+    if (isOpen) {
+      form.setFieldsValue({
+        name: customerData.name,
+        identity_doc: customerData.identity_doc,
+        email: customerData.email,
+      });
+    }
+  }, [isOpen, customerData, form]);
+
   const updateCustomer = async (customer) => {
     setSendingData(true);
 
@@ -40,16 +50,6 @@ const EditCustomerModal = ({
       console.error("Error al actualizar los datos del cliente: ", error);
     }
   };
-
-  useEffect(() => {
-    if (isOpen) {
-      form.setFieldsValue({
-        name: customerData.name,
-        identity_doc: customerData.identity_doc,
-        email: customerData.email,
-      });
-    }
-  }, [isOpen, customerData, form]);
 
   return (
     <Modal

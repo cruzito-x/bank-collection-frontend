@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import NotFound from "../../utils/notFound/NotFound";
-import { Content, Footer } from "antd/es/layout/layout";
+import { Content } from "antd/es/layout/layout";
 import Dashboard from "../dashboard/Dashboard";
 import { Layout } from "antd";
 import Sider from "antd/es/layout/Sider";
@@ -20,7 +20,7 @@ import Audit from "../audit/Audit";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const Sidebar = () => {
-  const [darkTheme, setDarkTheme] = useState(true);
+  const darkTheme = true;
   const { authState } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
@@ -31,7 +31,7 @@ const Sidebar = () => {
     } else if (!authState.username && location.pathname !== "/") {
       navigate("/");
     }
-  }, [location.pathname]);
+  }, [authState.username, location.pathname]);
 
   const navigate = (path) => {
     window.location.href = path;

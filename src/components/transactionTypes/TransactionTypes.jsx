@@ -5,6 +5,7 @@ import {
   Input,
   Layout,
   message,
+  Popconfirm,
   Table,
   theme,
 } from "antd";
@@ -16,13 +17,18 @@ import {
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import AddNewTransactionTypeModal from "../../utils/modals/transactionTypes/AddNewTransactionTypeModal";
+import EditTransactionTypeModal from "../../utils/modals/transactionTypes/EditTransactionTypeModal";
 
 const TransactionTypes = () => {
   const { authState } = useAuth();
   const [transactionsTypes, setTransactionsTypes] = useState([]);
   const [isNewTransactionTypeModalOpen, setIsNewTransactionTypeModalOpen] =
     useState(false);
+  const [isEditTransactionTypeModalOpen, setIsEditTransactionTypeModalOpen] =
+    useState(false);
+  const [selectedTransactionType, setSelectedTransactionType] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [sendingData, setSendingData] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const {
@@ -42,8 +48,7 @@ const TransactionTypes = () => {
       });
 
       const transactionsTypesData = await response.json();
-
-      const transactions = transactionsTypesData.map((transactionType) => {
+      const transactionsTypes = transactionsTypesData.map((transactionType) => {
         return {
           ...transactionType,
           actions: (
@@ -54,20 +59,60 @@ const TransactionTypes = () => {
                 style={{
                   backgroundColor: "var(--yellow)",
                 }}
+                onClick={() => setIsEditTransactionTypeModalOpen(true)}
               >
                 Editar
               </Button>
-              <Button className="ms-2 me-2" type="primary" danger>
-                Eliminar
-              </Button>
+              <Popconfirm
+                title="Eliminar Tipo de Transacción"
+                description="¿Está Seguro de Eliminar este Registro?"
+                onConfirm={() => deleteTransactionType(transactionType)}
+                okText="Sí"
+                cancelText="No"
+              >
+                <Button className="ms-2 me-2" type="primary" danger>
+                  Eliminar
+                </Button>
+              </Popconfirm>
             </>
           ),
         };
       });
 
-      setTransactionsTypes(transactions);
+      setTransactionsTypes(transactionsTypes);
       setLoading(false);
     } catch (error) {}
+  };
+
+  const deleteTransactionType = async (transactionType) => {
+    setSendingData(true);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/transactions-types/delete-transaction-type/${transactionType.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(transactionType),
+        }
+      );
+
+      const deletedTransactionType = await response.json();
+
+      if (response.status === 200) {
+        messageAlert.success(deletedTransactionType.message);
+        setSendingData(false);
+        getTransactionsTypes();
+      } else {
+        messageAlert.error(deletedTransactionType.message);
+        setSendingData(false);
+      }
+    } catch (error) {
+      messageAlert.error("Error al Actualizar el Tipo de Transacción");
+      setSendingData(false);
+    }
   };
 
   const transactionsTypesTableColumns = [
@@ -151,6 +196,9 @@ const TransactionTypes = () => {
                 dataSource={transactionsTypes}
                 columns={transactionsTypesTableColumns}
                 loading={loading}
+                onRow={(record) => ({
+                  onClick: () => setSelectedTransactionType(record),
+                })}
                 pagination={{
                   pageSize: 10,
                   showTotal: (total) =>
@@ -165,6 +213,13 @@ const TransactionTypes = () => {
           isOpen={isNewTransactionTypeModalOpen}
           isClosed={() => setIsNewTransactionTypeModalOpen(false)}
           setAlertMessage={messageAlert}
+          getTransactionsTypes={getTransactionsTypes}
+        />
+        <EditTransactionTypeModal
+          isOpen={isEditTransactionTypeModalOpen}
+          isClosed={() => setIsEditTransactionTypeModalOpen(false)}
+          setAlertMessage={messageAlert}
+          selectedTransactionType={selectedTransactionType}
           getTransactionsTypes={getTransactionsTypes}
         />
       </div>

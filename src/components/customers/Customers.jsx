@@ -96,12 +96,8 @@ const Customers = () => {
               title="Eliminar Cliente"
               description="¿Está Seguro de Eliminar este Registro?"
               onConfirm={() => deleteCustomer(customer)}
-              onCancel={() => {}}
               okText="Sí"
               cancelText="No"
-              okButtonProps={{
-                loading: loading,
-              }}
             >
               <Button className="ms-2 me-2" type="primary" danger>
                 Eliminar
@@ -161,7 +157,7 @@ const Customers = () => {
               title="Eliminar Registro"
               description="¿Está Seguro de Eliminar este Registro?"
               onConfirm={() => deleteCustomer(customer)}
-              onCancel={() => {}}
+              
               okText="Sí"
               cancelText="No"
               okButtonProps={{

@@ -77,7 +77,6 @@ const Approvals = () => {
                     1
                   );
                 }}
-                onCancel={() => {}}
                 okText="Sí"
                 cancelText="No"
                 okButtonProps={{

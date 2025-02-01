@@ -59,7 +59,6 @@ const Collectors = () => {
               title="Eliminar Colector"
               description="¿Está seguro de Eliminar este Registro?"
               onConfirm={() => deleteCollector(collector)}
-              onCancel={() => {}}
               okText="Sí"
               cancelText="No"
             >
