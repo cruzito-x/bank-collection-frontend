@@ -129,7 +129,7 @@ const AccountsByCustomer = ({
         </div>
         <div className="col-12">
           <div className="text-end">
-            <Button type="primary" onClick={isClosed}>
+            <Button type="primary" danger onClick={isClosed}>
               {" "}
               Cerrar{" "}
             </Button>
