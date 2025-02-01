@@ -29,21 +29,6 @@ const TransactionsModal = ({
       const transactionsData = await response.json();
       const transactions = transactionsData.map((transaction) => ({
         ...transaction,
-        transaction_type: (
-          <>
-            <Tag
-              color={
-                transaction.transaction_type === "Deposito"
-                  ? "green"
-                  : transaction.transaction_type === "Retiro"
-                  ? "red"
-                  : "blue"
-              }
-            >
-              {transaction.transaction_type}
-            </Tag>
-          </>
-        ),
         amount: "$" + transaction.amount,
         datetime: moment(transaction.datetime).format("DD/MM/YYYY - hh:mm A"),
       }));
