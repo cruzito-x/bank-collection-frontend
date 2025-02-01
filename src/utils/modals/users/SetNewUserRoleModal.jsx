@@ -71,7 +71,7 @@ const SetNewUserRoleModal = ({
       }
       centered
       open={isOpen}
-      width={350}
+      width={400}
       onCancel={isClosed}
       footer={null}
     >

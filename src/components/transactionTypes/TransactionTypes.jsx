@@ -15,10 +15,13 @@ import {
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
+import AddNewTransactionTypeModal from "../../utils/modals/transactionTypes/AddNewTransactionTypeModal";
 
 const TransactionTypes = () => {
   const { authState } = useAuth();
   const [transactionsTypes, setTransactionsTypes] = useState([]);
+  const [isNewTransactionTypeModalOpen, setIsNewTransactionTypeModalOpen] =
+    useState(false);
   const [loading, setLoading] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
@@ -134,7 +137,10 @@ const TransactionTypes = () => {
               <Button type="primary"> Buscar </Button>
             </div>
             <div className="col-xxl-9 col-xl-7 col-sm-12 d-flex justify-content-end">
-              <Button type="primary">
+              <Button
+                type="primary"
+                onClick={() => setIsNewTransactionTypeModalOpen(true)}
+              >
                 <PlusCircleOutlined /> Añadir nuevo{" "}
               </Button>
             </div>
@@ -147,13 +153,20 @@ const TransactionTypes = () => {
                 loading={loading}
                 pagination={{
                   pageSize: 10,
-                  showTotal: (total) => `Total: ${total} colector(es)`,
+                  showTotal: (total) =>
+                    `Total: ${total} tipo(s) de transacción(es)`,
                   hideOnSinglePage: true,
                 }}
               />
             </div>
           </div>
         </Card>
+        <AddNewTransactionTypeModal
+          isOpen={isNewTransactionTypeModalOpen}
+          isClosed={() => setIsNewTransactionTypeModalOpen(false)}
+          setAlertMessage={messageAlert}
+          getTransactionsTypes={getTransactionsTypes}
+        />
       </div>
     </Content>
   );

@@ -3,7 +3,7 @@ import { PlusCircleOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 
-const AddCollectorModal = ({ isOpen, isClosed }) => {
+const AddNewCollectorModal = ({ isOpen, isClosed }) => {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const [messageAlert, messageContext] = message.useMessage();
@@ -141,7 +141,7 @@ const AddCollectorModal = ({ isOpen, isClosed }) => {
         </Form.Item>
         <Form.Item className="text-end">
           <Button type="primary" danger onClick={isClosed}>
-            Cancelar
+            Cerrar
           </Button>
           <Button
             className="ms-2"
@@ -157,4 +157,4 @@ const AddCollectorModal = ({ isOpen, isClosed }) => {
   );
 };
 
-export default AddCollectorModal;
+export default AddNewCollectorModal;

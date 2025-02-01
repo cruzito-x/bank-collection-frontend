@@ -16,7 +16,7 @@ import {
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
-import AddCollectorModal from "../../utils/modals/dashboard/AddCollectorModal";
+import AddNewCollectorModal from "../../utils/modals/dashboard/AddNewCollectorModal";
 
 const Collectors = () => {
   const [collectors, setCollectors] = useState([]);
@@ -189,10 +189,6 @@ const Collectors = () => {
               >
                 <PlusCircleOutlined /> Nuevo Colector{" "}
               </Button>
-              <AddCollectorModal
-                openModal={isCollectorModalOpen}
-                closeModal={() => setIsCollectorModalOpen(false)}
-              />
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
@@ -210,6 +206,10 @@ const Collectors = () => {
             </div>
           </div>
         </Card>
+        <AddNewCollectorModal
+          openModal={isCollectorModalOpen}
+          closeModal={() => setIsCollectorModalOpen(false)}
+        />
       </div>
     </Content>
   );

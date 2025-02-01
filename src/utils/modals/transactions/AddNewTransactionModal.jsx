@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
 
-const NewTransactionModal = ({
+const AddNewTransactionModal = ({
   isOpen,
   isClosed,
   transactionTypes,
@@ -270,7 +270,16 @@ const NewTransactionModal = ({
         </Form.Item>
 
         <Form.Item className="text-end">
-          <Button type="primary" htmlType="submit" loading={sendingTransaction}>
+          <Button
+            key="back"
+            type="primary"
+            danger
+            onClick={isClosed}
+            disabled={sendingTransaction ? true : false}
+          >
+            Cerrar
+          </Button>
+          <Button className="ms-2" type="primary" htmlType="submit" loading={sendingTransaction}>
             Realizar Transferencia
           </Button>
         </Form.Item>
@@ -279,4 +288,4 @@ const NewTransactionModal = ({
   );
 };
 
-export default NewTransactionModal;
+export default AddNewTransactionModal;

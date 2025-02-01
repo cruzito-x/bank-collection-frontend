@@ -21,7 +21,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import moment from "moment";
 import TransactionDetailsModal from "../../utils/modals/transactions/TransactionDetailsModal";
-import NewTransactionModal from "../../utils/modals/transactions/NewTransactionModal";
+import AddNewTransactionModal from "../../utils/modals/transactions/AddNewTransactionModal";
 
 const Transactions = () => {
   const { authState } = useAuth();
@@ -275,7 +275,7 @@ const Transactions = () => {
               />
             </div>
           </div>
-          <NewTransactionModal
+          <AddNewTransactionModal
             isOpen={isNewTransactionModalOpen}
             isClosed={() => setIsNewTransactionModalOpen(false)}
             transactionTypes={transactionsTypes}

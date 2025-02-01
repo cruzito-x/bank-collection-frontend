@@ -4,7 +4,7 @@ import "./styles/dashboard.css";
 import DashboardCharts from "./charts/DashboardCharts";
 import moment from "moment";
 import LogoutCard from "../../utils/logoutCard/LogoutCard";
-import AddCollectorModal from "../../utils/modals/dashboard/AddCollectorModal";
+import AddNewCollectorModal from "../../utils/modals/dashboard/AddNewCollectorModal";
 import NotificationsModal from "../../utils/modals/dashboard/NotificationsModal";
 import PaymentsCollectorsModal from "../../utils/modals/dashboard/PaymentsCollectorsModal";
 import { useCollectorsData } from "../../contexts/collectorsDataContext/CollectorsDataContext";
@@ -455,11 +455,11 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
         </Card>
         <NotificationsModal
           isOpen={openNotificationsModal}
-          isClose={() => setOpenNotificationsModal(false)}
+          isClosed={() => setOpenNotificationsModal(false)}
           setAlertMessage={messageAlert}
           notificationsData={notifications}
         />
-        <AddCollectorModal
+        <AddNewCollectorModal
           isOpen={isCollectorModalOpen}
           isClosed={() => setIsCollectorModalOpen(false)}
         />

@@ -1,8 +1,8 @@
-import { Col, Modal, Row, Table } from "antd";
+import { Button, Col, Modal, Row, Table } from "antd";
 import { TransactionOutlined } from "@ant-design/icons";
 import React from "react";
 
-const NotificationsModal = ({ isOpen, isClose, notificationsData }) => {
+const NotificationsModal = ({ isOpen, isClosed, notificationsData }) => {
   const notificationColumns = [
     {
       title: "Código de Aprobación",
@@ -68,8 +68,8 @@ const NotificationsModal = ({ isOpen, isClose, notificationsData }) => {
       centered
       width={1350}
       open={isOpen}
-      onOk={isClose}
-      onCancel={isClose}
+      onOk={isClosed}
+      onCancel={isClosed}
       footer={null}
     >
       <Table
@@ -80,6 +80,11 @@ const NotificationsModal = ({ isOpen, isClose, notificationsData }) => {
           hideOnSinglePage: true,
         }}
       />
+      <div className="mt-3 text-end">
+        <Button key="back" type="primary" danger onClick={isClosed}>
+          Cerrar
+        </Button>
+      </div>
     </Modal>
   );
 };
