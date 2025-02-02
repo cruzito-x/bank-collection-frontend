@@ -5,6 +5,7 @@ import {
   Input,
   Layout,
   message,
+  Popconfirm,
   Select,
   Table,
   theme,
@@ -79,9 +80,17 @@ const Users = () => {
             >
               Editar
             </Button>
-            <Button className="ms-2 me-2" type="primary" danger>
-              Eliminar
-            </Button>
+            <Popconfirm
+              title="Eliminar Usuario"
+              description="¿Está seguro de Eliminar este Registro?"
+              onConfirm={() => deleteUser(user)}
+              okText="Sí"
+              cancelText="No"
+            >
+              <Button className="ms-2 me-2" type="primary" danger>
+                Eliminar
+              </Button>
+            </Popconfirm>
             <Button
               type="primary"
               onClick={() => setShowSetNewUserRoleModalOpen(true)}
@@ -96,6 +105,34 @@ const Users = () => {
       setLoading(false);
     } catch (error) {
       console.error("Error fetching roles: ", error);
+    }
+  };
+
+  const deleteUser = async (user) => {
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/users/delete-user/${user.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+        }
+      );
+
+      const updatedUser = await response.json();
+
+      if (response.status === 200) {
+        messageAlert.success(updatedUser.message);
+        getUsers();
+      } else {
+        messageAlert.error(updatedUser.message);
+      }
+    } catch (error) {
+      messageAlert.error("Hubo un Error al Intentar Eliminar al Usuario");
     }
   };
 

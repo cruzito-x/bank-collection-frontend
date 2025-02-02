@@ -19,6 +19,8 @@ const PaymentsCollectorsModal = ({
   isOpen,
   isClosed,
   setAlertMessage,
+  currentPath,
+  getPaymentsCollectors,
 }) => {
   const [percentage, setPercentage] = useState(0);
   const [sendingDataLoading, setSendingDataLoading] = useState(false);
@@ -39,7 +41,7 @@ const PaymentsCollectorsModal = ({
   useEffect(() => {
     getCollectors();
     getCustomers();
-  },[]);
+  }, []);
 
   const getCustomers = async () => {
     try {
@@ -130,6 +132,10 @@ const PaymentsCollectorsModal = ({
         setAlertMessage.success(registeredPayment.message);
         setPercentage(0);
         isClosed();
+
+        if (currentPath === "/payments-collectors") {
+          getPaymentsCollectors();
+        }
       } else {
         setAlertMessage.error(registeredPayment.message);
       }

@@ -25,7 +25,7 @@ const Audit = () => {
     token: { borderRadiusLG },
   } = theme.useToken();
 
-  const onChange = (date, dateString) => {
+  const selectDate = (date, dateString) => {
     console.log(date, dateString);
   };
 
@@ -42,14 +42,15 @@ const Audit = () => {
         method: "GET",
       });
 
-      const audits = await response.json();
-      const auditsRow = audits.map((audit) => {
+      const auditsData = await response.json();
+      const audit = auditsData.map((audit) => {
         return {
           ...audit,
           datetime: moment(audit.datetime).format("DD/MM/YYYY - HH:mm A"),
         };
       });
-      setAudit(auditsRow);
+
+      setAudit(audit);
       setLoading(false);
     } catch (error) {}
   };
@@ -140,8 +141,8 @@ const Audit = () => {
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
               <label className="me-2 fw-semibold text-black"> Fecha </label>
               <DatePicker
-                onChange={onChange}
-                placeholder="Seleccionar fecha"
+                onChange={selectDate}
+                placeholder="Seleccionar Fecha"
                 style={{ width: 183, cursor: "pointer" }}
               />
             </div>

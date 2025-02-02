@@ -15,7 +15,6 @@ const PaymentsCollectorsCharts = () => {
     );
 
     const paymentsByCollectorsData = await response.json();
-    console.log(paymentsByCollectorsData);
     setPaymentsByCollectors(paymentsByCollectorsData);
   };
 

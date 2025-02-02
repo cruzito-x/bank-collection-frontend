@@ -45,32 +45,6 @@ const Customers = () => {
     getCustomers();
   }, []);
 
-  const deleteCustomer = async (customer) => {
-    setLoading(true);
-
-    try {
-      const response = await fetch(
-        `http://localhost:3001/customers/delete-customer/${customer.id}`,
-        {
-          method: "PUT",
-        }
-      );
-
-      const deletedCustomer = await response.json();
-
-      if (response.status === 200) {
-        messageAlert.success(deletedCustomer.message);
-        setCustomers(
-          customers.filter((customer) => customer.id !== deletedCustomer.id)
-        );
-      } else {
-        messageAlert.error(deletedCustomer.message);
-      }
-    } catch (error) {
-      messageAlert.error("Error al Eliminar Cliente");
-    }
-  };
-
   const getCustomers = async () => {
     setLoading(true);
 
@@ -121,6 +95,34 @@ const Customers = () => {
       setLoading(false);
     } catch (error) {
       messageAlert.error("Error al Obtener los Datos de Clientes");
+    }
+  };
+
+  const deleteCustomer = async (customer) => {
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/customers/delete-customer/${customer.id}`,
+        {
+          method: "PUT",
+        }
+      );
+
+      const deletedCustomer = await response.json();
+
+      if (response.status === 200) {
+        messageAlert.success(deletedCustomer.message);
+        getCustomers();
+        setLoading(false);
+      } else {
+        messageAlert.error(deletedCustomer.message);
+        getCustomers();
+        setLoading(false);
+      }
+    } catch (error) {
+      messageAlert.error("Error al Eliminar Cliente");
+      setLoading(false);
     }
   };
 

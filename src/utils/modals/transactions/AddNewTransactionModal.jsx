@@ -280,7 +280,7 @@ const AddNewTransactionModal = ({
             Cerrar
           </Button>
           <Button className="ms-2" type="primary" htmlType="submit" loading={sendingTransaction}>
-            Realizar Transferencia
+            Realizar Transacción
           </Button>
         </Form.Item>
       </Form>
