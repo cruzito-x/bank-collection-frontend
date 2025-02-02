@@ -9,11 +9,7 @@ import {
   Table,
   theme,
 } from "antd";
-import {
-  BankOutlined,
-  DatabaseOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { BankOutlined, HistoryOutlined, UserOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { useAuth } from "../../contexts/authContext/AuthContext";
@@ -34,6 +30,7 @@ const Audit = () => {
   };
 
   useEffect(() => {
+    document.title = "Banco Bambú | Auditoría";
     getAudits();
   }, []);
 
@@ -71,15 +68,15 @@ const Audit = () => {
       align: "center",
     },
     {
-      title: "Fecha y Hora",
-      dataIndex: "datetime",
-      key: "datetime",
-      align: "center",
-    },
-    {
       title: "Detalles de la Acción",
       dataIndex: "details",
       key: "details",
+      align: "center",
+    },
+    {
+      title: "Fecha y Hora",
+      dataIndex: "datetime",
+      key: "datetime",
       align: "center",
     },
   ];
@@ -115,7 +112,7 @@ const Audit = () => {
             {
               title: (
                 <>
-                  <DatabaseOutlined />
+                  <HistoryOutlined />
                   <span>Auditoría</span>
                 </>
               ),
@@ -163,7 +160,6 @@ const Audit = () => {
                   showTotal: (total) => `Total: ${total} registro(s)`,
                   hideOnSinglePage: true,
                 }}
-                scroll={{ y: 539 }}
               />
             </div>
           </div>

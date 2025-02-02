@@ -52,8 +52,8 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
               </h1>
               <label className="fw-semibold text-black">
                 {" "}
-                <ContainerOutlined style={{ color: "var(--blue)" }} />{" "}
-                Detalle de Transacción{" "}
+                <ContainerOutlined style={{ color: "var(--blue)" }} /> Detalle
+                de Transacción{" "}
               </label>{" "}
               <br />
               <label style={{ color: "var(--gray)", fontSize: "13px" }}>
@@ -117,12 +117,13 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
               </label>
               <p> {approvalData.receiver_email} </p>
             </div>
-            {approvalData.concept !== "" && (
-              <div className="col-12">
-                <label className="fw-semibold text-black"> Concepto </label>
-                <p> {approvalData.concept} </p>
-              </div>
-            )}
+            {approvalData.concept !== null ||
+              (approvalData.concept === "" && (
+                <div className="col-12">
+                  <label className="fw-semibold text-black"> Concepto </label>
+                  <p> {approvalData.concept} </p>
+                </div>
+              ))}
             <div className="col-12">
               <label className="fw-semibold text-black"> Realizado Por </label>
               <p> {approvalData.realized_by} </p>

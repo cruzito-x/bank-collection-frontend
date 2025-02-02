@@ -104,15 +104,17 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
               </p>
             </div>
             {transactionData.sender_account !==
-              transactionData.receiver_account && (
-              <div className="col-12">
-                <label className="fw-semibold text-black">
-                  {" "}
-                  No. Cuenta Remitente{" "}
-                </label>
-                <p> {transactionData.sender_account} </p>
-              </div>
-            )}
+              transactionData.receiver_account ||
+              transactionData.sender_account !== null ||
+              (transactionData.sender_account !== "" && (
+                <div className="col-12">
+                  <label className="fw-semibold text-black">
+                    {" "}
+                    No. Cuenta Remitente{" "}
+                  </label>
+                  <p> {transactionData.sender_account} </p>
+                </div>
+              ))}
             <div className="col-12">
               <label className="fw-semibold text-black"> Destinatario </label>
               <p>

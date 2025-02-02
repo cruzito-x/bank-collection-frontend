@@ -7,12 +7,12 @@ import {
   TransactionOutlined,
   CheckCircleOutlined,
   UserOutlined,
-  DatabaseOutlined,
   LeftOutlined,
   RightOutlined,
   SolutionOutlined,
   AuditOutlined,
   LogoutOutlined,
+  HistoryOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext/AuthContext";
@@ -23,57 +23,53 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
   const navigate = useNavigate();
   const isSupervisor = authState.isSupervisor;
 
-  const colorByTheme = {
-    color: darkTheme ? "#ffffff" : "007bff",
-  };
-
   const menuItems = [
     isSupervisor
       ? {
           key: "/dashboard",
-          icon: <LineChartOutlined style={colorByTheme} />,
+          icon: <LineChartOutlined className="text-white" />,
           label: "Dashboard",
-          style: { colorByTheme },
+          className: "text-white",
         }
       : null,
     {
       key: "/customers",
-      icon: <TeamOutlined style={colorByTheme} />,
+      icon: <TeamOutlined className="text-white" />,
       label: "Clientes",
-      style: { colorByTheme },
+      className: "text-white",
     },
     isSupervisor
       ? {
           key: "/collectors",
-          icon: <SolutionOutlined style={colorByTheme} />,
+          icon: <SolutionOutlined className="text-white" />,
           label: "Colectores",
-          style: { colorByTheme },
+          className: "text-white",
         }
       : null,
     {
       key: "/payments-collectors",
-      icon: <WalletOutlined style={colorByTheme} />,
+      icon: <WalletOutlined className="text-white" />,
       label: "Pagos a Colectores",
-      style: { colorByTheme },
+      className: "text-white",
     },
     {
       key: "/transactions-menu",
-      icon: <TransactionOutlined style={colorByTheme} />,
+      icon: <TransactionOutlined className="text-white" />,
       label: "Transacciones",
-      style: { colorByTheme },
+      className: "text-white",
       children: [
         {
           key: "/transactions",
-          icon: <TransactionOutlined style={colorByTheme} />,
+          icon: <TransactionOutlined className="text-white" />,
           label: "Transacciones",
-          style: { colorByTheme },
+          className: "text-white",
         },
         isSupervisor
           ? {
               key: "/transaction-types",
-              icon: <AuditOutlined style={colorByTheme} />,
+              icon: <AuditOutlined className="text-white" />,
               label: "Tipos de Transacciones",
-              style: { colorByTheme },
+              className: "text-white",
             }
           : null,
       ].filter(Boolean),
@@ -81,41 +77,41 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
     isSupervisor
       ? {
           key: "/approvals",
-          icon: <CheckCircleOutlined style={colorByTheme} />,
+          icon: <CheckCircleOutlined className="text-white" />,
           label: "Aprobaciones",
-          style: { colorByTheme },
+          className: "text-white",
         }
       : null,
     isSupervisor
       ? {
           key: "/users",
-          icon: <UserOutlined style={colorByTheme} />,
+          icon: <UserOutlined className="text-white" />,
           label: "Usuarios",
-          style: { colorByTheme },
+          className: "text-white",
         }
       : null,
     isSupervisor
       ? {
           key: "/audit",
-          icon: <DatabaseOutlined style={colorByTheme} />,
+          icon: <HistoryOutlined className="text-white" />,
           label: "Auditoría",
-          style: { colorByTheme },
+          className: "text-white",
         }
       : null,
     !isSupervisor
       ? {
           key: "/logout",
-          icon: <LogoutOutlined style={colorByTheme} />,
+          icon: <LogoutOutlined className="text-white" />,
           label: "Cerrar Sesión",
-          style: { colorByTheme },
+          className: "text-white",
         }
       : null,
     {
       key: "#",
       icon: collapsed ? (
-        <RightOutlined style={colorByTheme} />
+        <RightOutlined className="text-white" />
       ) : (
-        <LeftOutlined style={colorByTheme} />
+        <LeftOutlined className="text-white" />
       ),
       label: collapsed ? "Abrir Menú" : "Cerrar Menú",
       className: "toggle",

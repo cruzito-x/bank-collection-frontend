@@ -35,6 +35,7 @@ const Collectors = () => {
   } = theme.useToken();
 
   useEffect(() => {
+    document.title = "Banco Bambú | Colectores";
     getCollectors();
   }, []);
 

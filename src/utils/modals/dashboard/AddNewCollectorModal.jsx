@@ -140,7 +140,7 @@ const AddNewCollectorModal = ({ isOpen, isClosed }) => {
           />
         </Form.Item>
         <Form.Item className="text-end">
-          <Button type="primary" danger onClick={isClosed}>
+          <Button type="primary" danger onClick={isClosed} disabled={ loading ? true : false }>
             Cerrar
           </Button>
           <Button

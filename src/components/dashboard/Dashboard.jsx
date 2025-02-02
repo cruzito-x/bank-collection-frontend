@@ -84,12 +84,13 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   };
 
   useEffect(() => {
+    document.title = `Banco Bambú | ${ notifications.length > 0 ? `${notifications.length} Notificaciones` : "Dashboard" }`;
     getNotifications();
     getCollectors();
     getTransactionTypes();
     getTotalPayments();
     getTotalProcessedAmounts();
-  }, []);
+  }, [notifications]);
 
   useEffect(() => {
     if (collectors.length === 0) return;

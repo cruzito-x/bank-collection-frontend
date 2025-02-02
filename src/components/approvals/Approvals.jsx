@@ -34,6 +34,7 @@ const Approvals = () => {
   } = theme.useToken();
 
   useEffect(() => {
+    document.title = "Banco Bambú | Aprobaciones";
     getApprovals();
   }, []);
 

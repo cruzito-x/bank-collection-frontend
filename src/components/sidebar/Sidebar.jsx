@@ -44,7 +44,6 @@ const Sidebar = () => {
   };
 
   const isSupervisor = authState.isSupervisor;
-
   const routes = isSupervisor
     ? [
         "/dashboard",
@@ -77,13 +76,9 @@ const Sidebar = () => {
         trigger={null}
         className={`sidebar ${collapsed ? "overflow-hidden" : "overflow-auto"}`}
         style={{
-          overflow: "auto",
           height: "100vh",
           position: "fixed",
           backgroundColor: "var(--gray)",
-          left: 0,
-          top: 0,
-          bottom: 0,
         }}
       >
         <Logo />

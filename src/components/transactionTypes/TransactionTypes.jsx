@@ -37,6 +37,7 @@ const TransactionTypes = () => {
   } = theme.useToken();
 
   useEffect(() => {
+    document.title = "Banco Bambú | Tipos de Transacciones";
     getTransactionsTypes();
   }, []);
 

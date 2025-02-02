@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import TransactionsModal from "./TransactionsModal";
 
-const AccountsByCustomer = ({
+const AccountsByCustomerModal = ({
   isOpen,
   isClosed,
   selectedCustomer,
@@ -147,4 +147,4 @@ const AccountsByCustomer = ({
   );
 };
 
-export default AccountsByCustomer;
+export default AccountsByCustomerModal;

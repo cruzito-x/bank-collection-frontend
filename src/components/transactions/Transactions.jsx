@@ -41,6 +41,7 @@ const Transactions = () => {
   } = theme.useToken();
 
   useEffect(() => {
+    document.title = "Banco Bambú | Transacciones";
     getTransactionsTypes();
     getTransactions();
   }, []);

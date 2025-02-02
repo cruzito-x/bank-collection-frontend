@@ -22,7 +22,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import EditCustomerModal from "../../utils/modals/customers/EditCustomerModal";
 import { useForm } from "antd/es/form/Form";
-import AccountsByCustomer from "../../utils/modals/customers/AccountsByCustomer";
+import AccountsByCustomerModal from "../../utils/modals/customers/AccountsByCustomerModal";
 
 const Customers = () => {
   const { authState } = useAuth();
@@ -41,6 +41,7 @@ const Customers = () => {
   } = theme.useToken();
 
   useEffect(() => {
+    document.title = "Banco Bambú | Clientes";
     getCustomers();
   }, []);
 
@@ -352,7 +353,7 @@ const Customers = () => {
           setAlertMessage={messageAlert}
         />
 
-        <AccountsByCustomer
+        <AccountsByCustomerModal
           isOpen={isAccountsByCustomerModalOpen}
           isClosed={() => setIsAccountsByCustomerModalOpen(false)}
           selectedCustomer={selectedCustomer}

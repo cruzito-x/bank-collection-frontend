@@ -39,6 +39,7 @@ const PaymentsCollectors = () => {
   } = theme.useToken();
 
   useEffect(() => {
+    document.title = "Banco Bambú | Pagos a Colectores";
     getPaymentsCollectors();
   }, []);
 
@@ -60,7 +61,7 @@ const PaymentsCollectors = () => {
             return {
               ...paymentsCollector,
               amount: "$" + paymentsCollector.amount,
-              datetime: moment(paymentsCollector.date_hour).format(
+              datetime: moment(paymentsCollector.datetime).format(
                 "DD/MM/YYYY - HH:mm A"
               ),
               actions: (

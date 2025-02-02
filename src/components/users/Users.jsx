@@ -32,6 +32,7 @@ const Users = () => {
   } = theme.useToken();
 
   useEffect(() => {
+    document.title = "Banco Bambú | Usuarios";
     getRoles();
     getUsers();
   }, []);
