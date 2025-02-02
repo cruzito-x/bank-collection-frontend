@@ -11,36 +11,35 @@ const Login = () => {
   const navigate = useNavigate();
   const { setAuthState } = useAuth();
 
-  const onFinish = async (values) => {
+  const loginUser = async (user) => {
     setLoading(true);
+
     try {
       const response = await fetch("http://localhost:3001/login/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(user),
       });
 
-      const data = await response.json();
+      const loggedUserData = await response.json();
 
       if (response.status === 200) {
-        messageAlert.success(data.message);
+        messageAlert.success(loggedUserData.message);
         setAuthState({
-          isSupervisor: data.isSupervisor,
-          user_id: data.user_id,
-          username: data.username,
+          isSupervisor: loggedUserData.isSupervisor,
+          user_id: loggedUserData.user_id,
+          username: loggedUserData.username,
         });
 
-        if (data.isSupervisor) {
-          navigate("/dashboard");
+        if (loggedUserData.isSupervisor) {
+          navigate("/dashboard", { state: { userId: loggedUserData.user_id } });
         } else {
           navigate("/customers");
         }
       } else {
-        if (response.status === 401 || response.status === 500) {
-          messageAlert.error(data.message);
-        }
+        messageAlert.error(loggedUserData.message);
       }
     } catch (error) {
       messageAlert.error(
@@ -77,7 +76,7 @@ const Login = () => {
         <Form
           layout={"vertical"}
           initialValues={{ remember: true }}
-          onFinish={onFinish}
+          onFinish={loginUser}
           style={{ width: 300, padding: 20 }}
         >
           <label className="text-black"> Usuario </label>

@@ -85,9 +85,7 @@ const Collectors = () => {
 
       setCollectors(collectors);
       setLoading(false);
-    } catch (error) {
-      messageAlert.error("Error fetching collectors");
-    }
+    } catch (error) {}
   };
 
   const deleteCollector = async (collector) => {
@@ -95,7 +93,7 @@ const Collectors = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/collectors/delete-customer/${collector.id}`,
+        `http://localhost:3001/collectors/delete-collector/${collector.id}`,
         {
           method: "PUT",
         }
@@ -110,7 +108,7 @@ const Collectors = () => {
         messageAlert.error(deletedCollector.message);
       }
     } catch (error) {
-      messageAlert.error("Error al Eliminar Cliente");
+      messageAlert.error("Error al Eliminar Colector");
     }
   };
 

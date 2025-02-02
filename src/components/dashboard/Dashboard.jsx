@@ -84,7 +84,11 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   };
 
   useEffect(() => {
-    document.title = `Banco Bambú | ${ notifications.length > 0 ? `${notifications.length} Notificaciones` : "Dashboard" }`;
+    document.title = `Banco Bambú | ${
+      notifications.length > 0
+        ? `${notifications.length} Notificaciones`
+        : "Dashboard"
+    }`;
     getNotifications();
     getCollectors();
     getTransactionTypes();
