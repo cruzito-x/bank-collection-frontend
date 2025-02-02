@@ -11,25 +11,26 @@ import {
 } from "antd";
 import {
   BankOutlined,
+  BulbOutlined,
   PlusCircleOutlined,
   SolutionOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
-import AddNewCollectorModal from "../../utils/modals/dashboard/AddNewCollectorModal";
-import PaymentsDetailsModal from "../../utils/modals/collectors/PaymentsDetailsModal";
-import EditCollectorModal from "../../utils/modals/collectors/EditCollectorModal";
+import PaymentsDetailsModal from "../../utils/modals/services/PaymentsDetailsModal";
+import EditServiceModal from "../../utils/modals/services/EditServiceModal";
+import AddNewServiceModal from "../../utils/modals/services/AddNewServiceModal";
 
-const Collectors = () => {
-  const [collectors, setCollectors] = useState([]);
-  const [isCollectorPaymentsModalOpen, setIsCollectorPaymentsModalOpen] =
+const Services = () => {
+  const [services, setServices] = useState([]);
+  const [isServicePaymentsModalOpen, setIsServicePaymentsModalOpen] =
     useState(false);
-  const [isCollectorEditModalOpen, setIsCollectorEditModalOpen] =
+  const [isServiceEditModalOpen, setIsServiceEditModalOpen] =
     useState(false);
   const [isPaymentsDetailsModalOpen, setIsPaymentsDetailsModalOpen] =
     useState(false);
-  const [selectedCollector, setSelectedCollector] = useState([]);
+  const [selectedService, setSelectedService] = useState([]);
   const [loading, setLoading] = useState(false);
   const { authState } = useAuth();
   const [messageAlert, messageContext] = message.useMessage();
@@ -39,21 +40,21 @@ const Collectors = () => {
   } = theme.useToken();
 
   useEffect(() => {
-    document.title = "Banco Bambú | Colectores";
-    getCollectors();
+    document.title = "Banco Bambú | Colectores - Servicios";
+    getServices();
   }, []);
 
-  const getCollectors = async () => {
+  const getServices = async () => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3001/collectors", {
+      const response = await fetch("http://localhost:3001/services", {
         method: "GET",
       });
 
-      const collectorsData = await response.json();
-      const collectors = collectorsData.map((collector) => ({
-        ...collector,
+      const servicesData = await response.json();
+      const services = servicesData.map((service) => ({
+        ...service,
         actions: (
           <>
             <Button
@@ -62,14 +63,14 @@ const Collectors = () => {
               style={{
                 backgroundColor: "var(--yellow)",
               }}
-              onClick={() => setIsCollectorEditModalOpen(true)}
+              onClick={() => setIsServiceEditModalOpen(true)}
             >
               Editar
             </Button>
             <Popconfirm
               title="Eliminar Colector"
               description="¿Está seguro de Eliminar este Registro?"
-              onConfirm={() => deleteCollector(collector)}
+              onConfirm={() => deleteService(service)}
               okText="Sí"
               cancelText="No"
             >
@@ -88,40 +89,40 @@ const Collectors = () => {
         ),
       }));
 
-      setCollectors(collectors);
+      setServices(services);
       setLoading(false);
     } catch (error) {}
   };
 
-  const deleteCollector = async (collector) => {
+  const deleteService = async (service) => {
     setLoading(true);
 
     try {
       const response = await fetch(
-        `http://localhost:3001/collectors/delete-collector/${collector.id}`,
+        `http://localhost:3001/services/delete-service/${service.id}`,
         {
           method: "PUT",
         }
       );
 
-      const deletedCollector = await response.json();
+      const deletedService = await response.json();
 
       if (response.status === 200) {
-        messageAlert.success(deletedCollector.message);
-        getCollectors();
+        messageAlert.success(deletedService.message);
+        getServices();
       } else {
-        messageAlert.error(deletedCollector.message);
+        messageAlert.error(deletedService.message);
       }
     } catch (error) {
       messageAlert.error("Error al Eliminar Colector");
     }
   };
 
-  const collectorsTableColumns = [
+  const servicesTableColumns = [
     {
-      title: "Colector",
-      dataIndex: "collector",
-      key: "collector",
+      title: "Servicio",
+      dataIndex: "service",
+      key: "service",
       align: "center",
     },
     {
@@ -131,9 +132,9 @@ const Collectors = () => {
       align: "center",
     },
     {
-      title: "Servicios",
-      dataIndex: "services_names",
-      key: "services_names",
+      title: "Colector",
+      dataIndex: "collector",
+      key: "collector",
       align: "center",
     },
     {
@@ -176,8 +177,8 @@ const Collectors = () => {
             {
               title: (
                 <>
-                  <SolutionOutlined />
-                  <span>Colectores</span>
+                  <BulbOutlined />
+                  <span>Servicios</span>
                 </>
               ),
             },
@@ -191,8 +192,8 @@ const Collectors = () => {
             </div>
           </div>
           <div className="row ms-2 mb-3">
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold text-black"> Nombre </label>
+            <div className="col-xxl-3 col-xl-3 col-sm-12 w-auto">
+              <label className="me-2 fw-semibold text-black"> Colector </label>
               <Input
                 placeholder="Nombre de Colector"
                 prefix={<SolutionOutlined />}
@@ -201,57 +202,68 @@ const Collectors = () => {
                 }}
               />
             </div>
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
+            <div className="col-xxl-3 col-xl-3 col-sm-12 w-auto">
+              <label className="me-2 fw-semibold text-black"> Servicio </label>
+              <Input
+                placeholder="Nombre de Servicio"
+                prefix={<BulbOutlined />}
+                style={{
+                  width: 183,
+                }}
+              />
+            </div>
+            <div className="col-xxl-3 col-xl-3 col-sm-12 w-auto">
               <Button type="primary"> Buscar </Button>
             </div>
-            <div className="col-xxl-9 col-xl-7 col-sm-12 d-flex justify-content-end">
+            <div className="col-xxl-7 col-xl-3 col-sm-12 d-flex justify-content-end">
               <Button
                 type="primary"
-                onClick={() => setIsCollectorPaymentsModalOpen(true)}
+                onClick={() => setIsServicePaymentsModalOpen(true)}
               >
-                <PlusCircleOutlined /> Nuevo Colector{" "}
+                <PlusCircleOutlined /> Nuevo Servicio{" "}
               </Button>
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">
               <Table
-                dataSource={collectors}
-                columns={collectorsTableColumns}
+                dataSource={services}
+                columns={servicesTableColumns}
                 loading={loading}
                 onRow={(record) => ({
-                  onClick: () => setSelectedCollector(record),
+                  onClick: () => setSelectedService(record),
                 })}
                 pagination={{
                   pageSize: 10,
-                  showTotal: (total) => `Total: ${total} colector(es) regisrado(s)`,
+                  showTotal: (total) => `Total: ${total} servicio(s) registrado(s)`,
                   hideOnSinglePage: true,
                 }}
               />
             </div>
           </div>
         </Card>
-        <AddNewCollectorModal
-          isOpen={isCollectorPaymentsModalOpen}
-          isClosed={() => setIsCollectorPaymentsModalOpen(false)}
+        <AddNewServiceModal
+          isOpen={isServicePaymentsModalOpen}
+          isClosed={() => setIsServicePaymentsModalOpen(false)}
+          setAlertMessage={messageAlert}
         />
 
-        <EditCollectorModal
-          isOpen={isCollectorEditModalOpen}
-          isClosed={() => setIsCollectorEditModalOpen(false)}
-          selectedCollector={selectedCollector}
-          getCollectors={getCollectors}
+        <EditServiceModal
+          isOpen={isServiceEditModalOpen}
+          isClosed={() => setIsServiceEditModalOpen(false)}
+          selectedService={selectedService}
+          getServices={getServices}
           setAlertMessage={messageAlert}
         />
 
         <PaymentsDetailsModal
           isOpen={isPaymentsDetailsModalOpen}
           isClosed={() => setIsPaymentsDetailsModalOpen(false)}
-          selectedCollector={selectedCollector}
+          selectedService={selectedService}
         />
       </div>
     </Content>
   );
 };
 
-export default Collectors;
+export default Services;

@@ -48,17 +48,15 @@ const AddNewCollectorModal = ({ isOpen, isClosed }) => {
     <Modal
       title={
         <Row align="middle">
-          {" "}
           <Col>
-            {" "}
             <PlusCircleOutlined
               className="fs-6"
               style={{ marginRight: 8, color: "var(--blue)" }}
-            />{" "}
-          </Col>{" "}
+            />
+          </Col>
           <Col>
             <label className="fs-6 text-black">Añadir Nuevo Colector</label>
-          </Col>{" "}
+          </Col>
         </Row>
       }
       centered
@@ -140,7 +138,12 @@ const AddNewCollectorModal = ({ isOpen, isClosed }) => {
           />
         </Form.Item>
         <Form.Item className="text-end">
-          <Button type="primary" danger onClick={isClosed} disabled={ loading ? true : false }>
+          <Button
+            type="primary"
+            danger
+            onClick={isClosed}
+            disabled={loading ? true : false}
+          >
             Cerrar
           </Button>
           <Button

@@ -52,17 +52,15 @@ const NotificationsModal = ({ isOpen, isClosed, notificationsData }) => {
     <Modal
       title={
         <Row align="middle">
-          {" "}
           <Col>
-            {" "}
             <TransactionOutlined
               className="fs-6"
               style={{ marginRight: 8, color: "var(--blue)" }}
-            />{" "}
-          </Col>{" "}
+            />
+          </Col>
           <Col>
             <label className="fs-6">Transacciones por Aprobar</label>
-          </Col>{" "}
+          </Col>
         </Row>
       }
       centered

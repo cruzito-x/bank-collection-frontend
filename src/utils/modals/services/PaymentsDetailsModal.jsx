@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { CSVLink } from "react-csv";
 import moment from "moment";
 
-const PaymentsDetailsModal = ({ isOpen, isClosed, selectedCollector }) => {
+const PaymentsDetailsModal = ({ isOpen, isClosed, selectedService }) => {
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -13,7 +13,7 @@ const PaymentsDetailsModal = ({ isOpen, isClosed, selectedCollector }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/collectors/view-payments-collector-details/${selectedCollector.id}`,
+        `http://localhost:3001/services/view-payments-by-service-details/${selectedService.id}`,
         {
           method: "GET",
         }
@@ -36,19 +36,19 @@ const PaymentsDetailsModal = ({ isOpen, isClosed, selectedCollector }) => {
 
   useEffect(() => {
     getPaymentsDetails();
-  }, [isOpen, selectedCollector]);
+  }, [isOpen, selectedService]);
 
   const paymentsDetailsColumns = [
-    {
-      title: "Colector",
-      dataIndex: "collector",
-      key: "collector",
-      align: "center",
-    },
     {
       title: "Servicio",
       dataIndex: "service",
       key: "service",
+      align: "center",
+    },
+    {
+      title: "Colector",
+      dataIndex: "collector",
+      key: "collector",
       align: "center",
     },
     {
@@ -78,8 +78,8 @@ const PaymentsDetailsModal = ({ isOpen, isClosed, selectedCollector }) => {
   ];
 
   const paymentsDetailsHeader = [
-    { label: "Colector", key: "collector" },
     { label: "Servicio", key: "service" },
+    { label: "Colector", key: "collector" },
     { label: "Monto", key: "amount" },
     { label: "Pagado Por", key: "payed_by" },
     { label: "Registrado Por", key: "registered_by" },
@@ -97,9 +97,7 @@ const PaymentsDetailsModal = ({ isOpen, isClosed, selectedCollector }) => {
             />
           </Col>
           <Col>
-            <label className="fs-6 text-black">
-              Pagos Recibidos por Colector
-            </label>
+            <label className="fs-6 text-black">Pagos por Servicio</label>
           </Col>
         </Row>
       }
@@ -130,8 +128,8 @@ const PaymentsDetailsModal = ({ isOpen, isClosed, selectedCollector }) => {
             </Button>
 
             <CSVLink
-              filename={`${moment(new Date()).format("YYYYMMDDHHmmss")} - Pagos Realizados a ${
-                selectedCollector.collector
+              filename={`${moment(new Date()).format("YYYYMMDDHHmmss")} - Pagos de ${
+                selectedService.service + "_" + selectedService.collector
               }.csv`}
               headers={paymentsDetailsHeader}
               data={payments}

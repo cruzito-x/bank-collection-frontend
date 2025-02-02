@@ -1,13 +1,13 @@
-import { Button, Col, Form, Input, Modal, Row } from "antd";
+import { Button, Col, Form, Input, InputNumber, Modal, Row } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 
-const EditCollectorModal = ({
+const EditServiceModal = ({
   isOpen,
   isClosed,
-  selectedCollector,
-  getCollectors,
+  selectedService,
+  getServices,
   setAlertMessage,
 }) => {
   const [sendingData, setSendingData] = useState(false);
@@ -16,40 +16,40 @@ const EditCollectorModal = ({
   useEffect(() => {
     if (isOpen) {
       form.setFieldsValue({
-        collector: selectedCollector.collector,
-        description: selectedCollector.description,
+        collector: selectedService.collector,
+        service: selectedService.service,
+        price: selectedService.price,
+        description: selectedService.description,
       });
     }
   }, [isOpen]);
 
-  const updateCollector = async (collectorData) => {
+  const updateService = async (serviceData) => {
     setSendingData(true);
-
-    console.log(collectorData);
 
     try {
       const response = await fetch(
-        `http://localhost:3001/collectors/update-collector/${selectedCollector.id}`,
+        `http://localhost:3001/services/update-service/${selectedService.id}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(collectorData),
+          body: JSON.stringify(serviceData),
         }
       );
 
-      const updatedCollector = await response.json();
+      const updatedService = await response.json();
       if (response.status === 200) {
         isClosed();
-        getCollectors();
-        setAlertMessage.success(updatedCollector.message);
+        getServices();
+        setAlertMessage.success(updatedService.message);
       } else {
-        setAlertMessage.error(updatedCollector.message);
+        setAlertMessage.error(updatedService.message);
       }
     } catch (error) {
       setAlertMessage.error(
-        "Hubo un Error al Actualizar los Datos del Colector"
+        "Hubo un Error al Actualizar los Datos del Servicio"
       );
     } finally {
       setSendingData(false);
@@ -67,7 +67,7 @@ const EditCollectorModal = ({
             />
           </Col>
           <Col>
-            <label className="fs-6 text-black">Editar Datos de Colector</label>
+            <label className="fs-6 text-black">Editar Datos de Servicio</label>
           </Col>
         </Row>
       }
@@ -77,9 +77,9 @@ const EditCollectorModal = ({
       onCancel={isClosed}
       footer={null}
     >
-      {selectedCollector && (
-        <Form form={form} onFinish={updateCollector}>
-          <label className="fw-semibold text-black">Nombre de Colector</label>
+      {selectedService && (
+        <Form form={form} onFinish={updateService}>
+          <label className="fw-semibold text-black">Colector Asociado</label>
           <Form.Item
             name="collector"
             rules={[
@@ -89,10 +89,40 @@ const EditCollectorModal = ({
               },
             ]}
           >
-            <Input placeholder="Nombre de Colector" />
+            <Input placeholder="Nombre de Colector" readOnly />
+          </Form.Item>
+          <label className="fw-semibold text-black">Nombre de Servicio</label>
+          <Form.Item
+            name="service"
+            rules={[
+              {
+                required: true,
+                message: "Por favor, Introduzca un Nombre de Servicio",
+              },
+            ]}
+          >
+            <Input placeholder="Nombre de Servicio" />
+          </Form.Item>
+          <label className="fw-semibold text-black">Precio de Servicio</label>
+          <Form.Item
+            name="price"
+            rules={[
+              {
+                required: true,
+                message: "Por favor, Introduzca un Precio de Servicio",
+              },
+            ]}
+          >
+            <InputNumber
+              className="w-100"
+              prefix="$"
+              min={5}
+              max={10000}
+              placeholder="Precio de Servicio"
+            />
           </Form.Item>
           <label className="fw-semibold text-black">
-            Descripción del Colector
+            Descripción del Servicio
           </label>
           <Form.Item
             name="description"
@@ -100,7 +130,9 @@ const EditCollectorModal = ({
               {
                 required: true,
                 message:
-                  "Por Favor, Introduzca una Descripción Para el Colector",
+                  "Por Favor, Introduzca una Descripción Para el Servicio",
+                min: 5,
+                max: 255,
               },
             ]}
           >
@@ -108,7 +140,7 @@ const EditCollectorModal = ({
               rows={4}
               size="middle"
               style={{ resize: "none" }}
-              placeholder="Descripción del Colector"
+              placeholder="Descripción del Servicio"
             />
           </Form.Item>
           <Form.Item className="text-end">
@@ -135,4 +167,4 @@ const EditCollectorModal = ({
   );
 };
 
-export default EditCollectorModal;
+export default EditServiceModal;

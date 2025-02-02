@@ -24,17 +24,15 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
     <Modal
       title={
         <Row align="middle">
-          {" "}
           <Col>
-            {" "}
             <InfoCircleOutlined
               className="fs-6"
               style={{ marginRight: 8, color: "var(--blue)" }}
-            />{" "}
-          </Col>{" "}
+            />
+          </Col>
           <Col>
             <label className="fs-6 text-black">Detalles de Aprobación</label>
-          </Col>{" "}
+          </Col>
         </Row>
       }
       centered
@@ -84,10 +82,10 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
                 <Tag
                   color={`${
                     approvalData.transaction_type === "Deposito"
-                      ? "green"
+                      ? "success"
                       : approvalData.transaction_type === "Retiro"
-                      ? "red"
-                      : "blue"
+                      ? "error"
+                      : "processing"
                   }`}
                 >
                   {" "}

@@ -13,6 +13,7 @@ import {
   AuditOutlined,
   LogoutOutlined,
   HistoryOutlined,
+  BulbOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext/AuthContext";
@@ -40,11 +41,25 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
     },
     isSupervisor
       ? {
-          key: "/collectors",
-          icon: <SolutionOutlined className="text-white" />,
-          label: "Colectores",
-          className: "text-white",
-        }
+        key: "/collectors-menu",
+        icon: <SolutionOutlined className="text-white" />,
+        label: "Colectores",
+        className: "text-white",
+        children: [
+          {
+            key: "/collectors",
+            icon: <SolutionOutlined className="text-white" />,
+            label: "Colectores",
+            className: "text-white",
+          },
+          {
+            key: "/services",
+            icon: <BulbOutlined className="text-white" />,
+            label: "Servicios",
+            className: "text-white",
+          }
+        ]
+      }
       : null,
     {
       key: "/payments-collectors",

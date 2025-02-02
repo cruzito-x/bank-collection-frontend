@@ -24,17 +24,15 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
     <Modal
       title={
         <Row align="middle">
-          {" "}
           <Col>
-            {" "}
             <InfoCircleOutlined
               className="fs-6"
               style={{ marginRight: 8, color: "var(--blue)" }}
-            />{" "}
-          </Col>{" "}
+            />
+          </Col>
           <Col>
             <label className="fs-6 text-black">Detalles de Transacción</label>
-          </Col>{" "}
+          </Col>
         </Row>
       }
       centered
@@ -76,10 +74,10 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
                 <Tag
                   color={`${
                     transactionData.transaction_type === "Deposito"
-                      ? "green"
+                      ? "success"
                       : transactionData.transaction_type === "Retiro"
-                      ? "red"
-                      : "blue"
+                      ? "error"
+                      : "processing"
                   }`}
                 >
                   {" "}

@@ -56,17 +56,15 @@ const SetNewUserRoleModal = ({
     <Modal
       title={
         <Row align="middle">
-          {" "}
           <Col>
-            {" "}
             <UserSwitchOutlined
               className="fs-6"
               style={{ marginRight: 8, color: "var(--blue)" }}
-            />{" "}
-          </Col>{" "}
+            />
+          </Col>
           <Col>
             <label className="fs-6 text-black">Asignar Nuevo Rol</label>
-          </Col>{" "}
+          </Col>
         </Row>
       }
       centered

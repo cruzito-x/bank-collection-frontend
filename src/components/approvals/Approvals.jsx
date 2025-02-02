@@ -267,7 +267,7 @@ const Approvals = () => {
                 pagination={{
                   pageSize: 10,
                   showTotal: (total) =>
-                    `Total: ${total} Aprobaciones / Denegaciones`,
+                    `Total: ${total} Transacción(es) Aprobada(s)`,
                   hideOnSinglePage: true,
                 }}
               />

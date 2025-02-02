@@ -18,6 +18,7 @@ import Approvals from "../approvals/Approvals";
 import Users from "../users/Users";
 import Audit from "../audit/Audit";
 import { useAuth } from "../../contexts/authContext/AuthContext";
+import Services from "../services/Services";
 
 const Sidebar = () => {
   const darkTheme = true;
@@ -49,6 +50,7 @@ const Sidebar = () => {
         "/dashboard",
         "/customers",
         "/collectors",
+        "/services",
         "/payments-collectors",
         "/transactions",
         "/transaction-types",
@@ -108,6 +110,7 @@ const Sidebar = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/collectors" element={<Collectors />} />
+            <Route path="/services" element={<Services />} />
             <Route
               path="/payments-collectors"
               element={<PaymentsCollectors />}

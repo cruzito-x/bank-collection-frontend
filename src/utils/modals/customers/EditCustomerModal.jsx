@@ -55,17 +55,15 @@ const EditCustomerModal = ({
     <Modal
       title={
         <Row align="middle">
-          {" "}
           <Col>
-            {" "}
             <EditOutlined
               className="fs-6"
               style={{ marginRight: 8, color: "var(--blue)" }}
-            />{" "}
-          </Col>{" "}
+            />
+          </Col>
           <Col>
             <label className="fs-6 text-black">Editar Datos de Cliente</label>
-          </Col>{" "}
+          </Col>
         </Row>
       }
       centered

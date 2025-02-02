@@ -1,4 +1,4 @@
-import { Button, Col, Modal, Row, Table, Tag } from "antd";
+import { Button, Col, Modal, Row, Table } from "antd";
 import { TransactionOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
@@ -112,17 +112,15 @@ const TransactionsModal = ({
     <Modal
       title={
         <Row align="middle">
-          {" "}
           <Col>
-            {" "}
             <TransactionOutlined
               className="fs-6"
               style={{ marginRight: 8, color: "var(--blue)" }}
-            />{" "}
-          </Col>{" "}
+            />
+          </Col>
           <Col>
             <label className="fs-6 text-black">Transacciones Realizadas</label>
-          </Col>{" "}
+          </Col>
         </Row>
       }
       centered

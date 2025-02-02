@@ -174,17 +174,15 @@ const PaymentsCollectorsModal = ({
     <Modal
       title={
         <Row align="middle">
-          {" "}
           <Col>
-            {" "}
             <DollarCircleOutlined
               className="fs-6"
               style={{ marginRight: 8, color: "var(--blue)" }}
-            />{" "}
-          </Col>{" "}
+            />
+          </Col>
           <Col>
             <label className="fs-6 text-black">Pagar a Colector</label>
-          </Col>{" "}
+          </Col>
         </Row>
       }
       centered

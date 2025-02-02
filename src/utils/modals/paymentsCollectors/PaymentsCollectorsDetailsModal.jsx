@@ -31,19 +31,17 @@ const PaymentsCollectorsDetailsModal = ({
     <Modal
       title={
         <Row align="middle">
-          {" "}
           <Col>
-            {" "}
             <InfoCircleOutlined
               className="fs-6"
               style={{ marginRight: 8, color: "var(--blue)" }}
-            />{" "}
-          </Col>{" "}
+            />
+          </Col>
           <Col>
             <label className="fs-6 text-black">
               Detalles de Pago a Colector
             </label>
-          </Col>{" "}
+          </Col>
         </Row>
       }
       centered

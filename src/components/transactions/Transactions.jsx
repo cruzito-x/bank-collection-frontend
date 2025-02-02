@@ -84,8 +84,8 @@ const Transactions = () => {
                   transaction.status === 1
                     ? "warning"
                     : transaction.status === 2
-                    ? "green"
-                    : "red"
+                    ? "success"
+                    : "error"
                 }`}
               >
                 {transaction.status === 1
@@ -279,7 +279,7 @@ const Transactions = () => {
                 })}
                 pagination={{
                   pageSize: 10,
-                  showTotal: (total) => `Total: ${total} transferencia(s)`,
+                  showTotal: (total) => `Total: ${total} transferencia(s) registrada(s)`,
                   hideOnSinglePage: true,
                 }}
               />
