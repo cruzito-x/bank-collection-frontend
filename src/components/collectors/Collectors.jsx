@@ -19,10 +19,14 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import AddNewCollectorModal from "../../utils/modals/dashboard/AddNewCollectorModal";
 import PaymentsDetailsModal from "../../utils/modals/collectors/PaymentsDetailsModal";
+import EditCollectorModal from "../../utils/modals/collectors/EditCollectorModal";
 
 const Collectors = () => {
   const [collectors, setCollectors] = useState([]);
-  const [isCollectorModalOpen, setIsCollectorModalOpen] = useState(false);
+  const [isCollectorPaymentsModalOpen, setIsCollectorPaymentsModalOpen] =
+    useState(false);
+  const [isCollectorEditModalOpen, setIsCollectorEditModalOpen] =
+    useState(false);
   const [isPaymentsDetailsModalOpen, setIsPaymentsDetailsModalOpen] =
     useState(false);
   const [selectedCollector, setSelectedCollector] = useState([]);
@@ -58,6 +62,7 @@ const Collectors = () => {
               style={{
                 backgroundColor: "var(--yellow)",
               }}
+              onClick={() => setIsCollectorEditModalOpen(true)}
             >
               Editar
             </Button>
@@ -202,7 +207,7 @@ const Collectors = () => {
             <div className="col-xxl-9 col-xl-7 col-sm-12 d-flex justify-content-end">
               <Button
                 type="primary"
-                onClick={() => setIsCollectorModalOpen(true)}
+                onClick={() => setIsCollectorPaymentsModalOpen(true)}
               >
                 <PlusCircleOutlined /> Nuevo Colector{" "}
               </Button>
@@ -227,9 +232,16 @@ const Collectors = () => {
           </div>
         </Card>
         <AddNewCollectorModal
-          isOpen={isCollectorModalOpen}
-          isClosed={() => setIsCollectorModalOpen(false)}
+          isOpen={isCollectorPaymentsModalOpen}
+          isClosed={() => setIsCollectorPaymentsModalOpen(false)}
         />
+
+        <EditCollectorModal
+          isOpen={isCollectorEditModalOpen}
+          isClosed={() => setIsCollectorEditModalOpen(false)}
+          selectedCollector={selectedCollector}
+        />
+
         <PaymentsDetailsModal
           isOpen={isPaymentsDetailsModalOpen}
           isClosed={() => setIsPaymentsDetailsModalOpen(false)}

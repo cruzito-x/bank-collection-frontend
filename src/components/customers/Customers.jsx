@@ -28,7 +28,7 @@ const Customers = () => {
   const { authState } = useAuth();
   const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
-  const [isCustomerModalOpen, setIsCustomerModalOpen] = useState(false);
+  const [isCustomerEditModalOpen, setIsCustomerEditModalOpen] = useState(false);
   const [isAccountsByCustomerModalOpen, setIsAccountsByCustomerModalOpen] =
     useState(false);
   const [balance, setBalance] = useState(0);
@@ -65,7 +65,7 @@ const Customers = () => {
               style={{
                 backgroundColor: "var(--yellow)",
               }}
-              onClick={() => setIsCustomerModalOpen(true)}
+              onClick={() => setIsCustomerEditModalOpen(true)}
             >
               Editar
             </Button>
@@ -152,7 +152,7 @@ const Customers = () => {
               style={{
                 backgroundColor: "var(--yellow)",
               }}
-              onClick={() => setIsCustomerModalOpen(true)}
+              onClick={() => setIsCustomerEditModalOpen(true)}
             >
               Editar
             </Button>
@@ -349,8 +349,8 @@ const Customers = () => {
           </div>
         </Card>
         <EditCustomerModal
-          isOpen={isCustomerModalOpen}
-          isClosed={() => setIsCustomerModalOpen(false)}
+          isOpen={isCustomerEditModalOpen}
+          isClosed={() => setIsCustomerEditModalOpen(false)}
           selectedCustomer={selectedCustomer}
           setAlertMessage={messageAlert}
         />
