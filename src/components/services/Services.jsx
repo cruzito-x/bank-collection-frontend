@@ -214,7 +214,7 @@ const Services = () => {
             <div className="col-xxl-3 col-xl-3 col-sm-12 w-auto">
               <Button type="primary"> Buscar </Button>
             </div>
-            <div className="col-xxl-7 col-xl-3 col-sm-12 d-flex justify-content-end">
+            <div className="col-xxl-7 col-xl-4 col-sm-12 ms-2 d-flex justify-content-end">
               <Button
                 type="primary"
                 onClick={() => setIsServicePaymentsModalOpen(true)}
