@@ -57,11 +57,8 @@ const TransactionTypes = () => {
           actions: (
             <>
               <Button
-                className="edit-btn"
+                className="ant-btn-edit"
                 type="primary"
-                style={{
-                  backgroundColor: "var(--yellow)",
-                }}
                 onClick={() => setIsEditTransactionTypeModalOpen(true)}
               >
                 Editar

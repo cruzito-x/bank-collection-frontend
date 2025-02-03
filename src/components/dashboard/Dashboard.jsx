@@ -1,4 +1,10 @@
 import { Button, Card, Layout, Select, Space, theme, message } from "antd";
+import {
+  BellOutlined,
+  DollarOutlined,
+  FileTextOutlined,
+  SolutionOutlined,
+} from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import "./styles/dashboard.css";
 import DashboardCharts from "./charts/DashboardCharts";
@@ -17,6 +23,10 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   const [isCollectorModalOpen, setIsCollectorModalOpen] = useState(false);
   const [openRegisterPayment, setOpenRegisterPayment] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(false);
+  const [
+    latestCollectorAndCollectorPayment,
+    setLatestCollectorAndCollectorPayment,
+  ] = useState([]);
   const [openNotificationsModal, setOpenNotificationsModal] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const { collectors, getCollectors } = useCollectorsData();
@@ -91,13 +101,18 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
     }`;
 
     getNotifications();
+  }, [notifications]);
+
+  useEffect(() => {
+    getLatestCollectorAndCollectorPayment();
     getCollectors();
     getTransactionTypes();
     getTotalPayments();
     getTotalProcessedAmounts();
-  }, [notifications]);
+  }, []);
 
   useEffect(() => {}, [
+    latestCollectorAndCollectorPayment,
     collectors,
     transactionTypes,
     totalPayments,
@@ -105,11 +120,33 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   ]);
 
   useEffect(() => {
+    if (latestCollectorAndCollectorPayment.length === 0) return;
     if (collectors.length === 0) return;
     if (totalPayments.length === 0) return;
     if (totalProcessedAmounts.length === 0) return;
     if (notifications.length === 0) return;
-  }, [collectors, totalPayments, totalProcessedAmounts, notifications]);
+  }, [
+    latestCollectorAndCollectorPayment,
+    collectors,
+    totalPayments,
+    totalProcessedAmounts,
+    notifications,
+  ]);
+
+  const getLatestCollectorAndCollectorPayment = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/dashboard/get-latest-collector-and-collectorPayemnt-data",
+        { method: "GET" }
+      );
+      const latestCollectorAndCollectorPaymentData = await response.json();
+      setLatestCollectorAndCollectorPayment(
+        latestCollectorAndCollectorPaymentData[0]
+      );
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
 
   const getNotifications = async () => {
     try {
@@ -256,61 +293,91 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           <div className="col-11">
             <div className="row">
               <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
-                <Card className="text-center">
-                  <h2 className="p-3 fw-semibold text-black">
-                    {" "}
-                    {collectors.length || 0}{" "}
-                  </h2>
-                  <div className="dashboard-blue-card">
-                    <label className="fw-semibold p-2">
-                      {" "}
-                      Colectores Registrados{" "}
+                <Card>
+                  <label className="fw-semibold text-start p-2">
+                    <SolutionOutlined
+                      className="me-1"
+                      style={{
+                        color: "var(--blue)",
+                      }}
+                    />
+                    Colectores Registrados
+                  </label>
+                  <h1 className="fw-semibold text-black text-center p-3">
+                    {collectors.length || 0}
+                  </h1>
+                  <div className="dashboard-blue-card text-center w-100 rounded">
+                    <label className="fw-semibold text-white p-3">
+                      Más Reciente:{" "}
+                      {latestCollectorAndCollectorPayment.most_recent_collector}
                     </label>
                   </div>
                 </Card>
               </div>
               <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
-                <Card className="text-center">
-                  <h2 className="p-3 fw-semibold text-black">
-                    {" "}
-                    {totalPayments.length || 0}{" "}
-                  </h2>
-                  <div className="dashboard-yellow-card">
-                    <label className="fw-semibold p-2">
-                      {" "}
-                      Total de Pagos Realizados{" "}
+                <Card>
+                  <label className="fw-semibold text-start p-2">
+                    <FileTextOutlined
+                      className="me-1"
+                      style={{
+                        color: "var(--yellow)",
+                      }}
+                    />
+                    Total de Pagos Realizados
+                  </label>
+                  <h1 className="fw-semibold text-black text-center p-3">
+                    {totalPayments.length || 0}
+                  </h1>
+                  <div className="dashboard-yellow-card text-center w-100 rounded">
+                    <label className="fw-semibold text-white p-3">
+                      Más Reciente:{" "}
+                      {latestCollectorAndCollectorPayment.collector}
                     </label>
                   </div>
                 </Card>
               </div>
               <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
-                <Card className="text-center">
-                  <h2 className="p-3 fw-semibold text-black">
-                    {" "}
-                    ${totalProcessedAmounts || 0}{" "}
-                  </h2>
-                  <div className="dashboard-green-card">
-                    <label className="fw-semibold p-2">
-                      {" "}
-                      Monto Total Procesado{" "}
+                <Card>
+                  <label className="fw-semibold text-start p-2">
+                    <DollarOutlined
+                      className="me-1"
+                      style={{
+                        color: "var(--green)",
+                      }}
+                    />
+                    Monto Total de Pagos Procesado
+                  </label>
+                  <h1 className="fw-semibold text-black text-center p-3">
+                    ${totalProcessedAmounts || 0}
+                  </h1>
+                  <div className="dashboard-green-card text-center w-100 rounded">
+                    <label className="fw-semibold text-white p-3">
+                      Más Reciente: UTEC - $
+                      {latestCollectorAndCollectorPayment.amount}
                     </label>
                   </div>
                 </Card>
               </div>
               <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
                 <Card
-                  className="text-center"
                   onClick={() => setOpenNotificationsModal(true)}
                   style={{ cursor: "pointer" }}
                 >
-                  <h2 className="p-3 fw-semibold text-black">
-                    {" "}
-                    {notifications.length || 0}{" "}
-                  </h2>
-                  <div className="dashboard-red-card">
-                    <label className="fw-semibold p-2">
-                      {" "}
-                      Notificaciones Pendientes{" "}
+                  <label className="fw-semibold text-start p-2">
+                    <BellOutlined
+                      className="me-1"
+                      style={{
+                        color: "var(--red)",
+                      }}
+                    />
+                    Notificaciones Pendientes
+                  </label>
+                  <h1 className="fw-semibold text-black text-center p-3">
+                    {notifications.length || 0}
+                  </h1>
+                  <div className="dashboard-red-card text-center w-100 rounded">
+                    <label className="fw-semibold text-white p-3">
+                      Última Transacción OK: {latestCollectorAndCollectorPayment.latest_approved_transaction}
                     </label>
                   </div>
                 </Card>
@@ -322,35 +389,28 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           </div>
         </div>
 
-        <Card className="mt-4 pt-4 mb-5">
+        <Card className="mt-3 mb-5">
           <div className="row">
             <div className="col-md-6 col-sm-6 text-start">
-              <h2 className="fw-semibold text-black ms-3 text-black">
-                {" "}
-                Transacciones Recientes{" "}
-              </h2>
+              <h4 className="text-black ms-3 text-black">
+                Transacciones Recientes
+              </h4>
             </div>
             <div className="col-md-6 col-sm-6 text-end pe-5">
               <Button
                 type="primary"
-                className="fw-semibold"
                 onClick={() => setIsCollectorModalOpen(true)}
               >
-                {" "}
-                Añadir Colector{" "}
+                Añadir Colector
               </Button>
               <Button
                 type="primary"
-                className="fw-semibold ms-2 me-2"
+                className="ms-2 me-2"
                 onClick={() => setOpenRegisterPayment(true)}
               >
-                {" "}
-                Pagar Servicio{" "}
+                Pagar Servicio
               </Button>
-              <Button type="primary" className="fw-semibold">
-                {" "}
-                Ver Reportes{" "}
-              </Button>
+              <Button type="primary">Ver Reportes</Button>
             </div>
           </div>
           <div className="row ms-2 mb-4">

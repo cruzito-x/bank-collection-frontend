@@ -1,45 +1,21 @@
-.ant-card .ant-card-body {
-  padding: 0;
-}
-
 .dashboard-blue-card {
-  width: 100%;
-  background-color: var(--blue);
-  border-radius: 80px 0 10px 10px;
-  padding: 10px;
-  color: #ffffff;
+  background-color: var(--blue-transparent);
 }
 
 .dashboard-yellow-card {
-  width: 100%;
-  background-color: var(--yellow);
-  border-radius: 80px 0 10px 10px;
-  padding: 10px;
-  color: #ffffff;
+  background-color: var(--yellow-transparent);
 }
 
 .dashboard-green-card {
-  width: 100%;
-  background-color: var(--green);
-  border-radius: 80px 0 10px 10px;
-  padding: 10px;
-  color: #ffffff;
+  background-color: var(--green-transparent);
 }
 
 .dashboard-red-card {
-  width: 100%;
-  background-color: var(--red);
-  border-radius: 80px 0 10px 10px;
-  padding: 10px;
-  color: #ffffff;
+  background-color: var(--red-transparent);
 }
 
 .dashboard-user-card {
-  width: 100%;
-  background-color: var(--gray);
-  border-radius: 80px 0 10px 10px;
-  padding: 3px;
-  color: #ffffff;
+  background-color: var(--gray-transparent);
   cursor: pointer;
 }
 
@@ -53,9 +29,8 @@
 }
 
 .user-card {
-  width: 120px;
-  height: 90px;
-  margin-left: 210px !important;
+  width: 130px;
+  height: 115px;
 }
 
 .slick-arrow.slick-prev {

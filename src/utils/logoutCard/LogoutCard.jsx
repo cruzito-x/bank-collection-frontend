@@ -18,12 +18,12 @@ const LogoutCard = () => {
     <Dropdown overlay={menu} trigger={["click"]}>
       <Card
         hoverable
-        className="text-center user-card ms-5"
+        className="text-center user-card"
         style={{ cursor: "pointer" }}
       >
-        <UserOutlined className="fs-1 ps-3 pe-3 pt-3 pb-2" />
-        <div className="dashboard-user-card">
-          <label className="fw-semibold text-white">Perfil</label>
+        <UserOutlined className="fs-1" />
+        <div className="dashboard-user-card mt-1 text-center rounded">
+          <label className="fw-semibold text-white p-2">Perfil</label>
         </div>
       </Card>
     </Dropdown>

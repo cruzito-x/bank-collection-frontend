@@ -2,11 +2,17 @@
 
 :root {
   --blue: #007bff;
+  --blue-transparent: #007bffbf;
   --green: #16bb69;
+  --green-transparent: #16bb69bf;
   --yellow: #ffb41f;
+  --yellow-transparent: #ffb41fbf;
+  --yellow-hovered: #ffc247;
   --red: #ff3131;
+  --red-transparent: #ff3131bf;
+  --red-hovered: #ff4747;
   --gray: #1a2d3f;
-  --yellow-hovered: #ffd786;
+  --gray-transparent: #1a2d3fbf;
 }
 
 ::-webkit-scrollbar {
@@ -21,6 +27,22 @@ body {
   background-color: #eef1f7 !important;
 }
 
-.edit-btn:hover {
+.ant-btn-edit {
+  background-color: var(--yellow) !important;
+}
+
+.ant-btn-edit:hover {
   background-color: var(--yellow-hovered) !important;
+}
+
+.ant-btn-primary {
+  background-color: var(--blue);
+}
+
+.ant-btn-dangerous {
+  background-color: var(--red) !important;
+}
+
+.ant-btn-dangerous:hover {
+  background-color: var(--red-hovered) !important;
 }

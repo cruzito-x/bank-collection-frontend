@@ -60,11 +60,8 @@ const Customers = () => {
         actions: (
           <>
             <Button
-              className="edit-btn"
+              className="ant-btn-edit"
               type="primary"
-              style={{
-                backgroundColor: "var(--yellow)",
-              }}
               onClick={() => setIsCustomerEditModalOpen(true)}
             >
               Editar
@@ -147,11 +144,8 @@ const Customers = () => {
         actions: (
           <>
             <Button
-              className="edit-btn"
+              className="ant-btn-edit"
               type="primary"
-              style={{
-                backgroundColor: "var(--yellow)",
-              }}
               onClick={() => setIsCustomerEditModalOpen(true)}
             >
               Editar

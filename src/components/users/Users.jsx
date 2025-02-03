@@ -71,11 +71,8 @@ const Users = () => {
         actions: (
           <>
             <Button
-              className="edit-btn"
+              className="ant-btn-edit"
               type="primary"
-              style={{
-                backgroundColor: "var(--yellow)",
-              }}
               onClick={() => setShowEditUserModalOpen(true)}
             >
               Editar
