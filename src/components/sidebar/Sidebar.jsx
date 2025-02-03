@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import NotFound from "../../utils/notFound/NotFound";
-import { Content } from "antd/es/layout/layout";
+import { Content, Footer } from "antd/es/layout/layout";
 import Dashboard from "../dashboard/Dashboard";
 import { Layout } from "antd";
 import Sider from "antd/es/layout/Sider";
@@ -121,6 +121,16 @@ const Sidebar = () => {
             <Route path="/users" element={<Users />} />
             <Route path="/audit" element={<Audit />} />
           </Routes>
+          <Footer
+            className="text-center text-black"
+            style={{
+              background: "transparent",
+              marginTop: "-50px",
+              width: "100%",
+            }}
+          >
+            Banco Bambú &reg; - {new Date().getFullYear()} Creciendo Juntos.
+          </Footer>
         </Content>
       </Layout>
     </Layout>

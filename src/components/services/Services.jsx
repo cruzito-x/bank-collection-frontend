@@ -176,6 +176,14 @@ const Services = () => {
             {
               title: (
                 <>
+                  <SolutionOutlined />
+                  <span>Colectores</span>
+                </>
+              ),
+            },
+            {
+              title: (
+                <>
                   <BulbOutlined />
                   <span>Servicios</span>
                 </>

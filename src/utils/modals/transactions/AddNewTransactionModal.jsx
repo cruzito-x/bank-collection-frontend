@@ -250,7 +250,7 @@ const AddNewTransactionModal = ({
           />
         </Form.Item>
 
-        <label className="fw-semibold text-black"> Concepto </label>
+        <label className="fw-semibold text-black"> Concepto <span className="text-primary" style={{ fontSize: "11px" }}> (Opcional) </span> </label>
         <Form.Item
           name="concept"
           rules={[

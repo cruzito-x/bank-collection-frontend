@@ -14,11 +14,27 @@ const NotFound = () => {
       className="mt-5 pt-5"
       status="404"
       title="404"
-      subTitle="Lo sentimos, la página que buscas no existe"
+      subTitle={
+        <>
+          <label className="fw-regular text-black">
+            Lo Sentimos, la Página que Buscas no Existe
+          </label>
+        </>
+      }
       extra={
-        <Button type="primary" onClick={goToHome}>
-          Volver
-        </Button>
+        <>
+          <Button type="primary" onClick={goToHome}>
+            Volver Al Dashboard
+          </Button>
+          <br />
+          <label
+            className="fw-regular text-black mt-4"
+            style={{ fontSize: "12px" }}
+          >
+            Banco Bambú &reg; <br /> {new Date().getFullYear()} All Rights
+            Reserved.
+          </label>
+        </>
       }
     />
   );

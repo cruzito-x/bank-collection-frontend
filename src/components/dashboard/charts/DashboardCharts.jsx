@@ -309,7 +309,7 @@ const DashboardCharts = ({
     <div className="row">
       <div className="col-xl-8 col-lg-8 col-md-8 col-sm-12">
         <Card
-          className={`shadow mb-2 ${
+          className={`mb-2 ${
             transactionsByDate.length === 0
               ? "d-flex justify-content-center align-items-center h-100"
               : ""
@@ -327,7 +327,7 @@ const DashboardCharts = ({
       </div>
       <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12">
         <Card
-          className={`shadow mb-1 ${
+          className={`mb-1 ${
             transactionsByCollector.length === 0
               ? "d-flex justify-content-center align-items-center h-100"
               : ""
@@ -340,9 +340,7 @@ const DashboardCharts = ({
           )}
         </Card>
         <Card
-          className={`shadow ${
-            transactionsByDenomination.length === 0 ? "" : ""
-          }`}
+          className={`${transactionsByDenomination.length === 0 ? "" : ""}`}
         >
           {transactionsByDenomination.length === 0 ? (
             <Empty />

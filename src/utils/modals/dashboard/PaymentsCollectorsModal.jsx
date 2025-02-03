@@ -307,7 +307,7 @@ const PaymentsCollectorsModal = ({
           rules={[
             {
               required: true,
-              message: "Por Favor, Introduzca una Cantidad Mínima de $5",
+              message: "Por Favor, Introduzca una Cantidad Mínima de $5.00",
             },
           ]}
         >

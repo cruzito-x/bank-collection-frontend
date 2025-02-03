@@ -196,6 +196,14 @@ const Transactions = () => {
                 </>
               ),
             },
+            {
+              title: (
+                <>
+                  <TransactionOutlined />
+                  <span>Transacciones</span>
+                </>
+              ),
+            },
           ]}
         />
 

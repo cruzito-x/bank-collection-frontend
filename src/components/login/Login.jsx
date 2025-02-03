@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, Form, message, Image, Input } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
-import "./styles/login.css";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const Login = () => {
@@ -50,17 +49,13 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{ height: "100vh" }}
+    >
       {messageContext}
       <Card>
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            marginBottom: "15px",
-          }}
-        >
+        <div className="w-100 d-flex justify-content-center mb-3">
           <Image
             src={`${process.env.PUBLIC_URL}/logo.png`}
             preview={false}
@@ -68,16 +63,16 @@ const Login = () => {
               width: "75px",
               height: "75px",
               borderRadius: "50%",
-              marginTop: 20,
+              marginTop: 25
             }}
             alt="Logo del Sistema"
           />
         </div>
         <Form
-          layout={"vertical"}
+          layout="vertical"
           initialValues={{ remember: true }}
           onFinish={loginUser}
-          style={{ width: 300, padding: 20 }}
+          style={{ width: 350, padding: 20 }}
         >
           <label className="text-black"> Usuario </label>
           <Form.Item

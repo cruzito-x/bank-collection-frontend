@@ -13,6 +13,7 @@ import {
   AuditOutlined,
   BankOutlined,
   PlusCircleOutlined,
+  TransactionOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
@@ -157,6 +158,14 @@ const TransactionTypes = () => {
                 <>
                   <UserOutlined />
                   <span> {authState.username} </span>
+                </>
+              ),
+            },
+            {
+              title: (
+                <>
+                  <TransactionOutlined />
+                  <span>Transacciones</span>
                 </>
               ),
             },

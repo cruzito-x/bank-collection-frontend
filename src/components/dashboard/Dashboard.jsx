@@ -256,7 +256,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           <div className="col-11">
             <div className="row">
               <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
-                <Card className="text-center shadow">
+                <Card className="text-center">
                   <h2 className="p-3 fw-semibold text-black">
                     {" "}
                     {collectors.length || 0}{" "}
@@ -270,7 +270,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 </Card>
               </div>
               <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
-                <Card className="text-center shadow">
+                <Card className="text-center">
                   <h2 className="p-3 fw-semibold text-black">
                     {" "}
                     {totalPayments.length || 0}{" "}
@@ -284,7 +284,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 </Card>
               </div>
               <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
-                <Card className="text-center shadow">
+                <Card className="text-center">
                   <h2 className="p-3 fw-semibold text-black">
                     {" "}
                     ${totalProcessedAmounts || 0}{" "}
@@ -299,7 +299,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               </div>
               <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
                 <Card
-                  className="text-center shadow"
+                  className="text-center"
                   onClick={() => setOpenNotificationsModal(true)}
                   style={{ cursor: "pointer" }}
                 >
@@ -322,7 +322,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           </div>
         </div>
 
-        <Card className="mt-4 pt-4 shadow">
+        <Card className="mt-4 pt-4 mb-5">
           <div className="row">
             <div className="col-md-6 col-sm-6 text-start">
               <h2 className="fw-semibold text-black ms-3 text-black">

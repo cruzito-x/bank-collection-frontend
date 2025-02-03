@@ -119,7 +119,7 @@ const AddNewCollectorModal = ({ isOpen, isClosed }) => {
           rules={[
             {
               required: true,
-              message: "Por favor, Introduzca un Precio de Servicio",
+              message: "Por Favor, Introduzca una Cantidad Mínima de $5.00",
             },
           ]}
         >
@@ -128,7 +128,7 @@ const AddNewCollectorModal = ({ isOpen, isClosed }) => {
             prefix="$"
             min={5}
             max={10000}
-            placeholder="Precio de Servicio"
+            placeholder="0.00"
           />
         </Form.Item>
         <label className="fw-semibold text-black">

@@ -41,25 +41,25 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
     },
     isSupervisor
       ? {
-        key: "/collectors-menu",
-        icon: <SolutionOutlined className="text-white" />,
-        label: "Colectores",
-        className: "text-white",
-        children: [
-          {
-            key: "/collectors",
-            icon: <SolutionOutlined className="text-white" />,
-            label: "Colectores",
-            className: "text-white",
-          },
-          {
-            key: "/services",
-            icon: <BulbOutlined className="text-white" />,
-            label: "Servicios",
-            className: "text-white",
-          }
-        ]
-      }
+          key: "/collectors-menu",
+          icon: <SolutionOutlined className="text-white" />,
+          label: "Colectores",
+          className: "text-white",
+          children: [
+            {
+              key: "/collectors",
+              icon: <SolutionOutlined className="text-white" />,
+              label: "Colectores",
+              className: "text-white",
+            },
+            {
+              key: "/services",
+              icon: <BulbOutlined className="text-white" />,
+              label: "Servicios",
+              className: "text-white",
+            },
+          ],
+        }
       : null,
     {
       key: "/payments-collectors",
@@ -156,12 +156,13 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
 
       {!collapsed && (
         <Footer
-          className="text-center text-white p-4"
+          className="text-center text-white p-3"
           style={{
-            background: "transparent",
+            background: "var(--gray)",
             position: "absolute",
             bottom: 0,
             width: "100%",
+            fontSize: ".84rem",
           }}
         >
           &copy; cruzito-x - {new Date().getFullYear()} <br /> All Rights

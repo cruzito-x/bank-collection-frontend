@@ -181,6 +181,14 @@ const Collectors = () => {
                 </>
               ),
             },
+            {
+              title: (
+                <>
+                  <SolutionOutlined />
+                  <span>Colectores</span>
+                </>
+              ),
+            },
           ]}
         />
 

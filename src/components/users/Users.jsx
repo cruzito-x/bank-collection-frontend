@@ -10,7 +10,7 @@ import {
   Table,
   theme,
 } from "antd";
-import { BankOutlined, KeyOutlined, UserOutlined } from "@ant-design/icons";
+import { BankOutlined, CrownOutlined, UserOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import EditUserModal from "../../utils/modals/users/EditUserModal";
@@ -170,7 +170,6 @@ const Users = () => {
         style={{
           padding: "24px 0 24px 0",
           minHeight: "90vh",
-
           borderRadius: borderRadiusLG,
         }}
       >
@@ -224,7 +223,7 @@ const Users = () => {
               <label className="me-2 fw-semibold text-black"> Rol </label>
               <Select
                 defaultValue="Supervisor"
-                prefix={<KeyOutlined />}
+                prefix={<CrownOutlined />}
                 style={{
                   width: 183,
                 }}

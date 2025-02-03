@@ -229,7 +229,7 @@ const Customers = () => {
       <div
         style={{
           padding: "24px 0 24px 0",
-          height: "90vh",
+          minHeight: "90vh",
           borderRadius: borderRadiusLG,
         }}
       >
