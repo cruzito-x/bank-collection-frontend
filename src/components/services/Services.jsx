@@ -26,8 +26,7 @@ const Services = () => {
   const [services, setServices] = useState([]);
   const [isServicePaymentsModalOpen, setIsServicePaymentsModalOpen] =
     useState(false);
-  const [isServiceEditModalOpen, setIsServiceEditModalOpen] =
-    useState(false);
+  const [isServiceEditModalOpen, setIsServiceEditModalOpen] = useState(false);
   const [isPaymentsDetailsModalOpen, setIsPaymentsDetailsModalOpen] =
     useState(false);
   const [selectedService, setSelectedService] = useState([]);
@@ -235,7 +234,9 @@ const Services = () => {
                 })}
                 pagination={{
                   pageSize: 10,
-                  showTotal: (total) => `Total: ${total} servicio(s) registrado(s)`,
+                  showSizeChanger: false,
+                  showTotal: (total) =>
+                    `Total: ${total} servicio(s) registrado(s)`,
                   hideOnSinglePage: true,
                 }}
               />

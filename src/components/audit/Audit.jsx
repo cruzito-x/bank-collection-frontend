@@ -46,7 +46,7 @@ const Audit = () => {
       const audit = auditsData.map((audit) => {
         return {
           ...audit,
-          datetime: moment(audit.datetime).format("DD/MM/YYYY - HH:mm A"),
+          datetime: moment(audit.datetime).format("DD/MM/YYYY - hh:mm A"),
         };
       });
 
@@ -158,6 +158,7 @@ const Audit = () => {
                 columns={auditTableColumns}
                 pagination={{
                   pageSize: 10,
+                  showSizeChanger: false,
                   showTotal: (total) => `Total: ${total} registro(s)`,
                   hideOnSinglePage: true,
                 }}

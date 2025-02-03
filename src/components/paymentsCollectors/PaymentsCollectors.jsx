@@ -205,6 +205,7 @@ const PaymentsCollectors = () => {
                 })}
                 pagination={{
                   pageSize: 10,
+                  showSizeChanger: false,
                   showTotal: (total) => `Total: ${total} pago(s) registrado(s)`,
                   hideOnSinglePage: true,
                 }}

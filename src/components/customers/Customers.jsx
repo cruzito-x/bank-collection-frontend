@@ -341,7 +341,9 @@ const Customers = () => {
                 })}
                 pagination={{
                   pageSize: 10,
-                  showTotal: (total) => `Total: ${total} cliente(s) registrado(s)`,
+                  showSizeChanger: false,
+                  showTotal: (total) =>
+                    `Total: ${total} cliente(s) registrado(s)`,
                   hideOnSinglePage: true,
                 }}
               />

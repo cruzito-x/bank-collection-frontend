@@ -224,7 +224,9 @@ const Collectors = () => {
                 })}
                 pagination={{
                   pageSize: 10,
-                  showTotal: (total) => `Total: ${total} colector(es) regisrado(s)`,
+                  showSizeChanger: false,
+                  showTotal: (total) =>
+                    `Total: ${total} colector(es) regisrado(s)`,
                   hideOnSinglePage: true,
                 }}
               />

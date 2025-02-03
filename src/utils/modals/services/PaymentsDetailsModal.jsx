@@ -115,6 +115,7 @@ const PaymentsDetailsModal = ({ isOpen, isClosed, selectedService }) => {
             loading={loading}
             pagination={{
               pageSize: 10,
+              showSizeChanger: false,
               showTotal: (total) => `Total: ${total} Pago(s) Registrado(s)`,
               hideOnSinglePage: true,
             }}

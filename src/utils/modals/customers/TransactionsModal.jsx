@@ -146,6 +146,7 @@ const TransactionsModal = ({
             loading={loading}
             pagination={{
               pageSize: 10,
+              showSizeChanger: false,
               showTotal: (total) => `Total: ${total} transacción(es)`,
               hideOnSinglePage: true,
             }}

@@ -120,6 +120,7 @@ const AccountsByCustomerModal = ({
             })}
             pagination={{
               pageSize: 10,
+              showSizeChanger: false,
               showTotal: (total) => `Total: ${total} cuenta(s)`,
               hideOnSinglePage: true,
             }}

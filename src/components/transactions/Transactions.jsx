@@ -279,7 +279,9 @@ const Transactions = () => {
                 })}
                 pagination={{
                   pageSize: 10,
-                  showTotal: (total) => `Total: ${total} transferencia(s) registrada(s)`,
+                  showSizeChanger: false,
+                  showTotal: (total) =>
+                    `Total: ${total} transferencia(s) registrada(s)`,
                   hideOnSinglePage: true,
                 }}
               />

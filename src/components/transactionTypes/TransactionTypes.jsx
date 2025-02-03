@@ -211,6 +211,7 @@ const TransactionTypes = () => {
                 })}
                 pagination={{
                   pageSize: 10,
+                  showSizeChanger: false,
                   showTotal: (total) =>
                     `Total: ${total} tipo(s) de transacción(es)`,
                   hideOnSinglePage: true,

@@ -266,6 +266,7 @@ const Approvals = () => {
                 })}
                 pagination={{
                   pageSize: 10,
+                  showSizeChanger: false,
                   showTotal: (total) =>
                     `Total: ${total} Transacción(es) Aprobada(s)`,
                   hideOnSinglePage: true,
