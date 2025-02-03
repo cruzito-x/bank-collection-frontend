@@ -29,6 +29,9 @@ const TransactionsModal = ({
       const transactionsData = await response.json();
       const transactions = transactionsData.map((transaction) => ({
         ...transaction,
+        sender_account: !transaction.sender_account
+          ? transaction.receiver_account
+          : transaction.sender_account,
         amount: "$" + transaction.amount,
         datetime: moment(transaction.datetime).format("DD/MM/YYYY - hh:mm A"),
       }));
@@ -46,6 +49,12 @@ const TransactionsModal = ({
   }, [isOpen, selectedCustomerId, selectedCustomerAccountNumber]);
 
   const transactionsColumns = [
+    {
+      title: "Código de Transacción",
+      dataIndex: "transaction_id",
+      key: "transaction_id",
+      align: "center",
+    },
     {
       title: "Enviado Por",
       dataIndex: "customer",
@@ -97,7 +106,7 @@ const TransactionsModal = ({
   ];
 
   const transactionsHeader = [
-    { label: "#", key: "id" },
+    { label: "Código de Transacción", key: "transaction_id" },
     { label: "Enviado Por", key: "customer" },
     { label: "Recibido Por", key: "receiver" },
     { label: "Tipo de Transacción", key: "transaction_type" },
@@ -125,7 +134,7 @@ const TransactionsModal = ({
       }
       centered
       open={isOpen}
-      width={1350}
+      width={1800}
       onCancel={isClosed}
       footer={null}
     >

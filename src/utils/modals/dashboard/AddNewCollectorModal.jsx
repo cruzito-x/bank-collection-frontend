@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, message, Modal, Row } from "antd";
+import { Button, Col, Form, Input, InputNumber, message, Modal, Row } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
@@ -112,6 +112,24 @@ const AddNewCollectorModal = ({ isOpen, isClosed }) => {
           ]}
         >
           <Input placeholder="Nombre de Servicio" />
+        </Form.Item>
+        <label className="fw-semibold text-black">Precio de Servicio</label>
+        <Form.Item
+          name="price"
+          rules={[
+            {
+              required: true,
+              message: "Por favor, Introduzca un Precio de Servicio",
+            },
+          ]}
+        >
+          <InputNumber
+            className="w-100"
+            prefix="$"
+            min={5}
+            max={10000}
+            placeholder="Precio de Servicio"
+          />
         </Form.Item>
         <label className="fw-semibold text-black">
           {" "}

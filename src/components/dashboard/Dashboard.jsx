@@ -89,12 +89,20 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
         ? `${notifications.length} Notificaciones`
         : "Dashboard"
     }`;
+
     getNotifications();
     getCollectors();
     getTransactionTypes();
     getTotalPayments();
     getTotalProcessedAmounts();
   }, [notifications]);
+
+  useEffect(() => {}, [
+    collectors,
+    transactionTypes,
+    totalPayments,
+    notifications,
+  ]);
 
   useEffect(() => {
     if (collectors.length === 0) return;
