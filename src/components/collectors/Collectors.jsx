@@ -291,7 +291,7 @@ const Collectors = () => {
                 </Form.Item>
               </Form>
             </div>
-            <div className="col-xxl-9 col-xl-9 col-sm-12 d-flex justify-content-end">
+            <div className="col-xxl-9 col-xl-9 col-sm-12 text-end">
               <Button
                 type="primary"
                 onClick={() => setIsCollectorPaymentsModalOpen(true)}

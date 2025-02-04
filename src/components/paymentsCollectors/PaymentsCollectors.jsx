@@ -145,7 +145,7 @@ const PaymentsCollectors = () => {
         messageAlert.error(paymentscollectorsData.message);
       }
     } catch (error) {
-      messageAlert.error("Error fetching collectors payments");
+      messageAlert.error("Error al Obtener los Pagos de Colectores");
     } finally {
       setLoading(false);
     }

@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   DatePicker,
+  Form,
   Input,
   Layout,
   message,
@@ -23,10 +24,12 @@ import { useAuth } from "../../contexts/authContext/AuthContext";
 import moment from "moment";
 import TransactionDetailsModal from "../../utils/modals/transactions/TransactionDetailsModal";
 import AddNewTransactionModal from "../../utils/modals/transactions/AddNewTransactionModal";
+import { useForm } from "antd/es/form/Form";
 
 const Transactions = () => {
   const { authState } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [date, setDate] = useState(null);
   const [transactionsTypes, setTransactionTypes] = useState([]);
   const [transactions, setTransactions] = useState([]);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
@@ -36,6 +39,7 @@ const Transactions = () => {
     useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
+  const [form] = useForm();
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
@@ -73,52 +77,136 @@ const Transactions = () => {
       });
 
       const transactionsData = await response.json();
-      const transactions = transactionsData.map((transaction) => {
-        return {
-          ...transaction,
-          amount: "$" + transaction.amount,
-          status: (
-            <>
-              <Tag
-                color={`${
-                  transaction.status === 1
-                    ? "warning"
-                    : transaction.status === 2
-                    ? "success"
-                    : "error"
-                }`}
-              >
-                {transaction.status === 1
-                  ? "En Proceso"
-                  : transaction.status === 2
-                  ? "Aprobado"
-                  : "Denegado"}
-              </Tag>
-            </>
-          ),
-          datetime: moment(transaction.datetime).format("DD/MM/YYYY - hh:mm A"),
-          actions: (
-            <>
-              <Button
-                type="primary"
-                onClick={() => setIsTransactionDetailsModalOpen(true)}
-                disabled={
-                  transaction.status === 1 || transaction.status === 3
-                    ? true
-                    : false
-                }
-              >
-                {" "}
-                Ver Detalles{" "}
-              </Button>
-            </>
-          ),
-        };
-      });
 
+      if (response.status === 200) {
+        const transactions = transactionsData.map((transaction) => {
+          return {
+            ...transaction,
+            amount: "$" + transaction.amount,
+            status: (
+              <>
+                <Tag
+                  color={`${
+                    transaction.status === 1
+                      ? "warning"
+                      : transaction.status === 2
+                      ? "success"
+                      : "error"
+                  }`}
+                >
+                  {transaction.status === 1
+                    ? "En Proceso"
+                    : transaction.status === 2
+                    ? "Aprobado"
+                    : "Denegado"}
+                </Tag>
+              </>
+            ),
+            datetime: moment(transaction.datetime).format(
+              "DD/MM/YYYY - hh:mm A"
+            ),
+            actions: (
+              <>
+                <Button
+                  type="primary"
+                  onClick={() => setIsTransactionDetailsModalOpen(true)}
+                  disabled={
+                    transaction.status === 1 || transaction.status === 3
+                      ? true
+                      : false
+                  }
+                >
+                  {" "}
+                  Ver Detalles{" "}
+                </Button>
+              </>
+            ),
+          };
+        });
+
+        setTransactions(transactions);
+      } else {
+        messageAlert.error(transactionsData.message);
+      }
+    } catch (error) {
+      messageAlert.error("Error al Obtnener las Transacciones");
+    } finally {
       setLoading(false);
-      setTransactions(transactions);
-    } catch (error) {}
+    }
+  };
+
+  const searchTransactions = async (transaction) => {
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/transactions/search-transactions?transaction_id=${
+          transaction.transaction_id ?? ""
+        }&realized_by=${transaction.realized_by ?? ""}&transaction_type=${
+          transaction.transaction_type ?? ""
+        }&date=${transaction.date ?? ""}`,
+        {
+          method: "GET",
+        }
+      );
+
+      const transactionsData = await response.json();
+
+      if (response.status === 200) {
+        const transactions = transactionsData.map((transaction) => {
+          return {
+            ...transaction,
+            amount: "$" + transaction.amount,
+            status: (
+              <>
+                <Tag
+                  color={`${
+                    transaction.status === 1
+                      ? "warning"
+                      : transaction.status === 2
+                      ? "success"
+                      : "error"
+                  }`}
+                >
+                  {transaction.status === 1
+                    ? "En Proceso"
+                    : transaction.status === 2
+                    ? "Aprobado"
+                    : "Denegado"}
+                </Tag>
+              </>
+            ),
+            datetime: moment(transaction.datetime).format(
+              "DD/MM/YYYY - hh:mm A"
+            ),
+            actions: (
+              <>
+                <Button
+                  type="primary"
+                  onClick={() => setIsTransactionDetailsModalOpen(true)}
+                  disabled={
+                    transaction.status === 1 || transaction.status === 3
+                      ? true
+                      : false
+                  }
+                >
+                  {" "}
+                  Ver Detalles{" "}
+                </Button>
+              </>
+            ),
+          };
+        });
+
+        setTransactions(transactions);
+      } else {
+        messageAlert.error(transactionsData.message);
+      }
+    } catch (error) {
+      messageAlert.error("Error al Buscar las Transacciones");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const transactionsTableColumns = [
@@ -214,67 +302,93 @@ const Transactions = () => {
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
-            <div className="col-xxl-2 col-xl-2 col-sm-12 w-auto">
+            <Form
+              layout="inline"
+              className="align-items-center"
+              form={form}
+              onFinish={searchTransactions}
+            >
               <label className="me-2 fw-semibold text-black">
                 {" "}
                 Código de Transacción{" "}
               </label>
-              <Input
-                placeholder="0000"
-                prefix={<NumberOutlined />}
-                style={{
-                  width: 183,
-                }}
-              />
-            </div>
-            <div className="col-xxl-2 col-xl-2 col-sm-12 w-auto">
+              <Form.Item
+                className="col-xxl-2 col-xl-2 col-sm-12 w-auto"
+                name="transaction_id"
+                initialValue=""
+              >
+                <Input
+                  placeholder="TSC000000"
+                  prefix={<NumberOutlined />}
+                  style={{
+                    width: 183,
+                  }}
+                />
+              </Form.Item>
               <label className="me-2 fw-semibold text-black">
                 {" "}
-                Nombre de Autorizador{" "}
+                Realizado Por{" "}
               </label>
-              <Input
-                placeholder="Nombre de Autorizador"
-                prefix={<UserOutlined />}
-                style={{
-                  width: 183,
-                }}
-              />
-            </div>
-            <div className="col-xxl-2 col-xl-2 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold text-black"> Tipo </label>
-              <Select
-                defaultValue={1}
-                prefix={<TransactionOutlined />}
-                style={{
-                  width: 183,
-                }}
-                options={transactionsTypes}
-              />
-            </div>
-            <div className="col-xxl-2 col-xl-2 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold text-black"> Fecha </label>
-              <DatePicker
-                // value={date}
-                // onChange={(date) => setDate(date)}
-                format="DD/MM/YYYY"
-                placeholder="00/00/0000"
-                style={{
-                  width: 183,
-                }}
-              />
-            </div>
-
-            <div className="col-xxl-2 col-xl-2 col-sm-12 w-auto">
-              <Button type="primary"> Buscar </Button>
-            </div>
-            <div className="col-xxl-2 col-xl-2 col-sm-12 text-end">
-              <Button
-                type="primary"
-                onClick={() => setIsNewTransactionModalOpen(true)}
+              <Form.Item
+                className="col-xxl-2 col-xl-2 col-sm-12 w-auto"
+                name="realized_by"
+                initialValue=""
               >
-                <PlusCircleOutlined /> Nueva Transacción{" "}
-              </Button>
-            </div>
+                <Input
+                  placeholder="Nombre de Usuario"
+                  prefix={<UserOutlined />}
+                  style={{
+                    width: 183,
+                  }}
+                />
+              </Form.Item>
+              <label className="me-2 fw-semibold text-black"> Tipo </label>
+              <Form.Item
+                className="col-xxl-2 col-xl-2 col-sm-12 w-auto"
+                name="transaction_type"
+                initialValue={1}
+              >
+                <Select
+                  defaultValue={1}
+                  prefix={<TransactionOutlined />}
+                  style={{
+                    width: 183,
+                  }}
+                  options={transactionsTypes}
+                />
+              </Form.Item>
+              <label className="me-2 fw-semibold text-black"> Fecha </label>
+              <Form.Item
+                className="col-xxl-2 col-xl-2 col-sm-12 w-auto"
+                name="date"
+                initialValue=""
+              >
+                <DatePicker
+                  value={date}
+                  onChange={(date) => setDate(date)}
+                  format="DD/MM/YYYY"
+                  placeholder="00/00/0000"
+                  style={{
+                    width: 183,
+                  }}
+                />
+              </Form.Item>
+
+              <Form.Item className="col-xxl-2 col-xl-2 col-sm-12 w-auto">
+                <Button type="primary" htmlType="submmit">
+                  {" "}
+                  Buscar{" "}
+                </Button>
+              </Form.Item>
+              <div className="col-xxl-2 col-xl-2 col-sm-12 ms-5 text-end">
+                <Button
+                  type="primary"
+                  onClick={() => setIsNewTransactionModalOpen(true)}
+                >
+                  <PlusCircleOutlined /> Nueva Transacción{" "}
+                </Button>
+              </div>
+            </Form>
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">

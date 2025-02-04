@@ -303,7 +303,7 @@ const Services = () => {
                 </Form.Item>
               </Form>
             </div>
-            <div className="col-xxl-7 col-xl-4 col-sm-12 ms-2 d-flex justify-content-end">
+            <div className="col-xxl-7 col-xl-4 col-sm-12 ms-2 text-end">
               <Button
                 type="primary"
                 onClick={() => setIsServicePaymentsModalOpen(true)}

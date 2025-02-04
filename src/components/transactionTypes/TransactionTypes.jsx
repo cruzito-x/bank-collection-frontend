@@ -2,6 +2,7 @@ import {
   Breadcrumb,
   Button,
   Card,
+  Form,
   Input,
   Layout,
   message,
@@ -20,6 +21,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import AddNewTransactionTypeModal from "../../utils/modals/transactionTypes/AddNewTransactionTypeModal";
 import EditTransactionTypeModal from "../../utils/modals/transactionTypes/EditTransactionTypeModal";
+import { useForm } from "antd/es/form/Form";
 
 const TransactionTypes = () => {
   const { authState } = useAuth();
@@ -33,6 +35,7 @@ const TransactionTypes = () => {
   const [sendingData, setSendingData] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
+  const [form] = useForm();
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
@@ -51,37 +54,47 @@ const TransactionTypes = () => {
       });
 
       const transactionsTypesData = await response.json();
-      const transactionsTypes = transactionsTypesData.map((transactionType) => {
-        return {
-          ...transactionType,
-          actions: (
-            <>
-              <Button
-                className="ant-btn-edit"
-                type="primary"
-                onClick={() => setIsEditTransactionTypeModalOpen(true)}
-              >
-                Editar
-              </Button>
-              <Popconfirm
-                title="Eliminar Tipo de Transacción"
-                description="¿Está Seguro de Eliminar este Registro?"
-                onConfirm={() => deleteTransactionType(transactionType)}
-                okText="Sí"
-                cancelText="No"
-              >
-                <Button className="ms-2 me-2" type="primary" danger>
-                  Eliminar
-                </Button>
-              </Popconfirm>
-            </>
-          ),
-        };
-      });
 
-      setTransactionsTypes(transactionsTypes);
+      if (response.status === 200) {
+        const transactionsTypes = transactionsTypesData.map(
+          (transactionType) => {
+            return {
+              ...transactionType,
+              actions: (
+                <>
+                  <Button
+                    className="ant-btn-edit"
+                    type="primary"
+                    onClick={() => setIsEditTransactionTypeModalOpen(true)}
+                  >
+                    Editar
+                  </Button>
+                  <Popconfirm
+                    title="Eliminar Tipo de Transacción"
+                    description="¿Está Seguro de Eliminar este Registro?"
+                    onConfirm={() => deleteTransactionType(transactionType)}
+                    okText="Sí"
+                    cancelText="No"
+                  >
+                    <Button className="ms-2 me-2" type="primary" danger>
+                      Eliminar
+                    </Button>
+                  </Popconfirm>
+                </>
+              ),
+            };
+          }
+        );
+
+        setTransactionsTypes(transactionsTypes);
+      } else {
+        messageAlert.error(transactionsTypesData.message);
+      }
+    } catch (error) {
+      messageAlert.error("Error al Obtener los Tipos de Transacciones");
+    } finally {
       setLoading(false);
-    } catch (error) {}
+    }
   };
 
   const deleteTransactionType = async (transactionType) => {
@@ -112,6 +125,62 @@ const TransactionTypes = () => {
     } catch (error) {
       messageAlert.error("Error al Actualizar el Tipo de Transacción");
       setSendingData(false);
+    }
+  };
+
+  const searchTransactionType = async (transactionType) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `http://localhost:3001/transactions-types/search-transaction-type?transaction_type=${
+          transactionType.transaction_type ?? ""
+        }`,
+        {
+          method: "GET",
+        }
+      );
+
+      const transactionsTypesData = await response.json();
+
+      if (response.status === 200) {
+        const transactionsTypes = transactionsTypesData.map(
+          (transactionType) => {
+            return {
+              ...transactionType,
+              actions: (
+                <>
+                  <Button
+                    className="ant-btn-edit"
+                    type="primary"
+                    onClick={() => setIsEditTransactionTypeModalOpen(true)}
+                  >
+                    Editar
+                  </Button>
+                  <Popconfirm
+                    title="Eliminar Tipo de Transacción"
+                    description="¿Está Seguro de Eliminar este Registro?"
+                    onConfirm={() => deleteTransactionType(transactionType)}
+                    okText="Sí"
+                    cancelText="No"
+                  >
+                    <Button className="ms-2 me-2" type="primary" danger>
+                      Eliminar
+                    </Button>
+                  </Popconfirm>
+                </>
+              ),
+            };
+          }
+        );
+
+        setTransactionsTypes(transactionsTypes);
+      } else {
+        messageAlert.error(transactionsTypesData.message);
+      }
+    } catch (error) {
+      messageAlert.error("Error al Buscar el Tipo de Transacción");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -184,25 +253,37 @@ const TransactionTypes = () => {
             </div>
           </div>
           <div className="row ms-2 mb-3">
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold text-black"> Nombre </label>
-              <Input
-                placeholder="Tipo de Transacción"
-                prefix={<AuditOutlined />}
-                style={{
-                  width: 183,
-                }}
-              />
+            <div className="col-xxl-3 col-xl-3 col-sm-12 w-auto">
+              <Form
+                layout="inline"
+                className="align-items-center"
+                form={form}
+                onFinish={searchTransactionType}
+              >
+                <label className="me-2 fw-semibold text-black"> Tipo </label>
+                <Form.Item name="transaction_type" initialValue="">
+                  <Input
+                    placeholder="Tipo de Transacción"
+                    prefix={<AuditOutlined />}
+                    style={{
+                      width: 183,
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    {" "}
+                    Buscar{" "}
+                  </Button>
+                </Form.Item>
+              </Form>
             </div>
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <Button type="primary"> Buscar </Button>
-            </div>
-            <div className="col-xxl-9 col-xl-7 col-sm-12 d-flex justify-content-end">
+            <div className="col-xxl-9 col-xl-9 col-sm-12 ms-4 text-end">
               <Button
                 type="primary"
                 onClick={() => setIsNewTransactionTypeModalOpen(true)}
               >
-                <PlusCircleOutlined /> Añadir nuevo{" "}
+                <PlusCircleOutlined /> Nuevo Tipo
               </Button>
             </div>
           </div>
@@ -226,13 +307,14 @@ const TransactionTypes = () => {
             </div>
           </div>
         </Card>
+
         <AddNewTransactionTypeModal
           isOpen={isNewTransactionTypeModalOpen}
           isClosed={() => setIsNewTransactionTypeModalOpen(false)}
           setAlertMessage={messageAlert}
           getTransactionsTypes={getTransactionsTypes}
         />
-        
+
         <EditTransactionTypeModal
           isOpen={isEditTransactionTypeModalOpen}
           isClosed={() => setIsEditTransactionTypeModalOpen(false)}
