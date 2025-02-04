@@ -306,7 +306,7 @@ const DashboardCharts = ({
   }, [transactionsByDate, transactionsByCollector, transactionsByDenomination]);
 
   return (
-    <div className="row">
+    <div className="row mt-2">
       <div className="col-xl-8 col-lg-8 col-md-8 col-sm-12">
         <Card
           className={`mb-2 ${

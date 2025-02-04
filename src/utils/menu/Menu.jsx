@@ -165,7 +165,7 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
             fontSize: ".84rem",
           }}
         >
-          &copy; cruzito-x - {new Date().getFullYear()} <br /> All Rights
+          &copy; {new Date().getFullYear()} cruzito-x <br /> All Rights
           Reserved.
         </Footer>
       )}

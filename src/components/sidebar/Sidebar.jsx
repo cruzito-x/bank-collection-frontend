@@ -5,7 +5,7 @@ import { Content, Footer } from "antd/es/layout/layout";
 import Dashboard from "../dashboard/Dashboard";
 import { Layout } from "antd";
 import Sider from "antd/es/layout/Sider";
-import LayoutHeader from "../../utils/layoutHeader/LayoutHeader";
+import Header from "../../utils/header/Header";
 import MenuList from "../../utils/menu/Menu";
 import Logo from "../../utils/logo/Logo";
 import "./styles/sidebar.css";
@@ -98,7 +98,7 @@ const Sidebar = () => {
         </Routes>
       </Sider>
       <Layout style={layoutStyle}>
-        {location.pathname !== "/dashboard" && <LayoutHeader />}
+        {location.pathname !== "/dashboard" && <Header />}
         <Content
           style={{
             margin:
@@ -129,7 +129,7 @@ const Sidebar = () => {
               width: "100%",
             }}
           >
-            Banco Bambú &reg; - {new Date().getFullYear()} Creciendo Juntos.
+            &copy; {new Date().getFullYear()} - Banco Bambú&reg;
           </Footer>
         </Content>
       </Layout>

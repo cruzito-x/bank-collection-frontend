@@ -94,15 +94,19 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   };
 
   useEffect(() => {
-    document.title = `Banco Bambú | ${
-      notifications.length > 0
-        ? `${notifications.length} Notificaciones`
-        : "Dashboard"
-    }`;
+    document.title = "Banco Bambú | Dashboard";
 
-    getLatestCollectorAndCollectorPayment();
-    getNotifications();
-  }, [latestCollectorAndCollectorPayment, notifications]);
+    const fetchData = async () => {
+      await getLatestCollectorAndCollectorPayment();
+      await getNotifications();
+    };
+
+    fetchData();
+
+    const interval = setInterval(fetchData, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     getCollectors();
@@ -294,7 +298,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
             <div className="row">
               <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
                 <Card>
-                  <label className="fw-semibold text-start p-2">
+                  <label className="fw-semibold text-start p-1">
                     <SolutionOutlined
                       className="me-1"
                       style={{
@@ -308,7 +312,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                   </h1>
                   <div className="dashboard-blue-card text-center w-100 rounded">
                     <label className="fw-semibold text-white p-3">
-                      Más Reciente:{" "}
+                      Reciente:{" "}
                       {latestCollectorAndCollectorPayment.most_recent_collector}
                     </label>
                   </div>
@@ -316,7 +320,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               </div>
               <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
                 <Card>
-                  <label className="fw-semibold text-start p-2">
+                  <label className="fw-semibold text-start p-1">
                     <FileTextOutlined
                       className="me-1"
                       style={{
@@ -330,15 +334,14 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                   </h1>
                   <div className="dashboard-yellow-card text-center w-100 rounded">
                     <label className="fw-semibold text-white p-3">
-                      Más Reciente:{" "}
-                      {latestCollectorAndCollectorPayment.collector}
+                      Reciente: {latestCollectorAndCollectorPayment.collector}
                     </label>
                   </div>
                 </Card>
               </div>
               <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
                 <Card>
-                  <label className="fw-semibold text-start p-2">
+                  <label className="fw-semibold text-start p-1">
                     <DollarOutlined
                       className="me-1"
                       style={{
@@ -352,7 +355,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                   </h1>
                   <div className="dashboard-green-card text-center w-100 rounded">
                     <label className="fw-semibold text-white p-3">
-                      Más Reciente:{" "}
+                      Reciente:{" "}
                       {latestCollectorAndCollectorPayment.payed_collector} - $
                       {latestCollectorAndCollectorPayment.amount}
                     </label>
@@ -364,7 +367,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                   onClick={() => setOpenNotificationsModal(true)}
                   style={{ cursor: "pointer" }}
                 >
-                  <label className="fw-semibold text-start p-2">
+                  <label className="fw-semibold text-start p-1">
                     <BellOutlined
                       className="me-1"
                       style={{
@@ -378,7 +381,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                   </h1>
                   <div className="dashboard-red-card text-center w-100 rounded">
                     <label className="fw-semibold text-white p-3">
-                      Última Transacción OK:{" "}
+                      Reciente:{" "}
                       {
                         latestCollectorAndCollectorPayment.latest_approved_transaction
                       }
@@ -393,7 +396,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           </div>
         </div>
 
-        <Card className="mt-3 mb-5">
+        <Card className="mt-4 mb-5">
           <div className="row">
             <div className="col-md-6 col-sm-6 text-start">
               <label className="fw-semibold fs-5 text-black ms-3 text-black">
@@ -417,7 +420,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               <Button type="primary">Ver Reportes</Button>
             </div>
           </div>
-          <div className="row ms-2 mb-4">
+          <div className="row m-2">
             <label className="fw-semibold text-black mb-1"> Filtrar por </label>
             <div className="col-xxl-4 col-lg-7 col-md-7 col-sm-12 w-auto">
               <label className="fw-semibold text-black me-2"> Fecha </label>
@@ -505,18 +508,6 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                   }}
                   onChange={transactionTypeFilters}
                   options={transactionTypes}
-                />
-              </Space>
-            </div>
-            <div className="col-xxl-2 col-lg-2 col-md-2 col-sm-12 w-auto">
-              <label className="fw-semibold text-black me-2"> Colector </label>
-              <Space wrap>
-                <Select
-                  options={collectors}
-                  defaultValue={1}
-                  style={{
-                    width: 183,
-                  }}
                 />
               </Space>
             </div>
