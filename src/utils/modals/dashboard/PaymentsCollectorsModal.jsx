@@ -206,9 +206,8 @@ const PaymentsCollectorsModal = ({
               showInfo={false}
             />
             <label
-              className="fw-semibold ms-3 text-danger"
+              className="fw-semibold ms-3 text-danger cursor-pointer"
               onClick={cancelPayment}
-              style={{ cursor: "pointer" }}
             >
               Cancelar
             </label>

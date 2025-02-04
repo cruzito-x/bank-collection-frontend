@@ -23,27 +23,27 @@ const DashboardCharts = ({
   const doughnutAmountChartInstance = useRef(null);
 
   const colors = [
-    "#3e9bff",
-    "#6f99ff",
-    "#b0cfff",
-    "#d3e7ff",
-    "#ff7b7b",
-    "#ffb7b7",
-    "#ffd3d3",
-    "#7bffb5",
-    "#b7ffd1",
-    "#d3ffe3",
-    "#ffdc7b",
-    "#ffe6b7",
-    "#fff3d3",
-    "#7bdcff",
-    "#b7e9ff",
-    "#d3f3ff",
-    "#c17bff",
-    "#d9b7ff",
-    "#eed3ff",
-    "#7bffd6",
-    "#b7ffe3",
+    "#3e9bff", // Azul Intenso
+    "#6f99ff", // Azul Pastel
+    "#b0cfff", // Azul Claro
+    "#d3e7ff", // Azul Hielo
+    "#ff7b7b", // Rojo Sandía
+    "#ffb7b7", // Rosa Salmón
+    "#ffd3d3", // Rosa Pálido
+    "#7bffb5", // Verde Menta
+    "#b7ffd1", // Verde Neón
+    "#d3ffe3", // Verde Claro
+    "#ffdc7b", // Amarillo Dorado
+    "#ffe6b7", // Amarillo Suave
+    "#fff3d3", // Amarillo Pálido
+    "#7bdcff", // Cian Vibrante
+    "#b7e9ff", // Cian Claro
+    "#d3f3ff", // Cian Suave
+    "#c17bff", // Púrpura Brillante
+    "#d9b7ff", // Púrpura Pastel
+    "#eed3ff", // Lavanda Claro
+    "#7bffd6", // Turquesa Claro
+    "#b7ffe3", // Turquesa Suave
   ];
 
   const getTransactionsByDateAndAmountRangeAndType = async (
@@ -307,7 +307,7 @@ const DashboardCharts = ({
 
   return (
     <div className="row mt-2">
-      <div className="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+      <div className="col-xl-8 col-lg-8 col-md-8 col-sm-12 mb-1">
         <Card
           className={`mb-2 ${
             transactionsByDate.length === 0
@@ -328,7 +328,7 @@ const DashboardCharts = ({
       </div>
       <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12">
         <Card
-          className={`mb-1 ${
+          className={`mb-2 ${
             transactionsByCollector.length === 0
               ? "d-flex justify-content-center align-items-center h-100"
               : ""

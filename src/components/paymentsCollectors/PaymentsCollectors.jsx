@@ -2,6 +2,7 @@ import {
   Breadcrumb,
   Button,
   Card,
+  Form,
   Input,
   Layout,
   message,
@@ -22,6 +23,7 @@ import moment from "moment";
 import PaymentsCollectorsDetailsModal from "../../utils/modals/paymentsCollectors/PaymentsCollectorsDetailsModal";
 import PaymentsCollectorsModal from "../../utils/modals/dashboard/PaymentsCollectorsModal";
 import { useLocation } from "react-router-dom";
+import { useForm } from "antd/es/form/Form";
 
 const PaymentsCollectors = () => {
   const { authState } = useAuth();
@@ -37,6 +39,7 @@ const PaymentsCollectors = () => {
   const [loading, setLoading] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
+  const [form] = useForm();
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
@@ -58,14 +61,15 @@ const PaymentsCollectors = () => {
       );
 
       const paymentscollectorsData = await response.json();
-      if (paymentscollectorsData.length > 0) {
+
+      if (response.status === 200) {
         const paymentsCollector = paymentscollectorsData.map(
           (paymentsCollector) => {
             return {
               ...paymentsCollector,
               amount: "$" + paymentsCollector.amount,
               datetime: moment(paymentsCollector.datetime).format(
-                "DD/MM/YYYY - HH:mm A"
+                "DD/MM/YYYY - hh:mm A"
               ),
               actions: (
                 <>
@@ -85,11 +89,65 @@ const PaymentsCollectors = () => {
         );
 
         setPaymentsCollectors(paymentsCollector);
+      } else {
+        messageAlert.error(paymentscollectorsData.message);
       }
-
-      setLoading(false);
     } catch (error) {
       messageAlert.error("Error fetching collectors payments");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const searchPaymentsCollector = async (collector) => {
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/payments-collectors/search-payments-collectors?collector=${
+          collector.collector ?? ""
+        }`,
+        {
+          method: "GET",
+        }
+      );
+
+      const paymentscollectorsData = await response.json();
+
+      if (response.status === 200) {
+        const paymentsCollector = paymentscollectorsData.map(
+          (paymentsCollector) => {
+            return {
+              ...paymentsCollector,
+              amount: "$" + paymentsCollector.amount,
+              datetime: moment(paymentsCollector.datetime).format(
+                "DD/MM/YYYY - hh:mm A"
+              ),
+              actions: (
+                <>
+                  <Button
+                    type="primary"
+                    onClick={() =>
+                      setIsPaymentsCollectorsDetailsModalOpen(true)
+                    }
+                  >
+                    {" "}
+                    Ver Detalles{" "}
+                  </Button>
+                </>
+              ),
+            };
+          }
+        );
+
+        setPaymentsCollectors(paymentsCollector);
+      } else {
+        messageAlert.error(paymentscollectorsData.message);
+      }
+    } catch (error) {
+      messageAlert.error("Error fetching collectors payments");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -172,20 +230,32 @@ const PaymentsCollectors = () => {
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold text-black"> Nombre </label>
-              <Input
-                placeholder="Nombre de Colector"
-                prefix={<SolutionOutlined />}
-                style={{
-                  width: 183,
-                }}
-              />
+            <div className="col-xxl-7 col-xl-7 col-sm-12 w-auto">
+              <Form
+                layout="inline"
+                className="align-items-center"
+                form={form}
+                onFinish={searchPaymentsCollector}
+              >
+                <label className="me-2 fw-semibold text-black"> Nombre </label>
+                <Form.Item name="collector" initialValue="">
+                  <Input
+                    placeholder="Nombre de Colector"
+                    prefix={<SolutionOutlined />}
+                    style={{
+                      width: 183,
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    {" "}
+                    Buscar{" "}
+                  </Button>
+                </Form.Item>
+              </Form>
             </div>
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <Button type="primary"> Buscar </Button>
-            </div>
-            <div className="col-xxl-5 col-xl-4 col-sm-12 text-end">
+            <div className="col-xxl-5 col-xl-5 col-sm-12 text-end">
               <Button
                 type="primary"
                 onClick={() => setOpenRegisterPayment(true)}

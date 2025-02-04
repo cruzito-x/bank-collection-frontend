@@ -141,9 +141,10 @@ const Audit = () => {
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
               <label className="me-2 fw-semibold text-black"> Fecha </label>
               <DatePicker
+                className="cursor-pointer"
                 onChange={selectDate}
                 placeholder="Seleccionar Fecha"
-                style={{ width: 183, cursor: "pointer" }}
+                style={{ width: 183 }}
               />
             </div>
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">

@@ -26,13 +26,12 @@ const LogoutCard = () => {
     <Dropdown overlay={menu} trigger={["click"]}>
       <Card
         hoverable
-        className="d-flex align-items-center justify-content-center text-center user-card w-100"
-        style={{ cursor: "pointer" }}
+        className="d-flex align-items-center justify-content-center text-center cursor-pointer user-card w-100"
         bodyStyle={{ padding: 0 }}
       >
         <UserOutlined className="fs-1" />
         <div className="dashboard-user-card mt-1 w-100 rounded">
-          <label className="fw-semibold text-white p-2">
+          <label className="fw-semibold text-white cursor-pointer p-2">
             {authState.username}
           </label>
         </div>

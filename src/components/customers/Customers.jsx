@@ -7,13 +7,11 @@ import {
   Layout,
   message,
   Popconfirm,
-  Select,
   Table,
   theme,
 } from "antd";
 import {
   BankOutlined,
-  DollarOutlined,
   IdcardOutlined,
   TeamOutlined,
   UserOutlined,
@@ -31,7 +29,6 @@ const Customers = () => {
   const [isCustomerEditModalOpen, setIsCustomerEditModalOpen] = useState(false);
   const [isAccountsByCustomerModalOpen, setIsAccountsByCustomerModalOpen] =
     useState(false);
-  const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
@@ -54,44 +51,50 @@ const Customers = () => {
       });
 
       const customersData = await response.json();
-      const customers = customersData.map((customer) => ({
-        ...customer,
-        balance: "$" + customer.balance,
-        actions: (
-          <>
-            <Button
-              className="ant-btn-edit"
-              type="primary"
-              onClick={() => setIsCustomerEditModalOpen(true)}
-            >
-              Editar
-            </Button>
-            <Popconfirm
-              title="Eliminar Cliente"
-              description="¿Está Seguro de Eliminar este Registro?"
-              onConfirm={() => deleteCustomer(customer)}
-              okText="Sí"
-              cancelText="No"
-            >
-              <Button className="ms-2 me-2" type="primary" danger>
-                Eliminar
-              </Button>
-            </Popconfirm>
-            <Button
-              type="primary"
-              onClick={() => setIsAccountsByCustomerModalOpen(true)}
-            >
-              {" "}
-              Ver Cuentas{" "}
-            </Button>
-          </>
-        ),
-      }));
 
-      setCustomers(customers);
-      setLoading(false);
+      if (response.status === 200) {
+        const customers = customersData.map((customer) => ({
+          ...customer,
+          balance: "$" + customer.balance,
+          actions: (
+            <>
+              <Button
+                className="ant-btn-edit"
+                type="primary"
+                onClick={() => setIsCustomerEditModalOpen(true)}
+              >
+                Editar
+              </Button>
+              <Popconfirm
+                title="Eliminar Cliente"
+                description="¿Está Seguro de Eliminar este Registro?"
+                onConfirm={() => deleteCustomer(customer)}
+                okText="Sí"
+                cancelText="No"
+              >
+                <Button className="ms-2 me-2" type="primary" danger>
+                  Eliminar
+                </Button>
+              </Popconfirm>
+              <Button
+                type="primary"
+                onClick={() => setIsAccountsByCustomerModalOpen(true)}
+              >
+                {" "}
+                Ver Cuentas{" "}
+              </Button>
+            </>
+          ),
+        }));
+
+        setCustomers(customers);
+      } else {
+        messageAlert.error(customersData.message);
+      }
     } catch (error) {
       messageAlert.error("Error al Obtener los Datos de Clientes");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -129,10 +132,8 @@ const Customers = () => {
     try {
       const response = await fetch(
         `http://localhost:3001/customers/search-customer?name=${
-          customer.name === undefined ? "" : customer.name
-        }&identity_doc=${
-          customer.identity_doc === undefined ? "" : customer.identity_doc
-        }`,
+          customer.name ?? ""
+        }&identity_doc=${customer.identity_doc ?? ""}`,
         {
           method: "GET",
           headers: {
@@ -142,44 +143,45 @@ const Customers = () => {
       );
 
       const customersData = await response.json();
-      const customers = customersData.map((customer) => ({
-        ...customer,
-        balance: "$" + customer.balance,
-        actions: (
-          <>
-            <Button
-              className="ant-btn-edit"
-              type="primary"
-              onClick={() => setIsCustomerEditModalOpen(true)}
-            >
-              Editar
-            </Button>
-            <Popconfirm
-              title="Eliminar Registro"
-              description="¿Está Seguro de Eliminar este Registro?"
-              onConfirm={() => deleteCustomer(customer)}
-              okText="Sí"
-              cancelText="No"
-              okButtonProps={{
-                loading: loading,
-              }}
-            >
-              <Button className="ms-2 me-2" type="primary" danger>
-                Eliminar
+      if (response.status === 200) {
+        const customers = customersData.map((customer) => ({
+          ...customer,
+          balance: "$" + customer.balance,
+          actions: (
+            <>
+              <Button
+                className="ant-btn-edit"
+                type="primary"
+                onClick={() => setIsCustomerEditModalOpen(true)}
+              >
+                Editar
               </Button>
-            </Popconfirm>
-            <Button
-              type="primary"
-              onClick={() => setIsAccountsByCustomerModalOpen(true)}
-            >
-              {" "}
-              Ver Cuentas{" "}
-            </Button>
-          </>
-        ),
-      }));
+              <Popconfirm
+                title="Eliminar Cliente"
+                description="¿Está Seguro de Eliminar este Registro?"
+                onConfirm={() => deleteCustomer(customer)}
+                okText="Sí"
+                cancelText="No"
+              >
+                <Button className="ms-2 me-2" type="primary" danger>
+                  Eliminar
+                </Button>
+              </Popconfirm>
+              <Button
+                type="primary"
+                onClick={() => setIsAccountsByCustomerModalOpen(true)}
+              >
+                {" "}
+                Ver Cuentas{" "}
+              </Button>
+            </>
+          ),
+        }));
 
-      setCustomers(customers);
+        setCustomers(customers);
+      } else {
+        messageAlert.error(customersData.message);
+      }
     } catch (error) {
       messageAlert.error(
         "Por Favor, Proporcione un Nombre o un Número de Identificación"
@@ -268,7 +270,12 @@ const Customers = () => {
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
-            <Form layout="inline" form={form} onFinish={searchCustomers}>
+            <Form
+              layout="inline"
+              className="align-items-center"
+              form={form}
+              onFinish={searchCustomers}
+            >
               <label className="me-2 fw-semibold text-black d-flex align-items-center">
                 {" "}
                 Nombre{" "}
@@ -276,6 +283,7 @@ const Customers = () => {
               <Form.Item
                 className="col-xxl-3 col-xl-4 col-sm-12 w-auto"
                 name="name"
+                initialValue=""
               >
                 <Input
                   placeholder="Nombre de Cliente"
@@ -292,6 +300,7 @@ const Customers = () => {
               <Form.Item
                 className="col-xxl-3 col-xl-4 col-sm-12 w-auto"
                 name="identity_doc"
+                initialValue=""
               >
                 <Input
                   placeholder="00000000-0"

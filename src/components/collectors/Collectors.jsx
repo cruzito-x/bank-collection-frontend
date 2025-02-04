@@ -2,6 +2,7 @@ import {
   Breadcrumb,
   Button,
   Card,
+  Form,
   Input,
   Layout,
   message,
@@ -20,6 +21,7 @@ import { useAuth } from "../../contexts/authContext/AuthContext";
 import AddNewCollectorModal from "../../utils/modals/dashboard/AddNewCollectorModal";
 import PaymentsDetailsModal from "../../utils/modals/collectors/PaymentsDetailsModal";
 import EditCollectorModal from "../../utils/modals/collectors/EditCollectorModal";
+import { useForm } from "antd/es/form/Form";
 
 const Collectors = () => {
   const [collectors, setCollectors] = useState([]);
@@ -34,6 +36,7 @@ const Collectors = () => {
   const { authState } = useAuth();
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
+  const [form] = useForm();
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
@@ -52,42 +55,50 @@ const Collectors = () => {
       });
 
       const collectorsData = await response.json();
-      const collectors = collectorsData.map((collector) => ({
-        ...collector,
-        actions: (
-          <>
-            <Button
-              className="ant-btn-edit"
-              type="primary"
-              onClick={() => setIsCollectorEditModalOpen(true)}
-            >
-              Editar
-            </Button>
-            <Popconfirm
-              title="Eliminar Colector"
-              description="¿Está seguro de Eliminar este Registro?"
-              onConfirm={() => deleteCollector(collector)}
-              okText="Sí"
-              cancelText="No"
-            >
-              <Button className="ms-2 me-2" type="primary" danger>
-                Eliminar
-              </Button>
-            </Popconfirm>
-            <Button
-              type="primary"
-              onClick={() => setIsPaymentsDetailsModalOpen(true)}
-            >
-              {" "}
-              Ver Pagos{" "}
-            </Button>
-          </>
-        ),
-      }));
 
-      setCollectors(collectors);
+      if (response.status === 200) {
+        const collectors = collectorsData.map((collector) => ({
+          ...collector,
+          actions: (
+            <>
+              <Button
+                className="ant-btn-edit"
+                type="primary"
+                onClick={() => setIsCollectorEditModalOpen(true)}
+              >
+                Editar
+              </Button>
+              <Popconfirm
+                title="Eliminar Colector"
+                description="¿Está seguro de Eliminar este Registro?"
+                onConfirm={() => deleteCollector(collector)}
+                okText="Sí"
+                cancelText="No"
+              >
+                <Button className="ms-2 me-2" type="primary" danger>
+                  Eliminar
+                </Button>
+              </Popconfirm>
+              <Button
+                type="primary"
+                onClick={() => setIsPaymentsDetailsModalOpen(true)}
+              >
+                {" "}
+                Ver Pagos{" "}
+              </Button>
+            </>
+          ),
+        }));
+
+        setCollectors(collectors);
+      } else {
+        messageAlert.error(collectorsData.message);
+      }
+    } catch (error) {
+      messageAlert.error("Error al Obtener Colectores");
+    } finally {
       setLoading(false);
-    } catch (error) {}
+    }
   };
 
   const deleteCollector = async (collector) => {
@@ -111,6 +122,66 @@ const Collectors = () => {
       }
     } catch (error) {
       messageAlert.error("Error al Eliminar Colector");
+    }
+  };
+
+  const searchCollector = async (collector) => {
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/collectors/search-collector?collector=${
+          collector.collector ?? ""
+        }`,
+        {
+          method: "GET",
+        }
+      );
+
+      const collectorsData = await response.json();
+
+      if (response.status === 200) {
+        const collectors = collectorsData.map((collector) => ({
+          ...collector,
+          actions: (
+            <>
+              <Button
+                className="ant-btn-edit"
+                type="primary"
+                onClick={() => setIsCollectorEditModalOpen(true)}
+              >
+                Editar
+              </Button>
+              <Popconfirm
+                title="Eliminar Colector"
+                description="¿Está seguro de Eliminar este Registro?"
+                onConfirm={() => deleteCollector(collector)}
+                okText="Sí"
+                cancelText="No"
+              >
+                <Button className="ms-2 me-2" type="primary" danger>
+                  Eliminar
+                </Button>
+              </Popconfirm>
+              <Button
+                type="primary"
+                onClick={() => setIsPaymentsDetailsModalOpen(true)}
+              >
+                {" "}
+                Ver Pagos{" "}
+              </Button>
+            </>
+          ),
+        }));
+
+        setCollectors(collectors);
+      } else {
+        messageAlert.error(collectorsData.message);
+      }
+    } catch (error) {
+      messageAlert.error("Error al Buscar Colector");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -196,20 +267,31 @@ const Collectors = () => {
             </div>
           </div>
           <div className="row ms-2 mb-3">
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold text-black"> Nombre </label>
-              <Input
-                placeholder="Nombre de Colector"
-                prefix={<SolutionOutlined />}
-                style={{
-                  width: 183,
-                }}
-              />
+            <div className="col-xxl-3 col-xl-3 col-sm-12 w-auto">
+              <Form
+                layout="inline"
+                form={form}
+                className="align-items-center"
+                onFinish={searchCollector}
+              >
+                <label className="me-2 fw-semibold text-black"> Nombre </label>
+                <Form.Item name="collector">
+                  <Input
+                    placeholder="Nombre de Colector"
+                    prefix={<SolutionOutlined />}
+                    style={{
+                      width: 183,
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    Buscar
+                  </Button>
+                </Form.Item>
+              </Form>
             </div>
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <Button type="primary"> Buscar </Button>
-            </div>
-            <div className="col-xxl-9 col-xl-7 col-sm-12 d-flex justify-content-end">
+            <div className="col-xxl-9 col-xl-9 col-sm-12 d-flex justify-content-end">
               <Button
                 type="primary"
                 onClick={() => setIsCollectorPaymentsModalOpen(true)}

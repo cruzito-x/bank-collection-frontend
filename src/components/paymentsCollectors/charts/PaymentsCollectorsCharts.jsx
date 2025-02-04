@@ -6,6 +6,30 @@ const PaymentsCollectorsCharts = () => {
   const paymentsByCollectorChartRef = useRef(null);
   const paymentsByCollectorChartInstance = useRef(null);
 
+  const colors = [
+    "#3e9bff", // Azul Intenso
+    "#6f99ff", // Azul Pastel
+    "#b0cfff", // Azul Claro
+    "#d3e7ff", // Azul Hielo
+    "#ff7b7b", // Rojo Sandía
+    "#ffb7b7", // Rosa Salmón
+    "#ffd3d3", // Rosa Pálido
+    "#7bffb5", // Verde Menta
+    "#b7ffd1", // Verde Neón
+    "#d3ffe3", // Verde Claro
+    "#ffdc7b", // Amarillo Dorado
+    "#ffe6b7", // Amarillo Suave
+    "#fff3d3", // Amarillo Pálido
+    "#7bdcff", // Cian Vibrante
+    "#b7e9ff", // Cian Claro
+    "#d3f3ff", // Cian Suave
+    "#c17bff", // Púrpura Brillante
+    "#d9b7ff", // Púrpura Pastel
+    "#eed3ff", // Lavanda Claro
+    "#7bffd6", // Turquesa Claro
+    "#b7ffe3", // Turquesa Suave
+  ];
+
   const getPaymentsByCollectors = async () => {
     const response = await fetch(
       "http://localhost:3001/payments-collectors/payments-by-collector",
@@ -41,29 +65,7 @@ const PaymentsCollectorsCharts = () => {
       datasets: [
         {
           data: percentage,
-          backgroundColor: [
-            "#3e9bff", // Azul Intenso
-            "#6f99ff", // Azul Pastel
-            "#b0cfff", // Azul Claro
-            "#d3e7ff", // Azul Hielo
-            "#ff7b7b", // Rojo Sandía
-            "#ffb7b7", // Rosa Salmón
-            "#ffd3d3", // Rosa Pálido
-            "#7bffb5", // Verde Menta
-            "#b7ffd1", // Verde Neón
-            "#d3ffe3", // Verde Claro
-            "#ffdc7b", // Amarillo Dorado
-            "#ffe6b7", // Amarillo Suave
-            "#fff3d3", // Amarillo Pálido
-            "#7bdcff", // Cian Vibrante
-            "#b7e9ff", // Cian Claro
-            "#d3f3ff", // Cian Suave
-            "#c17bff", // Púrpura Brillante
-            "#d9b7ff", // Púrpura Pastel
-            "#eed3ff", // Lavanda Claro
-            "#7bffd6", // Turquesa Claro
-            "#b7ffe3", // Turquesa Suave
-          ],
+          backgroundColor: colors,
         },
       ],
     };

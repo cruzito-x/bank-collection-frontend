@@ -2,15 +2,15 @@
 
 :root {
   --blue: #007bff;
-  --blue-transparent: #007bffbf;
+  --blue-transparent: #007bffa6;
   --green: #16bb69;
-  --green-transparent: #16bb69bf;
+  --green-transparent: #16bb69a6;
   --yellow: #ffb41f;
-  --yellow-transparent: #ffb41fbf;
-  --yellow-hovered: #ffc247;
+  --yellow-transparent: #ffb41fa6;
+  --yellow-hovered: #ffb41fbf;
   --red: #ff3131;
-  --red-transparent: #ff3131bf;
-  --red-hovered: #ff4747;
+  --red-transparent: #ff3131a6;
+  --red-hovered: #ff31319f;
   --gray: #1a2d3f;
   --gray-transparent: #1a2d3fbf;
 }
@@ -25,6 +25,10 @@
 
 body {
   background-color: #eef1f7 !important;
+}
+
+.cursor-pointer{
+  cursor: pointer;
 }
 
 .ant-btn-edit {

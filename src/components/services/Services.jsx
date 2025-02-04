@@ -2,6 +2,7 @@ import {
   Breadcrumb,
   Button,
   Card,
+  Form,
   Input,
   Layout,
   message,
@@ -21,6 +22,7 @@ import { useAuth } from "../../contexts/authContext/AuthContext";
 import PaymentsDetailsModal from "../../utils/modals/services/PaymentsDetailsModal";
 import EditServiceModal from "../../utils/modals/services/EditServiceModal";
 import AddNewServiceModal from "../../utils/modals/services/AddNewServiceModal";
+import { useForm } from "antd/es/form/Form";
 
 const Services = () => {
   const [services, setServices] = useState([]);
@@ -34,6 +36,7 @@ const Services = () => {
   const { authState } = useAuth();
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
+  const [form] = useForm();
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
@@ -52,42 +55,50 @@ const Services = () => {
       });
 
       const servicesData = await response.json();
-      const services = servicesData.map((service) => ({
-        ...service,
-        actions: (
-          <>
-            <Button
-              className="ant-btn-edit"
-              type="primary"
-              onClick={() => setIsServiceEditModalOpen(true)}
-            >
-              Editar
-            </Button>
-            <Popconfirm
-              title="Eliminar Colector"
-              description="¿Está seguro de Eliminar este Registro?"
-              onConfirm={() => deleteService(service)}
-              okText="Sí"
-              cancelText="No"
-            >
-              <Button className="ms-2 me-2" type="primary" danger>
-                Eliminar
-              </Button>
-            </Popconfirm>
-            <Button
-              type="primary"
-              onClick={() => setIsPaymentsDetailsModalOpen(true)}
-            >
-              {" "}
-              Ver Pagos{" "}
-            </Button>
-          </>
-        ),
-      }));
 
-      setServices(services);
+      if (response.status === 200) {
+        const services = servicesData.map((service) => ({
+          ...service,
+          actions: (
+            <>
+              <Button
+                className="ant-btn-edit"
+                type="primary"
+                onClick={() => setIsServiceEditModalOpen(true)}
+              >
+                Editar
+              </Button>
+              <Popconfirm
+                title="Eliminar Colector"
+                description="¿Está seguro de Eliminar este Registro?"
+                onConfirm={() => deleteService(service)}
+                okText="Sí"
+                cancelText="No"
+              >
+                <Button className="ms-2 me-2" type="primary" danger>
+                  Eliminar
+                </Button>
+              </Popconfirm>
+              <Button
+                type="primary"
+                onClick={() => setIsPaymentsDetailsModalOpen(true)}
+              >
+                {" "}
+                Ver Pagos{" "}
+              </Button>
+            </>
+          ),
+        }));
+
+        setServices(services);
+      } else {
+        messageAlert.error(servicesData.message);
+      }
+    } catch (error) {
+      messageAlert.error("Error al Obtener los Datos de Servicios");
+    } finally {
       setLoading(false);
-    } catch (error) {}
+    }
   };
 
   const deleteService = async (service) => {
@@ -111,6 +122,64 @@ const Services = () => {
       }
     } catch (error) {
       messageAlert.error("Error al Eliminar Colector");
+    }
+  };
+
+  const searchService = async (service) => {
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/services/search-service?collector=${service.collector ?? ""}&service=${service.service ?? ""}`,
+        {
+          method: "GET",
+        }
+      );
+
+      const servicesData = await response.json();
+
+      if (response.status === 200) {
+        const services = servicesData.map((service) => ({
+          ...service,
+          actions: (
+            <>
+              <Button
+                className="ant-btn-edit"
+                type="primary"
+                onClick={() => setIsServiceEditModalOpen(true)}
+              >
+                Editar
+              </Button>
+              <Popconfirm
+                title="Eliminar Colector"
+                description="¿Está seguro de Eliminar este Registro?"
+                onConfirm={() => deleteService(service)}
+                okText="Sí"
+                cancelText="No"
+              >
+                <Button className="ms-2 me-2" type="primary" danger>
+                  Eliminar
+                </Button>
+              </Popconfirm>
+              <Button
+                type="primary"
+                onClick={() => setIsPaymentsDetailsModalOpen(true)}
+              >
+                {" "}
+                Ver Pagos{" "}
+              </Button>
+            </>
+          ),
+        }));
+
+        setServices(services);
+      } else {
+        messageAlert.error(servicesData.message);
+      }
+    } catch (error) {
+      messageAlert.error("Error al Obtener los Datos de Servicios");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -197,27 +266,42 @@ const Services = () => {
           </div>
           <div className="row ms-2 mb-3">
             <div className="col-xxl-3 col-xl-3 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold text-black"> Colector </label>
-              <Input
-                placeholder="Nombre de Colector"
-                prefix={<SolutionOutlined />}
-                style={{
-                  width: 183,
-                }}
-              />
-            </div>
-            <div className="col-xxl-3 col-xl-3 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold text-black"> Servicio </label>
-              <Input
-                placeholder="Nombre de Servicio"
-                prefix={<BulbOutlined />}
-                style={{
-                  width: 183,
-                }}
-              />
-            </div>
-            <div className="col-xxl-3 col-xl-3 col-sm-12 w-auto">
-              <Button type="primary"> Buscar </Button>
+              <Form
+                layout="inline"
+                form={form}
+                className="align-items-center"
+                onFinish={searchService}
+              >
+                <label className="me-2 fw-semibold text-black">
+                  {" "}
+                  Colector{" "}
+                </label>
+                <Form.Item name="collector" initialValue="">
+                  <Input
+                    placeholder="Nombre de Colector"
+                    prefix={<SolutionOutlined />}
+                    style={{
+                      width: 183,
+                    }}
+                  />
+                </Form.Item>
+                <label className="me-2 fw-semibold text-black">
+                  {" "}
+                  Servicio{" "}
+                </label>
+                <Form.Item name="service" initialValue="">
+                  <Input
+                    placeholder="Nombre de Servicio"
+                    prefix={<BulbOutlined />}
+                    style={{
+                      width: 183,
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit"> Buscar </Button>
+                </Form.Item>
+              </Form>
             </div>
             <div className="col-xxl-7 col-xl-4 col-sm-12 ms-2 d-flex justify-content-end">
               <Button

@@ -293,11 +293,11 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           borderRadius: borderRadiusLG,
         }}
       >
-        <div className="row">
+        <div className="row d-flex justify-content-center">
           <div className="col-11">
             <div className="row">
               <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
-                <Card>
+                <Card className="mb-4">
                   <label className="fw-semibold text-start p-1">
                     <SolutionOutlined
                       className="me-1"
@@ -318,7 +318,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                   </div>
                 </Card>
               </div>
-              <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
+              <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12 mb-4">
                 <Card>
                   <label className="fw-semibold text-start p-1">
                     <FileTextOutlined
@@ -339,7 +339,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                   </div>
                 </Card>
               </div>
-              <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
+              <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12 mb-4">
                 <Card>
                   <label className="fw-semibold text-start p-1">
                     <DollarOutlined
@@ -362,10 +362,11 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                   </div>
                 </Card>
               </div>
-              <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
+              <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12 mb-4">
                 <Card
+                  hoverable
+                  className="cursor-pointer"
                   onClick={() => setOpenNotificationsModal(true)}
-                  style={{ cursor: "pointer" }}
                 >
                   <label className="fw-semibold text-start p-1">
                     <BellOutlined
@@ -380,7 +381,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                     {notifications.length || 0}
                   </h1>
                   <div className="dashboard-red-card text-center w-100 rounded">
-                    <label className="fw-semibold text-white p-3">
+                    <label className="fw-semibold text-white cursor-pointer p-3">
                       Reciente:{" "}
                       {
                         latestCollectorAndCollectorPayment.latest_approved_transaction
@@ -391,12 +392,12 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               </div>
             </div>
           </div>
-          <div className="d-flex justify-content-end col-1">
+          <div className="d-flex justify-content-end col-md-1 col-sm-12 mb-5">
             <LogoutCard />
           </div>
         </div>
 
-        <Card className="mt-4 mb-5">
+        <Card className="mb-5">
           <div className="row">
             <div className="col-md-6 col-sm-6 text-start">
               <label className="fw-semibold fs-5 text-black ms-3 text-black">

@@ -16,12 +16,6 @@
 
 .dashboard-user-card {
   background-color: var(--gray-transparent);
-  cursor: pointer;
-}
-
-.dashboard-red-card label,
-.dashboard-user-card label {
-  cursor: pointer;
 }
 
 .dashboard-user-card label {
