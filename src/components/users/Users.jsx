@@ -260,6 +260,7 @@ const Users = () => {
           setAlertMessage={messageAlert}
           getUsers={getUsers}
         />
+
         <SetNewUserRoleModal
           isOpen={showSetNewUserRoleModalOpen}
           isClosed={() => setShowSetNewUserRoleModalOpen(false)}

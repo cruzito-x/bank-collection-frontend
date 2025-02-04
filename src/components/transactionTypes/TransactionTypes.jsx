@@ -232,6 +232,7 @@ const TransactionTypes = () => {
           setAlertMessage={messageAlert}
           getTransactionsTypes={getTransactionsTypes}
         />
+        
         <EditTransactionTypeModal
           isOpen={isEditTransactionTypeModalOpen}
           isClosed={() => setIsEditTransactionTypeModalOpen(false)}

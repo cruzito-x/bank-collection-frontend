@@ -314,6 +314,7 @@ const DashboardCharts = ({
               ? "d-flex justify-content-center align-items-center h-100"
               : ""
           }`}
+          bodyStyle={{ padding: 0 }}
         >
           {transactionsByDate.length === 0 ? (
             <Empty />
@@ -332,6 +333,7 @@ const DashboardCharts = ({
               ? "d-flex justify-content-center align-items-center h-100"
               : ""
           }`}
+          bodyStyle={{ padding: 0 }}
         >
           {transactionsByCollector.length === 0 ? (
             <Empty />
@@ -341,6 +343,7 @@ const DashboardCharts = ({
         </Card>
         <Card
           className={`${transactionsByDenomination.length === 0 ? "" : ""}`}
+          bodyStyle={{ padding: 0 }}
         >
           {transactionsByDenomination.length === 0 ? (
             <Empty />

@@ -532,10 +532,12 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           setAlertMessage={messageAlert}
           notificationsData={notifications}
         />
+
         <AddNewCollectorModal
           isOpen={isCollectorModalOpen}
           isClosed={() => setIsCollectorModalOpen(false)}
         />
+        
         <PaymentsCollectorsModal
           isOpen={openRegisterPayment}
           isClosed={() => setOpenRegisterPayment(false)}

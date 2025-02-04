@@ -295,19 +295,21 @@ const Transactions = () => {
               />
             </div>
           </div>
-          <AddNewTransactionModal
-            isOpen={isNewTransactionModalOpen}
-            isClosed={() => setIsNewTransactionModalOpen(false)}
-            transactionTypes={transactionsTypes}
-            getTransactions={getTransactions}
-            setAlertMessage={messageAlert}
-          />
-          <TransactionDetailsModal
-            isOpen={isTransactionDetailsModalOpen}
-            isClosed={() => setIsTransactionDetailsModalOpen(false)}
-            transactionData={selectedTransaction}
-          />
         </Card>
+
+        <AddNewTransactionModal
+          isOpen={isNewTransactionModalOpen}
+          isClosed={() => setIsNewTransactionModalOpen(false)}
+          transactionTypes={transactionsTypes}
+          getTransactions={getTransactions}
+          setAlertMessage={messageAlert}
+        />
+
+        <TransactionDetailsModal
+          isOpen={isTransactionDetailsModalOpen}
+          isClosed={() => setIsTransactionDetailsModalOpen(false)}
+          transactionData={selectedTransaction}
+        />
       </div>
     </Content>
   );
