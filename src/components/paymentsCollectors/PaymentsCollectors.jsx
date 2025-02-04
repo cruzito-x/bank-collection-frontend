@@ -286,6 +286,7 @@ const PaymentsCollectors = () => {
             </div>
           </div>
         </Card>
+        
         <PaymentsCollectorsModal
           isOpen={openRegisterPayment}
           isClosed={() => setOpenRegisterPayment(false)}

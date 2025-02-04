@@ -2,6 +2,7 @@ import {
   Breadcrumb,
   Button,
   Card,
+  Form,
   Input,
   Layout,
   message,
@@ -15,6 +16,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import EditUserModal from "../../utils/modals/users/EditUserModal";
 import SetNewUserRoleModal from "../../utils/modals/users/SetNewUserRoleModal";
+import { useForm } from "antd/es/form/Form";
 
 const Users = () => {
   const { authState } = useAuth();
@@ -26,8 +28,8 @@ const Users = () => {
   const [selectedUser, setSelectedUser] = useState([]);
   const [loading, setLoading] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
-
   const { Content } = Layout;
+  const [form] = useForm();
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
@@ -65,43 +67,50 @@ const Users = () => {
         },
       });
 
-      const data = await response.json();
-      const usersRow = data.map((user) => ({
-        ...user,
-        actions: (
-          <>
-            <Button
-              className="ant-btn-edit"
-              type="primary"
-              onClick={() => setShowEditUserModalOpen(true)}
-            >
-              Editar
-            </Button>
-            <Popconfirm
-              title="Eliminar Usuario"
-              description="¿Está seguro de Eliminar este Registro?"
-              onConfirm={() => deleteUser(user)}
-              okText="Sí"
-              cancelText="No"
-            >
-              <Button className="ms-2 me-2" type="primary" danger>
-                Eliminar
+      const usersData = await response.json();
+
+      if (response.status === 200) {
+        const users = usersData.map((user) => ({
+          ...user,
+          actions: (
+            <>
+              <Button
+                className="ant-btn-edit"
+                type="primary"
+                onClick={() => setShowEditUserModalOpen(true)}
+              >
+                Editar
               </Button>
-            </Popconfirm>
-            <Button
-              type="primary"
-              onClick={() => setShowSetNewUserRoleModalOpen(true)}
-            >
-              {" "}
-              Asignar Rol{" "}
-            </Button>
-          </>
-        ),
-      }));
-      setUsers(usersRow);
-      setLoading(false);
+              <Popconfirm
+                title="Eliminar Usuario"
+                description="¿Está seguro de Eliminar este Registro?"
+                onConfirm={() => deleteUser(user)}
+                okText="Sí"
+                cancelText="No"
+              >
+                <Button className="ms-2 me-2" type="primary" danger>
+                  Eliminar
+                </Button>
+              </Popconfirm>
+              <Button
+                type="primary"
+                onClick={() => setShowSetNewUserRoleModalOpen(true)}
+              >
+                {" "}
+                Asignar Rol{" "}
+              </Button>
+            </>
+          ),
+        }));
+
+        setUsers(users);
+      } else {
+        messageAlert.error(usersData.message);
+      }
     } catch (error) {
       console.error("Error fetching roles: ", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -120,16 +129,79 @@ const Users = () => {
         }
       );
 
-      const updatedUser = await response.json();
+      const deletedUser = await response.json();
 
       if (response.status === 200) {
-        messageAlert.success(updatedUser.message);
+        messageAlert.success(deletedUser.message);
         getUsers();
       } else {
-        messageAlert.error(updatedUser.message);
+        messageAlert.error(deletedUser.message);
       }
     } catch (error) {
       messageAlert.error("Hubo un Error al Intentar Eliminar al Usuario");
+    }
+  };
+
+  const searchUser = async (user) => {
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/users/search-user?username=${
+          user.username ?? ""
+        }&role=${user.role ?? ""}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const usersData = await response.json();
+
+      if (response.status === 200) {
+        const users = usersData.map((user) => ({
+          ...user,
+          actions: (
+            <>
+              <Button
+                className="ant-btn-edit"
+                type="primary"
+                onClick={() => setShowEditUserModalOpen(true)}
+              >
+                Editar
+              </Button>
+              <Popconfirm
+                title="Eliminar Usuario"
+                description="¿Está seguro de Eliminar este Registro?"
+                onConfirm={() => deleteUser(user)}
+                okText="Sí"
+                cancelText="No"
+              >
+                <Button className="ms-2 me-2" type="primary" danger>
+                  Eliminar
+                </Button>
+              </Popconfirm>
+              <Button
+                type="primary"
+                onClick={() => setShowSetNewUserRoleModalOpen(true)}
+              >
+                {" "}
+                Asignar Rol{" "}
+              </Button>
+            </>
+          ),
+        }));
+
+        setUsers(users);
+      } else {
+        messageAlert.error(usersData.message);
+      }
+    } catch (error) {
+      console.error("Error fetching roles: ", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -207,29 +279,40 @@ const Users = () => {
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold text-black"> Nombre </label>
-              <Input
-                placeholder="Nombre de Usuario"
-                prefix={<UserOutlined />}
-                style={{
-                  width: 183,
-                }}
-              />
-            </div>
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold text-black"> Rol </label>
-              <Select
-                defaultValue="Supervisor"
-                prefix={<CrownOutlined />}
-                style={{
-                  width: 183,
-                }}
-                // onChange={quickFilter}
-                options={roles}
-              />
-            </div>
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <Button type="primary"> Buscar </Button>
+              <Form
+                layout="inline"
+                form={form}
+                className="align-items-center"
+                onFinish={searchUser}
+              >
+                <label className="me-2 fw-semibold text-black"> Nombre </label>
+                <Form.Item name="username" initialValue="">
+                  <Input
+                    placeholder="Nombre de Usuario"
+                    prefix={<UserOutlined />}
+                    style={{
+                      width: 183,
+                    }}
+                  />
+                </Form.Item>
+                <label className="me-2 fw-semibold text-black"> Rol </label>
+                <Form.Item name="role" initialValue={1}>
+                  <Select
+                    defaultValue={1}
+                    prefix={<CrownOutlined />}
+                    style={{
+                      width: 183,
+                    }}
+                    options={roles}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    {" "}
+                    Buscar{" "}
+                  </Button>
+                </Form.Item>
+              </Form>
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">

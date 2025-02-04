@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   DatePicker,
+  Form,
   Input,
   Layout,
   message,
@@ -13,21 +14,19 @@ import { BankOutlined, HistoryOutlined, UserOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { useAuth } from "../../contexts/authContext/AuthContext";
+import { useForm } from "antd/es/form/Form";
 
 const Audit = () => {
   const { authState } = useAuth();
   const [audit, setAudit] = useState([]);
+  const [date, setDate] = useState(null);
   const [loading, setLoading] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
-
   const { Content } = Layout;
+  const [form] = useForm();
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
-
-  const selectDate = (date, dateString) => {
-    console.log(date, dateString);
-  };
 
   useEffect(() => {
     document.title = "Banco Bambú | Auditoría";
@@ -42,17 +41,59 @@ const Audit = () => {
         method: "GET",
       });
 
-      const auditsData = await response.json();
-      const audit = auditsData.map((audit) => {
-        return {
-          ...audit,
-          datetime: moment(audit.datetime).format("DD/MM/YYYY - hh:mm A"),
-        };
-      });
+      const auditData = await response.json();
 
-      setAudit(audit);
+      if (response.status === 200) {
+        const audit = auditData.map((audit) => {
+          return {
+            ...audit,
+            datetime: moment(audit.datetime).format("DD/MM/YYYY - hh:mm A"),
+          };
+        });
+
+        setAudit(audit);
+      } else {
+        messageAlert.error(auditData.message);
+      }
+    } catch (error) {
+      messageAlert.error("Error al Obtener la Auditoría");
+    } finally {
       setLoading(false);
-    } catch (error) {}
+    }
+  };
+
+  const searchAudit = async (audit) => {
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/audit/search-audit?username=${
+          audit.username ?? ""
+        }&date=${audit.date ?? ""}`,
+        {
+          method: "GET",
+        }
+      );
+
+      const auditData = await response.json();
+
+      if (response.status === 200) {
+        const audit = auditData.map((audit) => {
+          return {
+            ...audit,
+            datetime: moment(audit.datetime).format("DD/MM/YYYY - hh:mm A"),
+          };
+        });
+
+        setAudit(audit);
+      } else {
+        messageAlert.error(auditData.message);
+      }
+    } catch (error) {
+      messageAlert.error("Error al Obtener la Auditoría");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const auditTableColumns = [
@@ -129,32 +170,45 @@ const Audit = () => {
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold text-black"> Nombre </label>
-              <Input
-                placeholder="Nombre de Usuario"
-                prefix={<UserOutlined />}
-                style={{
-                  width: 183,
-                }}
-              />
-            </div>
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold text-black"> Fecha </label>
-              <DatePicker
-                className="cursor-pointer"
-                onChange={selectDate}
-                placeholder="Seleccionar Fecha"
-                style={{ width: 183 }}
-              />
-            </div>
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <Button type="primary"> Buscar </Button>
+              <Form
+                layout="inline"
+                form={form}
+                className="align-items-center"
+                onFinish={searchAudit}
+              >
+                <label className="me-2 fw-semibold text-black"> Nombre </label>
+                <Form.Item name="username" initialValue="">
+                  <Input
+                    placeholder="Nombre de Usuario"
+                    prefix={<UserOutlined />}
+                    style={{
+                      width: 183,
+                    }}
+                  />
+                </Form.Item>
+                <label className="me-2 fw-semibold text-black"> Fecha </label>
+                <Form.Item name="date" initialValue="">
+                  <DatePicker
+                    className="cursor-pointer"
+                    value={date}
+                    onChange={(date) => setDate(date)}
+                    format="DD/MM/YYYY"
+                    placeholder="00/00/0000"
+                    style={{ width: 183 }}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    {" "}
+                    Buscar{" "}
+                  </Button>
+                </Form.Item>
+              </Form>
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">
               <Table
-                loading={loading}
                 dataSource={audit}
                 columns={auditTableColumns}
                 pagination={{
@@ -163,6 +217,7 @@ const Audit = () => {
                   showTotal: (total) => `Total: ${total} registro(s)`,
                   hideOnSinglePage: true,
                 }}
+                loading={loading}
               />
             </div>
           </div>

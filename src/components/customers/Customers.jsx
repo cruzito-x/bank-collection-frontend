@@ -338,6 +338,7 @@ const Customers = () => {
             </div>
           </div>
         </Card>
+        
         <EditCustomerModal
           isOpen={isCustomerEditModalOpen}
           isClosed={() => setIsCustomerEditModalOpen(false)}

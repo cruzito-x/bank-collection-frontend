@@ -522,6 +522,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
             />
           </div>
         </Card>
+        
         <NotificationsModal
           isOpen={openNotificationsModal}
           isClosed={() => setOpenNotificationsModal(false)}

@@ -130,7 +130,9 @@ const Services = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/services/search-service?collector=${service.collector ?? ""}&service=${service.service ?? ""}`,
+        `http://localhost:3001/services/search-service?collector=${
+          service.collector ?? ""
+        }&service=${service.service ?? ""}`,
         {
           method: "GET",
         }
@@ -299,7 +301,10 @@ const Services = () => {
                   />
                 </Form.Item>
                 <Form.Item>
-                  <Button type="primary" htmlType="submit"> Buscar </Button>
+                  <Button type="primary" htmlType="submit">
+                    {" "}
+                    Buscar{" "}
+                  </Button>
                 </Form.Item>
               </Form>
             </div>
@@ -332,6 +337,7 @@ const Services = () => {
             </div>
           </div>
         </Card>
+
         <AddNewServiceModal
           isOpen={isServicePaymentsModalOpen}
           isClosed={() => setIsServicePaymentsModalOpen(false)}

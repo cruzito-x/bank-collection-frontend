@@ -2,6 +2,7 @@ import {
   Breadcrumb,
   Button,
   Card,
+  Form,
   Input,
   Layout,
   message,
@@ -19,6 +20,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import moment from "moment";
 import ApprovalTransactionDetails from "../../utils/modals/approvals/ApprovalTransactionDetails";
+import { useForm } from "antd/es/form/Form";
 
 const Approvals = () => {
   const { authState } = useAuth();
@@ -26,9 +28,11 @@ const Approvals = () => {
   const [isTransactionDetailsModalOpen, setIsTransactionDetailsModalOpen] =
     useState(false);
   const [selectedApproval, setSelectedApproval] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
+  const [form] = useForm();
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
@@ -39,80 +43,93 @@ const Approvals = () => {
   }, []);
 
   const getApprovals = async () => {
-    const response = await fetch("http://localhost:3001/approvals", {
-      method: "GET",
-    });
+    setLoading(true);
 
-    const approvalsData = await response.json();
-    const approvals = approvalsData.map((approval) => {
-      return {
-        ...approval,
-        amount: "$" + approval.amount,
-        authorized_by:
-          approval.authorized_by === null
-            ? "En Espera de Aprobación"
-            : approval.authorized_by,
-        datetime: moment(approval.datetime).format("DD/MM/YYYY - hh:mm A"),
-        authorized_at:
-          approval.authorized_at === null
-            ? "0000/00/00 - 00:00"
-            : moment(approval.authorized_at).format("DD/MM/YYYY - hh:mm A"),
-        actions:
-          approval.authorized_by != null ? (
-            <>
-              <Button
-                type="primary"
-                onClick={() => setIsTransactionDetailsModalOpen(true)}
-              >
-                Ver Detalles
-              </Button>
-            </>
-          ) : (
-            <>
-              <Popconfirm
-                title="¿Desea Rechazar Esta Transacción?"
-                onConfirm={() => {
-                  updateTransactionStatus(
-                    approval.approval_id,
-                    approval.transaction_id,
-                    0,
-                    1
-                  );
-                }}
-                okText="Sí"
-                cancelText="No"
-                okButtonProps={{
-                  loading: updatingStatus,
-                }}
-                cancelButtonProps={{
-                  loading: updatingStatus,
-                }}
-              >
-                <Button type="primary" danger loading={updatingStatus}>
-                  Rechazar
-                </Button>
-              </Popconfirm>
-              <Button
-                className="ms-2"
-                type="primary"
-                onClick={() =>
-                  updateTransactionStatus(
-                    approval.approval_id,
-                    approval.transaction_id,
-                    1,
-                    1
-                  )
-                }
-                loading={updatingStatus}
-              >
-                Aprobar
-              </Button>
-            </>
-          ),
-      };
-    });
+    try {
+      const response = await fetch("http://localhost:3001/approvals", {
+        method: "GET",
+      });
 
-    setApprovals(approvals);
+      const approvalsData = await response.json();
+
+      if (response.status === 200) {
+        const approvals = approvalsData.map((approval) => {
+          return {
+            ...approval,
+            amount: "$" + approval.amount,
+            authorized_by:
+              approval.authorized_by === null
+                ? "En Espera de Aprobación"
+                : approval.authorized_by,
+            datetime: moment(approval.datetime).format("DD/MM/YYYY - hh:mm A"),
+            authorized_at:
+              approval.authorized_at === null
+                ? "0000/00/00 - 00:00"
+                : moment(approval.authorized_at).format("DD/MM/YYYY - hh:mm A"),
+            actions:
+              approval.authorized_by != null ? (
+                <>
+                  <Button
+                    type="primary"
+                    onClick={() => setIsTransactionDetailsModalOpen(true)}
+                  >
+                    Ver Detalles
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Popconfirm
+                    title="¿Desea Rechazar Esta Transacción?"
+                    onConfirm={() => {
+                      updateTransactionStatus(
+                        approval.approval_id,
+                        approval.transaction_id,
+                        0,
+                        authState.user_id
+                      );
+                    }}
+                    okText="Sí"
+                    cancelText="No"
+                    okButtonProps={{
+                      loading: updatingStatus,
+                    }}
+                    cancelButtonProps={{
+                      loading: updatingStatus,
+                    }}
+                  >
+                    <Button type="primary" danger loading={updatingStatus}>
+                      Rechazar
+                    </Button>
+                  </Popconfirm>
+                  <Button
+                    className="ms-2"
+                    type="primary"
+                    onClick={() =>
+                      updateTransactionStatus(
+                        approval.approval_id,
+                        approval.transaction_id,
+                        1,
+                        authState.user_id
+                      )
+                    }
+                    loading={updatingStatus}
+                  >
+                    Aprobar
+                  </Button>
+                </>
+              ),
+          };
+        });
+
+        setApprovals(approvals);
+      } else {
+        messageAlert.error(approvalsData.message);
+      }
+    } catch (error) {
+      messageAlert.error("Error al Obtener las Aprobaciones");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const updateTransactionStatus = async (
@@ -147,6 +164,101 @@ const Approvals = () => {
     } catch (error) {
       messageAlert.error("Error al actualizar el estado de la transacción.");
       setUpdatingStatus(false);
+    }
+  };
+
+  const searchApproval = async (approval) => {
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/approvals/search-approval?transaction_id=${
+          approval.transaction_id ?? ""
+        }&authorized_by=${approval.authorizer ?? ""}`,
+        {
+          method: "GET",
+        }
+      );
+
+      const approvalsData = await response.json();
+
+      if (response.status === 200) {
+        const approvals = approvalsData.map((approval) => {
+          return {
+            ...approval,
+            amount: "$" + approval.amount,
+            authorized_by:
+              approval.authorized_by === null
+                ? "En Espera de Aprobación"
+                : approval.authorized_by,
+            datetime: moment(approval.datetime).format("DD/MM/YYYY - hh:mm A"),
+            authorized_at:
+              approval.authorized_at === null
+                ? "0000/00/00 - 00:00"
+                : moment(approval.authorized_at).format("DD/MM/YYYY - hh:mm A"),
+            actions:
+              approval.authorized_by != null ? (
+                <>
+                  <Button
+                    type="primary"
+                    onClick={() => setIsTransactionDetailsModalOpen(true)}
+                  >
+                    Ver Detalles
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Popconfirm
+                    title="¿Desea Rechazar Esta Transacción?"
+                    onConfirm={() => {
+                      updateTransactionStatus(
+                        approval.approval_id,
+                        approval.transaction_id,
+                        0,
+                        authState.user_id
+                      );
+                    }}
+                    okText="Sí"
+                    cancelText="No"
+                    okButtonProps={{
+                      loading: updatingStatus,
+                    }}
+                    cancelButtonProps={{
+                      loading: updatingStatus,
+                    }}
+                  >
+                    <Button type="primary" danger loading={updatingStatus}>
+                      Rechazar
+                    </Button>
+                  </Popconfirm>
+                  <Button
+                    className="ms-2"
+                    type="primary"
+                    onClick={() =>
+                      updateTransactionStatus(
+                        approval.approval_id,
+                        approval.transaction_id,
+                        1,
+                        authState.user_id
+                      )
+                    }
+                    loading={updatingStatus}
+                  >
+                    Aprobar
+                  </Button>
+                </>
+              ),
+          };
+        });
+
+        setApprovals(approvals);
+      } else {
+        messageAlert.error(approvalsData.message);
+      }
+    } catch (error) {
+      messageAlert.error("Error al Obtener las Aprobaciones");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -230,30 +342,45 @@ const Approvals = () => {
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold text-black">
-                {" "}
-                Código de Transacción{" "}
-              </label>
-              <Input
-                placeholder="00001"
-                prefix={<NumberOutlined />}
-                style={{
-                  width: 183,
-                }}
-              />
-            </div>
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <label className="me-2 fw-semibold text-black"> Nombre </label>
-              <Input
-                placeholder="Nombre de Usuario"
-                prefix={<UserOutlined />}
-                style={{
-                  width: 183,
-                }}
-              />
-            </div>
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <Button type="primary"> Buscar </Button>
+              <Form
+                layout="inline"
+                form={form}
+                className="align-items-center"
+                onFinish={searchApproval}
+              >
+                <label className="me-2 fw-semibold text-black">
+                  {" "}
+                  Código de Transacción{" "}
+                </label>
+                <Form.Item name="transaction_id" initialValue="">
+                  <Input
+                    placeholder="TSC000000"
+                    prefix={<NumberOutlined />}
+                    style={{
+                      width: 183,
+                    }}
+                  />
+                </Form.Item>
+                <label className="me-2 fw-semibold text-black">
+                  {" "}
+                  Autorizado Por{" "}
+                </label>
+                <Form.Item name="authorizer">
+                  <Input
+                    placeholder="Nombre de Usuario"
+                    prefix={<UserOutlined />}
+                    style={{
+                      width: 183,
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    {" "}
+                    Buscar{" "}
+                  </Button>
+                </Form.Item>
+              </Form>
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
@@ -271,6 +398,7 @@ const Approvals = () => {
                     `Total: ${total} Transacción(es) Aprobada(s)`,
                   hideOnSinglePage: true,
                 }}
+                loading={loading}
               />
             </div>
           </div>

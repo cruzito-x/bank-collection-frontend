@@ -320,6 +320,7 @@ const Collectors = () => {
             </div>
           </div>
         </Card>
+        
         <AddNewCollectorModal
           isOpen={isCollectorPaymentsModalOpen}
           isClosed={() => setIsCollectorPaymentsModalOpen(false)}

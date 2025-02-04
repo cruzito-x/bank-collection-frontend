@@ -364,6 +364,7 @@ const Transactions = () => {
                 initialValue=""
               >
                 <DatePicker
+                  className="cusor-pointer"
                   value={date}
                   onChange={(date) => setDate(date)}
                   format="DD/MM/YYYY"
