@@ -42,7 +42,7 @@ const Login = () => {
       }
     } catch (error) {
       messageAlert.error(
-        "Ha Ocurrido un Error Inesperado, Por Favor Intente de Nuevo"
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
       );
     }
     setLoading(false);
@@ -63,7 +63,7 @@ const Login = () => {
               width: "75px",
               height: "75px",
               borderRadius: "50%",
-              marginTop: 25
+              marginTop: 25,
             }}
             alt="Logo del Sistema"
           />

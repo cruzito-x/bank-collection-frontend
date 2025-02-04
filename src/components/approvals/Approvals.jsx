@@ -126,7 +126,9 @@ const Approvals = () => {
         messageAlert.error(approvalsData.message);
       }
     } catch (error) {
-      messageAlert.error("Error al Obtener las Aprobaciones");
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     } finally {
       setLoading(false);
     }
@@ -155,110 +157,127 @@ const Approvals = () => {
 
       if (response.status === 200) {
         messageAlert.success(transactionStatus.message);
-        setUpdatingStatus(false);
         getApprovals();
       } else {
         messageAlert.error(transactionStatus.message);
-        setUpdatingStatus(false);
       }
     } catch (error) {
-      messageAlert.error("Error al actualizar el estado de la transacción.");
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
+    } finally {
       setUpdatingStatus(false);
     }
   };
 
   const searchApproval = async (approval) => {
-    setLoading(true);
+    if (
+      (approval.transaction_id === undefined ||
+        approval.transaction_id === "") &&
+      (approval.authorizer === undefined || approval.authorizer === "")
+    ) {
+      messageAlert.warning("Introduzca al Menos un Criterio de Búsqueda");
+      getApprovals();
+      return;
+    } else {
+      setLoading(true);
 
-    try {
-      const response = await fetch(
-        `http://localhost:3001/approvals/search-approval?transaction_id=${
-          approval.transaction_id ?? ""
-        }&authorized_by=${approval.authorizer ?? ""}`,
-        {
-          method: "GET",
-        }
-      );
+      try {
+        const response = await fetch(
+          `http://localhost:3001/approvals/search-approval?transaction_id=${
+            approval.transaction_id ?? ""
+          }&authorized_by=${approval.authorizer ?? ""}`,
+          {
+            method: "GET",
+          }
+        );
 
-      const approvalsData = await response.json();
+        const approvalsData = await response.json();
 
-      if (response.status === 200) {
-        const approvals = approvalsData.map((approval) => {
-          return {
-            ...approval,
-            amount: "$" + approval.amount,
-            authorized_by:
-              approval.authorized_by === null
-                ? "En Espera de Aprobación"
-                : approval.authorized_by,
-            datetime: moment(approval.datetime).format("DD/MM/YYYY - hh:mm A"),
-            authorized_at:
-              approval.authorized_at === null
-                ? "0000/00/00 - 00:00"
-                : moment(approval.authorized_at).format("DD/MM/YYYY - hh:mm A"),
-            actions:
-              approval.authorized_by != null ? (
-                <>
-                  <Button
-                    type="primary"
-                    onClick={() => setIsTransactionDetailsModalOpen(true)}
-                  >
-                    Ver Detalles
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Popconfirm
-                    title="¿Desea Rechazar Esta Transacción?"
-                    onConfirm={() => {
-                      updateTransactionStatus(
-                        approval.approval_id,
-                        approval.transaction_id,
-                        0,
-                        authState.user_id
-                      );
-                    }}
-                    okText="Sí"
-                    cancelText="No"
-                    okButtonProps={{
-                      loading: updatingStatus,
-                    }}
-                    cancelButtonProps={{
-                      loading: updatingStatus,
-                    }}
-                  >
-                    <Button type="primary" danger loading={updatingStatus}>
-                      Rechazar
-                    </Button>
-                  </Popconfirm>
-                  <Button
-                    className="ms-2"
-                    type="primary"
-                    onClick={() =>
-                      updateTransactionStatus(
-                        approval.approval_id,
-                        approval.transaction_id,
-                        1,
-                        authState.user_id
-                      )
-                    }
-                    loading={updatingStatus}
-                  >
-                    Aprobar
-                  </Button>
-                </>
+        if (response.status === 200) {
+          const approvals = approvalsData.map((approval) => {
+            return {
+              ...approval,
+              amount: "$" + approval.amount,
+              authorized_by:
+                approval.authorized_by === null
+                  ? "En Espera de Aprobación"
+                  : approval.authorized_by,
+              datetime: moment(approval.datetime).format(
+                "DD/MM/YYYY - hh:mm A"
               ),
-          };
-        });
+              authorized_at:
+                approval.authorized_at === null
+                  ? "0000/00/00 - 00:00"
+                  : moment(approval.authorized_at).format(
+                      "DD/MM/YYYY - hh:mm A"
+                    ),
+              actions:
+                approval.authorized_by != null ? (
+                  <>
+                    <Button
+                      type="primary"
+                      onClick={() => setIsTransactionDetailsModalOpen(true)}
+                    >
+                      Ver Detalles
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Popconfirm
+                      title="¿Desea Rechazar Esta Transacción?"
+                      onConfirm={() => {
+                        updateTransactionStatus(
+                          approval.approval_id,
+                          approval.transaction_id,
+                          0,
+                          authState.user_id
+                        );
+                      }}
+                      okText="Sí"
+                      cancelText="No"
+                      okButtonProps={{
+                        loading: updatingStatus,
+                      }}
+                      cancelButtonProps={{
+                        loading: updatingStatus,
+                      }}
+                    >
+                      <Button type="primary" danger loading={updatingStatus}>
+                        Rechazar
+                      </Button>
+                    </Popconfirm>
+                    <Button
+                      className="ms-2"
+                      type="primary"
+                      onClick={() =>
+                        updateTransactionStatus(
+                          approval.approval_id,
+                          approval.transaction_id,
+                          1,
+                          authState.user_id
+                        )
+                      }
+                      loading={updatingStatus}
+                    >
+                      Aprobar
+                    </Button>
+                  </>
+                ),
+            };
+          });
 
-        setApprovals(approvals);
-      } else {
-        messageAlert.error(approvalsData.message);
+          setApprovals(approvals);
+        } else {
+          messageAlert.error(approvalsData.message);
+        }
+      } catch (error) {
+        messageAlert.error(
+          "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+        );
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      messageAlert.error("Error al Obtener las Aprobaciones");
-    } finally {
-      setLoading(false);
     }
   };
 

@@ -2,7 +2,12 @@ import { Button, Col, Form, Input, Modal, Row } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 
-const AddNewTransactionTypeModal = ({ isOpen, isClosed, setAlertMessage, getTransactionsTypes }) => {
+const AddNewTransactionTypeModal = ({
+  isOpen,
+  isClosed,
+  setAlertMessage,
+  getTransactionsTypes,
+}) => {
   const [sendingData, setSendingData] = useState(false);
   const [form] = Form.useForm();
 
@@ -25,16 +30,17 @@ const AddNewTransactionTypeModal = ({ isOpen, isClosed, setAlertMessage, getTran
 
       if (response.status === 200) {
         setAlertMessage.success(savedTransactionType.message);
-        setSendingData(false);
         isClosed();
         getTransactionsTypes();
         form.resetFields();
       } else {
         setAlertMessage.error(savedTransactionType.message);
-        setSendingData(false);
       }
     } catch (error) {
-      setAlertMessage.error("Error al Guardar el Nuevo Tipo de Transacción");
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
+    } finally {
       setSendingData(false);
     }
   };

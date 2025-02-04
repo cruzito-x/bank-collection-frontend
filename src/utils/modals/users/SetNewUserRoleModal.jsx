@@ -47,8 +47,11 @@ const SetNewUserRoleModal = ({
         setAlertMessage.error(updatedUser.message);
       }
     } catch (error) {
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
+    } finally {
       setSendingData(false);
-      setAlertMessage.error("Error al Actualizar Rol del Usuario");
     }
   };
 

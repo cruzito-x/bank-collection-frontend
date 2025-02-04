@@ -49,7 +49,7 @@ const EditServiceModal = ({
       }
     } catch (error) {
       setAlertMessage.error(
-        "Hubo un Error al Actualizar los Datos del Servicio"
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
       );
     } finally {
       setSendingData(false);

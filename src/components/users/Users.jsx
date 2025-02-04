@@ -52,7 +52,9 @@ const Users = () => {
       const data = await response.json();
       setRoles(data);
     } catch (error) {
-      console.error("Error fetching roles: ", error);
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     }
   };
 
@@ -108,7 +110,9 @@ const Users = () => {
         messageAlert.error(usersData.message);
       }
     } catch (error) {
-      console.error("Error fetching roles: ", error);
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     } finally {
       setLoading(false);
     }
@@ -138,70 +142,83 @@ const Users = () => {
         messageAlert.error(deletedUser.message);
       }
     } catch (error) {
-      messageAlert.error("Hubo un Error al Intentar Eliminar al Usuario");
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     }
   };
 
   const searchUser = async (user) => {
-    setLoading(true);
+    if (
+      (user.username === undefined || user.username === "") &&
+      (user.role === undefined || user.role === "")
+    ) {
+      messageAlert.warning("Introduzca al Menos un Criterio de Búsqueda");
+      getUsers();
+      return;
+    } else {
+      setLoading(true);
 
-    try {
-      const response = await fetch(
-        `http://localhost:3001/users/search-user?username=${
-          user.username ?? ""
-        }&role=${user.role ?? ""}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      try {
+        const response = await fetch(
+          `http://localhost:3001/users/search-user?username=${
+            user.username ?? ""
+          }&role=${user.role ?? ""}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-      const usersData = await response.json();
+        const usersData = await response.json();
 
-      if (response.status === 200) {
-        const users = usersData.map((user) => ({
-          ...user,
-          actions: (
-            <>
-              <Button
-                className="ant-btn-edit"
-                type="primary"
-                onClick={() => setShowEditUserModalOpen(true)}
-              >
-                Editar
-              </Button>
-              <Popconfirm
-                title="Eliminar Usuario"
-                description="¿Está seguro de Eliminar este Registro?"
-                onConfirm={() => deleteUser(user)}
-                okText="Sí"
-                cancelText="No"
-              >
-                <Button className="ms-2 me-2" type="primary" danger>
-                  Eliminar
+        if (response.status === 200) {
+          const users = usersData.map((user) => ({
+            ...user,
+            actions: (
+              <>
+                <Button
+                  className="ant-btn-edit"
+                  type="primary"
+                  onClick={() => setShowEditUserModalOpen(true)}
+                >
+                  Editar
                 </Button>
-              </Popconfirm>
-              <Button
-                type="primary"
-                onClick={() => setShowSetNewUserRoleModalOpen(true)}
-              >
-                {" "}
-                Asignar Rol{" "}
-              </Button>
-            </>
-          ),
-        }));
+                <Popconfirm
+                  title="Eliminar Usuario"
+                  description="¿Está seguro de Eliminar este Registro?"
+                  onConfirm={() => deleteUser(user)}
+                  okText="Sí"
+                  cancelText="No"
+                >
+                  <Button className="ms-2 me-2" type="primary" danger>
+                    Eliminar
+                  </Button>
+                </Popconfirm>
+                <Button
+                  type="primary"
+                  onClick={() => setShowSetNewUserRoleModalOpen(true)}
+                >
+                  {" "}
+                  Asignar Rol{" "}
+                </Button>
+              </>
+            ),
+          }));
 
-        setUsers(users);
-      } else {
-        messageAlert.error(usersData.message);
+          setUsers(users);
+        } else {
+          messageAlert.error(usersData.message);
+        }
+      } catch (error) {
+        messageAlert.error(
+          "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+        );
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error fetching roles: ", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -320,7 +337,6 @@ const Users = () => {
               <Table
                 dataSource={users}
                 columns={usersTableColumns}
-                loading={loading}
                 onRow={(record) => ({
                   onClick: () => setSelectedUser(record),
                 })}
@@ -331,6 +347,7 @@ const Users = () => {
                     `Total: ${total} usuario(s) registrado(s)`,
                   hideOnSinglePage: true,
                 }}
+                loading={loading}
               />
             </div>
           </div>
@@ -340,17 +357,17 @@ const Users = () => {
           isOpen={showEditUserModalOpen}
           isClosed={() => setShowEditUserModalOpen(false)}
           userData={selectedUser}
-          setAlertMessage={messageAlert}
           getUsers={getUsers}
+          setAlertMessage={messageAlert}
         />
 
         <SetNewUserRoleModal
           isOpen={showSetNewUserRoleModalOpen}
           isClosed={() => setShowSetNewUserRoleModalOpen(false)}
           userData={selectedUser}
-          setAlertMessage={messageAlert}
           getUsers={getUsers}
           roles={roles}
+          setAlertMessage={messageAlert}
         />
       </div>
     </Content>

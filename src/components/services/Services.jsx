@@ -95,7 +95,9 @@ const Services = () => {
         messageAlert.error(servicesData.message);
       }
     } catch (error) {
-      messageAlert.error("Error al Obtener los Datos de Servicios");
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     } finally {
       setLoading(false);
     }
@@ -126,62 +128,75 @@ const Services = () => {
   };
 
   const searchService = async (service) => {
-    setLoading(true);
+    if (
+      (service.collector === undefined || service.collector === "") &&
+      (service.service === undefined || service.service === "")
+    ) {
+      messageAlert.warning("Introduzca al Menos un Criterio de Búsqueda");
+      getServices();
+      return;
+    } else {
+      setLoading(true);
 
-    try {
-      const response = await fetch(
-        `http://localhost:3001/services/search-service?collector=${
-          service.collector ?? ""
-        }&service=${service.service ?? ""}`,
-        {
-          method: "GET",
-        }
-      );
+      try {
+        const response = await fetch(
+          `http://localhost:3001/services/search-service?collector=${
+            service.collector ?? ""
+          }&service=${service.service ?? ""}`,
+          {
+            method: "GET",
+          }
+        );
 
-      const servicesData = await response.json();
+        const servicesData = await response.json();
 
-      if (response.status === 200) {
-        const services = servicesData.map((service) => ({
-          ...service,
-          actions: (
-            <>
-              <Button
-                className="ant-btn-edit"
-                type="primary"
-                onClick={() => setIsServiceEditModalOpen(true)}
-              >
-                Editar
-              </Button>
-              <Popconfirm
-                title="Eliminar Colector"
-                description="¿Está seguro de Eliminar este Registro?"
-                onConfirm={() => deleteService(service)}
-                okText="Sí"
-                cancelText="No"
-              >
-                <Button className="ms-2 me-2" type="primary" danger>
-                  Eliminar
+        if (response.status === 200) {
+          const services = servicesData.map((service) => ({
+            ...service,
+            actions: (
+              <>
+                <Button
+                  className="ant-btn-edit"
+                  type="primary"
+                  onClick={() => setIsServiceEditModalOpen(true)}
+                >
+                  Editar
                 </Button>
-              </Popconfirm>
-              <Button
-                type="primary"
-                onClick={() => setIsPaymentsDetailsModalOpen(true)}
-              >
-                {" "}
-                Ver Pagos{" "}
-              </Button>
-            </>
-          ),
-        }));
+                <Popconfirm
+                  title="Eliminar Colector"
+                  description="¿Está seguro de Eliminar este Registro?"
+                  onConfirm={() => deleteService(service)}
+                  okText="Sí"
+                  cancelText="No"
+                >
+                  <Button className="ms-2 me-2" type="primary" danger>
+                    Eliminar
+                  </Button>
+                </Popconfirm>
+                <Button
+                  type="primary"
+                  onClick={() => setIsPaymentsDetailsModalOpen(true)}
+                >
+                  {" "}
+                  Ver Pagos{" "}
+                </Button>
+              </>
+            ),
+          }));
 
-        setServices(services);
-      } else {
-        messageAlert.error(servicesData.message);
+          setServices(services);
+        } else if (response.status === 400) {
+          messageAlert.warning(servicesData.message);
+        } else {
+          messageAlert.error(servicesData.message);
+        }
+      } catch (error) {
+        messageAlert.error(
+          "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+        );
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      messageAlert.error("Error al Obtener los Datos de Servicios");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -322,7 +337,6 @@ const Services = () => {
               <Table
                 dataSource={services}
                 columns={servicesTableColumns}
-                loading={loading}
                 onRow={(record) => ({
                   onClick: () => setSelectedService(record),
                 })}
@@ -333,6 +347,7 @@ const Services = () => {
                     `Total: ${total} servicio(s) registrado(s)`,
                   hideOnSinglePage: true,
                 }}
+                loading={loading}
               />
             </div>
           </div>

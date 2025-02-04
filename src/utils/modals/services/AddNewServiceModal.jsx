@@ -49,7 +49,9 @@ const AddNewServiceModal = ({ isOpen, isClosed, setAlertMessage }) => {
         setAlertMessage.error(savedService.message);
       }
     } catch (error) {
-      setAlertMessage.error("Error al Guardar el Nuevo Servicio");
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     } finally {
       setSendingData(false);
     }

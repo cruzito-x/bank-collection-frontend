@@ -9,14 +9,13 @@ const TransactionsModal = ({
   isClosed,
   selectedCustomerId,
   selectedCustomerAccountNumber,
+  setAlertMessage,
 }) => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const transactionsByCustomer = async () => {
     setLoading(true);
-
-    console.log(selectedCustomerAccountNumber);
 
     try {
       const response = await fetch(
@@ -38,7 +37,9 @@ const TransactionsModal = ({
 
       setTransactions(transactions);
     } catch (error) {
-      console.error("Error al obtener las transacciones del cliente: ", error);
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     } finally {
       setLoading(false);
     }

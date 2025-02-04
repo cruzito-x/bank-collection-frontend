@@ -64,7 +64,11 @@ const PaymentsCollectorsModal = ({
       const customers = Array.from(uniqueCustomer.values());
 
       setCustomers(customers);
-    } catch (error) {}
+    } catch (error) {
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
+    }
   };
 
   const getServiceOnCollectorsChange = (value) => {
@@ -140,7 +144,9 @@ const PaymentsCollectorsModal = ({
         setAlertMessage.error(registeredPayment.message);
       }
     } catch (error) {
-      setAlertMessage.error("Error al registrar el pago. Intente de nuevo.");
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     } finally {
       setSendingDataLoading(false);
       isProcessing = false;

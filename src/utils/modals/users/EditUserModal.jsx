@@ -51,7 +51,9 @@ const EditUserModal = ({
         setAlertMessage.error(updatedUser.message);
       }
     } catch (error) {
-      setAlertMessage.error("Hubo un error al intentar actualizar el usuario");
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     }
   };
 

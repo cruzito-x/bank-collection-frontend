@@ -47,7 +47,9 @@ const EditCustomerModal = ({
 
       setSendingData(false);
     } catch (error) {
-      console.error("Error al actualizar los datos del cliente: ", error);
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     }
   };
 

@@ -56,7 +56,9 @@ const Audit = () => {
         messageAlert.error(auditData.message);
       }
     } catch (error) {
-      messageAlert.error("Error al Obtener la Auditoría");
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     } finally {
       setLoading(false);
     }
@@ -90,7 +92,9 @@ const Audit = () => {
         messageAlert.error(auditData.message);
       }
     } catch (error) {
-      messageAlert.error("Error al Obtener la Auditoría");
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     } finally {
       setLoading(false);
     }

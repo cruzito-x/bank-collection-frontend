@@ -4,7 +4,12 @@ import React, { useEffect, useState } from "react";
 import { CSVLink } from "react-csv";
 import moment from "moment";
 
-const PaymentsDetailsModal = ({ isOpen, isClosed, selectedCollector }) => {
+const PaymentsDetailsModal = ({
+  isOpen,
+  isClosed,
+  selectedCollector,
+  setAlertMessage,
+}) => {
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -28,7 +33,9 @@ const PaymentsDetailsModal = ({ isOpen, isClosed, selectedCollector }) => {
 
       setPayments(payments);
     } catch (error) {
-      console.error("Error al obtener las transacciones del cliente: ", error);
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     } finally {
       setLoading(false);
     }
@@ -131,9 +138,9 @@ const PaymentsDetailsModal = ({ isOpen, isClosed, selectedCollector }) => {
             </Button>
 
             <CSVLink
-              filename={`${moment(new Date()).format("YYYYMMDDHHmmss")} - Pagos Realizados a ${
-                selectedCollector.collector
-              }.csv`}
+              filename={`${moment(new Date()).format(
+                "YYYYMMDDHHmmss"
+              )} - Pagos Realizados a ${selectedCollector.collector}.csv`}
               headers={paymentsDetailsHeader}
               data={payments}
             >

@@ -1,12 +1,11 @@
-import { Button, Col, Form, Input, InputNumber, message, Modal, Row } from "antd";
+import { Button, Col, Form, Input, InputNumber, Modal, Row } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 
-const AddNewCollectorModal = ({ isOpen, isClosed }) => {
+const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  const [messageAlert, messageContext] = message.useMessage();
 
   const saveNewCollector = async (collector) => {
     setLoading(true);
@@ -26,13 +25,16 @@ const AddNewCollectorModal = ({ isOpen, isClosed }) => {
       const data = await response.json();
 
       if (response.status === 200) {
-        messageAlert.success(data.message);
+        setAlertMessage.success(data.message);
         isClosed();
         form.resetFields();
       } else {
-        messageAlert.error(data.message);
+        setAlertMessage.error(data.message);
       }
     } catch (error) {
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     } finally {
       setLoading(false);
     }
@@ -65,7 +67,6 @@ const AddNewCollectorModal = ({ isOpen, isClosed }) => {
       onCancel={isClosed}
       footer={null}
     >
-      {messageContext}
       <Form form={form} onFinish={saveNewCollector}>
         <label className="fw-semibold text-black"> Nombre de Colector </label>
         <Form.Item

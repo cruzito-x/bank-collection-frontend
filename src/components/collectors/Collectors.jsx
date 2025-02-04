@@ -95,7 +95,9 @@ const Collectors = () => {
         messageAlert.error(collectorsData.message);
       }
     } catch (error) {
-      messageAlert.error("Error al Obtener Colectores");
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     } finally {
       setLoading(false);
     }
@@ -126,62 +128,72 @@ const Collectors = () => {
   };
 
   const searchCollector = async (collector) => {
-    setLoading(true);
+    if (collector.collector === undefined || collector.collector === "") {
+      messageAlert.warning("Introduzca al Menos un Criterio de Búsqueda");
+      getCollectors();
+      return;
+    } else {
+      setLoading(true);
 
-    try {
-      const response = await fetch(
-        `http://localhost:3001/collectors/search-collector?collector=${
-          collector.collector ?? ""
-        }`,
-        {
-          method: "GET",
-        }
-      );
+      try {
+        const response = await fetch(
+          `http://localhost:3001/collectors/search-collector?collector=${
+            collector.collector ?? ""
+          }`,
+          {
+            method: "GET",
+          }
+        );
 
-      const collectorsData = await response.json();
+        const collectorsData = await response.json();
 
-      if (response.status === 200) {
-        const collectors = collectorsData.map((collector) => ({
-          ...collector,
-          actions: (
-            <>
-              <Button
-                className="ant-btn-edit"
-                type="primary"
-                onClick={() => setIsCollectorEditModalOpen(true)}
-              >
-                Editar
-              </Button>
-              <Popconfirm
-                title="Eliminar Colector"
-                description="¿Está seguro de Eliminar este Registro?"
-                onConfirm={() => deleteCollector(collector)}
-                okText="Sí"
-                cancelText="No"
-              >
-                <Button className="ms-2 me-2" type="primary" danger>
-                  Eliminar
+        if (response.status === 200) {
+          const collectors = collectorsData.map((collector) => ({
+            ...collector,
+            actions: (
+              <>
+                <Button
+                  className="ant-btn-edit"
+                  type="primary"
+                  onClick={() => setIsCollectorEditModalOpen(true)}
+                >
+                  Editar
                 </Button>
-              </Popconfirm>
-              <Button
-                type="primary"
-                onClick={() => setIsPaymentsDetailsModalOpen(true)}
-              >
-                {" "}
-                Ver Pagos{" "}
-              </Button>
-            </>
-          ),
-        }));
+                <Popconfirm
+                  title="Eliminar Colector"
+                  description="¿Está seguro de Eliminar este Registro?"
+                  onConfirm={() => deleteCollector(collector)}
+                  okText="Sí"
+                  cancelText="No"
+                >
+                  <Button className="ms-2 me-2" type="primary" danger>
+                    Eliminar
+                  </Button>
+                </Popconfirm>
+                <Button
+                  type="primary"
+                  onClick={() => setIsPaymentsDetailsModalOpen(true)}
+                >
+                  {" "}
+                  Ver Pagos{" "}
+                </Button>
+              </>
+            ),
+          }));
 
-        setCollectors(collectors);
-      } else {
-        messageAlert.error(collectorsData.message);
+          setCollectors(collectors);
+        } else if (response.status === 400) {
+          messageAlert.warning(collectorsData.message);
+        } else {
+          messageAlert.error(collectorsData.message);
+        }
+      } catch (error) {
+        messageAlert.error(
+          "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+        );
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      messageAlert.error("Error al Buscar Colector");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -305,7 +317,6 @@ const Collectors = () => {
               <Table
                 dataSource={collectors}
                 columns={collectorsTableColumns}
-                loading={loading}
                 onRow={(record) => ({
                   onClick: () => setSelectedCollector(record),
                 })}
@@ -316,14 +327,16 @@ const Collectors = () => {
                     `Total: ${total} colector(es) regisrado(s)`,
                   hideOnSinglePage: true,
                 }}
+                loading={loading}
               />
             </div>
           </div>
         </Card>
-        
+
         <AddNewCollectorModal
           isOpen={isCollectorPaymentsModalOpen}
           isClosed={() => setIsCollectorPaymentsModalOpen(false)}
+          setAlertMessage={messageAlert}
         />
 
         <EditCollectorModal
@@ -338,6 +351,7 @@ const Collectors = () => {
           isOpen={isPaymentsDetailsModalOpen}
           isClosed={() => setIsPaymentsDetailsModalOpen(false)}
           selectedCollector={selectedCollector}
+          setAlertMessage={messageAlert}
         />
       </div>
     </Content>

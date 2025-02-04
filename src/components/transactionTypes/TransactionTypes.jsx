@@ -91,7 +91,9 @@ const TransactionTypes = () => {
         messageAlert.error(transactionsTypesData.message);
       }
     } catch (error) {
-      messageAlert.error("Error al Obtener los Tipos de Transacciones");
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     } finally {
       setLoading(false);
     }
@@ -123,64 +125,80 @@ const TransactionTypes = () => {
         setSendingData(false);
       }
     } catch (error) {
-      messageAlert.error("Error al Actualizar el Tipo de Transacción");
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
       setSendingData(false);
     }
   };
 
   const searchTransactionType = async (transactionType) => {
-    setLoading(true);
-    try {
-      const response = await fetch(
-        `http://localhost:3001/transactions-types/search-transaction-type?transaction_type=${
-          transactionType.transaction_type ?? ""
-        }`,
-        {
-          method: "GET",
-        }
-      );
+    if (
+      transactionType.transaction_type === undefined ||
+      transactionType.transaction_type === ""
+    ) {
+      messageAlert.warning("Introduzca al Menos un Criterio de Búsqueda");
+      getTransactionsTypes();
+      return;
+    } else {
+      setLoading(true);
 
-      const transactionsTypesData = await response.json();
-
-      if (response.status === 200) {
-        const transactionsTypes = transactionsTypesData.map(
-          (transactionType) => {
-            return {
-              ...transactionType,
-              actions: (
-                <>
-                  <Button
-                    className="ant-btn-edit"
-                    type="primary"
-                    onClick={() => setIsEditTransactionTypeModalOpen(true)}
-                  >
-                    Editar
-                  </Button>
-                  <Popconfirm
-                    title="Eliminar Tipo de Transacción"
-                    description="¿Está Seguro de Eliminar este Registro?"
-                    onConfirm={() => deleteTransactionType(transactionType)}
-                    okText="Sí"
-                    cancelText="No"
-                  >
-                    <Button className="ms-2 me-2" type="primary" danger>
-                      Eliminar
-                    </Button>
-                  </Popconfirm>
-                </>
-              ),
-            };
+      try {
+        const response = await fetch(
+          `http://localhost:3001/transactions-types/search-transaction-type?transaction_type=${
+            transactionType.transaction_type ?? ""
+          }`,
+          {
+            method: "GET",
           }
         );
 
-        setTransactionsTypes(transactionsTypes);
-      } else {
-        messageAlert.error(transactionsTypesData.message);
+        const transactionsTypesData = await response.json();
+
+        if (response.status === 200) {
+          const transactionsTypes = transactionsTypesData.map(
+            (transactionType) => {
+              return {
+                ...transactionType,
+                actions: (
+                  <>
+                    <Button
+                      className="ant-btn-edit"
+                      type="primary"
+                      onClick={() => setIsEditTransactionTypeModalOpen(true)}
+                    >
+                      Editar
+                    </Button>
+                    <Popconfirm
+                      title="Eliminar Tipo de Transacción"
+                      description="¿Está Seguro de Eliminar este Registro?"
+                      onConfirm={() => deleteTransactionType(transactionType)}
+                      okText="Sí"
+                      cancelText="No"
+                    >
+                      <Button className="ms-2 me-2" type="primary" danger>
+                        Eliminar
+                      </Button>
+                    </Popconfirm>
+                  </>
+                ),
+              };
+            }
+          );
+
+          setTransactionsTypes(transactionsTypes);
+        } else if (response.status === 400) {
+          messageAlert.warning(transactionsTypesData.message);
+        } else {
+          messageAlert.error(transactionsTypesData.message);
+        }
+      } catch (error) {
+        messageAlert.error(
+          "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+        );
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      messageAlert.error("Error al Buscar el Tipo de Transacción");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -292,7 +310,6 @@ const TransactionTypes = () => {
               <Table
                 dataSource={transactionsTypes}
                 columns={transactionsTypesTableColumns}
-                loading={loading}
                 onRow={(record) => ({
                   onClick: () => setSelectedTransactionType(record),
                 })}
@@ -303,6 +320,7 @@ const TransactionTypes = () => {
                     `Total: ${total} tipo(s) de transacción(es)`,
                   hideOnSinglePage: true,
                 }}
+                loading={loading}
               />
             </div>
           </div>
@@ -311,16 +329,16 @@ const TransactionTypes = () => {
         <AddNewTransactionTypeModal
           isOpen={isNewTransactionTypeModalOpen}
           isClosed={() => setIsNewTransactionTypeModalOpen(false)}
-          setAlertMessage={messageAlert}
           getTransactionsTypes={getTransactionsTypes}
+          setAlertMessage={messageAlert}
         />
 
         <EditTransactionTypeModal
           isOpen={isEditTransactionTypeModalOpen}
           isClosed={() => setIsEditTransactionTypeModalOpen(false)}
-          setAlertMessage={messageAlert}
           selectedTransactionType={selectedTransactionType}
           getTransactionsTypes={getTransactionsTypes}
+          setAlertMessage={messageAlert}
         />
       </div>
     </Content>

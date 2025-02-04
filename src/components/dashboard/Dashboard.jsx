@@ -148,7 +148,9 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
         latestCollectorAndCollectorPaymentData[0]
       );
     } catch (error) {
-      console.log("Error: ", error);
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     }
   };
 
@@ -207,7 +209,9 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
       });
       setNotifications(notifications);
     } catch (error) {
-      console.error("Error: ", error);
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     }
   };
 
@@ -234,14 +238,15 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
 
       if (response.status === 200) {
         messageAlert.success(transactionStatus.message);
-        setUpdatingStatus(false);
         getNotifications();
       } else {
         messageAlert.error(transactionStatus.message);
-        setUpdatingStatus(false);
       }
     } catch (error) {
-      messageAlert.error("Error al actualizar el estado de la transacción.");
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
+    } finally {
       setUpdatingStatus(false);
     }
   };
@@ -522,17 +527,18 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
             />
           </div>
         </Card>
-        
+
         <NotificationsModal
           isOpen={openNotificationsModal}
           isClosed={() => setOpenNotificationsModal(false)}
-          setAlertMessage={messageAlert}
           notificationsData={notifications}
+          setAlertMessage={messageAlert}
         />
 
         <AddNewCollectorModal
           isOpen={isCollectorModalOpen}
           isClosed={() => setIsCollectorModalOpen(false)}
+          setAlertMessage={messageAlert}
         />
 
         <PaymentsCollectorsModal

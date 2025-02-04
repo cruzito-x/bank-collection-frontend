@@ -65,7 +65,11 @@ const Transactions = () => {
       });
 
       setTransactionTypes(transactionsTypes);
-    } catch (error) {}
+    } catch (error) {
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
+    }
   };
 
   const getTransactions = async () => {
@@ -129,83 +133,103 @@ const Transactions = () => {
         messageAlert.error(transactionsData.message);
       }
     } catch (error) {
-      messageAlert.error("Error al Obtnener las Transacciones");
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     } finally {
       setLoading(false);
     }
   };
 
   const searchTransactions = async (transaction) => {
-    setLoading(true);
+    if (
+      (transaction.transaction_id === undefined ||
+        transaction.transaction_id === "") &&
+      (transaction.realized_by === undefined ||
+        transaction.realized_by === "") &&
+      (transaction.transaction_type === undefined ||
+        transaction.transaction_type === "") &&
+      (transaction.date === undefined || transaction.date === "")
+    ) {
+      messageAlert.warning("Introduzca al Menos un Criterio de Búsqueda");
+      getTransactions();
+      return;
+    } else {
+      setLoading(true);
 
-    try {
-      const response = await fetch(
-        `http://localhost:3001/transactions/search-transactions?transaction_id=${
-          transaction.transaction_id ?? ""
-        }&realized_by=${transaction.realized_by ?? ""}&transaction_type=${
-          transaction.transaction_type ?? ""
-        }&date=${transaction.date ?? ""}`,
-        {
-          method: "GET",
-        }
-      );
+      try {
+        const response = await fetch(
+          `http://localhost:3001/transactions/search-transactions?transaction_id=${
+            transaction.transaction_id ?? ""
+          }&realized_by=${transaction.realized_by ?? ""}&transaction_type=${
+            transaction.transaction_type ?? ""
+          }&date=${transaction.date ?? ""}`,
+          {
+            method: "GET",
+          }
+        );
 
-      const transactionsData = await response.json();
+        const transactionsData = await response.json();
 
-      if (response.status === 200) {
-        const transactions = transactionsData.map((transaction) => {
-          return {
-            ...transaction,
-            amount: "$" + transaction.amount,
-            status: (
-              <>
-                <Tag
-                  color={`${
-                    transaction.status === 1
-                      ? "warning"
+        if (response.status === 200) {
+          const transactions = transactionsData.map((transaction) => {
+            return {
+              ...transaction,
+              amount: "$" + transaction.amount,
+              status: (
+                <>
+                  <Tag
+                    color={`${
+                      transaction.status === 1
+                        ? "warning"
+                        : transaction.status === 2
+                        ? "success"
+                        : "error"
+                    }`}
+                  >
+                    {transaction.status === 1
+                      ? "En Proceso"
                       : transaction.status === 2
-                      ? "success"
-                      : "error"
-                  }`}
-                >
-                  {transaction.status === 1
-                    ? "En Proceso"
-                    : transaction.status === 2
-                    ? "Aprobado"
-                    : "Denegado"}
-                </Tag>
-              </>
-            ),
-            datetime: moment(transaction.datetime).format(
-              "DD/MM/YYYY - hh:mm A"
-            ),
-            actions: (
-              <>
-                <Button
-                  type="primary"
-                  onClick={() => setIsTransactionDetailsModalOpen(true)}
-                  disabled={
-                    transaction.status === 1 || transaction.status === 3
-                      ? true
-                      : false
-                  }
-                >
-                  {" "}
-                  Ver Detalles{" "}
-                </Button>
-              </>
-            ),
-          };
-        });
+                      ? "Aprobado"
+                      : "Denegado"}
+                  </Tag>
+                </>
+              ),
+              datetime: moment(transaction.datetime).format(
+                "DD/MM/YYYY - hh:mm A"
+              ),
+              actions: (
+                <>
+                  <Button
+                    type="primary"
+                    onClick={() => setIsTransactionDetailsModalOpen(true)}
+                    disabled={
+                      transaction.status === 1 || transaction.status === 3
+                        ? true
+                        : false
+                    }
+                  >
+                    {" "}
+                    Ver Detalles{" "}
+                  </Button>
+                </>
+              ),
+            };
+          });
 
-        setTransactions(transactions);
-      } else {
-        messageAlert.error(transactionsData.message);
+          setTransactions(transactions);
+        } else if (response.status === 400) {
+          messageAlert.warning(transactionsData.message);
+        } else {
+          messageAlert.error(transactionsData.message);
+        }
+      } catch (error) {
+        messageAlert.error(
+          "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+        );
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      messageAlert.error("Error al Buscar las Transacciones");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -396,7 +420,6 @@ const Transactions = () => {
               <Table
                 dataSource={transactions}
                 columns={transactionsTableColumns}
-                loading={loading}
                 onRow={(record) => ({
                   onClick: () => setSelectedTransaction(record),
                 })}
@@ -407,6 +430,7 @@ const Transactions = () => {
                     `Total: ${total} transferencia(s) registrada(s)`,
                   hideOnSinglePage: true,
                 }}
+                loading={loading}
               />
             </div>
           </div>

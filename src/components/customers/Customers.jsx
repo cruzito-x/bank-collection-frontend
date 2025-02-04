@@ -92,7 +92,9 @@ const Customers = () => {
         messageAlert.error(customersData.message);
       }
     } catch (error) {
-      messageAlert.error("Error al Obtener los Datos de Clientes");
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     } finally {
       setLoading(false);
     }
@@ -127,67 +129,78 @@ const Customers = () => {
   };
 
   const searchCustomers = async (customer) => {
-    setLoading(true);
+    if (
+      (customer.name === undefined || customer.name === "") &&
+      (customer.identity_doc === undefined || customer.identity_doc === "")
+    ) {
+      messageAlert.warning("Introduzca al Menos un Criterio de Búsqueda");
+      getCustomers();
+      return;
+    } else {
+      setLoading(true);
 
-    try {
-      const response = await fetch(
-        `http://localhost:3001/customers/search-customer?name=${
-          customer.name ?? ""
-        }&identity_doc=${customer.identity_doc ?? ""}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      try {
+        const response = await fetch(
+          `http://localhost:3001/customers/search-customer?name=${
+            customer.name ?? ""
+          }&identity_doc=${customer.identity_doc ?? ""}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-      const customersData = await response.json();
-      if (response.status === 200) {
-        const customers = customersData.map((customer) => ({
-          ...customer,
-          balance: "$" + customer.balance,
-          actions: (
-            <>
-              <Button
-                className="ant-btn-edit"
-                type="primary"
-                onClick={() => setIsCustomerEditModalOpen(true)}
-              >
-                Editar
-              </Button>
-              <Popconfirm
-                title="Eliminar Cliente"
-                description="¿Está Seguro de Eliminar este Registro?"
-                onConfirm={() => deleteCustomer(customer)}
-                okText="Sí"
-                cancelText="No"
-              >
-                <Button className="ms-2 me-2" type="primary" danger>
-                  Eliminar
+        const customersData = await response.json();
+        if (response.status === 200) {
+          const customers = customersData.map((customer) => ({
+            ...customer,
+            balance: "$" + customer.balance,
+            actions: (
+              <>
+                <Button
+                  className="ant-btn-edit"
+                  type="primary"
+                  onClick={() => setIsCustomerEditModalOpen(true)}
+                >
+                  Editar
                 </Button>
-              </Popconfirm>
-              <Button
-                type="primary"
-                onClick={() => setIsAccountsByCustomerModalOpen(true)}
-              >
-                {" "}
-                Ver Cuentas{" "}
-              </Button>
-            </>
-          ),
-        }));
+                <Popconfirm
+                  title="Eliminar Cliente"
+                  description="¿Está Seguro de Eliminar este Registro?"
+                  onConfirm={() => deleteCustomer(customer)}
+                  okText="Sí"
+                  cancelText="No"
+                >
+                  <Button className="ms-2 me-2" type="primary" danger>
+                    Eliminar
+                  </Button>
+                </Popconfirm>
+                <Button
+                  type="primary"
+                  onClick={() => setIsAccountsByCustomerModalOpen(true)}
+                >
+                  {" "}
+                  Ver Cuentas{" "}
+                </Button>
+              </>
+            ),
+          }));
 
-        setCustomers(customers);
-      } else {
-        messageAlert.error(customersData.message);
+          setCustomers(customers);
+        } else if (response.status === 400) {
+          messageAlert.warning(customersData.message);
+        } else {
+          messageAlert.error(customersData.message);
+        }
+      } catch (error) {
+        messageAlert.error(
+          "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+        );
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      messageAlert.error(
-        "Por Favor, Proporcione un Nombre o un Número de Identificación"
-      );
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -323,7 +336,6 @@ const Customers = () => {
               <Table
                 dataSource={customers}
                 columns={customersTableColumns}
-                loading={loading}
                 onRow={(record) => ({
                   onClick: () => setSelectedCustomer(record),
                 })}
@@ -334,11 +346,12 @@ const Customers = () => {
                     `Total: ${total} cliente(s) registrado(s)`,
                   hideOnSinglePage: true,
                 }}
+                loading={loading}
               />
             </div>
           </div>
         </Card>
-        
+
         <EditCustomerModal
           isOpen={isCustomerEditModalOpen}
           isClosed={() => setIsCustomerEditModalOpen(false)}

@@ -49,7 +49,7 @@ const EditCollectorModal = ({
       }
     } catch (error) {
       setAlertMessage.error(
-        "Hubo un Error al Actualizar los Datos del Colector"
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
       );
     } finally {
       setSendingData(false);

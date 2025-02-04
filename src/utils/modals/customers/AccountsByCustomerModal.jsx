@@ -47,8 +47,7 @@ const AccountsByCustomerModal = ({
       );
     } catch (error) {
       setAlertMessage.error(
-        "Error al Obtener las Cuentas del Cliente, ",
-        error
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
       );
     } finally {
       setLoading(false);

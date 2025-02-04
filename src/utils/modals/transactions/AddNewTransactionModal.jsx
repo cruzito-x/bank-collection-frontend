@@ -62,18 +62,19 @@ const AddNewTransactionModal = ({
       const transactionData = await response.json();
 
       if (response.status === 200) {
-        setSendingTransaction(false);
         form.resetFields();
         isClosed();
         getTransactions();
         setAlertMessage.success(transactionData.message);
       } else {
-        setSendingTransaction(false);
         setAlertMessage.error(transactionData.message);
       }
     } catch (error) {
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
+    } finally {
       setSendingTransaction(false);
-      setAlertMessage.error(error);
     }
   };
 
@@ -203,7 +204,10 @@ const AddNewTransactionModal = ({
           </>
         )}
 
-        <label className="fw-semibold text-black"> No. Cuenta {showSenderAccount ? "Destino" : ""} </label>
+        <label className="fw-semibold text-black">
+          {" "}
+          No. Cuenta {showSenderAccount ? "Destino" : ""}{" "}
+        </label>
         <Form.Item
           name="receiver_account_number"
           rules={[
@@ -250,7 +254,14 @@ const AddNewTransactionModal = ({
           />
         </Form.Item>
 
-        <label className="fw-semibold text-black"> Concepto <span className="text-primary" style={{ fontSize: "11px" }}> (Opcional) </span> </label>
+        <label className="fw-semibold text-black">
+          {" "}
+          Concepto{" "}
+          <span className="text-primary" style={{ fontSize: "11px" }}>
+            {" "}
+            (Opcional){" "}
+          </span>{" "}
+        </label>
         <Form.Item
           name="concept"
           rules={[
@@ -279,7 +290,12 @@ const AddNewTransactionModal = ({
           >
             Cerrar
           </Button>
-          <Button className="ms-2" type="primary" htmlType="submit" loading={sendingTransaction}>
+          <Button
+            className="ms-2"
+            type="primary"
+            htmlType="submit"
+            loading={sendingTransaction}
+          >
             Realizar Transacción
           </Button>
         </Form.Item>

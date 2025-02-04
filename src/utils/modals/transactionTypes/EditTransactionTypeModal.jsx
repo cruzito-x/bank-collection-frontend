@@ -46,7 +46,10 @@ const EditTransactionTypeModal = ({
         setSendingData(false);
       }
     } catch (error) {
-      setAlertMessage.error("Error al Actualizar el Tipo de Transacción");
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
+    } finally {
       setSendingData(false);
     }
   };

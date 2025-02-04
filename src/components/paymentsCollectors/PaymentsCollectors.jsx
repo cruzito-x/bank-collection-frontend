@@ -93,61 +93,73 @@ const PaymentsCollectors = () => {
         messageAlert.error(paymentscollectorsData.message);
       }
     } catch (error) {
-      messageAlert.error("Error fetching collectors payments");
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     } finally {
       setLoading(false);
     }
   };
 
   const searchPaymentsCollector = async (collector) => {
-    setLoading(true);
+    if (collector.collector === undefined || collector.collector === "") {
+      messageAlert.warning("Introduzca al Menos un Criterio de Búsqueda");
+      getPaymentsCollectors();
+      return;
+    } else {
+      setLoading(true);
 
-    try {
-      const response = await fetch(
-        `http://localhost:3001/payments-collectors/search-payments-collectors?collector=${
-          collector.collector ?? ""
-        }`,
-        {
-          method: "GET",
-        }
-      );
-
-      const paymentscollectorsData = await response.json();
-
-      if (response.status === 200) {
-        const paymentsCollector = paymentscollectorsData.map(
-          (paymentsCollector) => {
-            return {
-              ...paymentsCollector,
-              amount: "$" + paymentsCollector.amount,
-              datetime: moment(paymentsCollector.datetime).format(
-                "DD/MM/YYYY - hh:mm A"
-              ),
-              actions: (
-                <>
-                  <Button
-                    type="primary"
-                    onClick={() =>
-                      setIsPaymentsCollectorsDetailsModalOpen(true)
-                    }
-                  >
-                    {" "}
-                    Ver Detalles{" "}
-                  </Button>
-                </>
-              ),
-            };
+      try {
+        const response = await fetch(
+          `http://localhost:3001/payments-collectors/search-payments-collectors?collector=${
+            collector.collector ?? ""
+          }`,
+          {
+            method: "GET",
           }
         );
 
-        setPaymentsCollectors(paymentsCollector);
-      } else {
-        messageAlert.error(paymentscollectorsData.message);
+        const paymentscollectorsData = await response.json();
+
+        if (response.status === 200) {
+          const paymentsCollector = paymentscollectorsData.map(
+            (paymentsCollector) => {
+              return {
+                ...paymentsCollector,
+                amount: "$" + paymentsCollector.amount,
+                datetime: moment(paymentsCollector.datetime).format(
+                  "DD/MM/YYYY - hh:mm A"
+                ),
+                actions: (
+                  <>
+                    <Button
+                      type="primary"
+                      onClick={() =>
+                        setIsPaymentsCollectorsDetailsModalOpen(true)
+                      }
+                    >
+                      {" "}
+                      Ver Detalles{" "}
+                    </Button>
+                  </>
+                ),
+              };
+            }
+          );
+
+          setPaymentsCollectors(paymentsCollector);
+        } else if (response.status === 400) {
+          messageAlert.warning(paymentscollectorsData.message);
+        } else {
+          messageAlert.error(paymentscollectorsData.message);
+        }
+      } catch (error) {
+        messageAlert.error(
+          "Ha Ocurrido Un Error Inesperado, Intente en unos Instantes"
+        );
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      messageAlert.error("Error al Obtener los Pagos de Colectores");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -269,7 +281,6 @@ const PaymentsCollectors = () => {
               <Table
                 dataSource={paymentsCollector}
                 columns={paymentsCollectorsTableColumns}
-                loading={loading}
                 onRow={(record) => ({
                   onClick: () => setSelectedPaymentCollector(record),
                 })}
@@ -279,6 +290,7 @@ const PaymentsCollectors = () => {
                   showTotal: (total) => `Total: ${total} pago(s) registrado(s)`,
                   hideOnSinglePage: true,
                 }}
+                loading={loading}
               />
             </div>
             <div className="col-md-4 col-sm-12 d-flex align-items-center">
@@ -286,19 +298,20 @@ const PaymentsCollectors = () => {
             </div>
           </div>
         </Card>
-        
+
         <PaymentsCollectorsModal
           isOpen={openRegisterPayment}
           isClosed={() => setOpenRegisterPayment(false)}
-          setAlertMessage={messageAlert}
           currentPath={currentPath}
           getPaymentsCollectors={getPaymentsCollectors}
+          setAlertMessage={messageAlert}
         />
 
         <PaymentsCollectorsDetailsModal
           isOpen={isPaymentsCollectorsDetailsModalOpen}
           isClosed={() => setIsPaymentsCollectorsDetailsModalOpen(false)}
           paymentsCollectorsData={selectedPaymentCollector}
+          setAlertMessage={messageAlert}
         />
       </div>
     </Content>
