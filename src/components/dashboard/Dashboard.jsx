@@ -100,11 +100,11 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
         : "Dashboard"
     }`;
 
+    getLatestCollectorAndCollectorPayment();
     getNotifications();
-  }, [notifications]);
+  }, [latestCollectorAndCollectorPayment, notifications]);
 
   useEffect(() => {
-    getLatestCollectorAndCollectorPayment();
     getCollectors();
     getTransactionTypes();
     getTotalPayments();
@@ -352,7 +352,8 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                   </h1>
                   <div className="dashboard-green-card text-center w-100 rounded">
                     <label className="fw-semibold text-white p-3">
-                      Más Reciente: UTEC - $
+                      Más Reciente:{" "}
+                      {latestCollectorAndCollectorPayment.payed_collector} - $
                       {latestCollectorAndCollectorPayment.amount}
                     </label>
                   </div>
@@ -377,7 +378,10 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                   </h1>
                   <div className="dashboard-red-card text-center w-100 rounded">
                     <label className="fw-semibold text-white p-3">
-                      Última Transacción OK: {latestCollectorAndCollectorPayment.latest_approved_transaction}
+                      Última Transacción OK:{" "}
+                      {
+                        latestCollectorAndCollectorPayment.latest_approved_transaction
+                      }
                     </label>
                   </div>
                 </Card>
@@ -392,9 +396,9 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
         <Card className="mt-3 mb-5">
           <div className="row">
             <div className="col-md-6 col-sm-6 text-start">
-              <h4 className="text-black ms-3 text-black">
+              <label className="fw-semibold fs-5 text-black ms-3 text-black">
                 Transacciones Recientes
-              </h4>
+              </label>
             </div>
             <div className="col-md-6 col-sm-6 text-end pe-5">
               <Button
@@ -537,7 +541,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           isOpen={isCollectorModalOpen}
           isClosed={() => setIsCollectorModalOpen(false)}
         />
-        
+
         <PaymentsCollectorsModal
           isOpen={openRegisterPayment}
           isClosed={() => setOpenRegisterPayment(false)}

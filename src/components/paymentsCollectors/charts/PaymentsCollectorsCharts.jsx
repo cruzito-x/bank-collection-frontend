@@ -25,8 +25,8 @@ const PaymentsCollectorsCharts = () => {
   useEffect(() => {
     if (paymentsByCollectors.length === 0) return;
 
-    const services = paymentsByCollectors.map(
-      (paymentByCollector) => paymentByCollector.service
+    const collectors = paymentsByCollectors.map(
+      (paymentByCollector) => paymentByCollector.collector
     );
 
     const percentage = paymentsByCollectors.map(
@@ -37,7 +37,7 @@ const PaymentsCollectorsCharts = () => {
       paymentsByCollectorChartRef.current.getContext("2d");
 
     const piePaymentsByCollectorData = {
-      labels: services,
+      labels: collectors,
       datasets: [
         {
           data: percentage,
