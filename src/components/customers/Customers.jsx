@@ -128,7 +128,11 @@ const Customers = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/customers/search-customer?name=${customer.name}&identity_doc=${customer.identity_doc}&balance=${balance}`,
+        `http://localhost:3001/customers/search-customer?name=${
+          customer.name === undefined ? "" : customer.name
+        }&identity_doc=${
+          customer.identity_doc === undefined ? "" : customer.identity_doc
+        }`,
         {
           method: "GET",
           headers: {
@@ -176,9 +180,11 @@ const Customers = () => {
       }));
 
       setCustomers(customers);
-      setLoading(false);
     } catch (error) {
-      messageAlert.error("Error al Obtener los Datos de Clientes");
+      messageAlert.error(
+        "Por Favor, Proporcione un Nombre o un Número de Identificación"
+      );
+    } finally {
       setLoading(false);
     }
   };
@@ -290,27 +296,6 @@ const Customers = () => {
                 <Input
                   placeholder="00000000-0"
                   prefix={<IdcardOutlined />}
-                  style={{
-                    width: 183,
-                  }}
-                />
-              </Form.Item>
-              <label className="me-2 fw-semibold text-black d-flex align-items-center">
-                {" "}
-                Saldo
-              </label>
-              <Form.Item
-                className="col-xxl-3 col-xl-4 col-sm-12 w-auto"
-                name="balance"
-              >
-                <Select
-                  defaultValue={0}
-                  onChange={(value) => setBalance(value)}
-                  options={[
-                    { value: 0, label: "Mayor a Menor" },
-                    { value: 1, label: "Menor a Mayor" },
-                  ]}
-                  prefix={<DollarOutlined />}
                   style={{
                     width: 183,
                   }}
