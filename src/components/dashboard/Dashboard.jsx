@@ -425,7 +425,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 className="ms-2 me-2 mb-2"
                 onClick={() => setIsRegisterPaymentOpen(true)}
               >
-                Pagar Servicio
+                Pagar a Colector
               </Button>
               <Button
                 type="primary"
