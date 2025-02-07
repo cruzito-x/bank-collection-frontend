@@ -3,7 +3,7 @@ import { PlusCircleOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
-import InstantOrQueuedApprovedTransaction from "./InstantOrQueuedApprovedTransaction";
+import InstantOrQueuedApprovedTransactionModal from "./InstantOrQueuedApprovedTransactionModal";
 
 const AddNewTransactionModal = ({
   isOpen,
@@ -404,7 +404,7 @@ const AddNewTransactionModal = ({
         </Form>
       </Modal>
 
-      <InstantOrQueuedApprovedTransaction
+      <InstantOrQueuedApprovedTransactionModal
         isOpen={openInstantOrQueuedApprovedTransaction}
         isClosed={() => setOpenInstantOrQueuedApprovedTransaction(false)}
         isSupervisor={isSupervisor}

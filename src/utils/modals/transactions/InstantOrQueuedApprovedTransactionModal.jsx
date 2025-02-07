@@ -2,7 +2,7 @@ import { Button, Col, Form, Input, Modal, Popconfirm, Row } from "antd";
 import { WarningOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 
-const InstantOrQueuedApprovedTransaction = ({
+const InstantOrQueuedApprovedTransactionModal = ({
   isOpen,
   isClosed,
   setAlertMessage,
@@ -216,4 +216,4 @@ const InstantOrQueuedApprovedTransaction = ({
   );
 };
 
-export default InstantOrQueuedApprovedTransaction;
+export default InstantOrQueuedApprovedTransactionModal;
