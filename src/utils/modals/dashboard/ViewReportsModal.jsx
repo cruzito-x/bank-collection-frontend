@@ -265,7 +265,7 @@ const ViewReportsModal = ({ isOpen, isClosed, setAlertMessage }) => {
         </Card>
       ))}
       <div className="text-end mt-3">
-        <Button type="primary" onClick={isClosed}>
+        <Button type="primary" danger onClick={isClosed}>
           Cerrar
         </Button>
       </div>
