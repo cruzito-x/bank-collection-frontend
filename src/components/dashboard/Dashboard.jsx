@@ -397,20 +397,21 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               </div>
             </div>
           </div>
-          <div className="d-flex justify-content-end col-md-1 col-sm-12 mb-5">
+          <div className="d-flex justify-content-end col-md-1 col-sm-12 mb-4">
             <LogoutCard setAlertMessage={messageAlert} />
           </div>
         </div>
 
         <Card className="mb-5">
           <div className="row">
-            <div className="col-md-6 col-sm-6 text-start">
-              <label className="fw-semibold fs-5 text-black ms-3 text-black">
+            <div className="col-md-6 col-sm-12 text-start">
+              <label className="fw-semibold fs-5 text-black ms-3 mb-2 text-black">
                 Transacciones Recientes
               </label>
             </div>
-            <div className="col-md-6 col-sm-6 text-end pe-5">
+            <div className="col-md-6 col-sm-12 text-end pe-5">
               <Button
+                className="mb-2"
                 type="primary"
                 onClick={() => setIsCollectorModalOpen(true)}
               >
@@ -418,20 +419,23 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               </Button>
               <Button
                 type="primary"
-                className="ms-2 me-2"
+                className="ms-2 me-2 mb-2"
                 onClick={() => setOpenRegisterPayment(true)}
               >
                 Pagar Servicio
               </Button>
-              <Button type="primary">Ver Reportes</Button>
+              <Button type="primary" className="mb-2">
+                Ver Reportes
+              </Button>
             </div>
           </div>
-          <div className="row m-2">
+          <div className="row ms-2">
             <label className="fw-semibold text-black mb-1"> Filtrar por </label>
             <div className="col-xxl-4 col-lg-7 col-md-7 col-sm-12 w-auto">
               <label className="fw-semibold text-black me-2"> Fecha </label>
               <Space wrap>
                 <Select
+                  className="mb-2"
                   defaultValue="today"
                   style={{
                     width: 183,
@@ -470,6 +474,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               <label className="fw-semibold text-black me-2"> Monto </label>
               <Space wrap>
                 <Select
+                  className="mb-2"
                   defaultValue={1}
                   style={{
                     width: 183,
@@ -508,6 +513,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               <label className="fw-semibold text-black me-2"> Tipo </label>
               <Space wrap>
                 <Select
+                  className="mb-2"
                   defaultValue={1}
                   style={{
                     width: 183,
