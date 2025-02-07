@@ -29,11 +29,6 @@ Este proyecto tiene como objetivo desarrollar un sistema para la gestión eficie
 
 - Verificación de la información del cliente.
 
-### Facturación Electrónica
-
-- Generación y envío de facturas por correo.
-- Historial de facturas emitidas.
-
 ## Roles del Sistema
 
 - **Cajero**: Manejo de depósitos, retiros y cobros.
