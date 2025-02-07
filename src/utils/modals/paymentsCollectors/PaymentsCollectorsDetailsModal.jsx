@@ -2,6 +2,7 @@ import { Button, Col, Modal, Row } from "antd";
 import {
   CheckCircleOutlined,
   InfoCircleOutlined,
+  PrinterOutlined,
   TransactionOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useRef } from "react";
@@ -94,6 +95,7 @@ const PaymentsCollectorsDetailsModal = ({
               Cerrar{" "}
             </Button>
             <Button className="ms-2" type="primary" onClick={printDetails}>
+              <PrinterOutlined />
               Imprimir
             </Button>
           </div>

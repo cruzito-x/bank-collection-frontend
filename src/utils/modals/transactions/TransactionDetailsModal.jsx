@@ -1,5 +1,5 @@
 import { Button, Col, Modal, Row, Tag } from "antd";
-import { InfoCircleOutlined, TransactionOutlined } from "@ant-design/icons";
+import { InfoCircleOutlined, PrinterOutlined, TransactionOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef } from "react";
 
 const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
@@ -168,6 +168,7 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
               Cerrar{" "}
             </Button>
             <Button className="ms-2" type="primary" onClick={printDetails}>
+              <PrinterOutlined />
               Imprimir
             </Button>
           </div>

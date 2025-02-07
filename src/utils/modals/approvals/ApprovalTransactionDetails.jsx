@@ -1,5 +1,5 @@
 import { Button, Col, Modal, Row, Tag } from "antd";
-import { ContainerOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { ContainerOutlined, InfoCircleOutlined, PrinterOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef } from "react";
 
 const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
@@ -137,6 +137,7 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
               Cerrar{" "}
             </Button>
             <Button className="ms-2" type="primary" onClick={printDetails}>
+              <PrinterOutlined />
               Imprimir
             </Button>
           </div>
