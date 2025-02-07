@@ -132,7 +132,7 @@ const Services = () => {
       (service.collector === undefined || service.collector === "") &&
       (service.service === undefined || service.service === "")
     ) {
-      messageAlert.warning("Introduzca al Menos un Criterio de Búsqueda");
+      messageAlert.warning("Por Favor, Introduzca al Menos un Criterio de Búsqueda");
       getServices();
       return;
     } else {

@@ -9,6 +9,7 @@ import {
   Popconfirm,
   Select,
   Table,
+  Tag,
   theme,
 } from "antd";
 import { BankOutlined, CrownOutlined, UserOutlined } from "@ant-design/icons";
@@ -36,6 +37,7 @@ const Users = () => {
 
   useEffect(() => {
     document.title = "Banco Bambú | Usuarios";
+
     getRoles();
     getUsers();
   }, []);
@@ -74,6 +76,16 @@ const Users = () => {
       if (response.status === 200) {
         const users = usersData.map((user) => ({
           ...user,
+          role: (
+            <>
+              <Tag
+                color={`${user.role === "Supervisor" ? "processing" : "error"}`}
+              >
+                {" "}
+                {user.role}{" "}
+              </Tag>
+            </>
+          ),
           actions: (
             <>
               <Button
@@ -153,7 +165,9 @@ const Users = () => {
       (user.username === undefined || user.username === "") &&
       (user.role === undefined || user.role === "")
     ) {
-      messageAlert.warning("Introduzca al Menos un Criterio de Búsqueda");
+      messageAlert.warning(
+        "Por Favor, Introduzca al Menos un Criterio de Búsqueda"
+      );
       getUsers();
       return;
     } else {
@@ -177,6 +191,18 @@ const Users = () => {
         if (response.status === 200) {
           const users = usersData.map((user) => ({
             ...user,
+            role: (
+              <>
+                <Tag
+                  color={`${
+                    user.role === "Supervisor" ? "processing" : "error"
+                  }`}
+                >
+                  {" "}
+                  {user.role}{" "}
+                </Tag>
+              </>
+            ),
             actions: (
               <>
                 <Button

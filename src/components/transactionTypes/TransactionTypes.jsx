@@ -137,7 +137,7 @@ const TransactionTypes = () => {
       transactionType.transaction_type === undefined ||
       transactionType.transaction_type === ""
     ) {
-      messageAlert.warning("Introduzca al Menos un Criterio de Búsqueda");
+      messageAlert.warning("Por Favor, Introduzca al Menos un Criterio de Búsqueda");
       getTransactionsTypes();
       return;
     } else {

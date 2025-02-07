@@ -3,7 +3,6 @@ import { Menu } from "antd";
 import {
   LineChartOutlined,
   TeamOutlined,
-  WalletOutlined,
   TransactionOutlined,
   CheckCircleOutlined,
   UserOutlined,
@@ -14,6 +13,7 @@ import {
   LogoutOutlined,
   HistoryOutlined,
   BulbOutlined,
+  DollarCircleOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext/AuthContext";
@@ -63,7 +63,7 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
       : null,
     {
       key: "/payments-collectors",
-      icon: <WalletOutlined className="text-white" />,
+      icon: <DollarCircleOutlined className="text-white" />,
       label: "Pagos a Colectores",
       className: "text-white",
     },

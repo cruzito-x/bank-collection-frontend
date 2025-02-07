@@ -11,10 +11,10 @@ import {
 } from "antd";
 import {
   BankOutlined,
+  DollarCircleOutlined,
   PlusCircleOutlined,
   SolutionOutlined,
   UserOutlined,
-  WalletOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import PaymentsCollectorsChart from "./charts/PaymentsCollectorsCharts";
@@ -103,7 +103,7 @@ const PaymentsCollectors = () => {
 
   const searchPaymentsCollector = async (collector) => {
     if (collector.collector === undefined || collector.collector === "") {
-      messageAlert.warning("Introduzca al Menos un Criterio de Búsqueda");
+      messageAlert.warning("Por Favor, Introduzca al Menos un Criterio de Búsqueda");
       getPaymentsCollectors();
       return;
     } else {
@@ -227,7 +227,7 @@ const PaymentsCollectors = () => {
             {
               title: (
                 <>
-                  <WalletOutlined />
+                  <DollarCircleOutlined />
                   <span>Pagos a Colectores</span>
                 </>
               ),

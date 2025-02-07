@@ -129,7 +129,7 @@ const Collectors = () => {
 
   const searchCollector = async (collector) => {
     if (collector.collector === undefined || collector.collector === "") {
-      messageAlert.warning("Introduzca al Menos un Criterio de Búsqueda");
+      messageAlert.warning("Por Favor, Introduzca al Menos un Criterio de Búsqueda");
       getCollectors();
       return;
     } else {

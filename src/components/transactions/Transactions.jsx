@@ -151,7 +151,7 @@ const Transactions = () => {
         transaction.transaction_type === "") &&
       (transaction.date === undefined || transaction.date === "")
     ) {
-      messageAlert.warning("Introduzca al Menos un Criterio de Búsqueda");
+      messageAlert.warning("Por Favor, Introduzca al Menos un Criterio de Búsqueda");
       getTransactions();
       return;
     } else {

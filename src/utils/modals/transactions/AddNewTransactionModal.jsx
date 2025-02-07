@@ -15,6 +15,7 @@ const AddNewTransactionModal = ({
 }) => {
   const [customers, setCustomers] = useState([]);
   const [accounts, setAccounts] = useState([]);
+  const [accountBalance, setAccountBalance] = useState(0);
   const [allAccounts, setAllAccounts] = useState([]);
   const [sendingTransaction, setSendingTransaction] = useState(false);
   const [form] = useForm();
@@ -69,6 +70,35 @@ const AddNewTransactionModal = ({
     setAllAccounts(accounts);
   };
 
+  const getAccountBalance = async (accountNumber) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/accounts/balance-by-account/${accountNumber}`,
+        {
+          method: "GET",
+        }
+      );
+      const accountData = await response.json();
+
+      if (response.status === 200) {
+        setAccountBalance(accountData.balance);
+      } else {
+        setAlertMessage.error(accountData.message);
+      }
+    } catch (error) {
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
+    }
+  };
+
+  useEffect(() => {
+    const accountNumber = form.getFieldValue("sender_account_number");
+    if (accountNumber) {
+      getAccountBalance(accountNumber);
+    }
+  }, [form, form.getFieldValue("sender_account_number")]);
+
   const getAccountsByCustomer = async (customerId = 0) => {
     const response = await fetch(
       `http://localhost:3001/accounts/accounts-by-customer/${customerId}`,
@@ -88,14 +118,22 @@ const AddNewTransactionModal = ({
   };
 
   const instantApproveOrQueued = async (transaction) => {
-    if (!isSupervisor) {
-      if (transaction.amount >= 10000 && transaction.transaction_type === 2) {
-        setOpenInstantOrQueuedApprovedTransaction(true);
+    if (
+      transaction.transaction_type !== 1 &&
+      transaction.amount > accountBalance
+    ) {
+      setAlertMessage.error("¡Saldo Insuficiente para Esta Transacción!");
+      return;
+    } else {
+      if (!isSupervisor) {
+        if (transaction.amount >= 10000 && transaction.transaction_type === 2) {
+          setOpenInstantOrQueuedApprovedTransaction(true);
+        } else {
+          await registerTransaction(transaction);
+        }
       } else {
         await registerTransaction(transaction);
       }
-    } else {
-      await registerTransaction(transaction);
     }
   };
 
@@ -244,6 +282,7 @@ const AddNewTransactionModal = ({
               options={accounts}
               onChange={(value) => {
                 form.setFieldsValue({ sender_account_number: value });
+                getAccountBalance(value);
               }}
               showSearch
               placeholder="Introduzca un Número de Cuenta"

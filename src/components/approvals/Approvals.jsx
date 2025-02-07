@@ -176,7 +176,7 @@ const Approvals = () => {
         approval.transaction_id === "") &&
       (approval.authorizer === undefined || approval.authorizer === "")
     ) {
-      messageAlert.warning("Introduzca al Menos un Criterio de Búsqueda");
+      messageAlert.warning("Por Favor, Introduzca al Menos un Criterio de Búsqueda");
       getApprovals();
       return;
     } else {

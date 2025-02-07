@@ -13,6 +13,7 @@ const InstantOrQueuedApprovedTransaction = ({
   const [updatingStatus, setUpdatingStatus] = useState(false);
   const [userId, setUserId] = useState([]);
   const [latestApproval, setLatestApproval] = useState([]);
+  const [isApproved, setIsApproved] = useState(0);
   const [form1] = Form.useForm();
 
   useEffect(() => {}, [transaction]);
@@ -47,7 +48,7 @@ const InstantOrQueuedApprovedTransaction = ({
               await updateTransactionStatus(
                 approvalsData[0].approval_id,
                 approvalsData[0].transaction_id,
-                1,
+                isApproved,
                 supervisorData[0].id
               );
             } catch (error) {
@@ -127,7 +128,9 @@ const InstantOrQueuedApprovedTransaction = ({
             />
           </Col>
           <Col>
-            <label className="fs-6 text-black">Aprobar Transacción</label>
+            <label className="fs-6 text-black">
+              Esta Acción Requiere Permisos
+            </label>
           </Col>
         </Row>
       }
@@ -172,6 +175,8 @@ const InstantOrQueuedApprovedTransaction = ({
             type="primary"
             danger
             onClick={() => {
+              setIsApproved(0);
+              form1.submit();
               isClosed();
             }}
             disabled={updatingStatus}
@@ -189,7 +194,15 @@ const InstantOrQueuedApprovedTransaction = ({
           >
             Envíar a Cola
           </Button>
-          <Button type="primary" htmlType="submit" disabled={updatingStatus}>
+          <Button
+            type="primary"
+            onClick={() => {
+              setIsApproved(1);
+              form1.submit();
+              isClosed();
+            }}
+            disabled={updatingStatus}
+          >
             Aprobar
           </Button>
         </Form.Item>
