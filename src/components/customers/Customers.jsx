@@ -42,6 +42,12 @@ const Customers = () => {
     getCustomers();
   }, []);
 
+  function hideIdentityDoc(identity_doc) {
+    let identity_doc_numbers = identity_doc.split("-");
+    if (identity_doc_numbers.length !== 2) return identity_doc;
+    return "*".repeat(identity_doc_numbers[0].length) + "-*";
+  }
+
   const getCustomers = async () => {
     setLoading(true);
 
@@ -55,6 +61,7 @@ const Customers = () => {
       if (response.status === 200) {
         const customers = customersData.map((customer) => ({
           ...customer,
+          identity_doc: hideIdentityDoc(customer.identity_doc),
           balance: "$" + customer.balance,
           actions: (
             <>
@@ -156,6 +163,7 @@ const Customers = () => {
         if (response.status === 200) {
           const customers = customersData.map((customer) => ({
             ...customer,
+            identity_doc: hideIdentityDoc(customer.identity_doc),
             balance: "$" + customer.balance,
             actions: (
               <>

@@ -441,6 +441,7 @@ const Transactions = () => {
           isClosed={() => setIsNewTransactionModalOpen(false)}
           transactionTypes={transactionsTypes}
           getTransactions={getTransactions}
+          isSupervisor={authState.isSupervisor}
           setAlertMessage={messageAlert}
         />
 

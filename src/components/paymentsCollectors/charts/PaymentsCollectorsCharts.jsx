@@ -118,7 +118,12 @@ const PaymentsCollectorsCharts = () => {
     };
   }, [paymentsByCollectors]);
 
-  return <canvas ref={paymentsByCollectorChartRef}></canvas>;
+  return (
+    <canvas
+      className="cursor-pointer"
+      ref={paymentsByCollectorChartRef}
+    ></canvas>
+  );
 };
 
 export default PaymentsCollectorsCharts;

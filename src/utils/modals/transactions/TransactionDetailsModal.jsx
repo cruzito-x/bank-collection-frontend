@@ -102,17 +102,20 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
               </p>
             </div>
             {transactionData.sender_account !==
-              transactionData.receiver_account ||
-              transactionData.sender_account !== null ||
-              (transactionData.sender_account !== "" && (
+              transactionData.receiver_account &&
+              transactionData.sender_account !== null && (
                 <div className="col-12">
                   <label className="fw-semibold text-black">
-                    {" "}
-                    No. Cuenta Remitente{" "}
+                    No. Cuenta{" "}
+                    {transactionData.receiver_account !== null &&
+                    transactionData.sender_account !==
+                      transactionData.receiver_account
+                      ? "Remitente"
+                      : ""}
                   </label>
                   <p> {transactionData.sender_account} </p>
                 </div>
-              ))}
+              )}
             <div className="col-12">
               <label className="fw-semibold text-black"> Destinatario </label>
               <p>
@@ -129,13 +132,15 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
                 </span>{" "}
               </p>
             </div>
-            <div className="col-12">
-              <label className="fw-semibold text-black">
-                {" "}
-                No. Cuenta Destino{" "}
-              </label>
-              <p> {transactionData.receiver_account} </p>
-            </div>
+            {transactionData.receiver_account && (
+              <div className="col-12">
+                <label className="fw-semibold text-black">
+                  {" "}
+                  No. Cuenta Destino{" "}
+                </label>
+                <p> {transactionData.receiver_account} </p>
+              </div>
+            )}
             {transactionData.transaction_type === "Transferencia" && (
               <div className="col-12">
                 <label className="fw-semibold text-black"> Concepto </label>

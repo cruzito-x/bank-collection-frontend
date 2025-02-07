@@ -33,7 +33,7 @@ const Login = () => {
         });
 
         if (loggedUserData.isSupervisor) {
-          navigate("/dashboard", { state: { userId: loggedUserData.user_id } });
+          navigate("/dashboard");
         } else {
           navigate("/customers");
         }
@@ -112,6 +112,14 @@ const Login = () => {
               Iniciar Sesión
             </Button>
           </Form.Item>
+
+          <label
+            className="text-black w-100 text-center"
+            style={{ fontSize: "12px" }}
+          >
+            Desarrollado por <br />
+            &copy; cruzito-x
+          </label>
         </Form>
       </Card>
     </div>

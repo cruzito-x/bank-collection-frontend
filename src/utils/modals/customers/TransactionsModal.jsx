@@ -28,10 +28,10 @@ const TransactionsModal = ({
       const transactionsData = await response.json();
       const transactions = transactionsData.map((transaction) => ({
         ...transaction,
-        sender_account: !transaction.sender_account
-          ? transaction.receiver_account
-          : transaction.sender_account,
         amount: "$" + transaction.amount,
+        receiver_account: !transaction.receiver_account
+          ? transaction.sender_account
+          : transaction.receiver_account,
         datetime: moment(transaction.datetime).format("DD/MM/YYYY - hh:mm A"),
       }));
 

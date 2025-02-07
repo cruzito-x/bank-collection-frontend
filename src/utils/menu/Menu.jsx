@@ -134,6 +134,20 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
     },
   ];
 
+  const logout = async () => {
+    const response = await fetch(
+      `http://localhost:3001/login/logout/${authState.user_id}`,
+      {
+        method: "GET",
+      }
+    );
+
+    if (response.status === 200) {
+      window.location.href = "/";
+      localStorage.clear();
+    }
+  };
+
   return (
     <>
       <Menu
@@ -147,7 +161,7 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
         className="menu-bar"
         onClick={({ key }) => {
           if (key === "/logout") {
-            window.location.href = "/";
+            logout();
           } else {
             navigate(key);
           }

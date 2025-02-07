@@ -3,12 +3,25 @@ import { UserOutlined } from "@ant-design/icons";
 import React from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 
-const LogoutCard = () => {
+const LogoutCard = ({ setAlertMessage }) => {
   const { authState } = useAuth();
 
-  const logout = () => {
-    window.location.href = "/";
-    localStorage.clear();
+  const logout = async () => {
+    const response = await fetch(
+      `http://localhost:3001/login/logout/${authState.user_id}`,
+      {
+        method: "GET",
+      }
+    );
+
+    const logoutData = await response.json();
+
+    if (response.status === 200) {
+      window.location.href = "/";
+      localStorage.clear();
+    } else {
+      setAlertMessage.error(logoutData.message);
+    }
   };
 
   const item = [

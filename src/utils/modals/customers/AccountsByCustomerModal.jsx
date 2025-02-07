@@ -21,18 +21,31 @@ const AccountsByCustomerModal = ({
     }
   }, [isOpen, selectedCustomer]);
 
+  function hideAccountNumber(account_number) {
+    let blocs = account_number.split(" ");
+    
+    return blocs
+      .map((bloc, index) => (index < blocs.length - 1 ? "****" : bloc))
+      .join(" ");
+  }
+
   const getAccountsByCustomer = async () => {
     if (!selectedCustomer?.id) return;
 
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:3001/customers/accounts-by-customer/${selectedCustomer.id}`
+        `http://localhost:3001/accounts/accounts-by-customer/${selectedCustomer.id}`
       );
       const accountsData = await response.json();
       setAccounts(
         accountsData.map((account) => ({
           ...account,
+          hidden_account_number: hideAccountNumber(account.account_number),
+          account_type:
+            account.account_type === "checking"
+              ? "Cheques"
+              : "Cuentas Corrientes",
           balance: "$" + account.balance,
           datetime: moment(account.datetime).format("DD/MM/YYYY - hh:mm A"),
           actions: (
@@ -57,7 +70,7 @@ const AccountsByCustomerModal = ({
   const accountsColumns = [
     {
       title: "No. de Cuenta",
-      dataIndex: "account_number",
+      dataIndex: "hidden_account_number",
       key: "account_number",
       align: "center",
     },

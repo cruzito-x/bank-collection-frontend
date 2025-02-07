@@ -398,7 +398,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
             </div>
           </div>
           <div className="d-flex justify-content-end col-md-1 col-sm-12 mb-5">
-            <LogoutCard />
+            <LogoutCard setAlertMessage={messageAlert} />
           </div>
         </div>
 
