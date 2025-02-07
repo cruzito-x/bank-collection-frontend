@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row } from "antd";
+import { Button, Col, Form, Input, Modal, Popconfirm, Row } from "antd";
 import { WarningOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 
@@ -14,9 +14,15 @@ const InstantOrQueuedApprovedTransaction = ({
   const [userId, setUserId] = useState([]);
   const [latestApproval, setLatestApproval] = useState([]);
   const [isApproved, setIsApproved] = useState(0);
-  const [form1] = Form.useForm();
+  const [form] = Form.useForm();
 
   useEffect(() => {}, [transaction]);
+
+  useEffect(() => {
+    if (isClosed) {
+      form.resetFields();
+    }
+  }, [isClosed]);
 
   const sendSupervisorPin = async (supervisor) => {
     try {
@@ -33,6 +39,8 @@ const InstantOrQueuedApprovedTransaction = ({
         setUserId(supervisorData);
 
         await sendToQueue(transaction);
+        isClosed();
+
         const approvalsResponse = await fetch(
           "http://localhost:3001/approvals/latest-approval",
           { method: "GET" }
@@ -57,8 +65,6 @@ const InstantOrQueuedApprovedTransaction = ({
               );
             } finally {
               setUpdatingStatus(false);
-              getTransactions();
-              isClosed();
             }
           } else {
             setAlertMessage.error(
@@ -76,7 +82,7 @@ const InstantOrQueuedApprovedTransaction = ({
         "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
       );
     } finally {
-      isClosed();
+      form.resetFields();
     }
   };
 
@@ -112,7 +118,6 @@ const InstantOrQueuedApprovedTransaction = ({
       );
     } finally {
       setUpdatingStatus(false);
-      isClosed();
       getTransactions();
     }
   };
@@ -150,7 +155,7 @@ const InstantOrQueuedApprovedTransaction = ({
         Aprobación.
       </p>
 
-      <Form form={form1} onFinish={sendSupervisorPin}>
+      <Form form={form} onFinish={sendSupervisorPin}>
         <label className="fw-semibold text-black">
           {" "}
           Clave de Aprobación{" "}
@@ -171,18 +176,19 @@ const InstantOrQueuedApprovedTransaction = ({
           />
         </Form.Item>
         <Form.Item className="text-end">
-          <Button
-            type="primary"
-            danger
-            onClick={() => {
+          <Popconfirm
+            title="¿Desea Rechazar Esta Transacción?"
+            onConfirm={() => {
               setIsApproved(0);
-              form1.submit();
-              isClosed();
+              form.submit();
             }}
-            disabled={updatingStatus}
+            okText="Sí"
+            cancelText="No"
           >
-            Rechazar
-          </Button>
+            <Button type="primary" danger disabled={updatingStatus}>
+              Rechazar
+            </Button>
+          </Popconfirm>
           <Button
             type="primary"
             className="ant-btn-edit ms-2 me-2"
@@ -198,8 +204,7 @@ const InstantOrQueuedApprovedTransaction = ({
             type="primary"
             onClick={() => {
               setIsApproved(1);
-              form1.submit();
-              isClosed();
+              form.submit();
             }}
             disabled={updatingStatus}
           >

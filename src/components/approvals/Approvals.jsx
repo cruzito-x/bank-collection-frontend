@@ -238,12 +238,6 @@ const Approvals = () => {
                       }}
                       okText="Sí"
                       cancelText="No"
-                      okButtonProps={{
-                        loading: updatingStatus,
-                      }}
-                      cancelButtonProps={{
-                        loading: updatingStatus,
-                      }}
                     >
                       <Button type="primary" danger loading={updatingStatus}>
                         Rechazar

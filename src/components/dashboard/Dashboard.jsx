@@ -1,4 +1,4 @@
-import { Button, Card, Layout, Select, Space, theme, message } from "antd";
+import { Button, Card, Layout, Select, Space, theme, message, Popconfirm } from "antd";
 import {
   BellOutlined,
   DollarOutlined,
@@ -176,21 +176,23 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           ),
           actions: (
             <>
-              <Button
-                type="primary"
-                danger
-                onClick={() =>
+              <Popconfirm
+                title="¿Desea Rechazar Esta Transacción?"
+                onConfirm={() => {
                   updateTransactionStatus(
                     notification.approval_id,
                     notification.transaction_id,
                     0,
                     1
-                  )
-                }
-                loading={updatingStatus}
+                  );
+                }}
+                okText="Sí"
+                cancelText="No"
               >
-                Rechazar
-              </Button>
+                <Button type="primary" danger loading={updatingStatus}>
+                  Rechazar
+                </Button>
+              </Popconfirm>
               <Button
                 className="ms-2"
                 type="primary"
