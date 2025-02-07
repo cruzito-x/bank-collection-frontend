@@ -1,5 +1,5 @@
 import { Button, Col, Modal, Row, Table } from "antd";
-import { TransactionOutlined } from "@ant-design/icons";
+import { FileExcelOutlined, TransactionOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { CSVLink } from "react-csv";
@@ -169,7 +169,8 @@ const TransactionsModal = ({
               data={transactions}
             >
               <Button className="ms-2" type="primary">
-                Exportar CSV
+              <FileExcelOutlined />
+                Descargar CSV
               </Button>
             </CSVLink>
           </div>

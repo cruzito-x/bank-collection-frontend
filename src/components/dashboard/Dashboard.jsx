@@ -14,6 +14,7 @@ import AddNewCollectorModal from "../../utils/modals/dashboard/AddNewCollectorMo
 import NotificationsModal from "../../utils/modals/dashboard/NotificationsModal";
 import PaymentsCollectorsModal from "../../utils/modals/dashboard/PaymentsCollectorsModal";
 import { useCollectorsData } from "../../contexts/collectorsDataContext/CollectorsDataContext";
+import ViewReportsModal from "../../utils/modals/dashboard/ViewReportsModal";
 
 const Dashboard = ({ rangeFilter = () => {} }) => {
   const [notifications, setNotifications] = useState([]);
@@ -21,13 +22,15 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   const [totalPayments, setTotalPayments] = useState([]);
   const [totalProcessedAmounts, setTotalProcessedAmounts] = useState([]);
   const [isCollectorModalOpen, setIsCollectorModalOpen] = useState(false);
-  const [openRegisterPayment, setOpenRegisterPayment] = useState(false);
+  const [isRegisterPaymentOpen, setIsRegisterPaymentOpen] = useState(false);
+  const [isReportsModalOpen, setIsReportsModalOpen] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(false);
   const [
     latestCollectorAndCollectorPayment,
     setLatestCollectorAndCollectorPayment,
   ] = useState([]);
-  const [openNotificationsModal, setOpenNotificationsModal] = useState(false);
+  const [isNotificationsModalOpen, setIsNotificationsModalOpen] =
+    useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const { collectors, getCollectors } = useCollectorsData();
   const [dates, setDates] = useState([
@@ -371,7 +374,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                 <Card
                   hoverable
                   className="cursor-pointer"
-                  onClick={() => setOpenNotificationsModal(true)}
+                  onClick={() => setIsNotificationsModalOpen(true)}
                 >
                   <label className="fw-semibold text-start p-1">
                     <BellOutlined
@@ -420,11 +423,15 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               <Button
                 type="primary"
                 className="ms-2 me-2 mb-2"
-                onClick={() => setOpenRegisterPayment(true)}
+                onClick={() => setIsRegisterPaymentOpen(true)}
               >
                 Pagar Servicio
               </Button>
-              <Button type="primary" className="mb-2">
+              <Button
+                type="primary"
+                className="mb-2"
+                onClick={() => setIsReportsModalOpen(true)}
+              >
                 Ver Reportes
               </Button>
             </div>
@@ -535,8 +542,8 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
         </Card>
 
         <NotificationsModal
-          isOpen={openNotificationsModal}
-          isClosed={() => setOpenNotificationsModal(false)}
+          isOpen={isNotificationsModalOpen}
+          isClosed={() => setIsNotificationsModalOpen(false)}
           notificationsData={notifications}
           setAlertMessage={messageAlert}
         />
@@ -548,9 +555,15 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
         />
 
         <PaymentsCollectorsModal
-          isOpen={openRegisterPayment}
-          isClosed={() => setOpenRegisterPayment(false)}
+          isOpen={isRegisterPaymentOpen}
+          isClosed={() => setIsRegisterPaymentOpen(false)}
           collectors={collectors}
+          setAlertMessage={messageAlert}
+        />
+
+        <ViewReportsModal
+          isOpen={isReportsModalOpen}
+          isClosed={() => setIsReportsModalOpen(false)}
           setAlertMessage={messageAlert}
         />
       </div>

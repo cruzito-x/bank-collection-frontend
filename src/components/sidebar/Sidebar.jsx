@@ -129,7 +129,7 @@ const Sidebar = () => {
               width: "100%",
             }}
           >
-            &copy; {new Date().getFullYear()} - Banco Bambú&reg;
+            &copy; {new Date().getFullYear()} - Banco Bambú de El Salvador S.A&reg;
           </Footer>
         </Content>
       </Layout>

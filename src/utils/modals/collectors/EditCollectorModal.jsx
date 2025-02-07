@@ -25,8 +25,6 @@ const EditCollectorModal = ({
   const updateCollector = async (collectorData) => {
     setSendingData(true);
 
-    console.log(collectorData);
-
     try {
       const response = await fetch(
         `http://localhost:3001/collectors/update-collector/${selectedCollector.id}`,

@@ -1,5 +1,5 @@
 import { Button, Col, Modal, Row, Table } from "antd";
-import { DollarCircleOutlined } from "@ant-design/icons";
+import { DollarCircleOutlined, FileExcelOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { CSVLink } from "react-csv";
 import moment from "moment";
@@ -145,7 +145,8 @@ const PaymentsDetailsModal = ({
               data={payments}
             >
               <Button className="ms-2" type="primary">
-                Exportar CSV
+                <FileExcelOutlined />
+                Descargar CSV
               </Button>
             </CSVLink>
           </div>

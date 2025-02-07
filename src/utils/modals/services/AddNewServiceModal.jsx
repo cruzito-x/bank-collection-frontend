@@ -23,7 +23,6 @@ const AddNewServiceModal = ({ isOpen, isClosed, setAlertMessage }) => {
   }, []);
 
   const saveNewService = async (service) => {
-    console.log(service);
     setSendingData(true);
 
     try {
