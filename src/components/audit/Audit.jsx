@@ -222,6 +222,7 @@ const Audit = () => {
                   hideOnSinglePage: true,
                 }}
                 loading={loading}
+                scroll={{ x: "max-content" }}
               />
             </div>
           </div>

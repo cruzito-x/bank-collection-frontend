@@ -129,7 +129,9 @@ const Collectors = () => {
 
   const searchCollector = async (collector) => {
     if (collector.collector === undefined || collector.collector === "") {
-      messageAlert.warning("Por Favor, Introduzca al Menos un Criterio de Búsqueda");
+      messageAlert.warning(
+        "Por Favor, Introduzca al Menos un Criterio de Búsqueda"
+      );
       getCollectors();
       return;
     } else {
@@ -221,7 +223,6 @@ const Collectors = () => {
       dataIndex: "actions",
       key: "actions",
       align: "center",
-      width: "33%",
     },
   ];
 
@@ -328,6 +329,7 @@ const Collectors = () => {
                   hideOnSinglePage: true,
                 }}
                 loading={loading}
+                scroll={{ x: "max-content" }}
               />
             </div>
           </div>

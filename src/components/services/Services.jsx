@@ -132,7 +132,9 @@ const Services = () => {
       (service.collector === undefined || service.collector === "") &&
       (service.service === undefined || service.service === "")
     ) {
-      messageAlert.warning("Por Favor, Introduzca al Menos un Criterio de Búsqueda");
+      messageAlert.warning(
+        "Por Favor, Introduzca al Menos un Criterio de Búsqueda"
+      );
       getServices();
       return;
     } else {
@@ -224,7 +226,6 @@ const Services = () => {
       dataIndex: "actions",
       key: "actions",
       align: "center",
-      width: "33%",
     },
   ];
 
@@ -348,6 +349,7 @@ const Services = () => {
                   hideOnSinglePage: true,
                 }}
                 loading={loading}
+                scroll={{ x: "max-content" }}
               />
             </div>
           </div>

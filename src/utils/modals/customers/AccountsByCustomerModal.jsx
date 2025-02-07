@@ -23,7 +23,7 @@ const AccountsByCustomerModal = ({
 
   function hideAccountNumber(account_number) {
     let blocs = account_number.split(" ");
-    
+
     return blocs
       .map((bloc, index) => (index < blocs.length - 1 ? "****" : bloc))
       .join(" ");
@@ -126,7 +126,6 @@ const AccountsByCustomerModal = ({
           <Table
             dataSource={accounts}
             columns={accountsColumns}
-            loading={loading}
             onRow={(record) => ({
               onClick: () => setselectedAccountNumber(record),
             })}
@@ -136,6 +135,8 @@ const AccountsByCustomerModal = ({
               showTotal: (total) => `Total: ${total} cuenta(s)`,
               hideOnSinglePage: true,
             }}
+            loading={loading}
+            scroll={{ x: "max-content" }}
           />
         </div>
         <div className="col-12">

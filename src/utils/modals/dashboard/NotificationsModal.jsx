@@ -77,6 +77,7 @@ const NotificationsModal = ({ isOpen, isClosed, notificationsData }) => {
           pageSize: 10,
           hideOnSinglePage: true,
         }}
+        scroll={{ x: "max-content" }}
       />
       <div className="mt-3 text-end">
         <Button key="back" type="primary" danger onClick={isClosed}>

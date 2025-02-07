@@ -137,7 +137,9 @@ const TransactionTypes = () => {
       transactionType.transaction_type === undefined ||
       transactionType.transaction_type === ""
     ) {
-      messageAlert.warning("Por Favor, Introduzca al Menos un Criterio de Búsqueda");
+      messageAlert.warning(
+        "Por Favor, Introduzca al Menos un Criterio de Búsqueda"
+      );
       getTransactionsTypes();
       return;
     } else {
@@ -331,6 +333,7 @@ const TransactionTypes = () => {
           isClosed={() => setIsNewTransactionTypeModalOpen(false)}
           getTransactionsTypes={getTransactionsTypes}
           setAlertMessage={messageAlert}
+          scroll={{ x: "max-content" }}
         />
 
         <EditTransactionTypeModal

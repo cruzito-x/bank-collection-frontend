@@ -144,13 +144,14 @@ const TransactionsModal = ({
           <Table
             dataSource={transactions}
             columns={transactionsColumns}
-            loading={loading}
             pagination={{
               pageSize: 10,
               showSizeChanger: false,
               showTotal: (total) => `Total: ${total} transacción(es)`,
               hideOnSinglePage: true,
             }}
+            loading={loading}
+            scroll={{ x: "max-content" }}
           />
         </div>
         <div className="col-12">

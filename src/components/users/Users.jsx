@@ -374,6 +374,7 @@ const Users = () => {
                   hideOnSinglePage: true,
                 }}
                 loading={loading}
+                scroll={{ x: "max-content" }}
               />
             </div>
           </div>

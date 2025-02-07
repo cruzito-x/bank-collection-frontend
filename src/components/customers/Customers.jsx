@@ -140,7 +140,9 @@ const Customers = () => {
       (customer.name === undefined || customer.name === "") &&
       (customer.identity_doc === undefined || customer.identity_doc === "")
     ) {
-      messageAlert.warning("Por Favor, Introduzca al Menos un Criterio de Búsqueda");
+      messageAlert.warning(
+        "Por Favor, Introduzca al Menos un Criterio de Búsqueda"
+      );
       getCustomers();
       return;
     } else {
@@ -242,7 +244,6 @@ const Customers = () => {
       dataIndex: "actions",
       key: "actions",
       align: "center",
-      width: "33%",
     },
   ];
 
@@ -355,6 +356,7 @@ const Customers = () => {
                   hideOnSinglePage: true,
                 }}
                 loading={loading}
+                scroll={{ x: "max-content" }}
               />
             </div>
           </div>
