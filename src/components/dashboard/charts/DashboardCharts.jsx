@@ -8,28 +8,34 @@ const DashboardCharts = ({
   transactionTypeFilter,
 }) => {
   const [transactionsByDate, setTransactionsByDate] = useState([]);
-  const [transactionsByCollector, setTransactionsByCollector] = useState([]);
-  const [transactionsByDenomination, setTransactionsByDenomination] = useState(
-    []
-  );
+  const [paymentsByCollector, setPaymentsByCollector] = useState([]);
+  const [
+    paymentsByCollectorDenominations,
+    setPaymentsByCollectorDenominations,
+  ] = useState([]);
   const [customersWithTheMostMoneyPaid, setCustomersWithTheMostMoneyPaid] =
     useState([]);
   const [approvalAndRejectionRates, setApprovalAndRejectionRates] = useState(
     []
   );
 
-  const barTransactionsCanvasRef = useRef(null);
-  const barTransactionsChartInstance = useRef(null);
+  //Transactions by Date
+  const barTransactionsByDateCanvasRef = useRef(null);
+  const barTransactionsByDateChartInstance = useRef(null);
 
-  const doughnutTransactionsCanvasRef = useRef(null);
-  const doughnutTransactionsChartInstance = useRef(null);
+  //Payments Collectors
+  const doughnutPaymentsByCollectorCanvasRef = useRef(null);
+  const doughnutPaymentsByCollectorChartInstance = useRef(null);
 
-  const doughnutAmountCanvasRef = useRef(null);
-  const doughnutAmountChartInstance = useRef(null);
+  //Payments Collectors - Denominations
+  const doughnutPaymentsCollectorDenominationsCanvasRef = useRef(null);
+  const doughnutPaymentsCollectorDenominationsChartInstance = useRef(null);
 
+  //Customers With The Most Money Paid
   const barCustomersWhitMostMoneyPaidRef = useRef(null);
   const barCustomersWhitMostMoneyPaidChartInstance = useRef(null);
 
+  //Approval And Rejection Rates
   const doughnutRatesCanvasRef = useRef(null);
   const doughnutRatesChartInstance = useRef(null);
 
@@ -72,28 +78,28 @@ const DashboardCharts = ({
     setTransactionsByDate(transactionsByDateAndTypeData);
   };
 
-  const getTransactionsByCollector = async () => {
+  const getPaymentsByCollector = async () => {
     const response = await fetch(
-      "http://localhost:3001/dashboard/transactions-by-collector",
+      "http://localhost:3001/dashboard/payments-by-collector",
       {
         method: "GET",
       }
     );
 
-    const transactionsByCollectorData = await response.json();
-    setTransactionsByCollector(transactionsByCollectorData);
+    const paymentsByCollectorData = await response.json();
+    setPaymentsByCollector(paymentsByCollectorData);
   };
 
-  const getTransactionsByDenomination = async () => {
+  const getPaymentsByCollectorDenominations = async () => {
     const response = await fetch(
-      "http://localhost:3001/dashboard/transactions-by-denomination",
+      "http://localhost:3001/dashboard/payments-by-collector-denominations",
       {
         method: "GET",
       }
     );
 
-    const transactionsByDenominationData = await response.json();
-    setTransactionsByDenomination(transactionsByDenominationData);
+    const paymentsByCollectorDenominationsData = await response.json();
+    setPaymentsByCollectorDenominations(paymentsByCollectorDenominationsData);
   };
 
   const getCustomersWithTheMostMoneyPaid = async () => {
@@ -125,8 +131,9 @@ const DashboardCharts = ({
   }, [datesRange[0], datesRange[1], amountRangeFilter, transactionTypeFilter]);
 
   useEffect(() => {
-    getTransactionsByCollector();
-    getTransactionsByDenomination();
+    getPaymentsByCollector();
+    getPaymentsByCollectorDenominations();
+    getCustomersWithTheMostMoneyPaid();
     getApprovalAndRejectionRates();
   }, []);
 
@@ -141,10 +148,10 @@ const DashboardCharts = ({
         (transactionByDate) => transactionByDate.totalAmount
       );
 
-      const barTransactionsChart =
-        barTransactionsCanvasRef.current.getContext("2d");
+      const barTransactionsByDateChart =
+        barTransactionsByDateCanvasRef.current.getContext("2d");
 
-      const barTransactionsData = {
+      const barTransactionsByDateData = {
         labels: dates,
         datasets: [
           {
@@ -154,9 +161,9 @@ const DashboardCharts = ({
         ],
       };
 
-      const barTransactionsConfig = {
+      const barTransactionsByDateConfig = {
         type: "bar",
-        data: barTransactionsData,
+        data: barTransactionsByDateData,
         options: {
           responsive: true,
           plugins: {
@@ -183,7 +190,7 @@ const DashboardCharts = ({
                       transactionTypeFilter === 1
                         ? "Depositado"
                         : transactionTypeFilter === 2
-                        ? "Retirdo"
+                        ? "Retirado"
                         : transactionTypeFilter === 3
                         ? "Transferido"
                         : ""
@@ -208,27 +215,26 @@ const DashboardCharts = ({
         },
       };
 
-      barTransactionsChartInstance.current = new Chart(
-        barTransactionsChart,
-        barTransactionsConfig
+      barTransactionsByDateChartInstance.current = new Chart(
+        barTransactionsByDateChart,
+        barTransactionsByDateConfig
       );
     }
 
-    // Transactions by Collector
-    if (transactionsByCollector.length > 0) {
-      const collectors = transactionsByCollector.map(
-        (transactionByCollector) => transactionByCollector.collector
+    // Payments by Collector
+    if (paymentsByCollector.length > 0) {
+      const collectors = paymentsByCollector.map(
+        (paymentByCollector) => paymentByCollector.collector
       );
 
-      const totals = transactionsByCollector.map(
-        (transactionByCollector) =>
-          transactionByCollector.transactionsByCollector
+      const totals = paymentsByCollector.map(
+        (paymentByCollector) => paymentByCollector.transactionsByCollector
       );
 
-      const doughnutAmountChart =
-        doughnutAmountCanvasRef.current.getContext("2d");
+      const doughnutPaymentsByCollectorChart =
+        doughnutPaymentsByCollectorCanvasRef.current.getContext("2d");
 
-      const doughnutAmountData = {
+      const doughnutPaymentsByCollectorData = {
         labels: collectors,
         datasets: [
           {
@@ -238,9 +244,9 @@ const DashboardCharts = ({
         ],
       };
 
-      const doughnutAmountConfig = {
+      const doughnutPaymentsByCollectorConfig = {
         type: "doughnut",
-        data: doughnutAmountData,
+        data: doughnutPaymentsByCollectorData,
         options: {
           aspectRatio: 2,
           maintainAspectRatio: true,
@@ -263,26 +269,28 @@ const DashboardCharts = ({
         },
       };
 
-      doughnutAmountChartInstance.current = new Chart(
-        doughnutAmountChart,
-        doughnutAmountConfig
+      doughnutPaymentsByCollectorChartInstance.current = new Chart(
+        doughnutPaymentsByCollectorChart,
+        doughnutPaymentsByCollectorConfig
       );
     }
 
-    // Transactions by Denominations
-    if (transactionsByDenomination.length > 0) {
-      const denominations = transactionsByDenomination.map(
-        (transactionByDenomination) => transactionByDenomination.denomination
+    // Payments by Collectors - Denominations
+    if (paymentsByCollectorDenominations.length > 0) {
+      const denominations = paymentsByCollectorDenominations.map(
+        (denomination) => denomination.denomination
       );
 
-      const totalByDenomination = transactionsByDenomination.map(
-        (transactionByDenomination) => transactionByDenomination.total
+      const totalByDenomination = paymentsByCollectorDenominations.map(
+        (denomination) => denomination.total
       );
 
-      const doughnutTransactionsChart =
-        doughnutTransactionsCanvasRef.current.getContext("2d");
+      const doughnutPaymentsByCollectorDenominationsChart =
+        doughnutPaymentsCollectorDenominationsCanvasRef.current.getContext(
+          "2d"
+        );
 
-      const doughnutTransactionsData = {
+      const doughnutPaymentsByCollectorDenominationsData = {
         labels: denominations,
         datasets: [
           {
@@ -292,9 +300,9 @@ const DashboardCharts = ({
         ],
       };
 
-      const doughnutTransactionsConfig = {
+      const doughnutPaymentsByCollectorDenominationsConfig = {
         type: "doughnut",
-        data: doughnutTransactionsData,
+        data: doughnutPaymentsByCollectorDenominationsData,
         options: {
           aspectRatio: 2,
           maintainAspectRatio: true,
@@ -327,9 +335,9 @@ const DashboardCharts = ({
         },
       };
 
-      doughnutTransactionsChartInstance.current = new Chart(
-        doughnutTransactionsChart,
-        doughnutTransactionsConfig
+      doughnutPaymentsCollectorDenominationsChartInstance.current = new Chart(
+        doughnutPaymentsByCollectorDenominationsChart,
+        doughnutPaymentsByCollectorDenominationsConfig
       );
     }
 
@@ -344,7 +352,7 @@ const DashboardCharts = ({
       );
 
       const barCustomersWhitMostMoneyPaidChart =
-        doughnutTransactionsCanvasRef.current.getContext("2d");
+        barCustomersWhitMostMoneyPaidRef.current.getContext("2d");
 
       const barbarCustomersWhitMostMoneyPaidData = {
         labels: customers,
@@ -366,28 +374,37 @@ const DashboardCharts = ({
           plugins: {
             title: {
               display: true,
-              text: "Ranking - Top 5 Clientes con más Pagos",
+              text: "Top 5 Clientes con Mayor Monto de Pagos Procesados",
               color: "#000000",
               margin: {
                 bottom: 20,
               },
             },
             legend: {
-              position: "left",
-              labels: {
-                boxWidth: 20,
-                padding: 10,
-              },
+              display: false,
             },
             tooltip: {
               callbacks: {
                 label: function (total, data) {
-                  return "Cantidad: " + total.formattedValue;
+                  return (
+                    "Monto Total Cancelado en Pagos: $" + total.formattedValue
+                  );
                 },
               },
             },
           },
-          borderWidth: 0,
+          scales: {
+            x: {
+              grid: {
+                display: false,
+              },
+            },
+            y: {
+              grid: {
+                display: false,
+              },
+            },
+          },
         },
       };
 
@@ -399,22 +416,22 @@ const DashboardCharts = ({
 
     // Approval and Rejection Rates
     if (approvalAndRejectionRates.length > 0) {
-      const approvals = approvalAndRejectionRates.map(
-        (rate) => rate.approved_transactions
+      const status = approvalAndRejectionRates.map(
+        (rate) => rate.transaction_type
       );
 
-      const rejected = approvalAndRejectionRates.map(
-        (rate) => rate.rejected_transactions
+      const approvedOrRejected = approvalAndRejectionRates.map(
+        (rate) => rate.total_transactions
       );
 
       const doughnutRatesChart =
         doughnutRatesCanvasRef.current.getContext("2d");
 
       const doughnutRatesData = {
-        labels: ["Aprobadas", "Rechazadas"],
+        labels: status,
         datasets: [
           {
-            data: [approvals, rejected],
+            data: approvedOrRejected,
             backgroundColor: [colors[0], colors[4]],
           },
         ],
@@ -433,26 +450,33 @@ const DashboardCharts = ({
               display: true,
               text: "Tasa de Aprobaciones y Rechazos - Transacciones",
               color: "#000000",
-              margin: {
-                bottom: 20,
-              },
             },
             legend: {
-              position: "left",
-              labels: {
-                boxWidth: 20,
-                padding: 10,
-              },
+              display: false,
             },
             tooltip: {
               callbacks: {
                 label: function (total, data) {
-                  return "Total: " + total.formattedValue;
+                  return (
+                    `Total de Transacciones ${status[0]}: ` +
+                    total.formattedValue
+                  );
                 },
               },
             },
           },
-          borderWidth: 0,
+          scales: {
+            x: {
+              grid: {
+                display: false,
+              },
+            },
+            y: {
+              grid: {
+                display: false,
+              },
+            },
+          },
         },
       };
 
@@ -463,16 +487,16 @@ const DashboardCharts = ({
     }
 
     return () => {
-      if (barTransactionsChartInstance.current) {
-        barTransactionsChartInstance.current.destroy();
+      if (barTransactionsByDateChartInstance.current) {
+        barTransactionsByDateChartInstance.current.destroy();
       }
 
-      if (doughnutAmountChartInstance.current) {
-        doughnutAmountChartInstance.current.destroy();
+      if (doughnutPaymentsByCollectorChartInstance.current) {
+        doughnutPaymentsByCollectorChartInstance.current.destroy();
       }
 
-      if (doughnutTransactionsChartInstance.current) {
-        doughnutTransactionsChartInstance.current.destroy();
+      if (doughnutPaymentsCollectorDenominationsChartInstance.current) {
+        doughnutPaymentsCollectorDenominationsChartInstance.current.destroy();
       }
 
       if (barCustomersWhitMostMoneyPaidChartInstance.current) {
@@ -485,8 +509,8 @@ const DashboardCharts = ({
     };
   }, [
     transactionsByDate,
-    transactionsByCollector,
-    transactionsByDenomination,
+    paymentsByCollector,
+    paymentsByCollectorDenominations,
     customersWithTheMostMoneyPaid,
     approvalAndRejectionRates,
   ]);
@@ -508,7 +532,7 @@ const DashboardCharts = ({
             ) : (
               <canvas
                 className="ms-3 me-3 mb-4"
-                ref={barTransactionsCanvasRef}
+                ref={barTransactionsByDateCanvasRef}
               ></canvas>
             )}
           </Card>
@@ -516,40 +540,46 @@ const DashboardCharts = ({
         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12">
           <Card
             className={`mb-2 ${
-              transactionsByCollector.length === 0
+              paymentsByCollector.length === 0
                 ? "d-flex justify-content-center align-items-center h-100"
                 : ""
             }`}
             bodyStyle={{ padding: 0 }}
           >
-            {transactionsByCollector.length === 0 ? (
+            {paymentsByCollector.length === 0 ? (
               <Empty />
             ) : (
-              <canvas className="mb-2" ref={doughnutAmountCanvasRef}></canvas>
+              <canvas
+                className="mb-2"
+                ref={doughnutPaymentsByCollectorCanvasRef}
+              ></canvas>
             )}
           </Card>
           <Card
-            className={`${transactionsByDenomination.length === 0 ? "" : ""}`}
+            className={`${
+              paymentsByCollectorDenominations.length === 0 ? "" : ""
+            }`}
             bodyStyle={{ padding: 0 }}
           >
-            {transactionsByDenomination.length === 0 ? (
+            {paymentsByCollectorDenominations.length === 0 ? (
               <Empty />
             ) : (
-              <Carousel arrows infinite={false} dotPosition="bottom">
-                <div>
-                  <canvas
-                    className="mb-2"
-                    ref={doughnutTransactionsCanvasRef}
-                  ></canvas>
-                </div>
-                <div></div>
-              </Carousel>
+              <canvas
+                className="mb-2"
+                ref={doughnutPaymentsCollectorDenominationsCanvasRef}
+              ></canvas>
             )}
           </Card>
         </div>
       </div>
       <div className="row">
-        <div className="col-xl-7">
+        <div className="col-xl-6 col-md-8 col-sm-12 text-start">
+          <label className="fw-semibold fs-5 text-blackfw-semibold fs-5 text-black mb-2 mt-2 text-black">
+            {" "}
+            Transacciones y Clientes Destacados{" "}
+          </label>
+        </div>
+        <div className="col-xl-7 col-md-7 col-sm-12">
           <Card
             className={`${
               customersWithTheMostMoneyPaid.length === 0 ? "" : ""
@@ -559,16 +589,14 @@ const DashboardCharts = ({
             {customersWithTheMostMoneyPaid.length === 0 ? (
               <Empty />
             ) : (
-              <div>
-                <canvas
-                  className="mb-2"
-                  ref={barCustomersWhitMostMoneyPaidRef}
-                ></canvas>
-              </div>
+              <canvas
+                className="ms-2 me-2 mb-2"
+                ref={barCustomersWhitMostMoneyPaidRef}
+              ></canvas>
             )}
           </Card>
         </div>
-        <div className="col-xl-5">
+        <div className="col-xl-5 col-md-5 col-sm-12">
           <Card
             className={`${approvalAndRejectionRates.length === 0 ? "" : ""}`}
             bodyStyle={{ padding: 0 }}
@@ -576,9 +604,10 @@ const DashboardCharts = ({
             {approvalAndRejectionRates.length === 0 ? (
               <Empty />
             ) : (
-              <div>
-                <canvas className="mb-2" ref={doughnutRatesCanvasRef}></canvas>
-              </div>
+              <canvas
+                className="ms-2 me-2 mb-2"
+                ref={doughnutRatesCanvasRef}
+              ></canvas>
             )}
           </Card>
         </div>
