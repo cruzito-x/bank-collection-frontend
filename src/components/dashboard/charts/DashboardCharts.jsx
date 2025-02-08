@@ -456,11 +456,9 @@ const DashboardCharts = ({
             },
             tooltip: {
               callbacks: {
-                label: function (total, data) {
-                  return (
-                    `Total de Transacciones ${status[0]}: ` +
-                    total.formattedValue
-                  );
+                label: function (context) {
+                  const index = context.dataIndex;
+                  return `Total de Transacciones ${status[index]}: ${context.raw}`;
                 },
               },
             },
