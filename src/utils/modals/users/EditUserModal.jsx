@@ -79,6 +79,7 @@ const EditUserModal = ({
       open={isOpen}
       onCancel={isClosed}
       footer={null}
+      maskClosable={false}
     >
       <Form form={form} onFinish={updateUser}>
         <label className="fw-semibold text-black"> Nombre de Usuario </label>

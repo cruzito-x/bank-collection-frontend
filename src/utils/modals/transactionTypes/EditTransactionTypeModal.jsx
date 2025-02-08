@@ -76,6 +76,7 @@ const EditTransactionTypeModal = ({
       open={isOpen}
       onCancel={isClosed}
       footer={null}
+      maskClosable={false}
     >
       <Form form={form} onFinish={updateTransactionType}>
         <label className="fw-semibold text-black"> Tipo de Transacción </label>

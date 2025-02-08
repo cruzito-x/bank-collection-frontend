@@ -76,16 +76,6 @@ const Users = () => {
       if (response.status === 200) {
         const users = usersData.map((user) => ({
           ...user,
-          role: (
-            <>
-              <Tag
-                color={`${user.role === "Supervisor" ? "processing" : "error"}`}
-              >
-                {" "}
-                {user.role}{" "}
-              </Tag>
-            </>
-          ),
           actions: (
             <>
               <Button
@@ -191,18 +181,6 @@ const Users = () => {
         if (response.status === 200) {
           const users = usersData.map((user) => ({
             ...user,
-            role: (
-              <>
-                <Tag
-                  color={`${
-                    user.role === "Supervisor" ? "processing" : "error"
-                  }`}
-                >
-                  {" "}
-                  {user.role}{" "}
-                </Tag>
-              </>
-            ),
             actions: (
               <>
                 <Button

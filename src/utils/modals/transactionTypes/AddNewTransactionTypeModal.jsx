@@ -65,6 +65,7 @@ const AddNewTransactionTypeModal = ({
       open={isOpen}
       onCancel={isClosed}
       footer={null}
+      maskClosable={false}
     >
       <Form form={form} onFinish={saveNewTransactionType}>
         <label className="fw-semibold text-black"> Tipo de Transacción </label>

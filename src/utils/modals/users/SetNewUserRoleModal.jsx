@@ -75,6 +75,7 @@ const SetNewUserRoleModal = ({
       width={400}
       onCancel={isClosed}
       footer={null}
+      maskClosable={false}
     >
       <Form form={form} onFinish={updateUserRole}>
         <label className="fw-semibold text-black"> Rol Actual </label>
