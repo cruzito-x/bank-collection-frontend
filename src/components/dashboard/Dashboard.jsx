@@ -506,23 +506,23 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                   options={[
                     {
                       value: 1,
-                      label: "$1 - $99",
+                      label: "$1 - $100",
                     },
                     {
                       value: 2,
-                      label: "$100 - $499",
+                      label: "$100 - $500",
                     },
                     {
                       value: 3,
-                      label: "$500 - $999",
+                      label: "$500 - $1000",
                     },
                     {
                       value: 4,
-                      label: "$1000 - $1999",
+                      label: "$1000 - $2000",
                     },
                     {
                       value: 5,
-                      label: "$2000 - $4999",
+                      label: "$2000 - $5000",
                     },
                     {
                       value: 6,
