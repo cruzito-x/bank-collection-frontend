@@ -40,6 +40,7 @@ const InstantOrQueuedApprovedTransactionModal = ({
 
         await sendToQueue(transaction);
         isClosed();
+        setUpdatingStatus(false);
 
         const approvalsResponse = await fetch(
           "http://localhost:3001/approvals/latest-approval",
@@ -83,6 +84,7 @@ const InstantOrQueuedApprovedTransactionModal = ({
       );
     } finally {
       form.resetFields();
+      setUpdatingStatus(false);
     }
   };
 
@@ -112,6 +114,7 @@ const InstantOrQueuedApprovedTransactionModal = ({
       } else {
         setAlertMessage.error(transactionStatus.message);
       }
+      setUpdatingStatus(false);
     } catch (error) {
       setAlertMessage.error(
         "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
@@ -185,7 +188,7 @@ const InstantOrQueuedApprovedTransactionModal = ({
             okText="Sí"
             cancelText="No"
           >
-            <Button type="primary" danger disabled={updatingStatus}>
+            <Button type="primary" danger>
               Rechazar
             </Button>
           </Popconfirm>
@@ -196,7 +199,6 @@ const InstantOrQueuedApprovedTransactionModal = ({
               sendToQueue(transaction);
               isClosed();
             }}
-            disabled={updatingStatus}
           >
             Envíar a Cola
           </Button>
@@ -206,7 +208,6 @@ const InstantOrQueuedApprovedTransactionModal = ({
               setIsApproved(1);
               form.submit();
             }}
-            disabled={updatingStatus}
           >
             Aprobar
           </Button>
