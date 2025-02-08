@@ -575,6 +575,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           isClosed={() => setIsRegisterPaymentOpen(false)}
           collectors={collectors}
           setAlertMessage={messageAlert}
+          currentPath={window.location.pathname}
         />
 
         <ViewReportsModal

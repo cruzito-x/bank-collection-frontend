@@ -11,7 +11,7 @@ import {
 } from "antd";
 import { DollarCircleOutlined } from "@ant-design/icons";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "antd/es/form/Form";
 import { useCollectorsData } from "../../../contexts/collectorsDataContext/CollectorsDataContext";
 
@@ -23,14 +23,13 @@ const PaymentsCollectorsModal = ({
   getPaymentsCollectors,
 }) => {
   const [percentage, setPercentage] = useState(0);
+  const [cancelPayment, setCancelPayment] = useState(false);
+  const cancelPaymentRef = useRef(cancelPayment);
   const [sendingDataLoading, setSendingDataLoading] = useState(false);
-  const [cancelPaymentTimeout, setCancelPaymentTimeout] = useState(null);
-  const [isPaymentCancelled, setIsPaymentCancelled] = useState(false);
   const { collectors, getCollectors } = useCollectorsData();
   const [customers, setCustomers] = useState([]);
   const [services, setServices] = useState([]);
   const [form] = useForm();
-  let isProcessing = false;
 
   useEffect(() => {
     if (isOpen) {
@@ -42,6 +41,10 @@ const PaymentsCollectorsModal = ({
     getCollectors();
     getCustomers();
   }, []);
+
+  useEffect(() => {
+    cancelPaymentRef.current = cancelPayment;
+  }, [cancelPayment]);
 
   const getCustomers = async () => {
     try {
@@ -98,29 +101,40 @@ const PaymentsCollectorsModal = ({
 
   const startRegisterProgress = (paymentData) => {
     setPercentage(0);
-    setIsPaymentCancelled(false);
+    setCancelPayment(false);
+    cancelPaymentRef.current = false;
+    setSendingDataLoading(true);
 
+    let progress = 0;
     const interval = setInterval(() => {
-      setPercentage((prev) => {
-        const newPercentage = prev + 2;
+      if (cancelPaymentRef.current) {
+        clearInterval(interval);
+        setPercentage(0);
+        setSendingDataLoading(false);
 
-        if (newPercentage >= 100) {
-          clearInterval(interval);
-          if (!isPaymentCancelled && !isProcessing) {
-            isProcessing = true;
-            registerPayments(paymentData);
-          }
-          return 100;
-        }
+        return;
+      }
 
-        return newPercentage;
-      });
+      progress += 2;
+      setPercentage(progress);
+
+      if (progress === 100) {
+        clearInterval(interval);
+        registerPayment(paymentData);
+      }
     }, 100);
-
-    setCancelPaymentTimeout(interval);
   };
 
-  const registerPayments = async (payment) => {
+  const cancelRegisterPayment = () => {
+    setCancelPayment(true);
+    cancelPaymentRef.current = true;
+    setPercentage(0);
+    setSendingDataLoading(false);
+  };
+
+  const registerPayment = async (payment) => {
+    if (cancelPayment.current) return;
+
     try {
       const response = await fetch(
         "http://localhost:3001/payments-collectors/save-new-payment",
@@ -132,9 +146,9 @@ const PaymentsCollectorsModal = ({
       );
 
       const registeredPayment = await response.json();
+
       if (response.status === 200) {
         setAlertMessage.success(registeredPayment.message);
-        setPercentage(0);
         isClosed();
 
         if (currentPath === "/payments-collectors") {
@@ -148,33 +162,11 @@ const PaymentsCollectorsModal = ({
         "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
       );
     } finally {
+      setPercentage(0);
       setSendingDataLoading(false);
-      isProcessing = false;
+      setCancelPayment(false);
+      cancelPaymentRef.current = false;
     }
-  };
-
-  const cancelPayment = () => {
-    if (cancelPaymentTimeout) {
-      clearInterval(cancelPaymentTimeout);
-      setCancelPaymentTimeout(null);
-    }
-
-    setPercentage(0);
-    setIsPaymentCancelled(true);
-    setSendingDataLoading(false);
-    isProcessing = false;
-    setAlertMessage.warning("El Pago ha Sido Cancelado");
-  };
-
-  const submitPaymentRegister = (values) => {
-    if (isProcessing) {
-      setAlertMessage.warning("El Registro de Pago ya Está en Curso");
-      return;
-    }
-
-    isProcessing = false;
-    setSendingDataLoading(true);
-    startRegisterProgress(values);
   };
 
   return (
@@ -199,7 +191,7 @@ const PaymentsCollectorsModal = ({
       onCancel={isClosed}
       footer={null}
     >
-      <div className={percentage <= 0 ? "d-none" : "d-block"}>
+      <div className={percentage >= 1 ? "d-block" : "d-none"}>
         <label className="fw-semibold mb-1 text-danger">
           {" "}
           ¿Desea Cancelar el Pago?{" "}
@@ -214,14 +206,14 @@ const PaymentsCollectorsModal = ({
             />
             <label
               className="fw-semibold ms-3 text-danger cursor-pointer"
-              onClick={cancelPayment}
+              onClick={cancelRegisterPayment}
             >
               Cancelar
             </label>
           </div>
         </Flex>
       </div>
-      <Form form={form} onFinish={submitPaymentRegister}>
+      <Form form={form} onFinish={startRegisterProgress}>
         <label className="fw-semibold text-black"> Seleccionar Cliente </label>
         <Form.Item
           name="customer_id"

@@ -22,13 +22,10 @@ import { useAuth } from "../../contexts/authContext/AuthContext";
 import moment from "moment";
 import PaymentsCollectorsDetailsModal from "../../utils/modals/paymentsCollectors/PaymentsCollectorsDetailsModal";
 import PaymentsCollectorsModal from "../../utils/modals/dashboard/PaymentsCollectorsModal";
-import { useLocation } from "react-router-dom";
 import { useForm } from "antd/es/form/Form";
 
 const PaymentsCollectors = () => {
   const { authState } = useAuth();
-  const location = useLocation();
-  const { currentPath } = location;
   const [paymentsCollector, setPaymentsCollectors] = useState([]);
   const [
     isPaymentsCollectorsDetailsModalOpen,
@@ -305,7 +302,7 @@ const PaymentsCollectors = () => {
         <PaymentsCollectorsModal
           isOpen={openRegisterPayment}
           isClosed={() => setOpenRegisterPayment(false)}
-          currentPath={currentPath}
+          currentPath={window.location.pathname}
           getPaymentsCollectors={getPaymentsCollectors}
           setAlertMessage={messageAlert}
         />
