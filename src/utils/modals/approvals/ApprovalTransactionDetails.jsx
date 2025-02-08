@@ -1,9 +1,5 @@
 import { Button, Col, Modal, Row, Tag } from "antd";
-import {
-  ContainerOutlined,
-  InfoCircleOutlined,
-  PrinterOutlined,
-} from "@ant-design/icons";
+import { InfoCircleOutlined, PrinterOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef } from "react";
 
 const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {

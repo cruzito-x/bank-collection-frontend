@@ -1,10 +1,5 @@
 import { Button, Col, Modal, Row } from "antd";
-import {
-  CheckCircleOutlined,
-  InfoCircleOutlined,
-  PrinterOutlined,
-  TransactionOutlined,
-} from "@ant-design/icons";
+import { InfoCircleOutlined, PrinterOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef } from "react";
 
 const PaymentsCollectorsDetailsModal = ({
