@@ -7,27 +7,57 @@ const PaymentsCollectorsCharts = () => {
   const paymentsByCollectorChartInstance = useRef(null);
 
   const colors = [
-    "#3e9bff", // Azul Intenso
-    "#6f99ff", // Azul Pastel
-    "#b0cfff", // Azul Claro
-    "#d3e7ff", // Azul Hielo
-    "#ff7b7b", // Rojo Sandía
-    "#ffb7b7", // Rosa Salmón
-    "#ffd3d3", // Rosa Pálido
-    "#7bffb5", // Verde Menta
-    "#b7ffd1", // Verde Neón
-    "#d3ffe3", // Verde Claro
-    "#ffdc7b", // Amarillo Dorado
-    "#ffe6b7", // Amarillo Suave
-    "#fff3d3", // Amarillo Pálido
-    "#7bdcff", // Cian Vibrante
-    "#b7e9ff", // Cian Claro
-    "#d3f3ff", // Cian Suave
-    "#c17bff", // Púrpura Brillante
-    "#d9b7ff", // Púrpura Pastel
-    "#eed3ff", // Lavanda Claro
-    "#7bffd6", // Turquesa Claro
-    "#b7ffe3", // Turquesa Suave
+    "#007bff", // Azul Intenso
+    "#0056b3", // Azul Oscuro
+    "#4c9aff", // Azul Claro
+    "#9ecbff", // Azul Suave
+    "#ffb41f", // Amarillo Dorado
+    "#e9a41f", // Amarillo Mostaza
+    "#ffd16f", // Amarillo Claro
+    "#ffdf7b", // Amarillo Suave
+    "#16bb69", // Verde Neón
+    "#12a35a", // Verde Oscuro
+    "#8cff99", // Verde Pastel
+    "#99ffbd", // Verde Suave
+    "#ff3131", // Rojo Brillante
+    "#e60000", // Rojo Intenso
+    "#ff7b7b", // Rojo Claro
+    "#ff5a5a", // Rojo Coral
+    "#1a2d3f", // Azul Oscuro
+    "#142230", // Azul Noche Profunda
+    "#2d4b66", // Azul Acero
+    "#4c6f8f", // Azul Tempestad
+    "#6f8eaf", // Azul Nebuloso
+    "#00b0a6", // Verde Turquesa
+    "#008f7f", // Verde Oscuro
+    "#a6fffb", // Verde Aqua Claro
+    "#a0d7cc", // Verde Menta Suave
+    "#d9e9ff", // Azul Pálido
+    "#a8c8ff", // Azul Pastel Claro
+    "#6fafff", // Azul Cielo
+    "#4a88ff", // Azul Eléctrico
+    "#ff9f00", // Naranja Intenso
+    "#ffb74d", // Naranja Pastel
+    "#ff6e00", // Naranja Oscuro
+    "#ffd47f", // Naranja Claro
+    "#e1e1e1", // Gris Claro
+    "#b0b0b0", // Gris Suave
+    "#f2f2f2", // Gris Pálido
+    "#d8d8d8", // Gris Claro Suave
+    "#b8b8b8", // Gris Neutro
+    "#c3c3c3", // Gris Claro Median
+    "#9a9a9a", // Gris Medio
+    "#9fa8da", // Azul Grisáceo
+    "#6b7dff", // Azul Lavanda
+    "#7f5fdb", // Púrpura Suave
+    "#d6a9ff", // Lavanda Claro
+    "#e3c5ff", // Lavanda Pastel
+    "#add8e6", // Cian Claro
+    "#b5e0d8", // Verde Claro Aqua
+    "#d1f1f4", // Azul Hielo Claro
+    "#b3e3f2", // Azul Suave Claro
+    "#c1c1c1", // Gris Neutro Claro
+    "#f9f9f9", // Blanco Suave
   ];
 
   const getPaymentsByCollectors = async () => {
