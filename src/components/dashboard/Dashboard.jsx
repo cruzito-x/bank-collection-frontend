@@ -1,4 +1,13 @@
-import { Button, Card, Layout, Select, Space, theme, message, Popconfirm } from "antd";
+import {
+  Button,
+  Card,
+  Layout,
+  Select,
+  Space,
+  theme,
+  message,
+  Popconfirm,
+} from "antd";
 import {
   BellOutlined,
   DollarOutlined,
@@ -106,7 +115,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
 
     fetchData();
 
-    const interval = setInterval(fetchData, 10000);
+    const interval = setInterval(fetchData, 1000);
 
     return () => clearInterval(interval);
   }, []);
@@ -303,11 +312,11 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
           borderRadius: borderRadiusLG,
         }}
       >
-        <div className="row d-flex justify-content-center">
+        <div className="row justify-content-center">
           <div className="col-11">
             <div className="row">
-              <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12">
-                <Card className="mb-4">
+              <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12 mb-4">
+                <Card>
                   <label className="fw-semibold text-start p-1">
                     <SolutionOutlined
                       className="me-1"
@@ -344,7 +353,8 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                   </h1>
                   <div className="dashboard-yellow-card text-center w-100 rounded">
                     <label className="fw-semibold text-white p-3">
-                      Reciente: {latestCollectorAndCollectorPayment.collector}
+                      Reciente:{" "}
+                      {latestCollectorAndCollectorPayment.payed_service}
                     </label>
                   </div>
                 </Card>
@@ -365,9 +375,8 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
                   </h1>
                   <div className="dashboard-green-card text-center w-100 rounded">
                     <label className="fw-semibold text-white p-3">
-                      Reciente:{" "}
-                      {latestCollectorAndCollectorPayment.payed_collector} - $
-                      {latestCollectorAndCollectorPayment.amount}
+                      Reciente: {latestCollectorAndCollectorPayment.collector} -
+                      ${latestCollectorAndCollectorPayment.amount}
                     </label>
                   </div>
                 </Card>
@@ -408,34 +417,39 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
         </div>
 
         <Card className="mb-5">
-          <div className="row">
-            <div className="col-md-6 col-sm-12 text-start">
-              <label className="fw-semibold fs-5 text-black ms-3 mb-2 text-black">
+          <div className="row ms-2">
+            <div className="col-md-8 col-sm-12 text-start">
+              <label className="fw-semibold fs-5 text-black mb-2 mt-2 text-black">
                 Transacciones Recientes
               </label>
             </div>
-            <div className="col-md-6 col-sm-12 text-end pe-5">
-              <Button
-                className="mb-2"
-                type="primary"
-                onClick={() => setIsCollectorModalOpen(true)}
-              >
-                Añadir Colector
-              </Button>
-              <Button
-                type="primary"
-                className="ms-2 me-2 mb-2"
-                onClick={() => setIsRegisterPaymentOpen(true)}
-              >
-                Pagar a Colector
-              </Button>
-              <Button
-                type="primary"
-                className="mb-2"
-                onClick={() => setIsReportsModalOpen(true)}
-              >
-                Ver Reportes
-              </Button>
+            <div className="col-md-4 col-sm-12 text-end">
+              <div className="row">
+                <div className="col-xxl-4 col-lg-7 col-md-7 col-sm-12 mb-2 mt-2 w-auto">
+                  <Button
+                    type="primary"
+                    onClick={() => setIsCollectorModalOpen(true)}
+                  >
+                    Añadir Colector
+                  </Button>
+                </div>
+                <div className="col-xxl-2 col-lg-2 col-md-2 col-sm-12 mb-2 mt-2 w-auto">
+                  <Button
+                    type="primary"
+                    onClick={() => setIsRegisterPaymentOpen(true)}
+                  >
+                    Pagar a Colector
+                  </Button>
+                </div>
+                <div className="col-xxl-2 col-lg-2 col-md-2 col-sm-12 mb-2 mt-2 w-auto">
+                  <Button
+                    type="primary"
+                    onClick={() => setIsReportsModalOpen(true)}
+                  >
+                    Ver Reportes
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
           <div className="row ms-2">

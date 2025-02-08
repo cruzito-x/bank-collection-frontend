@@ -1,5 +1,5 @@
 import { Button, Card, Col, Modal, Row } from "antd";
-import { DownloadOutlined, FileTextOutlined } from "@ant-design/icons";
+import { FilePdfOutlined, FileTextOutlined } from "@ant-design/icons";
 import React from "react";
 import moment from "moment";
 import pdfMake from "pdfmake/build/pdfmake";
@@ -241,7 +241,7 @@ const ViewReportsModal = ({ isOpen, isClosed, setAlertMessage }) => {
       {reports.map((report, index) => (
         <Card key={index} hoverable className="mb-2">
           <div className="row align-items-center">
-            <div className="col-8">
+            <div className="col-7">
               <label className="fw-semibold text-black">
                 {report.title} <br />
                 <span
@@ -252,12 +252,12 @@ const ViewReportsModal = ({ isOpen, isClosed, setAlertMessage }) => {
                 </span>
               </label>
             </div>
-            <div className="col-4 text-end">
+            <div className="col-5 text-end">
               <Button
                 type="primary"
                 onClick={() => generateReport(report.title, report.period)}
               >
-                <DownloadOutlined />
+                <FilePdfOutlined />
                 Descargar PDF
               </Button>
             </div>

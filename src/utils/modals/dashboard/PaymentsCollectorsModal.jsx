@@ -163,15 +163,16 @@ const PaymentsCollectorsModal = ({
     setIsPaymentCancelled(true);
     setSendingDataLoading(false);
     isProcessing = false;
-    setAlertMessage.info("El Pago Ha Sido Cancelado");
+    setAlertMessage.warning("El Pago ha Sido Cancelado");
   };
 
   const submitPaymentRegister = (values) => {
     if (isProcessing) {
-      setAlertMessage.warning("El registro de pago ya está en curso.");
+      setAlertMessage.warning("El Registro de Pago ya Está en Curso");
       return;
     }
 
+    isProcessing = false;
     setSendingDataLoading(true);
     startRegisterProgress(values);
   };
@@ -187,7 +188,7 @@ const PaymentsCollectorsModal = ({
             />
           </Col>
           <Col>
-            <label className="fs-6 text-black">Pagar a Colector</label>
+            <label className="fs-6 text-black">Nuevo Pago a Colector</label>
           </Col>
         </Row>
       }
@@ -290,17 +291,19 @@ const PaymentsCollectorsModal = ({
           <Select
             options={services}
             onChange={(value) => {
-              form.setFieldsValue({ service_id: value });
+              const selectedService = services.find(
+                (service) => service.value === value
+              );
+
+              form.setFieldsValue({
+                service_id: value,
+                amount: selectedService?.price || 0,
+              });
             }}
             showSearch
             placeholder="Buscar Servicio"
-            disabled={sendingDataLoading ? true : false}
+            disabled={sendingDataLoading}
             optionFilterProp="label"
-            filterSort={(optionA, optionB) =>
-              (optionA?.label ?? "")
-                .toLowerCase()
-                .localeCompare((optionB?.label ?? "").toLowerCase())
-            }
             style={{
               width: "100%",
             }}
@@ -322,7 +325,7 @@ const PaymentsCollectorsModal = ({
             max={10000}
             placeholder="0.00"
             disabled={sendingDataLoading ? true : false}
-            // value={services[0]?.price > 0 ? services[0].price : ""}
+            value={form.getFieldValue("amount")}
             onChange={(value) => {
               form.setFieldsValue({ amount: value });
             }}
@@ -357,7 +360,7 @@ const PaymentsCollectorsModal = ({
             htmlType="submit"
             loading={sendingDataLoading}
           >
-            Pagar
+            Registrar Pago
           </Button>
         </Form.Item>
       </Form>

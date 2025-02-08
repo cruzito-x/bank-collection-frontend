@@ -1,21 +1,21 @@
 .dashboard-blue-card {
-  background-color: var(--blue-transparent);
+  background-color: var(--blue);
 }
 
 .dashboard-yellow-card {
-  background-color: var(--yellow-transparent);
+  background-color: var(--yellow);
 }
 
 .dashboard-green-card {
-  background-color: var(--green-transparent);
+  background-color: var(--green);
 }
 
 .dashboard-red-card {
-  background-color: var(--red-transparent);
+  background-color: var(--red);
 }
 
 .dashboard-user-card {
-  background-color: var(--gray-transparent);
+  background-color: var(--gray);
 }
 
 .dashboard-user-card label {

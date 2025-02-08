@@ -279,6 +279,13 @@ const DashboardCharts = ({
                 padding: 10,
               },
             },
+            tooltip: {
+              callbacks: {
+                label: function (total, data) {
+                  return "Cantidad: " + total.formattedValue;
+                },
+              },
+            },
           },
           borderWidth: 0,
         },
