@@ -75,7 +75,7 @@ const TransactionsModal = ({
       align: "center",
     },
     {
-      title: "Cuenta de Origen",
+      title: "Cuenta Origen",
       dataIndex: "sender_account",
       key: "sender_account",
       align: "center",
@@ -111,7 +111,7 @@ const TransactionsModal = ({
     { label: "Enviado Por", key: "customer" },
     { label: "Recibido Por", key: "receiver" },
     { label: "Tipo de Transacción", key: "transaction_type" },
-    { label: "Cuenta de Origen", key: "sender_account" },
+    { label: "Cuenta Origen", key: "sender_account" },
     { label: "Monto", key: "amount" },
     { label: "Cuenta Destino", key: "receiver_account" },
     { label: "Fecha y Hora", key: "datetime" },

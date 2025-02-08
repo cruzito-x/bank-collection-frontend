@@ -151,7 +151,9 @@ const Transactions = () => {
         transaction.transaction_type === "") &&
       (transaction.date === undefined || transaction.date === "")
     ) {
-      messageAlert.warning("Por Favor, Introduzca al Menos un Criterio de Búsqueda");
+      messageAlert.warning(
+        "Por Favor, Introduzca al Menos un Criterio de Búsqueda"
+      );
       getTransactions();
       return;
     } else {
@@ -332,10 +334,7 @@ const Transactions = () => {
               form={form}
               onFinish={searchTransactions}
             >
-              <label className="me-2 fw-semibold text-black">
-                {" "}
-                Código de Transacción{" "}
-              </label>
+              <label className="me-2 fw-semibold text-black"> Código </label>
               <Form.Item
                 className="col-xxl-2 col-xl-2 col-sm-12 w-auto"
                 name="transaction_id"
@@ -349,10 +348,7 @@ const Transactions = () => {
                   }}
                 />
               </Form.Item>
-              <label className="me-2 fw-semibold text-black">
-                {" "}
-                Realizado Por{" "}
-              </label>
+              <label className="me-2 fw-semibold text-black">Cajero</label>
               <Form.Item
                 className="col-xxl-2 col-xl-2 col-sm-12 w-auto"
                 name="realized_by"
@@ -431,7 +427,7 @@ const Transactions = () => {
                   hideOnSinglePage: true,
                 }}
                 loading={loading}
-                scroll={{ x: 'max-content' }}
+                scroll={{ x: "max-content" }}
               />
             </div>
           </div>

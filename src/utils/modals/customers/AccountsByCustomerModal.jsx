@@ -69,7 +69,7 @@ const AccountsByCustomerModal = ({
 
   const accountsColumns = [
     {
-      title: "No. de Cuenta",
+      title: "N.º de Cuenta",
       dataIndex: "hidden_account_number",
       key: "account_number",
       align: "center",

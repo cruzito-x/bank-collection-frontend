@@ -252,7 +252,7 @@ const AddNewTransactionModal = ({
 
           <label className="fw-semibold text-black">
             {" "}
-            No. Cuenta {showReceiverAccount ? "Origen" : ""}{" "}
+            N.º Cuenta {showReceiverAccount ? "Origen" : ""}{" "}
           </label>
           <Form.Item
             name="sender_account_number"
@@ -286,7 +286,7 @@ const AddNewTransactionModal = ({
             <>
               <label className="fw-semibold text-black">
                 {" "}
-                No. Cuenta Destino
+                N.º Cuenta Destino
               </label>
               <Form.Item
                 name="receiver_account_number"

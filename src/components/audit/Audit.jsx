@@ -180,7 +180,7 @@ const Audit = () => {
                 className="align-items-center"
                 onFinish={searchAudit}
               >
-                <label className="me-2 fw-semibold text-black"> Nombre </label>
+                <label className="me-2 fw-semibold text-black"> Usuario </label>
                 <Form.Item name="username" initialValue="">
                   <Input
                     placeholder="Nombre de Usuario"

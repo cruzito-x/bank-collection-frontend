@@ -418,12 +418,12 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
 
         <Card className="mb-5">
           <div className="row ms-2">
-            <div className="col-md-8 col-sm-12 text-start">
+            <div className="col-xl-6 col-md-8 col-sm-12 text-start">
               <label className="fw-semibold fs-5 text-black mb-2 mt-2 text-black">
                 Transacciones Recientes
               </label>
             </div>
-            <div className="col-md-4 col-sm-12 text-end">
+            <div className="col-xl-6 col-md-4 col-sm-12 d-flex justify-content-end pe-5">
               <div className="row">
                 <div className="col-xxl-4 col-lg-7 col-md-7 col-sm-12 mb-2 mt-2 w-auto">
                   <Button
