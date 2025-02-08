@@ -74,6 +74,7 @@ const EditCollectorModal = ({
       width={500}
       onCancel={isClosed}
       footer={null}
+      maskClosable={false}
     >
       {selectedCollector && (
         <Form form={form} onFinish={updateCollector}>

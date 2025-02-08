@@ -147,6 +147,7 @@ const InstantOrQueuedApprovedTransactionModal = ({
       open={isOpen}
       onCancel={isClosed}
       footer={null}
+      maskClosable={false}
     >
       <p>
         Para continuar con esta transacción, es necesaria la aprobación de un

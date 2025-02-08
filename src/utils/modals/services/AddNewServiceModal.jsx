@@ -76,6 +76,7 @@ const AddNewServiceModal = ({ isOpen, isClosed, setAlertMessage }) => {
       width={450}
       onCancel={isClosed}
       footer={null}
+      maskClosable={false}
     >
       <Form form={form} onFinish={saveNewService}>
         <label className="fw-semibold text-black"> Seleccionar Colector </label>

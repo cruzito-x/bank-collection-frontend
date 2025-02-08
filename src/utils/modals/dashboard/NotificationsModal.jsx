@@ -69,6 +69,7 @@ const NotificationsModal = ({ isOpen, isClosed, notificationsData }) => {
       onOk={isClosed}
       onCancel={isClosed}
       footer={null}
+      maskClosable={false}
     >
       <Table
         dataSource={notificationsData}

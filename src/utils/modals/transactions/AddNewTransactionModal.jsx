@@ -177,6 +177,7 @@ const AddNewTransactionModal = ({
         open={isOpen}
         onCancel={isClosed}
         footer={null}
+        maskClosable={false}
       >
         <Form
           form={form}

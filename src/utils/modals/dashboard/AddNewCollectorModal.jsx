@@ -66,6 +66,7 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
       open={isOpen}
       onCancel={isClosed}
       footer={null}
+      maskClosable={false}
     >
       <Form form={form} onFinish={saveNewCollector}>
         <label className="fw-semibold text-black"> Nombre de Colector </label>

@@ -76,6 +76,7 @@ const EditServiceModal = ({
       width={500}
       onCancel={isClosed}
       footer={null}
+      maskClosable={false}
     >
       {selectedService && (
         <Form form={form} onFinish={updateService}>

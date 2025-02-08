@@ -6,6 +6,7 @@ const DashboardCharts = ({
   datesRange,
   amountRangeFilter,
   transactionTypeFilter,
+  refreshCharts,
 }) => {
   const [transactionsByDate, setTransactionsByDate] = useState([]);
   const [approvalAndRejectionRates, setApprovalAndRejectionRates] = useState(
@@ -103,18 +104,24 @@ const DashboardCharts = ({
 
   useEffect(() => {
     getTransactionsByDateAndAmountRangeAndType();
-  }, [datesRange[0], datesRange[1], amountRangeFilter, transactionTypeFilter]);
+  }, [
+    datesRange[0],
+    datesRange[1],
+    amountRangeFilter,
+    transactionTypeFilter,
+    refreshCharts,
+  ]);
 
   useEffect(() => {
     getApprovalAndRejectionRates();
     getProccessedAmountByTransactionsAndCollectorsPayments();
-  }, [datesRange[0], datesRange[1]]);
+  }, [datesRange[0], datesRange[1], refreshCharts]);
 
   useEffect(() => {
     getCustomersWithTheMostMoneyPaid();
     getPaymentsByCollector();
     getPaymentsByCollectorDenominations();
-  }, []);
+  }, [refreshCharts]);
 
   //Transactions by Date
   const barTransactionsByDateCanvasRef = useRef(null);

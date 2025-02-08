@@ -48,6 +48,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   ]);
   const [amountRangeFilter, setAmountRangeFilter] = useState(1);
   const [transactionTypeFilter, setTransactionTypeFilter] = useState(1);
+  const [refreshCharts, setRefreshCharts] = useState(false);
 
   const { Content } = Layout;
   const {
@@ -553,6 +554,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
               datesRange={dates}
               amountRangeFilter={amountRangeFilter}
               transactionTypeFilter={transactionTypeFilter}
+              refreshCharts={refreshCharts}
             />
           </div>
         </Card>
@@ -572,7 +574,10 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
 
         <PaymentsCollectorsModal
           isOpen={isRegisterPaymentOpen}
-          isClosed={() => setIsRegisterPaymentOpen(false)}
+          isClosed={() => {
+            setIsRegisterPaymentOpen(false);
+            setRefreshCharts((previous) => !previous);
+          }}
           collectors={collectors}
           setAlertMessage={messageAlert}
           currentPath={window.location.pathname}

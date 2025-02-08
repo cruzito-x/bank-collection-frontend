@@ -73,6 +73,7 @@ const EditCustomerModal = ({
       width={450}
       onCancel={isClosed}
       footer={null}
+      maskClosable={false}
     >
       {selectedCustomer && (
         <Form form={form} onFinish={updateCustomer}>

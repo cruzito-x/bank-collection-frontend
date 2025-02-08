@@ -192,6 +192,7 @@ const PaymentsCollectorsModal = ({
       open={isOpen}
       onOk={isClosed}
       onCancel={isClosed}
+      maskClosable={false}
       footer={null}
     >
       <div className={percentage >= 1 ? "d-block" : "d-none"}>
