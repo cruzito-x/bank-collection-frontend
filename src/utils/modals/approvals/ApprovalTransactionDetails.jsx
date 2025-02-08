@@ -1,5 +1,9 @@
 import { Button, Col, Modal, Row, Tag } from "antd";
-import { ContainerOutlined, InfoCircleOutlined, PrinterOutlined } from "@ant-design/icons";
+import {
+  ContainerOutlined,
+  InfoCircleOutlined,
+  PrinterOutlined,
+} from "@ant-design/icons";
 import React, { useEffect, useRef } from "react";
 
 const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
@@ -49,9 +53,7 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
                 {approvalData.amount}
               </h1>
               <label className="fw-semibold text-black">
-                {" "}
-                <ContainerOutlined style={{ color: "var(--blue)" }} /> Detalle
-                de Transacción{" "}
+                Detalle de Transacción
               </label>{" "}
               <br />
               <label style={{ color: "var(--gray)", fontSize: "13px" }}>

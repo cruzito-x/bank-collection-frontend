@@ -58,11 +58,7 @@ const PaymentsCollectorsDetailsModal = ({
               <h1 className="fw-bold text-black" style={{ fontSize: "60px" }}>
                 {paymentsCollectorsData.amount}
               </h1>
-              <label className="fw-semibold text-black">
-                {" "}
-                <CheckCircleOutlined style={{ color: "var(--blue)" }} /> ¡Pago
-                Exitoso!{" "}
-              </label>{" "}
+              <label className="fw-semibold text-black"> Pago Exitoso </label>
               <br />
               <label style={{ color: "var(--gray)", fontSize: "13px" }}>
                 Realizado: {paymentsCollectorsData.datetime}

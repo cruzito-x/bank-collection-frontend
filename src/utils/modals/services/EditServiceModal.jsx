@@ -158,7 +158,7 @@ const EditServiceModal = ({
               htmlType="submit"
               loading={sendingData}
             >
-              Guardar Cambios
+              Guardar
             </Button>
           </Form.Item>
         </Form>
