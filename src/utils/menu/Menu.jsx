@@ -172,7 +172,7 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
         <Footer
           className="text-center text-white ps-3 pe-3"
           style={{
-            background: "transparent",
+            background: "var(--gray)",
             position: "relative",
             marginTop: "-88px",
             width: "100%",
