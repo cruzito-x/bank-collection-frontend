@@ -154,9 +154,6 @@ const PaymentsCollectorsModal = ({
         if (currentPath === "/payments-collectors") {
           getPaymentsCollectors();
         }
-
-        if (currentPath === "/dashboard") {
-        }
       } else {
         setAlertMessage.error(registeredPayment.message);
       }
