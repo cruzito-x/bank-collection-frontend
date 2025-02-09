@@ -253,7 +253,7 @@ const PaymentsCollectors = () => {
             </div>
           </div>
           <div className="row ms-2 pe-3">
-            <div className="col-xxl-8 col-xl-5 col-sm-12 mb-3 w-auto">
+            <div className="col-xxl-3 col-xl-5 col-sm-12 mb-3 w-auto">
               <Form
                 layout="inline"
                 className="align-items-center"
@@ -278,20 +278,25 @@ const PaymentsCollectors = () => {
                 </Form.Item>
               </Form>
             </div>
-            <div className="col-xxl-8 col-xl-7 col-sm-12 text-end mb-3">
-              <Button
-                type="primary"
-                onClick={() => setViewCollectorsPaymentsModal(true)}
-              >
-                Ver Pagos de Colectores{" "}
-              </Button>
-              <Button
-              className="ms-3"
-                type="primary"
-                onClick={() => setOpenRegisterPayment(true)}
-              >
-                <PlusCircleOutlined /> Nuevo Pago a Colector{" "}
-              </Button>
+            <div className="col-xxl-9 col-xl-7 col-sm-12 mb-3">
+              <div className="row justify-content-end">
+                <div className="col-md-3 col-sm-12 mb-2">
+                  <Button
+                    type="primary"
+                    onClick={() => setViewCollectorsPaymentsModal(true)}
+                  >
+                    Ver Pagos de Colectores{" "}
+                  </Button>
+                </div>
+                <div className="col-md-3 col-sm-12 mb-2">
+                  <Button
+                    type="primary"
+                    onClick={() => setOpenRegisterPayment(true)}
+                  >
+                    <PlusCircleOutlined /> Nuevo Pago a Colector{" "}
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">

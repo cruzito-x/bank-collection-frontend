@@ -414,13 +414,13 @@ const Transactions = () => {
                 />
               </Form.Item>
 
-              <Form.Item className="col-xxl-2 col-xl-2 col-sm-12 w-auto">
+              <Form.Item className="col-xxl-2 col-xl-2 col-sm-12 mb-2 w-auto">
                 <Button type="primary" htmlType="submmit">
                   {" "}
                   Buscar{" "}
                 </Button>
               </Form.Item>
-              <div className="col-xxl-2 col-xl-2 col-sm-12 ms-5 text-end">
+              <div className="col-xxl-3 col-xl-2 col-sm-12 text-end">
                 <Button
                   type="primary"
                   onClick={() => setIsNewTransactionModalOpen(true)}

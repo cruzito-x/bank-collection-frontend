@@ -231,6 +231,13 @@ const Collectors = () => {
       dataIndex: "services_names",
       key: "services_names",
       align: "center",
+      render: (text) => (
+        <span>
+          {text.split(",").map((service, index) => (
+            <div key={index}>{service.trim()}</div>
+          ))}
+        </span>
+      ),
     },
     {
       title: "Acciones",
