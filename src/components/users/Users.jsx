@@ -9,7 +9,6 @@ import {
   Popconfirm,
   Select,
   Table,
-  Tag,
   theme,
 } from "antd";
 import { BankOutlined, CrownOutlined, UserOutlined } from "@ant-design/icons";
@@ -31,6 +30,8 @@ const Users = () => {
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const [form] = useForm();
+  const token = authState.token;
+
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
@@ -48,6 +49,7 @@ const Users = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -68,6 +70,7 @@ const Users = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -130,6 +133,7 @@ const Users = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(user),
         }
@@ -172,6 +176,7 @@ const Users = () => {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
           }
         );

@@ -24,6 +24,8 @@ const Audit = () => {
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const [form] = useForm();
+  const token = authState.token;
+
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
@@ -39,6 +41,10 @@ const Audit = () => {
     try {
       const response = await fetch("http://localhost:3001/audit", {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const auditData = await response.json();
@@ -74,6 +80,10 @@ const Audit = () => {
         }&date=${audit.date ?? ""}`,
         {
           method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 

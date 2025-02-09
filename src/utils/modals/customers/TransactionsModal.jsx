@@ -3,6 +3,7 @@ import { FileExcelOutlined, TransactionOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { CSVLink } from "react-csv";
+import { useAuth } from "../../../contexts/authContext/AuthContext";
 
 const TransactionsModal = ({
   isOpen,
@@ -11,8 +12,10 @@ const TransactionsModal = ({
   selectedCustomerAccountNumber,
   setAlertMessage,
 }) => {
+  const { authState } = useAuth();
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const token = authState.token;
 
   const transactionsByCustomer = async () => {
     setLoading(true);
@@ -22,6 +25,10 @@ const TransactionsModal = ({
         `http://localhost:3001/transactions/transactions-by-customer/${selectedCustomerId}/account/${selectedCustomerAccountNumber.account_number}`,
         {
           method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -169,7 +176,7 @@ const TransactionsModal = ({
               data={transactions}
             >
               <Button className="ms-2" type="primary">
-              <FileExcelOutlined />
+                <FileExcelOutlined />
                 Descargar CSV
               </Button>
             </CSVLink>

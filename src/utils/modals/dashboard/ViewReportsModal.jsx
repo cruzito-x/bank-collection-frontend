@@ -4,6 +4,7 @@ import React from "react";
 import moment from "moment";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import { useAuth } from "../../../contexts/authContext/AuthContext";
 
 const getPeriods = () => {
   return {
@@ -39,7 +40,9 @@ const getPeriods = () => {
 };
 
 const ViewReportsModal = ({ isOpen, isClosed, setAlertMessage }) => {
+  const { authState } = useAuth();
   const periods = getPeriods();
+  const token = authState.token;
 
   const generateReport = async (title, period) => {
     const dateRange = period.split(" - ");
@@ -55,7 +58,13 @@ const ViewReportsModal = ({ isOpen, isClosed, setAlertMessage }) => {
     try {
       const response = await fetch(
         `http://localhost:3001/dashboard/reports-by-date/${startDate}/${endDate}`,
-        { method: "GET" }
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       const reportData = await response.json();

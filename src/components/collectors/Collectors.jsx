@@ -37,6 +37,8 @@ const Collectors = () => {
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const [form] = useForm();
+  const token = authState.token;
+
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
@@ -52,6 +54,10 @@ const Collectors = () => {
     try {
       const response = await fetch("http://localhost:3001/collectors", {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const collectorsData = await response.json();
@@ -111,6 +117,10 @@ const Collectors = () => {
         `http://localhost:3001/collectors/delete-collector/${collector.id}`,
         {
           method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -144,6 +154,10 @@ const Collectors = () => {
           }`,
           {
             method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
 

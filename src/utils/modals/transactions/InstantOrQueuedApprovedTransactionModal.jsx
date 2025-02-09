@@ -1,6 +1,7 @@
 import { Button, Col, Form, Input, Modal, Popconfirm, Row } from "antd";
 import { WarningOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
+import { useAuth } from "../../../contexts/authContext/AuthContext";
 
 const InstantOrQueuedApprovedTransactionModal = ({
   isOpen,
@@ -10,11 +11,13 @@ const InstantOrQueuedApprovedTransactionModal = ({
   transaction,
   getTransactions,
 }) => {
+  const { authState } = useAuth();
   const [updatingStatus, setUpdatingStatus] = useState(false);
   const [userId, setUserId] = useState([]);
   const [latestApproval, setLatestApproval] = useState([]);
   const [isApproved, setIsApproved] = useState(0);
   const [form] = Form.useForm();
+  const token = authState.token;
 
   useEffect(() => {}, [transaction]);
 
@@ -30,6 +33,10 @@ const InstantOrQueuedApprovedTransactionModal = ({
         `http://localhost:3001/transactions/user-by-pin/${supervisor.pin}`,
         {
           method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -44,7 +51,13 @@ const InstantOrQueuedApprovedTransactionModal = ({
 
         const approvalsResponse = await fetch(
           "http://localhost:3001/approvals/latest-approval",
-          { method: "GET" }
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
 
         const approvalsData = await approvalsResponse.json();
@@ -103,6 +116,7 @@ const InstantOrQueuedApprovedTransactionModal = ({
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );

@@ -24,8 +24,10 @@ import NotificationsModal from "../../utils/modals/dashboard/NotificationsModal"
 import PaymentsCollectorsModal from "../../utils/modals/dashboard/PaymentsCollectorsModal";
 import { useCollectorsData } from "../../contexts/collectorsDataContext/CollectorsDataContext";
 import ViewReportsModal from "../../utils/modals/dashboard/ViewReportsModal";
+import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const Dashboard = ({ rangeFilter = () => {} }) => {
+  const { authState } = useAuth();
   const [notifications, setNotifications] = useState([]);
   const [transactionTypes, setTransactionTypes] = useState([]);
   const [totalPayments, setTotalPayments] = useState([]);
@@ -49,6 +51,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   const [amountRangeFilter, setAmountRangeFilter] = useState(1);
   const [transactionTypeFilter, setTransactionTypeFilter] = useState(1);
   const [refreshCharts, setRefreshCharts] = useState(false);
+  const token = authState.token;
 
   const { Content } = Layout;
   const {
@@ -153,8 +156,14 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   const getLatestCollectorAndCollectorPayment = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3001/dashboard/get-latest-collector-and-collectorPayemnt-data",
-        { method: "GET" }
+        "http://localhost:3001/dashboard/get-latest-collector-and-collector-payment-data",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const latestCollectorAndCollectorPaymentData = await response.json();
       setLatestCollectorAndCollectorPayment(
@@ -173,6 +182,10 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
         "http://localhost:3001/approvals/notifications",
         {
           method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -244,7 +257,7 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
         {
           method: "PUT",
           headers: {
-            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -269,6 +282,10 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   const getTotalPayments = async () => {
     const response = await fetch("http://localhost:3001/payments-collectors", {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     const totalPaymentsData = await response.json();
@@ -280,6 +297,10 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
       "http://localhost:3001/payments-collectors/total-payments-amount",
       {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 
@@ -290,6 +311,10 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
   const getTransactionTypes = async () => {
     const response = await fetch("http://localhost:3001/transactions-types", {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     const transactionTypesData = await response.json();

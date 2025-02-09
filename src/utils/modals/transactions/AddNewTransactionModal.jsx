@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
 import InstantOrQueuedApprovedTransactionModal from "./InstantOrQueuedApprovedTransactionModal";
+import { useAuth } from "../../../contexts/authContext/AuthContext";
 
 const AddNewTransactionModal = ({
   isOpen,
@@ -13,6 +14,7 @@ const AddNewTransactionModal = ({
   isSupervisor,
   setAlertMessage,
 }) => {
+  const { authState } = useAuth();
   const [customers, setCustomers] = useState([]);
   const [accounts, setAccounts] = useState([]);
   const [refreshTransactions, setRefreshTransactions] = useState(false);
@@ -24,6 +26,7 @@ const AddNewTransactionModal = ({
     openInstantOrQueuedApprovedTransaction,
     setOpenInstantOrQueuedApprovedTransaction,
   ] = useState(false);
+  const token = authState.token;
 
   useEffect(() => {
     getCustomers();
@@ -32,7 +35,13 @@ const AddNewTransactionModal = ({
   }, []);
 
   const getCustomers = async () => {
-    const response = await fetch("http://localhost:3001/customers");
+    const response = await fetch("http://localhost:3001/customers", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const customersData = await response.json();
     const uniqueCustomer = new Map();
 
@@ -58,6 +67,10 @@ const AddNewTransactionModal = ({
   const getAllAccounts = async () => {
     const response = await fetch("http://localhost:3001/accounts/", {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
     const accountsData = await response.json();
     const accounts = accountsData.map((account) => {
@@ -75,6 +88,10 @@ const AddNewTransactionModal = ({
       `http://localhost:3001/accounts/accounts-by-customer/${customerId}`,
       {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
     const accountsData = await response.json();
@@ -110,6 +127,7 @@ const AddNewTransactionModal = ({
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(transaction),
         }

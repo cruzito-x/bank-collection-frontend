@@ -3,6 +3,7 @@ import { BookOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import TransactionsModal from "./TransactionsModal";
+import { useAuth } from "../../../contexts/authContext/AuthContext";
 
 const AccountsByCustomerModal = ({
   isOpen,
@@ -10,10 +11,12 @@ const AccountsByCustomerModal = ({
   selectedCustomer,
   setAlertMessage,
 }) => {
+  const { authState } = useAuth();
   const [accounts, setAccounts] = useState([]);
   const [isTransactionsModalOpen, setIsTransactionsModalOpen] = useState(false);
   const [selectedAccountNumber, setselectedAccountNumber] = useState([]);
   const [loading, setLoading] = useState(false);
+  const token = authState.token;
 
   useEffect(() => {
     if (isOpen && selectedCustomer?.id) {
@@ -35,7 +38,14 @@ const AccountsByCustomerModal = ({
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:3001/accounts/accounts-by-customer/${selectedCustomer.id}`
+        `http://localhost:3001/accounts/accounts-by-customer/${selectedCustomer.id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const accountsData = await response.json();
       setAccounts(

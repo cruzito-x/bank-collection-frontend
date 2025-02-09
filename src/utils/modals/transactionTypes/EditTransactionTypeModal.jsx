@@ -1,6 +1,7 @@
 import { Button, Col, Form, Input, Modal, Row } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
+import { useAuth } from "../../../contexts/authContext/AuthContext";
 
 const EditTransactionTypeModal = ({
   isOpen,
@@ -9,8 +10,10 @@ const EditTransactionTypeModal = ({
   selectedTransactionType,
   getTransactionsTypes,
 }) => {
+  const { authState } = useAuth();
   const [sendingData, setSendingData] = useState(false);
   const [form] = Form.useForm();
+  const token = authState.token;
 
   useEffect(() => {
     form.setFieldsValue({
@@ -28,6 +31,7 @@ const EditTransactionTypeModal = ({
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(transactionType),
         }

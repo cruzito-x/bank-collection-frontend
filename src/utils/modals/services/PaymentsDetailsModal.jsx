@@ -3,6 +3,7 @@ import { DollarCircleOutlined, FileExcelOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { CSVLink } from "react-csv";
 import moment from "moment";
+import { useAuth } from "../../../contexts/authContext/AuthContext";
 
 const PaymentsDetailsModal = ({
   isOpen,
@@ -10,8 +11,10 @@ const PaymentsDetailsModal = ({
   selectedService,
   setAlertMessage,
 }) => {
+  const { authState } = useAuth();
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(false);
+  const token = authState.token;
 
   const getPaymentsDetails = async () => {
     setLoading(true);
@@ -21,6 +24,10 @@ const PaymentsDetailsModal = ({
         `http://localhost:3001/services/view-payments-by-service-details/${selectedService.id}`,
         {
           method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 

@@ -5,12 +5,19 @@ import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const LogoutCard = ({ setAlertMessage }) => {
   const { authState } = useAuth();
+  const { user_id } = authState;
+  const { username } = authState;
+  const token = authState.token;
 
   const logout = async () => {
     const response = await fetch(
-      `http://localhost:3001/login/logout/${authState.user_id}`,
+      `http://localhost:3001/login/logout/${user_id}`,
       {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 
@@ -45,7 +52,7 @@ const LogoutCard = ({ setAlertMessage }) => {
         <UserOutlined className="fs-1" />
         <div className="dashboard-user-card mt-1 w-100 rounded">
           <label className="fw-semibold text-white cursor-pointer p-2">
-            {authState.username}
+            {username}
           </label>
         </div>
       </Card>

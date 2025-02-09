@@ -16,11 +16,13 @@ import {
   DollarCircleOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/authContext/AuthContext";
 import { Footer } from "antd/es/layout/layout";
+import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
   const { authState } = useAuth();
+  const token = authState.token;
+  const user_id = authState.user_id;
   const navigate = useNavigate();
   const isSupervisor = authState.isSupervisor;
 
@@ -136,9 +138,13 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
 
   const logout = async () => {
     const response = await fetch(
-      `http://localhost:3001/login/logout/${authState.user_id}`,
+      `http://localhost:3001/login/logout/${user_id}`,
       {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 

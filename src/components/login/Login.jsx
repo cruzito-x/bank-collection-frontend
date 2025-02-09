@@ -30,6 +30,7 @@ const Login = () => {
           isSupervisor: loggedUserData.isSupervisor,
           user_id: loggedUserData.user_id,
           username: loggedUserData.username,
+          token: loggedUserData.token,
         });
 
         if (loggedUserData.isSupervisor) {

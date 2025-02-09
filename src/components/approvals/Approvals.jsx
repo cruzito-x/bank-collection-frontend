@@ -33,6 +33,8 @@ const Approvals = () => {
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const [form] = useForm();
+  const token = authState.token;
+
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
@@ -48,6 +50,10 @@ const Approvals = () => {
     try {
       const response = await fetch("http://localhost:3001/approvals", {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const approvalsData = await response.json();
@@ -149,6 +155,7 @@ const Approvals = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -191,6 +198,10 @@ const Approvals = () => {
           }&authorized_by=${approval.authorizer ?? ""}`,
           {
             method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
 

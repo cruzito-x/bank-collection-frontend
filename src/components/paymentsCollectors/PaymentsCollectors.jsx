@@ -37,6 +37,8 @@ const PaymentsCollectors = () => {
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const [form] = useForm();
+  const token = authState.token;
+
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
@@ -54,6 +56,10 @@ const PaymentsCollectors = () => {
         "http://localhost:3001/payments-collectors",
         {
           method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -115,6 +121,10 @@ const PaymentsCollectors = () => {
           }`,
           {
             method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
 

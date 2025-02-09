@@ -1,6 +1,7 @@
 import { Button, Col, Form, Input, Modal, Row } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../../contexts/authContext/AuthContext";
 
 const EditCustomerModal = ({
   isOpen,
@@ -8,8 +9,10 @@ const EditCustomerModal = ({
   selectedCustomer,
   setAlertMessage,
 }) => {
+  const { authState } = useAuth();
   const [sendingData, setSendingData] = useState(false);
   const [form] = Form.useForm();
+  const token = authState.token;
 
   useEffect(() => {
     if (isOpen) {
@@ -31,6 +34,7 @@ const EditCustomerModal = ({
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(customer),
         }

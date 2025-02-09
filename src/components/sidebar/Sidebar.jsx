@@ -44,8 +44,7 @@ const Sidebar = () => {
     backgroundColor: "#eef1f7",
   };
 
-  const isSupervisor = authState.isSupervisor;
-  const routes = isSupervisor
+  const routes = authState.isSupervisor
     ? [
         "/dashboard",
         "/customers",
@@ -129,7 +128,8 @@ const Sidebar = () => {
               width: "100%",
             }}
           >
-            &copy; {new Date().getFullYear()} - Banco Bambú de El Salvador S.A&reg;
+            &copy; {new Date().getFullYear()} - Banco Bambú de El Salvador
+            S.A&reg;
           </Footer>
         </Content>
       </Layout>

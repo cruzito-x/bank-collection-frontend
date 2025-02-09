@@ -5,6 +5,7 @@ import {
   EyeTwoTone,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
+import { useAuth } from "../../../contexts/authContext/AuthContext";
 
 const EditUserModal = ({
   isOpen,
@@ -13,8 +14,10 @@ const EditUserModal = ({
   setAlertMessage,
   getUsers,
 }) => {
+  const { authState } = useAuth();
   const [sendingData, setSendingData] = useState(false);
   const [form] = Form.useForm();
+  const token = authState.token;
 
   useEffect(() => {
     if (isOpen) {
@@ -36,6 +39,7 @@ const EditUserModal = ({
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(user),
         }

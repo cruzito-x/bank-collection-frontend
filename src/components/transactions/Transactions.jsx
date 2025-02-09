@@ -41,6 +41,8 @@ const Transactions = () => {
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const [form] = useForm();
+  const token = authState.token;
+
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
@@ -59,6 +61,10 @@ const Transactions = () => {
     try {
       const response = await fetch("http://localhost:3001/transactions-types", {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const typesData = await response.json();
@@ -83,6 +89,10 @@ const Transactions = () => {
     try {
       const response = await fetch("http://localhost:3001/transactions", {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const transactionsData = await response.json();
@@ -173,6 +183,10 @@ const Transactions = () => {
           }&date=${transaction.date ?? ""}`,
           {
             method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
 

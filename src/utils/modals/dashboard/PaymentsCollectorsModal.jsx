@@ -14,6 +14,7 @@ import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "antd/es/form/Form";
 import { useCollectorsData } from "../../../contexts/collectorsDataContext/CollectorsDataContext";
+import { useAuth } from "../../../contexts/authContext/AuthContext";
 
 const PaymentsCollectorsModal = ({
   isOpen,
@@ -22,6 +23,7 @@ const PaymentsCollectorsModal = ({
   currentPath,
   getPaymentsCollectors,
 }) => {
+  const { authState } = useAuth();
   const [percentage, setPercentage] = useState(0);
   const [cancelPayment, setCancelPayment] = useState(false);
   const cancelPaymentRef = useRef(cancelPayment);
@@ -30,6 +32,7 @@ const PaymentsCollectorsModal = ({
   const [customers, setCustomers] = useState([]);
   const [services, setServices] = useState([]);
   const [form] = useForm();
+  const token = authState.token;
 
   useEffect(() => {
     if (isOpen) {
@@ -50,6 +53,10 @@ const PaymentsCollectorsModal = ({
     try {
       const response = await fetch("http://localhost:3001/customers", {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const customersData = await response.json();
@@ -84,6 +91,10 @@ const PaymentsCollectorsModal = ({
       `http://localhost:3001/services/services-by-collector/${collectorId}`,
       {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 
@@ -140,7 +151,10 @@ const PaymentsCollectorsModal = ({
         "http://localhost:3001/payments-collectors/save-new-payment",
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify(payment),
         }
       );

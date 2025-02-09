@@ -37,6 +37,8 @@ const Services = () => {
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const [form] = useForm();
+  const token = authState.token;
+
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
@@ -52,6 +54,10 @@ const Services = () => {
     try {
       const response = await fetch("http://localhost:3001/services", {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const servicesData = await response.json();
@@ -111,6 +117,10 @@ const Services = () => {
         `http://localhost:3001/services/delete-service/${service.id}`,
         {
           method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -147,6 +157,10 @@ const Services = () => {
           }&service=${service.service ?? ""}`,
           {
             method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
 

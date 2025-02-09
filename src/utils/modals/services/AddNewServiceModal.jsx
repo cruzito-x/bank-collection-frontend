@@ -12,11 +12,14 @@ import { PlusCircleOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { useCollectorsData } from "../../../contexts/collectorsDataContext/CollectorsDataContext";
+import { useAuth } from "../../../contexts/authContext/AuthContext";
 
 const AddNewServiceModal = ({ isOpen, isClosed, setAlertMessage }) => {
+  const { authState } = useAuth();
   const { collectors, getCollectors } = useCollectorsData();
   const [sendingData, setSendingData] = useState(false);
   const [form] = Form.useForm();
+  const token = authState.token;
 
   useEffect(() => {
     getCollectors();
@@ -32,6 +35,7 @@ const AddNewServiceModal = ({ isOpen, isClosed, setAlertMessage }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(service),
         }

@@ -1,10 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Chart } from "chart.js";
+import { useAuth } from "../../../contexts/authContext/AuthContext";
 
 const PaymentsCollectorsCharts = () => {
+  const { authState } = useAuth();
   const [paymentsByCollectors, setPaymentsByCollectors] = useState([]);
   const paymentsByCollectorChartRef = useRef(null);
   const paymentsByCollectorChartInstance = useRef(null);
+  const token = authState.token;
 
   const colors = [
     "#007bff", // Azul Intenso
@@ -65,6 +68,10 @@ const PaymentsCollectorsCharts = () => {
       "http://localhost:3001/payments-collectors/payments-by-collector",
       {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 

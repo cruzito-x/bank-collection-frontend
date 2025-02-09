@@ -17,13 +17,15 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../contexts/authContext/AuthContext";
 import EditCustomerModal from "../../utils/modals/customers/EditCustomerModal";
 import { useForm } from "antd/es/form/Form";
 import AccountsByCustomerModal from "../../utils/modals/customers/AccountsByCustomerModal";
+import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const Customers = () => {
   const { authState } = useAuth();
+  const username = localStorage.getItem("username");
+  const token = authState.token;
   const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [isCustomerEditModalOpen, setIsCustomerEditModalOpen] = useState(false);
@@ -54,6 +56,10 @@ const Customers = () => {
     try {
       const response = await fetch("http://localhost:3001/customers", {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const customersData = await response.json();

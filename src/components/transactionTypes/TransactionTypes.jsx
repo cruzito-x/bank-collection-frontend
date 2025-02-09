@@ -36,6 +36,8 @@ const TransactionTypes = () => {
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const [form] = useForm();
+  const token = authState.token;
+
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
@@ -51,6 +53,10 @@ const TransactionTypes = () => {
     try {
       const response = await fetch("http://localhost:3001/transactions-types", {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const transactionsTypesData = await response.json();
@@ -109,6 +115,7 @@ const TransactionTypes = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(transactionType),
         }
@@ -152,6 +159,10 @@ const TransactionTypes = () => {
           }`,
           {
             method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
 

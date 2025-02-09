@@ -2,10 +2,13 @@ import { Button, Col, Form, Input, InputNumber, Modal, Row } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
+import { useAuth } from "../../../contexts/authContext/AuthContext";
 
 const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
+  const { authState } = useAuth();
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
+  const token = authState.token;
 
   const saveNewCollector = async (collector) => {
     setLoading(true);
@@ -17,6 +20,7 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(collector),
         }

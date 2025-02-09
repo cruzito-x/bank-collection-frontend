@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Chart } from "chart.js/auto";
 import { Card, Empty } from "antd";
+import { useAuth } from "../../../contexts/authContext/AuthContext";
 
 const DashboardCharts = ({
   datesRange,
@@ -8,6 +9,7 @@ const DashboardCharts = ({
   transactionTypeFilter,
   refreshCharts,
 }) => {
+  const { authState } = useAuth();
   const [transactionsByDate, setTransactionsByDate] = useState([]);
   const [approvalAndRejectionRates, setApprovalAndRejectionRates] = useState(
     []
@@ -20,6 +22,7 @@ const DashboardCharts = ({
   ] = useState([]);
   const [customersWithTheMostMoneyPaid, setCustomersWithTheMostMoneyPaid] =
     useState([]);
+  const token = authState.token;
 
   const getTransactionsByDateAndAmountRangeAndType = async (
     start = datesRange[0].format("YYYY-MM-DD"),
@@ -29,6 +32,10 @@ const DashboardCharts = ({
       `http://localhost:3001/dashboard/transactions-by-dates/${start}/${end}/${amountRangeFilter}/${transactionTypeFilter}`,
       {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 
@@ -44,6 +51,10 @@ const DashboardCharts = ({
       `http://localhost:3001/dashboard/approval-and-rejection-rates/${start}/${end}`,
       {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 
@@ -56,9 +67,13 @@ const DashboardCharts = ({
     end = datesRange[1].format("YYYY-MM-DD")
   ) => {
     const response = await fetch(
-      `http://localhost:3001/dashboard/proccessed-amount-by-transacions-and-collectors-payments/${start}/${end}`,
+      `http://localhost:3001/dashboard/processed-amount-by-transactions-and-collectors-payments/${start}/${end}`,
       {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 
@@ -71,6 +86,10 @@ const DashboardCharts = ({
       "http://localhost:3001/dashboard/payments-by-collector",
       {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 
@@ -83,6 +102,10 @@ const DashboardCharts = ({
       "http://localhost:3001/dashboard/payments-by-collector-denominations",
       {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 
@@ -95,6 +118,10 @@ const DashboardCharts = ({
       "http://localhost:3001/dashboard/customers-with-the-most-money-paid",
       {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 

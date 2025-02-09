@@ -2,6 +2,7 @@ import { Button, Col, Form, Input, InputNumber, Modal, Row } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
+import { useAuth } from "../../../contexts/authContext/AuthContext";
 
 const EditServiceModal = ({
   isOpen,
@@ -10,8 +11,10 @@ const EditServiceModal = ({
   getServices,
   setAlertMessage,
 }) => {
+  const { authState } = useAuth();
   const [sendingData, setSendingData] = useState(false);
   const [form] = Form.useForm();
+  const token = authState.token;
 
   useEffect(() => {
     if (isOpen) {
@@ -34,6 +37,7 @@ const EditServiceModal = ({
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(serviceData),
         }
