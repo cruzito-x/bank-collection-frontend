@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Menu } from "antd";
 import {
   LineChartOutlined,
@@ -17,6 +17,7 @@ import {
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext/AuthContext";
+import { useMediaQuery } from "react-responsive";
 
 const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
   const { authState } = useAuth();
@@ -24,6 +25,17 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
   const user_id = authState.user_id;
   const navigate = useNavigate();
   const isSupervisor = authState.isSupervisor;
+
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+  const isDesktop = useMediaQuery({ query: "(min-width: 769px)" });
+
+  useEffect(() => {
+    if (isMobile) {
+      setCollapsed(true);
+    } else if (isDesktop) {
+      setCollapsed(false);
+    }
+  }, [isMobile, isDesktop, setCollapsed]);
 
   const menuItems = [
     isSupervisor
@@ -122,17 +134,20 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
           className: "text-white",
         }
       : null,
-    {
-      key: "#",
-      icon: collapsed ? (
-        <RightOutlined className="text-white" />
-      ) : (
-        <LeftOutlined className="text-white" />
-      ),
-      label: collapsed ? "Abrir Menú" : "Cerrar Menú",
-      className: "toggle",
-      onClick: () => setCollapsed(!collapsed),
-    },
+
+    !isMobile
+      ? {
+          key: "#",
+          icon: collapsed ? (
+            <RightOutlined className="text-white" />
+          ) : (
+            <LeftOutlined className="text-white" />
+          ),
+          label: collapsed ? "Abrir Menú" : "Cerrar Menú",
+          className: "toggle",
+          onClick: () => setCollapsed(!collapsed),
+        }
+      : null,
   ];
 
   const logout = async () => {

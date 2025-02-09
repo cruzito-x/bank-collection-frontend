@@ -342,9 +342,9 @@ const Dashboard = () => {
         }}
       >
         <div className="row justify-content-center">
-          <div className="col-11">
+          <div className="col-xxl-11 col-xl-10">
             <div className="row">
-              <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12 mb-4">
+              <div className="col-xxl-3 col-xl-6 col-md-6 col-sm-12 mb-4">
                 <Card>
                   <label className="fw-semibold text-start p-1">
                     <SolutionOutlined
@@ -366,7 +366,7 @@ const Dashboard = () => {
                   </div>
                 </Card>
               </div>
-              <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12 mb-4">
+              <div className="col-xxl-3 col-xl-6 col-md-6 col-sm-12 mb-4">
                 <Card>
                   <label className="fw-semibold text-start p-1">
                     <FileTextOutlined
@@ -388,7 +388,7 @@ const Dashboard = () => {
                   </div>
                 </Card>
               </div>
-              <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12 mb-4">
+              <div className="col-xxl-3 col-xl-6 col-md-6 col-sm-12 mb-4">
                 <Card>
                   <label className="fw-semibold text-start p-1">
                     <DollarOutlined
@@ -410,7 +410,7 @@ const Dashboard = () => {
                   </div>
                 </Card>
               </div>
-              <div className="col-xxl-3 col-lg-3 col-md-6 col-sm-12 mb-4">
+              <div className="col-xxl-3 col-xl-6 col-md-6 col-sm-12 mb-4">
                 <Card
                   hoverable
                   className="cursor-pointer"
@@ -440,21 +440,21 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          <div className="d-flex justify-content-end col-md-1 col-sm-12 mb-4">
+          <div className="d-flex justify-content-end col-xxl-1 col-xl-2 col-sm-12 mb-4">
             <LogoutCard setAlertMessage={messageAlert} />
           </div>
         </div>
 
         <Card className="mb-5">
-          <div className="row ms-2">
-            <div className="col-xl-6 col-md-8 col-sm-12 text-start">
+          <div className="row ms-2 align-items-center">
+            <div className="col-xxl-6 col-xl-5 col-lg-3 col-md-4 col-sm-12 text-start">
               <label className="fw-semibold fs-5 text-black mb-2 mt-2 text-black">
                 Transacciones Recientes
               </label>
             </div>
-            <div className="col-xl-6 col-md-4 col-sm-12 d-flex justify-content-end pe-5">
+            <div className="col-xxl-6 col-xl-7 col-md-8 col-sm-12 d-flex justify-content-end pe-xxl-5">
               <div className="row">
-                <div className="col-xxl-4 col-lg-7 col-md-7 col-sm-12 mb-2 mt-2 w-auto">
+                <div className="col-xxl-4 col-lg-3 col-md-1 col-sm-12 mb-2 mt-2 w-auto">
                   <Button
                     type="primary"
                     onClick={() => setIsCollectorModalOpen(true)}
@@ -462,7 +462,7 @@ const Dashboard = () => {
                     Añadir Colector
                   </Button>
                 </div>
-                <div className="col-xxl-2 col-lg-2 col-md-2 col-sm-12 mb-2 mt-2 w-auto">
+                <div className="col-xxl-2 col-lg-2 col-md-1 col-sm-12 mb-2 mt-2 w-auto">
                   <Button
                     type="primary"
                     onClick={() => setIsRegisterPaymentOpen(true)}
@@ -470,7 +470,7 @@ const Dashboard = () => {
                     Pagar a Colector
                   </Button>
                 </div>
-                <div className="col-xxl-2 col-lg-2 col-md-2 col-sm-12 mb-2 mt-2 w-auto">
+                <div className="col-xxl-2 col-lg-2 col-md-1 col-sm-12 mb-2 mt-2 w-auto">
                   <Button
                     type="primary"
                     onClick={() => setIsReportsModalOpen(true)}

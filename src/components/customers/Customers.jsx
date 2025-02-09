@@ -315,7 +315,7 @@ const Customers = () => {
                 Nombre{" "}
               </label>
               <Form.Item
-                className="col-xxl-3 col-xl-4 col-sm-12 w-auto"
+                className="col-xxl-3 col-xl-4 col-md-6 col-sm-12 w-auto"
                 name="name"
                 initialValue=""
               >
