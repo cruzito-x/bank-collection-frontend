@@ -37,6 +37,7 @@ const TransactionTypes = () => {
   const { Content } = Layout;
   const [form] = useForm();
   const token = authState.token;
+  const user_id = authState.user_id;
 
   const {
     token: { borderRadiusLG },
@@ -116,6 +117,7 @@ const TransactionTypes = () => {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            user_id: user_id,
           },
           body: JSON.stringify(transactionType),
         }

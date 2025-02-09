@@ -24,7 +24,6 @@ import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const Customers = () => {
   const { authState } = useAuth();
-  const token = authState.token;
   const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [isCustomerEditModalOpen, setIsCustomerEditModalOpen] = useState(false);
@@ -34,6 +33,9 @@ const Customers = () => {
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const [form] = useForm();
+  const token = authState.token;
+  const user_id = authState.user_id;
+
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
@@ -120,6 +122,11 @@ const Customers = () => {
         `http://localhost:3001/customers/delete-customer/${customer.id}`,
         {
           method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            user_id: user_id,
+          },
         }
       );
 

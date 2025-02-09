@@ -18,6 +18,7 @@ const InstantOrQueuedApprovedTransactionModal = ({
   const [isApproved, setIsApproved] = useState(0);
   const [form] = Form.useForm();
   const token = authState.token;
+  const user_id = authState.user_id;
 
   useEffect(() => {}, [transaction]);
 
@@ -117,6 +118,7 @@ const InstantOrQueuedApprovedTransactionModal = ({
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            user_id: user_id,
           },
         }
       );

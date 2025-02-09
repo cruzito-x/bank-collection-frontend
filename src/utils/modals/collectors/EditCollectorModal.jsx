@@ -15,6 +15,7 @@ const EditCollectorModal = ({
   const [sendingData, setSendingData] = useState(false);
   const [form] = Form.useForm();
   const token = authState.token;
+  const user_id = authState.user_id;
 
   useEffect(() => {
     if (isOpen) {
@@ -36,6 +37,7 @@ const EditCollectorModal = ({
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            user_id: user_id,
           },
           body: JSON.stringify(collectorData),
         }

@@ -9,6 +9,7 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const token = authState.token;
+  const user_id = authState.user_id;
 
   const saveNewCollector = async (collector) => {
     setLoading(true);
@@ -21,6 +22,7 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            user_id: user_id,
           },
           body: JSON.stringify(collector),
         }

@@ -34,6 +34,7 @@ const Approvals = () => {
   const { Content } = Layout;
   const [form] = useForm();
   const token = authState.token;
+  const user_id = authState.user_id;
 
   const {
     token: { borderRadiusLG },
@@ -91,7 +92,7 @@ const Approvals = () => {
                         approval.approval_id,
                         approval.transaction_id,
                         0,
-                        authState.user_id
+                        user_id
                       );
                     }}
                     okText="Sí"
@@ -115,7 +116,7 @@ const Approvals = () => {
                         approval.approval_id,
                         approval.transaction_id,
                         1,
-                        authState.user_id
+                        user_id
                       )
                     }
                     loading={updatingStatus}
@@ -156,6 +157,7 @@ const Approvals = () => {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            user_id: user_id,
           },
         }
       );
@@ -244,7 +246,7 @@ const Approvals = () => {
                           approval.approval_id,
                           approval.transaction_id,
                           0,
-                          authState.user_id
+                          user_id
                         );
                       }}
                       okText="Sí"
@@ -262,7 +264,7 @@ const Approvals = () => {
                           approval.approval_id,
                           approval.transaction_id,
                           1,
-                          authState.user_id
+                          user_id
                         )
                       }
                       loading={updatingStatus}

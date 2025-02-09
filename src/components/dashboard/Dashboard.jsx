@@ -52,6 +52,7 @@ const Dashboard = () => {
   const [transactionTypeFilter, setTransactionTypeFilter] = useState(1);
   const [refreshCharts, setRefreshCharts] = useState(false);
   const token = authState.token;
+  const user_id = authState.user_id;
 
   const { Content } = Layout;
   const {
@@ -205,7 +206,7 @@ const Dashboard = () => {
                     notification.approval_id,
                     notification.transaction_id,
                     0,
-                    1
+                    user_id
                   );
                 }}
                 okText="Sí"
@@ -223,7 +224,7 @@ const Dashboard = () => {
                     notification.approval_id,
                     notification.transaction_id,
                     1,
-                    1
+                    user_id
                   )
                 }
                 loading={updatingStatus}
@@ -256,7 +257,9 @@ const Dashboard = () => {
         {
           method: "PUT",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            user_id: user_id,
           },
         }
       );

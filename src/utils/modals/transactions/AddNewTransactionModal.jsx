@@ -27,6 +27,7 @@ const AddNewTransactionModal = ({
     setOpenInstantOrQueuedApprovedTransaction,
   ] = useState(false);
   const token = authState.token;
+  const user_id = authState.user_id;
 
   useEffect(() => {
     getCustomers();
@@ -128,6 +129,7 @@ const AddNewTransactionModal = ({
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            user_id: user_id,
           },
           body: JSON.stringify(transaction),
         }
