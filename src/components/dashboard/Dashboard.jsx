@@ -16,7 +16,7 @@ import {
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import "./styles/dashboard.css";
-import DashboardCharts from "./charts/DashboardCharts";
+import DashboardCharts from "../../utils/charts/dashboard/DashboardCharts";
 import moment from "moment";
 import LogoutCard from "../../utils/logoutCard/LogoutCard";
 import AddNewCollectorModal from "../../utils/modals/dashboard/AddNewCollectorModal";
@@ -26,7 +26,7 @@ import { useCollectorsData } from "../../contexts/collectorsDataContext/Collecto
 import ViewReportsModal from "../../utils/modals/dashboard/ViewReportsModal";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 
-const Dashboard = ({ rangeFilter = () => {} }) => {
+const Dashboard = () => {
   const { authState } = useAuth();
   const [notifications, setNotifications] = useState([]);
   const [transactionTypes, setTransactionTypes] = useState([]);
@@ -98,7 +98,6 @@ const Dashboard = ({ rangeFilter = () => {} }) => {
         range = "today";
     }
     setDates(range);
-    rangeFilter(range);
   };
 
   const amountRangeFilters = (filter) => {

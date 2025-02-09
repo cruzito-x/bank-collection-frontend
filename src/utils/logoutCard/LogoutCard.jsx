@@ -10,24 +10,31 @@ const LogoutCard = ({ setAlertMessage }) => {
   const token = authState.token;
 
   const logout = async () => {
-    const response = await fetch(
-      `http://localhost:3001/login/logout/${user_id}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+    try {
+      const response = await fetch(
+        `http://localhost:3001/login/logout/${user_id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const logoutData = await response.json();
+
+      if (response.status === 200) {
+        window.location.href = "/";
+      } else {
+        setAlertMessage.error(logoutData.message);
       }
-    );
-
-    const logoutData = await response.json();
-
-    if (response.status === 200) {
-      window.location.href = "/";
-      localStorage.clear();
-    } else {
-      setAlertMessage.error(logoutData.message);
+    } catch (error) {
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
+    } finally {
+      localStorage.removeItem("authState");
     }
   };
 

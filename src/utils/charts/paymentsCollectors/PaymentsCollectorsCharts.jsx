@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Chart } from "chart.js";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
+import moment from "moment";
 
-const PaymentsCollectorsCharts = () => {
+const PaymentsCollectorsCharts = ({ isOpen, dates }) => {
   const { authState } = useAuth();
   const [paymentsByCollectors, setPaymentsByCollectors] = useState([]);
   const paymentsByCollectorChartRef = useRef(null);
@@ -64,8 +65,11 @@ const PaymentsCollectorsCharts = () => {
   ];
 
   const getPaymentsByCollectors = async () => {
+    const startDay = moment(dates[0]).format("YYYY-MM-DD");
+    const endDay = moment(dates[1]).format("YYYY-MM-DD");
+
     const response = await fetch(
-      "http://localhost:3001/payments-collectors/payments-by-collector",
+      `http://localhost:3001/payments-collectors/payments-by-collector/${startDay}/${endDay}`,
       {
         method: "GET",
         headers: {
@@ -80,8 +84,10 @@ const PaymentsCollectorsCharts = () => {
   };
 
   useEffect(() => {
-    getPaymentsByCollectors();
-  }, []);
+    if (isOpen && dates.length === 2) {
+      getPaymentsByCollectors();
+    }
+  }, [isOpen, dates]);
 
   useEffect(() => {
     if (paymentsByCollectors.length === 0) return;
@@ -117,7 +123,7 @@ const PaymentsCollectorsCharts = () => {
         plugins: {
           title: {
             display: true,
-            text: "Porcentaje de Pagos Obtenidos por Colector",
+            text: "Pagos Obtenidos por Colector",
             color: "#000000",
           },
           legend: {
@@ -129,7 +135,7 @@ const PaymentsCollectorsCharts = () => {
               label: function (percentage, data) {
                 return (
                   Math.round(percentage.formattedValue) +
-                  "% del Total de Ganancias por Pagos"
+                  "% del Total Procesado"
                 );
               },
             },

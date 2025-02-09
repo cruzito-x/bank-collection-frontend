@@ -17,12 +17,13 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
-import PaymentsCollectorsChart from "./charts/PaymentsCollectorsCharts";
+import PaymentsCollectorsChart from "../../utils/charts/paymentsCollectors/PaymentsCollectorsCharts";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import moment from "moment";
 import PaymentsCollectorsDetailsModal from "../../utils/modals/paymentsCollectors/PaymentsCollectorsDetailsModal";
 import PaymentsCollectorsModal from "../../utils/modals/dashboard/PaymentsCollectorsModal";
 import { useForm } from "antd/es/form/Form";
+import PaymentsCollectorsChartModal from "../../utils/modals/paymentsCollectors/PaymentsCollectorsChartModal";
 
 const PaymentsCollectors = () => {
   const { authState } = useAuth();
@@ -33,6 +34,8 @@ const PaymentsCollectors = () => {
   ] = useState(false);
   const [selectedPaymentCollector, setSelectedPaymentCollector] = useState([]);
   const [openRegisterPayment, setOpenRegisterPayment] = useState(false);
+  const [viewCollectorsPaymentsModal, setViewCollectorsPaymentsModal] =
+    useState(false);
   const [loading, setLoading] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
@@ -250,8 +253,8 @@ const PaymentsCollectors = () => {
               <label className="fw-semibold text-black"> Buscar Por </label>
             </div>
           </div>
-          <div className="row ms-2 mb-3 pe-3">
-            <div className="col-xxl-7 col-xl-7 col-sm-12 w-auto">
+          <div className="row ms-2">
+            <div className="col-xxl-8 col-xl-8 col-sm-12 mb-3 w-auto">
               <Form
                 layout="inline"
                 className="align-items-center"
@@ -276,7 +279,15 @@ const PaymentsCollectors = () => {
                 </Form.Item>
               </Form>
             </div>
-            <div className="col-xxl-5 col-xl-5 col-sm-12 text-end">
+            <div className="col-xxl-7 col-xl-7 col-sm-12 text-end mb-3">
+              <Button
+                type="primary"
+                onClick={() => setViewCollectorsPaymentsModal(true)}
+              >
+                Ver Pagos de Colectores{" "}
+              </Button>
+            </div>
+            <div className="col-xxl-2 col-xl-2 col-sm-12 text-end mb-3">
               <Button
                 type="primary"
                 onClick={() => setOpenRegisterPayment(true)}
@@ -286,7 +297,7 @@ const PaymentsCollectors = () => {
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
-            <div className="col-md-8 col-sm-12">
+            <div className="col-12">
               <Table
                 dataSource={paymentsCollector}
                 columns={paymentsCollectorsTableColumns}
@@ -303,9 +314,6 @@ const PaymentsCollectors = () => {
                 scroll={{ x: "max-content" }}
               />
             </div>
-            <div className="col-md-4 col-sm-12 d-flex align-items-center">
-              <PaymentsCollectorsChart />
-            </div>
           </div>
         </Card>
 
@@ -315,6 +323,11 @@ const PaymentsCollectors = () => {
           currentPath={window.location.pathname}
           getPaymentsCollectors={getPaymentsCollectors}
           setAlertMessage={messageAlert}
+        />
+
+        <PaymentsCollectorsChartModal
+          isOpen={viewCollectorsPaymentsModal}
+          isClosed={() => setViewCollectorsPaymentsModal(false)}
         />
 
         <PaymentsCollectorsDetailsModal

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, Form, message, Image, Input } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
@@ -10,9 +10,12 @@ const Login = () => {
   const navigate = useNavigate();
   const { setAuthState } = useAuth();
 
+  useEffect(() => {
+    localStorage.removeItem("authState");
+  }, []);
+
   const loginUser = async (user) => {
     setLoading(true);
-
     try {
       const response = await fetch("http://localhost:3001/login/", {
         method: "POST",
