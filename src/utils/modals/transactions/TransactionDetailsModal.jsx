@@ -1,5 +1,5 @@
 import { Button, Col, Modal, Row, Tag } from "antd";
-import { InfoCircleOutlined, PrinterOutlined } from "@ant-design/icons";
+import { FileTextOutlined, PrinterOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef } from "react";
 
 const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
@@ -25,7 +25,7 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
       title={
         <Row align="middle">
           <Col>
-            <InfoCircleOutlined
+            <FileTextOutlined
               className="fs-6"
               style={{ marginRight: 8, color: "var(--blue)" }}
             />
