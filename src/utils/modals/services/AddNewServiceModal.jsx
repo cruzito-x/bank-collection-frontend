@@ -44,10 +44,10 @@ const AddNewServiceModal = ({ isOpen, isClosed, setAlertMessage }) => {
       const savedService = response.json();
 
       if (response.status === 200) {
+        setAlertMessage.success(savedService.message);
         form.resetFields();
         setSendingData(false);
         isClosed();
-        setAlertMessage.success(savedService.message);
       } else {
         setAlertMessage.error(savedService.message);
       }
