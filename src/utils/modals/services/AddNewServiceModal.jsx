@@ -41,7 +41,7 @@ const AddNewServiceModal = ({ isOpen, isClosed, setAlertMessage }) => {
         }
       );
 
-      const savedService = response.json();
+      const savedService = await response.json();
 
       if (response.status === 200) {
         setAlertMessage.success(savedService.message);
