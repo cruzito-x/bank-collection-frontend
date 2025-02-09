@@ -15,7 +15,7 @@ const AddNewTransactionModal = ({
 }) => {
   const [customers, setCustomers] = useState([]);
   const [accounts, setAccounts] = useState([]);
-  const [accountBalance, setAccountBalance] = useState(0);
+  const [refreshTransactions, setRefreshTransactions] = useState(false);
   const [allAccounts, setAllAccounts] = useState([]);
   const [sendingTransaction, setSendingTransaction] = useState(false);
   const [form] = useForm();
@@ -68,28 +68,6 @@ const AddNewTransactionModal = ({
     });
 
     setAllAccounts(accounts);
-  };
-
-  const getAccountBalance = async (accountNumber) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3001/accounts/balance-by-account/${accountNumber}`,
-        {
-          method: "GET",
-        }
-      );
-      const accountData = await response.json();
-
-      if (response.status === 200) {
-        setAccountBalance(accountData.balance);
-      } else {
-        setAlertMessage.error(accountData.message);
-      }
-    } catch (error) {
-      setAlertMessage.error(
-        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
-      );
-    }
   };
 
   const getAccountsByCustomer = async (customerId = 0) => {
@@ -391,12 +369,16 @@ const AddNewTransactionModal = ({
 
       <InstantOrQueuedApprovedTransactionModal
         isOpen={openInstantOrQueuedApprovedTransaction}
-        isClosed={() => setOpenInstantOrQueuedApprovedTransaction(false)}
+        isClosed={() => {
+          setOpenInstantOrQueuedApprovedTransaction(false);
+          setRefreshTransactions((previous) => !previous);
+        }}
         isSupervisor={isSupervisor}
         sendToQueue={registerTransaction}
         transaction={form.getFieldsValue(true)}
         setAlertMessage={setAlertMessage}
         getTransactions={getTransactions}
+        refreshTransactions={refreshTransactions}
       />
     </>
   );
