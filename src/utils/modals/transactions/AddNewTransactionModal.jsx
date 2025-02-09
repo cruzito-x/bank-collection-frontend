@@ -35,6 +35,13 @@ const AddNewTransactionModal = ({
     setShowReceiverAccount(false);
   }, []);
 
+  useEffect(() => {
+    if (!isOpen) {
+      setShowReceiverAccount(false);
+      form.resetFields();
+    }
+  }, [isOpen]);
+
   const getCustomers = async () => {
     const response = await fetch("http://localhost:3001/customers", {
       method: "GET",
