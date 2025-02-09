@@ -297,7 +297,7 @@ const Services = () => {
             </div>
           </div>
           <div className="row ms-2 pe-3 mb-3">
-            <div className="col-xxl-5 col-xl-5 col-sm-12 w-auto">
+            <div className="col-xxl-5 col-xl-3 col-sm-12 w-auto">
               <Form
                 layout="inline"
                 form={form}
@@ -338,7 +338,7 @@ const Services = () => {
                 </Form.Item>
               </Form>
             </div>
-            <div className="col-xxl-7 col-xl-7 col-sm-12 text-end">
+            <div className="col-xxl-7 col-xl-4 col-sm-12 text-end pe-xxl-0 pe-xl-4">
               <Button
                 type="primary"
                 onClick={() => setIsServicePaymentsModalOpen(true)}

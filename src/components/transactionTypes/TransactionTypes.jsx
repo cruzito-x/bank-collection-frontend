@@ -309,7 +309,7 @@ const TransactionTypes = () => {
                 </Form.Item>
               </Form>
             </div>
-            <div className="col-xxl-9 col-xl-7 col-sm-12 ms-4 text-end">
+            <div className="col-xxl-9 col-xl-7 col-sm-12 ms-4 text-end pe-0">
               <Button
                 type="primary"
                 onClick={() => setIsNewTransactionTypeModalOpen(true)}

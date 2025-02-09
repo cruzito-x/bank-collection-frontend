@@ -347,6 +347,7 @@ const Transactions = () => {
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
+            <div className="col-xxl-9 col-xl-9 col-sm-12 w-auto">
             <Form
               layout="inline"
               className="align-items-center"
@@ -355,7 +356,6 @@ const Transactions = () => {
             >
               <label className="me-2 fw-semibold text-black"> Código </label>
               <Form.Item
-                className="col-xxl-2 col-xl-2 col-sm-12 w-auto"
                 name="transaction_id"
                 initialValue=""
               >
@@ -369,7 +369,6 @@ const Transactions = () => {
               </Form.Item>
               <label className="me-2 fw-semibold text-black">Cajero</label>
               <Form.Item
-                className="col-xxl-2 col-xl-2 col-sm-12 w-auto"
                 name="realized_by"
                 initialValue=""
               >
@@ -383,7 +382,6 @@ const Transactions = () => {
               </Form.Item>
               <label className="me-2 fw-semibold text-black"> Tipo </label>
               <Form.Item
-                className="col-xxl-2 col-xl-2 col-sm-12 w-auto"
                 name="transaction_type"
                 initialValue={1}
               >
@@ -398,7 +396,6 @@ const Transactions = () => {
               </Form.Item>
               <label className="me-2 fw-semibold text-black"> Fecha </label>
               <Form.Item
-                className="col-xxl-2 col-xl-2 col-sm-12 w-auto"
                 name="date"
                 initialValue=""
               >
@@ -413,14 +410,15 @@ const Transactions = () => {
                   }}
                 />
               </Form.Item>
-
-              <Form.Item className="col-xxl-2 col-xl-2 col-sm-12 mb-2 w-auto">
+              <Form.Item>
                 <Button type="primary" htmlType="submmit">
                   {" "}
                   Buscar{" "}
                 </Button>
               </Form.Item>
-              <div className="col-xxl-3 col-xl-2 col-sm-12 text-end">
+            </Form>
+            </div>
+            <div className="col-xxl-3 col-xl-3 col-sm-12 text-end pe-0">
                 <Button
                   type="primary"
                   onClick={() => setIsNewTransactionModalOpen(true)}
@@ -428,7 +426,6 @@ const Transactions = () => {
                   <PlusCircleOutlined /> Nueva Transacción{" "}
                 </Button>
               </div>
-            </Form>
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">

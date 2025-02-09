@@ -155,8 +155,8 @@ const DashboardCharts = ({
   const barTransactionsByDateChartInstance = useRef(null);
 
   //Approval And Rejection Rates
-  const doughnutRatesCanvasRef = useRef(null);
-  const doughnutRatesChartInstance = useRef(null);
+  const horizontalBarRatesCanvasRef = useRef(null);
+  const horizontalBarRatesChartInstance = useRef(null);
 
   //Total ProccessedAmount
   const pieProccessedAmountCanvasRef = useRef(null);
@@ -322,10 +322,10 @@ const DashboardCharts = ({
         (rate) => rate.total_transactions
       );
 
-      const doughnutRatesChart =
-        doughnutRatesCanvasRef.current.getContext("2d");
+      const horizontalBarRatesChart =
+        horizontalBarRatesCanvasRef.current.getContext("2d");
 
-      const doughnutRatesData = {
+      const horizontalBarRatesData = {
         labels: status,
         datasets: [
           {
@@ -335,9 +335,9 @@ const DashboardCharts = ({
         ],
       };
 
-      const doughnutRatesConfig = {
+      const horizontalBarRatesConfig = {
         type: "bar",
-        data: doughnutRatesData,
+        data: horizontalBarRatesData,
         options: {
           indexAxis: "y",
           aspectRatio: 2,
@@ -376,9 +376,9 @@ const DashboardCharts = ({
         },
       };
 
-      doughnutRatesChartInstance.current = new Chart(
-        doughnutRatesChart,
-        doughnutRatesConfig
+      horizontalBarRatesChartInstance.current = new Chart(
+        horizontalBarRatesChart,
+        horizontalBarRatesConfig
       );
     }
 
@@ -634,8 +634,8 @@ const DashboardCharts = ({
         barTransactionsByDateChartInstance.current.destroy();
       }
 
-      if (doughnutRatesChartInstance.current) {
-        doughnutRatesChartInstance.current.destroy();
+      if (horizontalBarRatesChartInstance.current) {
+        horizontalBarRatesChartInstance.current.destroy();
       }
 
       if (pieProccessedAmountChartInstance.current) {
@@ -698,7 +698,7 @@ const DashboardCharts = ({
             ) : (
               <canvas
                 className="ms-2 me-2 mb-2"
-                ref={doughnutRatesCanvasRef}
+                ref={horizontalBarRatesCanvasRef}
               ></canvas>
             )}
           </Card>
@@ -741,7 +741,7 @@ const DashboardCharts = ({
               <Empty />
             ) : (
               <canvas
-                className="ms-2 me-2 mb-2"
+                className="mb-2"
                 ref={barCustomersWhitMostMoneyPaidRef}
               ></canvas>
             )}

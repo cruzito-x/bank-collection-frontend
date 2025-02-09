@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Chart } from "chart.js";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
 import moment from "moment";
+import { Card, Empty } from "antd";
 
 const PaymentsCollectorsCharts = ({ isOpen, dates }) => {
   const { authState } = useAuth();
@@ -162,10 +163,16 @@ const PaymentsCollectorsCharts = ({ isOpen, dates }) => {
   }, [paymentsByCollectors]);
 
   return (
-    <canvas
-      className="cursor-pointer"
-      ref={paymentsByCollectorChartRef}
-    ></canvas>
+    <Card>
+      {paymentsByCollectors.length === 0 ? (
+        <Empty />
+      ) : (
+        <canvas
+          className="cursor-pointer"
+          ref={paymentsByCollectorChartRef}
+        ></canvas>
+      )}
+    </Card>
   );
 };
 

@@ -253,7 +253,7 @@ const PaymentsCollectors = () => {
             </div>
           </div>
           <div className="row ms-2 pe-3 mb-3">
-            <div className="col-xxl-3 col-xl-2 col-sm-12 w-auto">
+            <div className="col-xxl-3 col-xl-3 col-sm-12 w-auto">
               <Form
                 layout="inline"
                 className="align-items-center"
@@ -286,7 +286,7 @@ const PaymentsCollectors = () => {
                 Ver Pagos de Colectores{" "}
               </Button>
             </div>
-            <div className="col-xxl-2 col-xl-2 col-sm-12 text-end">
+            <div className="col-xxl-2 col-xl-3 col-sm-12 text-end pe-0">
               <Button
                 type="primary"
                 onClick={() => setOpenRegisterPayment(true)}
