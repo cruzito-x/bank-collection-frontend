@@ -45,3 +45,8 @@ body {
 .ant-btn-dangerous:hover {
   background-color: var(--red-hovered) !important;
 }
+
+.ant-btn-dangerous:disabled {
+  background-color: var(--red-hovered) !important;
+  color: #ffffff !important;
+}
