@@ -589,7 +589,10 @@ const Dashboard = () => {
 
         <NotificationsModal
           isOpen={isNotificationsModalOpen}
-          isClosed={() => setIsNotificationsModalOpen(false)}
+          isClosed={() => {
+            setIsNotificationsModalOpen(false);
+            setRefreshCharts((previous) => !previous);
+          }}
           notificationsData={notifications}
           setAlertMessage={messageAlert}
         />

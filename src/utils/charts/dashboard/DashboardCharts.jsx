@@ -145,6 +145,7 @@ const DashboardCharts = ({
   }, [datesRange[0], datesRange[1], refreshCharts]);
 
   useEffect(() => {
+    getApprovalAndRejectionRates();
     getCustomersWithTheMostMoneyPaid();
     getPaymentsByCollector();
     getPaymentsByCollectorDenominations();
