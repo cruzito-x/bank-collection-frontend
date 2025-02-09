@@ -252,8 +252,8 @@ const PaymentsCollectors = () => {
               <label className="fw-semibold text-black"> Buscar Por </label>
             </div>
           </div>
-          <div className="row ms-2 pe-3">
-            <div className="col-xxl-3 col-xl-5 col-sm-12 mb-3 w-auto">
+          <div className="row ms-2 pe-3 mb-3">
+            <div className="col-xxl-3 col-xl-2 col-sm-12 w-auto">
               <Form
                 layout="inline"
                 className="align-items-center"
@@ -278,25 +278,21 @@ const PaymentsCollectors = () => {
                 </Form.Item>
               </Form>
             </div>
-            <div className="col-xxl-9 col-xl-7 col-sm-12 mb-3">
-              <div className="row justify-content-end">
-                <div className="col-md-3 col-sm-12 mb-2">
-                  <Button
-                    type="primary"
-                    onClick={() => setViewCollectorsPaymentsModal(true)}
-                  >
-                    Ver Pagos de Colectores{" "}
-                  </Button>
-                </div>
-                <div className="col-md-3 col-sm-12 mb-2">
-                  <Button
-                    type="primary"
-                    onClick={() => setOpenRegisterPayment(true)}
-                  >
-                    <PlusCircleOutlined /> Nuevo Pago a Colector{" "}
-                  </Button>
-                </div>
-              </div>
+            <div className="col-xxl-7 col-xl-4 col-sm-12 text-end">
+              <Button
+                type="primary"
+                onClick={() => setViewCollectorsPaymentsModal(true)}
+              >
+                Ver Pagos de Colectores{" "}
+              </Button>
+            </div>
+            <div className="col-xxl-2 col-xl-2 col-sm-12 text-end">
+              <Button
+                type="primary"
+                onClick={() => setOpenRegisterPayment(true)}
+              >
+                <PlusCircleOutlined /> Nuevo Pago a Colector{" "}
+              </Button>
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
