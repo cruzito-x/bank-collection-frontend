@@ -21,7 +21,7 @@ const AddNewTransactionModal = ({
   const [allAccounts, setAllAccounts] = useState([]);
   const [sendingTransaction, setSendingTransaction] = useState(false);
   const [form] = useForm();
-  const [showReceiverAccount, setShowReceiverAccount] = useState(true);
+  const [showReceiverAccount, setShowReceiverAccount] = useState(false);
   const [
     openInstantOrQueuedApprovedTransaction,
     setOpenInstantOrQueuedApprovedTransaction,

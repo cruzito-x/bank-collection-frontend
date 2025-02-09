@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PaymentsCollectorsCharts from "../../charts/paymentsCollectors/PaymentsCollectorsCharts";
 import { Button, Col, Modal, Row, Select, Space } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import { PieChartOutlined } from "@ant-design/icons";
 import moment from "moment";
 
 const PaymentsCollectorsChartModal = ({ isOpen, isClosed }) => {
@@ -12,6 +12,7 @@ const PaymentsCollectorsChartModal = ({ isOpen, isClosed }) => {
 
   const datesFilter = (filter) => {
     let range;
+
     switch (filter) {
       case "today":
         range = [moment().startOf("day"), moment().endOf("day")];
@@ -47,14 +48,10 @@ const PaymentsCollectorsChartModal = ({ isOpen, isClosed }) => {
         ];
         break;
       default:
-        range = [moment().startOf("day"), moment().endOf("day")]; // Fallback seguro
+        range = [moment().startOf("day"), moment().endOf("day")];
     }
 
     setDates(range);
-    console.log(
-      "Nuevo rango de fechas:",
-      range.map((d) => d.format("YYYY-MM-DD"))
-    );
   };
 
   return (
@@ -62,14 +59,14 @@ const PaymentsCollectorsChartModal = ({ isOpen, isClosed }) => {
       title={
         <Row align="middle">
           <Col>
-            <InfoCircleOutlined
+            <PieChartOutlined
               className="fs-6"
               style={{ marginRight: 8, color: "var(--blue)" }}
             />
           </Col>
           <Col>
             <label className="fs-6 text-black">
-              Gráfica Pagos Obtenidos por Colector
+              Gráfica de Pagos Obtenidos por Colector
             </label>
           </Col>
         </Row>

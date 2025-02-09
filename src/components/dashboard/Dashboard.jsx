@@ -61,6 +61,7 @@ const Dashboard = () => {
 
   const datesFilter = (filter) => {
     let range;
+
     switch (filter) {
       case "today":
         range = [moment().startOf("day"), moment().endOf("day")];

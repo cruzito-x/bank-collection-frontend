@@ -92,7 +92,7 @@ const SetNewUserRoleModal = ({
           {" "}
           Seleccionar Nuevo Rol{" "}
         </label>
-        <Form.Item name="newRole">
+        <Form.Item name="newRole" initialValue={1}>
           <Select defaultValue={1} options={roles} />
         </Form.Item>
         <Form.Item className="text-end">

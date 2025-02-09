@@ -347,85 +347,73 @@ const Transactions = () => {
             </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
-            <div className="col-xxl-9 col-xl-9 col-sm-12 w-auto">
-            <Form
-              layout="inline"
-              className="align-items-center"
-              form={form}
-              onFinish={searchTransactions}
-            >
-              <label className="me-2 fw-semibold text-black"> Código </label>
-              <Form.Item
-                name="transaction_id"
-                initialValue=""
+            <div className="col-xxl-9 col-xl-9 col-sm-12">
+              <Form
+                layout="inline"
+                className="align-items-center"
+                form={form}
+                onFinish={searchTransactions}
               >
-                <Input
-                  placeholder="TSC000000"
-                  prefix={<NumberOutlined />}
-                  style={{
-                    width: 183,
-                  }}
-                />
-              </Form.Item>
-              <label className="me-2 fw-semibold text-black">Cajero</label>
-              <Form.Item
-                name="realized_by"
-                initialValue=""
-              >
-                <Input
-                  placeholder="Nombre de Usuario"
-                  prefix={<UserOutlined />}
-                  style={{
-                    width: 183,
-                  }}
-                />
-              </Form.Item>
-              <label className="me-2 fw-semibold text-black"> Tipo </label>
-              <Form.Item
-                name="transaction_type"
-                initialValue={1}
-              >
-                <Select
-                  defaultValue={1}
-                  prefix={<TransactionOutlined />}
-                  style={{
-                    width: 183,
-                  }}
-                  options={transactionsTypes}
-                />
-              </Form.Item>
-              <label className="me-2 fw-semibold text-black"> Fecha </label>
-              <Form.Item
-                name="date"
-                initialValue=""
-              >
-                <DatePicker
-                  className="cusor-pointer"
-                  value={date}
-                  onChange={(date) => setDate(date)}
-                  format="DD/MM/YYYY"
-                  placeholder="00/00/0000"
-                  style={{
-                    width: 183,
-                  }}
-                />
-              </Form.Item>
-              <Form.Item>
-                <Button type="primary" htmlType="submmit">
-                  {" "}
-                  Buscar{" "}
-                </Button>
-              </Form.Item>
-            </Form>
+                <label className="me-2 fw-semibold text-black"> Código </label>
+                <Form.Item name="transaction_id" initialValue="">
+                  <Input
+                    placeholder="TSC000000"
+                    prefix={<NumberOutlined />}
+                    style={{
+                      width: 183,
+                    }}
+                  />
+                </Form.Item>
+                <label className="me-2 fw-semibold text-black">Cajero</label>
+                <Form.Item name="realized_by" initialValue="">
+                  <Input
+                    placeholder="Nombre de Usuario"
+                    prefix={<UserOutlined />}
+                    style={{
+                      width: 183,
+                    }}
+                  />
+                </Form.Item>
+                <label className="me-2 fw-semibold text-black"> Tipo </label>
+                <Form.Item name="transaction_type" initialValue={1}>
+                  <Select
+                    defaultValue={1}
+                    prefix={<TransactionOutlined />}
+                    style={{
+                      width: 183,
+                    }}
+                    options={transactionsTypes}
+                  />
+                </Form.Item>
+                <label className="me-2 fw-semibold text-black"> Fecha </label>
+                <Form.Item name="date" initialValue="">
+                  <DatePicker
+                    className="cusor-pointer"
+                    value={date}
+                    onChange={(date) => setDate(date)}
+                    format="DD/MM/YYYY"
+                    placeholder="00/00/0000"
+                    style={{
+                      width: 183,
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Button type="primary" htmlType="submmit">
+                    {" "}
+                    Buscar{" "}
+                  </Button>
+                </Form.Item>
+              </Form>
             </div>
-            <div className="col-xxl-3 col-xl-3 col-sm-12 text-end pe-0">
-                <Button
-                  type="primary"
-                  onClick={() => setIsNewTransactionModalOpen(true)}
-                >
-                  <PlusCircleOutlined /> Nueva Transacción{" "}
-                </Button>
-              </div>
+            <div className="col-xxl-3 col-xl-3 col-sm-12 text-end">
+              <Button
+                type="primary"
+                onClick={() => setIsNewTransactionModalOpen(true)}
+              >
+                <PlusCircleOutlined /> Nueva Transacción{" "}
+              </Button>
+            </div>
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">
