@@ -351,7 +351,7 @@ const Dashboard = () => {
                     />
                     Colectores Registrados
                   </label>
-                  <h1 className="fw-semibold text-black text-center p-3">
+                  <h1 className="fw-semibold text-black text-center pt-3 pb-3">
                     {collectors.length || 0}
                   </h1>
                   <div className="dashboard-blue-card text-center w-100 rounded">
@@ -373,7 +373,7 @@ const Dashboard = () => {
                     />
                     Total de Pagos Realizados
                   </label>
-                  <h1 className="fw-semibold text-black text-center p-3">
+                  <h1 className="fw-semibold text-black text-center pt-3 pb-3">
                     {totalPayments.length || 0}
                   </h1>
                   <div className="dashboard-yellow-card text-center w-100 rounded">
@@ -393,9 +393,9 @@ const Dashboard = () => {
                         color: "var(--green)",
                       }}
                     />
-                    Monto Total de Pagos Procesado
+                    Total de Pagos Procesados
                   </label>
-                  <h1 className="fw-semibold text-black text-center p-3">
+                  <h1 className="fw-semibold text-black text-center pt-3 pb-3">
                     ${totalProcessedAmounts || 0}
                   </h1>
                   <div className="dashboard-green-card text-center w-100 rounded">
@@ -421,7 +421,7 @@ const Dashboard = () => {
                     />
                     Notificaciones Pendientes
                   </label>
-                  <h1 className="fw-semibold text-black text-center p-3">
+                  <h1 className="fw-semibold text-black text-center pt-3 pb-3">
                     {notifications.length || 0}
                   </h1>
                   <div className="dashboard-red-card text-center w-100 rounded">

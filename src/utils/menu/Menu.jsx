@@ -16,7 +16,6 @@ import {
   DollarCircleOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { Footer } from "antd/es/layout/layout";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
@@ -119,7 +118,7 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
       ? {
           key: "/logout",
           icon: <LogoutOutlined className="text-white" />,
-          label: "Cerrar Sesión",
+          label: "Salir",
           className: "text-white",
         }
       : null,
@@ -173,22 +172,6 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
           }
         }}
       />
-
-      {!collapsed && (
-        <Footer
-          className="text-center text-white ps-3 pe-3"
-          style={{
-            background: "var(--gray)",
-            position: "relative",
-            marginTop: "-88px",
-            width: "100%",
-            fontSize: ".84rem",
-          }}
-        >
-          &copy; {new Date().getFullYear()} cruzito-x <br /> All Rights
-          Reserved.
-        </Footer>
-      )}
     </>
   );
 };

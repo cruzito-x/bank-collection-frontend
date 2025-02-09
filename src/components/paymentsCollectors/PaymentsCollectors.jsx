@@ -17,7 +17,6 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
-import PaymentsCollectorsChart from "../../utils/charts/paymentsCollectors/PaymentsCollectorsCharts";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import moment from "moment";
 import PaymentsCollectorsDetailsModal from "../../utils/modals/paymentsCollectors/PaymentsCollectorsDetailsModal";
@@ -248,13 +247,13 @@ const PaymentsCollectors = () => {
         />
 
         <Card className="mt-3">
-          <div className="row ms-2 pt-3 mb-2">
+          <div className="row ms-2 pt-3 pe-3 mb-2">
             <div className="col-12 text-start">
               <label className="fw-semibold text-black"> Buscar Por </label>
             </div>
           </div>
-          <div className="row ms-2">
-            <div className="col-xxl-8 col-xl-8 col-sm-12 mb-3 w-auto">
+          <div className="row ms-2 pe-3">
+            <div className="col-xxl-8 col-xl-5 col-sm-12 mb-3 w-auto">
               <Form
                 layout="inline"
                 className="align-items-center"
@@ -279,16 +278,15 @@ const PaymentsCollectors = () => {
                 </Form.Item>
               </Form>
             </div>
-            <div className="col-xxl-7 col-xl-7 col-sm-12 text-end mb-3">
+            <div className="col-xxl-8 col-xl-7 col-sm-12 text-end mb-3">
               <Button
                 type="primary"
                 onClick={() => setViewCollectorsPaymentsModal(true)}
               >
                 Ver Pagos de Colectores{" "}
               </Button>
-            </div>
-            <div className="col-xxl-2 col-xl-2 col-sm-12 text-end mb-3">
               <Button
+              className="ms-3"
                 type="primary"
                 onClick={() => setOpenRegisterPayment(true)}
               >

@@ -129,7 +129,8 @@ const Sidebar = () => {
             }}
           >
             &copy; {new Date().getFullYear()} - Banco Bambú de El Salvador
-            S.A&reg;
+            S.A&reg; <br />
+            Desarrollado por &copy; cruzito-x - All Rights Reserved.
           </Footer>
         </Content>
       </Layout>

@@ -288,13 +288,13 @@ const Collectors = () => {
         />
 
         <Card className="mt-3">
-          <div className="row ms-2 pt-3 mb-2">
+          <div className="row ms-2 pt-3 pe-3 mb-2">
             <div className="col-12 text-start">
               <label className="fw-semibold text-black"> Buscar Por </label>
             </div>
           </div>
-          <div className="row ms-2 mb-3">
-            <div className="col-xxl-3 col-xl-3 col-sm-12 w-auto">
+          <div className="row ms-2 pe-3 mb-3">
+            <div className="col-xxl-3 col-xl-5 col-sm-12 w-auto">
               <Form
                 layout="inline"
                 form={form}
@@ -318,7 +318,7 @@ const Collectors = () => {
                 </Form.Item>
               </Form>
             </div>
-            <div className="col-xxl-9 col-xl-9 col-sm-12 text-end">
+            <div className="col-xxl-9 col-xl-7 col-sm-12 text-end">
               <Button
                 type="primary"
                 onClick={() => setIsCollectorPaymentsModalOpen(true)}

@@ -1,5 +1,5 @@
 import { Card, Dropdown, Menu } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
 import React from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 
@@ -41,7 +41,12 @@ const LogoutCard = ({ setAlertMessage }) => {
   const item = [
     {
       key: "/logout",
-      label: "Cerrar Sesión",
+      label: (
+        <>
+          <LogoutOutlined />
+          <span className="text-black"> Salir</span>
+        </>
+      ),
       className: "text-black",
       onClick: logout,
     },
@@ -53,7 +58,7 @@ const LogoutCard = ({ setAlertMessage }) => {
     <Dropdown overlay={menu} trigger={["click"]}>
       <Card
         hoverable
-        className="d-flex align-items-center justify-content-center text-center cursor-pointer user-card w-100"
+        className="d-flex p-2 align-items-center justify-content-center text-center cursor-pointer user-card w-100"
         bodyStyle={{ padding: 0 }}
       >
         <UserOutlined className="fs-1" />

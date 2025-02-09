@@ -24,7 +24,6 @@ import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const Customers = () => {
   const { authState } = useAuth();
-  const username = localStorage.getItem("username");
   const token = authState.token;
   const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -292,7 +291,7 @@ const Customers = () => {
           ]}
         />
         <Card className="mt-3">
-          <div className="row ms-2 pt-3 mb-2">
+          <div className="row ms-2 pt-3 pe-3 mb-2">
             <div className="col-12 text-start">
               <label className="fw-semibold text-black"> Buscar Por </label>
             </div>
