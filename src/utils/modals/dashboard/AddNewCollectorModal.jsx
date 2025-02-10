@@ -28,18 +28,22 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
         }
       );
 
-      const data = await response.json();
+      const savedCollector = await response.json();
 
       if (response.status === 200) {
-        setAlertMessage.success(data.message);
+        setAlertMessage.success(savedCollector.message);
         isClosed();
         form.resetFields();
       } else if (response.status === 401 || response.status === 403) {
         localStorage.removeItem("token");
         window.location.href = "/";
         return;
+      } else if (response.status === 409) {
+        setAlertMessage.warning(savedCollector.message);
+        setLoading(false);
+        return;
       } else {
-        setAlertMessage.error(data.message);
+        setAlertMessage.error(savedCollector.message);
       }
     } catch (error) {
       setAlertMessage.error(
