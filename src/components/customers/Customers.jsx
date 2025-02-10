@@ -182,7 +182,7 @@ const Customers = () => {
         );
 
         const customersData = await response.json();
-        
+
         if (response.status === 200) {
           const customers = customersData.map((customer) => ({
             ...customer,
@@ -389,6 +389,7 @@ const Customers = () => {
           isClosed={() => setIsCustomerEditModalOpen(false)}
           selectedCustomer={selectedCustomer}
           setAlertMessage={messageAlert}
+          getCustomers={getCustomers}
         />
 
         <AccountsByCustomerModal

@@ -8,6 +8,7 @@ const EditCustomerModal = ({
   isClosed,
   selectedCustomer,
   setAlertMessage,
+  getCustomers,
 }) => {
   const { authState } = useAuth();
   const [sendingData, setSendingData] = useState(false);
@@ -45,6 +46,7 @@ const EditCustomerModal = ({
       if (response.status === 200) {
         setAlertMessage.success(updatedCustomer.message);
         isClosed();
+        getCustomers();
       } else if (response.status === 401 || response.status === 403) {
         localStorage.removeItem("token");
         window.location.href = "/";
