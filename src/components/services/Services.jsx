@@ -310,50 +310,57 @@ const Services = () => {
               <label className="fw-semibold text-black"> Buscar Por </label>
             </div>
           </div>
-          <div className="row ms-2 pe-3 mb-3">
-            <div className="col-xxl-5 col-xl-3 col-sm-12 w-auto">
+          <div className="row ms-2 pe-3">
+            <div className="col-xxl-5 col-xl-3 col-md-5 col-sm-12 w-auto">
               <Form
                 layout="inline"
                 form={form}
                 className="align-items-center"
                 onFinish={searchService}
               >
-                <label className="me-2 fw-semibold text-black">
-                  {" "}
-                  Colector{" "}
-                </label>
-                <Form.Item name="collector" initialValue="">
-                  <Input
-                    placeholder="Nombre de Colector"
-                    prefix={<SolutionOutlined />}
-                    style={{
-                      width: 183,
-                    }}
-                  />
-                </Form.Item>
-                <label className="me-2 fw-semibold text-black">
-                  {" "}
-                  Servicio{" "}
-                </label>
-                <Form.Item name="service" initialValue="">
-                  <Input
-                    placeholder="Nombre de Servicio"
-                    prefix={<BulbOutlined />}
-                    style={{
-                      width: 183,
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item>
-                  <Button type="primary" htmlType="submit">
+                <div className="mb-3 d-flex align-items-center">
+                  <label className="me-2 fw-semibold text-black">
                     {" "}
-                    Buscar{" "}
-                  </Button>
-                </Form.Item>
+                    Colector{" "}
+                  </label>
+                  <Form.Item name="collector" initialValue="">
+                    <Input
+                      placeholder="Nombre de Colector"
+                      prefix={<SolutionOutlined />}
+                      style={{
+                        width: 183,
+                      }}
+                    />
+                  </Form.Item>
+                </div>
+                <div className="mb-3 d-flex align-items-center">
+                  <label className="me-2 fw-semibold text-black">
+                    {" "}
+                    Servicio{" "}
+                  </label>
+                  <Form.Item name="service" initialValue="">
+                    <Input
+                      placeholder="Nombre de Servicio"
+                      prefix={<BulbOutlined />}
+                      style={{
+                        width: 183,
+                      }}
+                    />
+                  </Form.Item>
+                </div>
+                <div className="mb-3 d-flex align-items-center">
+                  <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                      {" "}
+                      Buscar{" "}
+                    </Button>
+                  </Form.Item>
+                </div>
               </Form>
             </div>
-            <div className="col-xxl-7 col-xl-4 col-sm-12 text-end pe-xxl-0 pe-xl-4">
+            <div className="col-xxl-7 col-xl-4 col-md-3 col-sm-12 text-md-end text-sm-start pe-xxl-0 pe-xl-4">
               <Button
+                className="mb-3"
                 type="primary"
                 onClick={() => setIsServicePaymentsModalOpen(true)}
               >
