@@ -17,7 +17,6 @@ const AddNewTransactionModal = ({
   const { authState } = useAuth();
   const [customers, setCustomers] = useState([]);
   const [accounts, setAccounts] = useState([]);
-  const [refreshTransactions, setRefreshTransactions] = useState(false);
   const [allAccounts, setAllAccounts] = useState([]);
   const [sendingTransaction, setSendingTransaction] = useState(false);
   const [form] = useForm();
@@ -402,14 +401,12 @@ const AddNewTransactionModal = ({
         isOpen={openInstantOrQueuedApprovedTransaction}
         isClosed={() => {
           setOpenInstantOrQueuedApprovedTransaction(false);
-          setRefreshTransactions((previous) => !previous);
         }}
         isSupervisor={isSupervisor}
         sendToQueue={registerTransaction}
         transaction={form.getFieldsValue(true)}
         setAlertMessage={setAlertMessage}
         getTransactions={getTransactions}
-        refreshTransactions={refreshTransactions}
       />
     </>
   );

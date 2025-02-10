@@ -149,7 +149,7 @@ const InstantOrQueuedApprovedTransactionModal = ({
       );
     } finally {
       setUpdatingStatus(false);
-      getTransactions();
+      await getTransactions();
     }
   };
 

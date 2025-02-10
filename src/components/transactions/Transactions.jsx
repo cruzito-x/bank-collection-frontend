@@ -32,7 +32,6 @@ const Transactions = () => {
   const [date, setDate] = useState(null);
   const [transactionsTypes, setTransactionTypes] = useState([]);
   const [transactions, setTransactions] = useState([]);
-  const [refreshTransactions, setRefreshTransactions] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [isNewTransactionModalOpen, setIsNewTransactionModalOpen] =
     useState(false);
@@ -52,10 +51,6 @@ const Transactions = () => {
     getTransactionsTypes();
     getTransactions();
   }, []);
-
-  useEffect(() => {
-    getTransactions();
-  }, [refreshTransactions]);
 
   const getTransactionsTypes = async () => {
     try {
@@ -457,7 +452,9 @@ const Transactions = () => {
 
         <AddNewTransactionModal
           isOpen={isNewTransactionModalOpen}
-          isClosed={() => setIsNewTransactionModalOpen(false)}
+          isClosed={() => {
+            setIsNewTransactionModalOpen(false);
+          }}
           transactionTypes={transactionsTypes}
           getTransactions={getTransactions}
           isSupervisor={authState.isSupervisor}
@@ -466,10 +463,7 @@ const Transactions = () => {
 
         <TransactionDetailsModal
           isOpen={isTransactionDetailsModalOpen}
-          isClosed={() => {
-            setIsTransactionDetailsModalOpen(false);
-            setRefreshTransactions((previous) => !previous);
-          }}
+          isClosed={() => setIsTransactionDetailsModalOpen(false)}
           transactionData={selectedTransaction}
         />
       </div>
