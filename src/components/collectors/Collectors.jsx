@@ -314,33 +314,41 @@ const Collectors = () => {
               <label className="fw-semibold text-black"> Buscar Por </label>
             </div>
           </div>
-          <div className="row ms-2 pe-3 mb-3">
-            <div className="col-xxl-3 col-xl-5 col-sm-12 w-auto">
+          <div className="row ms-2 pe-3">
+            <div className="col-xxl-3 col-xl-5 col-md-8 col-sm-12 w-auto">
               <Form
                 layout="inline"
                 form={form}
                 className="align-items-center"
                 onFinish={searchCollector}
               >
-                <label className="me-2 fw-semibold text-black"> Nombre </label>
-                <Form.Item name="collector">
-                  <Input
-                    placeholder="Nombre de Colector"
-                    prefix={<SolutionOutlined />}
-                    style={{
-                      width: 183,
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item>
-                  <Button type="primary" htmlType="submit">
-                    Buscar
-                  </Button>
-                </Form.Item>
+                <div className="mb-3 d-flex align-items-center">
+                  <label className="me-2 fw-semibold text-black">
+                    {" "}
+                    Nombre{" "}
+                  </label>
+                  <Form.Item name="collector">
+                    <Input
+                      placeholder="Nombre de Colector"
+                      prefix={<SolutionOutlined />}
+                      style={{
+                        width: 183,
+                      }}
+                    />
+                  </Form.Item>
+                </div>
+                <div className="mb-3 d-flex align-items-center">
+                  <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                      Buscar
+                    </Button>
+                  </Form.Item>
+                </div>
               </Form>
             </div>
-            <div className="col-xxl-9 col-xl-7 col-sm-12 text-end pe-0">
+            <div className="col-xxl-9 col-xl-7 col-md-4 col-sm-12 text-md-end text-sm-start pe-0">
               <Button
+                className="mb-3"
                 type="primary"
                 onClick={() => setIsCollectorPaymentsModalOpen(true)}
               >
