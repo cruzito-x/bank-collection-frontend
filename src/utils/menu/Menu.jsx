@@ -157,14 +157,17 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
       }
     );
 
     if (response.status === 200) {
       window.location.href = "/";
-      localStorage.clear();
+      localStorage.removeItem("token");
+    } else if (response.status === 401 || response.status === 403) {
+      localStorage.removeItem("token");
+      window.location.href = "/";
+      return;
     }
   };
 

@@ -98,6 +98,10 @@ const Services = () => {
         }));
 
         setServices(services);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
       } else {
         messageAlert.error(servicesData.message);
       }
@@ -131,6 +135,10 @@ const Services = () => {
       if (response.status === 200) {
         messageAlert.success(deletedService.message);
         getServices();
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
       } else {
         messageAlert.error(deletedService.message);
       }
@@ -205,6 +213,10 @@ const Services = () => {
           setServices(services);
         } else if (response.status === 400) {
           messageAlert.warning(servicesData.message);
+        } else if (response.status === 401 || response.status === 403) {
+          localStorage.removeItem("token");
+          window.location.href = "/";
+          return;
         } else {
           messageAlert.error(servicesData.message);
         }

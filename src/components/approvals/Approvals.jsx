@@ -129,6 +129,10 @@ const Approvals = () => {
         });
 
         setApprovals(approvals);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
       } else {
         messageAlert.error(approvalsData.message);
       }
@@ -167,6 +171,10 @@ const Approvals = () => {
       if (response.status === 200) {
         messageAlert.success(transactionStatus.message);
         getApprovals();
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
       } else {
         messageAlert.error(transactionStatus.message);
       }
@@ -277,6 +285,12 @@ const Approvals = () => {
           });
 
           setApprovals(approvals);
+        } else if (response.status === 400) {
+          messageAlert.warning(approvalsData.message);
+        } else if (response.status === 401 || response.status === 403) {
+          localStorage.removeItem("token");
+          window.location.href = "/";
+          return;
         } else {
           messageAlert.error(approvalsData.message);
         }

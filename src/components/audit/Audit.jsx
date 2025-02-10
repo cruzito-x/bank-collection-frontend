@@ -58,6 +58,10 @@ const Audit = () => {
         });
 
         setAudit(audit);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
       } else {
         messageAlert.error(auditData.message);
       }
@@ -98,6 +102,12 @@ const Audit = () => {
         });
 
         setAudit(audit);
+      } else if (response.status === 400) {
+        messageAlert.error(auditData.message);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
       } else {
         messageAlert.error(auditData.message);
       }

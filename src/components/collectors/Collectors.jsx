@@ -98,6 +98,10 @@ const Collectors = () => {
         }));
 
         setCollectors(collectors);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
       } else {
         messageAlert.error(collectorsData.message);
       }
@@ -131,6 +135,10 @@ const Collectors = () => {
       if (response.status === 200) {
         messageAlert.success(deletedCollector.message);
         getCollectors();
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
       } else {
         messageAlert.error(deletedCollector.message);
       }
@@ -202,6 +210,10 @@ const Collectors = () => {
           setCollectors(collectors);
         } else if (response.status === 400) {
           messageAlert.warning(collectorsData.message);
+        } else if (response.status === 401 || response.status === 403) {
+          localStorage.removeItem("token");
+          window.location.href = "/";
+          return;
         } else {
           messageAlert.error(collectorsData.message);
         }

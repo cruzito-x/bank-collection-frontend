@@ -94,6 +94,10 @@ const TransactionTypes = () => {
         );
 
         setTransactionsTypes(transactionsTypes);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
       } else {
         messageAlert.error(transactionsTypesData.message);
       }
@@ -129,6 +133,10 @@ const TransactionTypes = () => {
         messageAlert.success(deletedTransactionType.message);
         setSendingData(false);
         getTransactionsTypes();
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
       } else {
         messageAlert.error(deletedTransactionType.message);
         setSendingData(false);
@@ -204,6 +212,10 @@ const TransactionTypes = () => {
           setTransactionsTypes(transactionsTypes);
         } else if (response.status === 400) {
           messageAlert.warning(transactionsTypesData.message);
+        } else if (response.status === 401 || response.status === 403) {
+          localStorage.removeItem("token");
+          window.location.href = "/";
+          return;
         } else {
           messageAlert.error(transactionsTypesData.message);
         }

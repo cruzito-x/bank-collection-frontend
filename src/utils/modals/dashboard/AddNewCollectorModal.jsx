@@ -34,6 +34,10 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
         setAlertMessage.success(data.message);
         isClosed();
         form.resetFields();
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
       } else {
         setAlertMessage.error(data.message);
       }

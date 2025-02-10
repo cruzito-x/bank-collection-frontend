@@ -7,7 +7,6 @@ const LogoutCard = ({ setAlertMessage }) => {
   const { authState } = useAuth();
   const { user_id } = authState;
   const { username } = authState;
-  const token = authState.token;
 
   const logout = async () => {
     try {
@@ -17,7 +16,6 @@ const LogoutCard = ({ setAlertMessage }) => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -26,6 +24,10 @@ const LogoutCard = ({ setAlertMessage }) => {
 
       if (response.status === 200) {
         window.location.href = "/";
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
       } else {
         setAlertMessage.error(logoutData.message);
       }

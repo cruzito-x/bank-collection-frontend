@@ -102,6 +102,10 @@ const Customers = () => {
         }));
 
         setCustomers(customers);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
       } else {
         messageAlert.error(customersData.message);
       }
@@ -136,6 +140,10 @@ const Customers = () => {
         messageAlert.success(deletedCustomer.message);
         getCustomers();
         setLoading(false);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
       } else {
         messageAlert.error(deletedCustomer.message);
         getCustomers();
@@ -174,6 +182,7 @@ const Customers = () => {
         );
 
         const customersData = await response.json();
+        
         if (response.status === 200) {
           const customers = customersData.map((customer) => ({
             ...customer,
@@ -213,6 +222,10 @@ const Customers = () => {
           setCustomers(customers);
         } else if (response.status === 400) {
           messageAlert.warning(customersData.message);
+        } else if (response.status === 401 || response.status === 403) {
+          localStorage.removeItem("token");
+          window.location.href = "/";
+          return;
         } else {
           messageAlert.error(customersData.message);
         }
@@ -310,10 +323,7 @@ const Customers = () => {
               form={form}
               onFinish={searchCustomers}
             >
-              <label className="me-2 fw-semibold text-black d-flex align-items-center">
-                {" "}
-                Nombre{" "}
-              </label>
+              <label className="me-2 fw-semibold text-black"> Nombre </label>
               <Form.Item
                 className="col-xxl-3 col-xl-4 col-md-6 col-sm-12 w-auto"
                 name="name"
@@ -327,7 +337,7 @@ const Customers = () => {
                   }}
                 />
               </Form.Item>
-              <label className="me-2 fw-semibold text-black d-flex align-items-center">
+              <label className="me-2 fw-semibold text-black">
                 {" "}
                 Documento de Identidad{" "}
               </label>

@@ -94,6 +94,10 @@ const PaymentsCollectors = () => {
         );
 
         setPaymentsCollectors(paymentsCollector);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
       } else {
         messageAlert.error(paymentscollectorsData.message);
       }
@@ -161,6 +165,10 @@ const PaymentsCollectors = () => {
           setPaymentsCollectors(paymentsCollector);
         } else if (response.status === 400) {
           messageAlert.warning(paymentscollectorsData.message);
+        } else if (response.status === 401 || response.status === 403) {
+          localStorage.removeItem("token");
+          window.location.href = "/";
+          return;
         } else {
           messageAlert.error(paymentscollectorsData.message);
         }

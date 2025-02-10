@@ -86,9 +86,17 @@ const InstantOrQueuedApprovedTransactionModal = ({
               "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
             );
           }
+        } else if (response.status === 401 || response.status === 403) {
+          localStorage.removeItem("token");
+          window.location.href = "/";
+          return;
         } else {
           setAlertMessage.error(approvalsData.message);
         }
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
       } else {
         setAlertMessage.error(supervisorData.message);
       }
@@ -127,6 +135,10 @@ const InstantOrQueuedApprovedTransactionModal = ({
 
       if (response.status === 200) {
         setAlertMessage.success(transactionStatus.message);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
       } else {
         setAlertMessage.error(transactionStatus.message);
       }

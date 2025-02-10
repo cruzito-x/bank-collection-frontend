@@ -167,9 +167,16 @@ const Dashboard = () => {
         }
       );
       const latestCollectorAndCollectorPaymentData = await response.json();
-      setLatestCollectorAndCollectorPayment(
-        latestCollectorAndCollectorPaymentData[0]
-      );
+
+      if (response.status === 200) {
+        setLatestCollectorAndCollectorPayment(
+          latestCollectorAndCollectorPaymentData[0]
+        );
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
+      }
     } catch (error) {
       messageAlert.error(
         "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
@@ -191,52 +198,59 @@ const Dashboard = () => {
       );
 
       const notificationsData = await response.json();
-      const notifications = notificationsData.map((notification) => {
-        return {
-          ...notification,
-          amount: "$" + notification.amount,
-          datetime: moment(notification.datetime).format(
-            "DD/MM/YYYY - hh:mm A"
-          ),
-          actions: (
-            <>
-              <Popconfirm
-                title="¿Desea Rechazar Esta Transacción?"
-                onConfirm={() => {
-                  updateTransactionStatus(
-                    notification.approval_id,
-                    notification.transaction_id,
-                    0,
-                    user_id
-                  );
-                }}
-                okText="Sí"
-                cancelText="No"
-              >
-                <Button type="primary" danger loading={updatingStatus}>
-                  Rechazar
+
+      if (response.status === 200) {
+        const notifications = notificationsData.map((notification) => {
+          return {
+            ...notification,
+            amount: "$" + notification.amount,
+            datetime: moment(notification.datetime).format(
+              "DD/MM/YYYY - hh:mm A"
+            ),
+            actions: (
+              <>
+                <Popconfirm
+                  title="¿Desea Rechazar Esta Transacción?"
+                  onConfirm={() => {
+                    updateTransactionStatus(
+                      notification.approval_id,
+                      notification.transaction_id,
+                      0,
+                      user_id
+                    );
+                  }}
+                  okText="Sí"
+                  cancelText="No"
+                >
+                  <Button type="primary" danger loading={updatingStatus}>
+                    Rechazar
+                  </Button>
+                </Popconfirm>
+                <Button
+                  className="ms-2"
+                  type="primary"
+                  onClick={() =>
+                    updateTransactionStatus(
+                      notification.approval_id,
+                      notification.transaction_id,
+                      1,
+                      user_id
+                    )
+                  }
+                  loading={updatingStatus}
+                >
+                  Aprobar
                 </Button>
-              </Popconfirm>
-              <Button
-                className="ms-2"
-                type="primary"
-                onClick={() =>
-                  updateTransactionStatus(
-                    notification.approval_id,
-                    notification.transaction_id,
-                    1,
-                    user_id
-                  )
-                }
-                loading={updatingStatus}
-              >
-                Aprobar
-              </Button>
-            </>
-          ),
-        };
-      });
-      setNotifications(notifications);
+              </>
+            ),
+          };
+        });
+        setNotifications(notifications);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
+      }
     } catch (error) {
       messageAlert.error(
         "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
@@ -270,6 +284,10 @@ const Dashboard = () => {
       if (response.status === 200) {
         messageAlert.success(transactionStatus.message);
         getNotifications();
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
       } else {
         messageAlert.error(transactionStatus.message);
       }
@@ -283,52 +301,94 @@ const Dashboard = () => {
   };
 
   const getTotalPayments = async () => {
-    const response = await fetch("http://localhost:3001/payments-collectors", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    try {
+      const response = await fetch(
+        "http://localhost:3001/payments-collectors",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    const totalPaymentsData = await response.json();
-    setTotalPayments(totalPaymentsData);
+      const totalPaymentsData = await response.json();
+
+      if (response.status === 200) {
+        setTotalPayments(totalPaymentsData);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
+      }
+    } catch (error) {
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
+    }
   };
 
   const getTotalProcessedAmounts = async () => {
-    const response = await fetch(
-      "http://localhost:3001/payments-collectors/total-payments-amount",
-      {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/payments-collectors/total-payments-amount",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const totalProcessedAmountsData = await response.json();
+
+      if (response.status === 200) {
+        setTotalProcessedAmounts(totalProcessedAmountsData[0].amount);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
+      }
+    } catch (error) {
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
+    }
+  };
+
+  const getTransactionTypes = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/transactions-types", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+      });
+
+      const transactionTypesData = await response.json();
+
+      if (response.status === 200) {
+        const transactionTypes = transactionTypesData.map((transactionType) => {
+          return {
+            value: transactionType.id,
+            label: transactionType.transaction_type,
+          };
+        });
+
+        setTransactionTypes(transactionTypes);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
       }
-    );
-
-    const totalProcessedAmountsData = await response.json();
-    setTotalProcessedAmounts(totalProcessedAmountsData[0].amount);
-  };
-
-  const getTransactionTypes = async () => {
-    const response = await fetch("http://localhost:3001/transactions-types", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    const transactionTypesData = await response.json();
-    const transactionTypes = transactionTypesData.map((transactionType) => {
-      return {
-        value: transactionType.id,
-        label: transactionType.transaction_type,
-      };
-    });
-
-    setTransactionTypes(transactionTypes);
+    } catch (error) {
+      messageAlert.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
+    }
   };
 
   return (

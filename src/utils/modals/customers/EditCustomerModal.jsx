@@ -45,6 +45,10 @@ const EditCustomerModal = ({
       if (response.status === 200) {
         setAlertMessage.success(updatedCustomer.message);
         isClosed();
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
       } else {
         setAlertMessage.error(updatedCustomer.message);
       }
