@@ -140,6 +140,12 @@ const Audit = () => {
       align: "center",
     },
     {
+      title: "Detalles de Cliente",
+      dataIndex: "client_details",
+      key: "client_details",
+      align: "center",
+    },
+    {
       title: "Fecha y Hora",
       dataIndex: "datetime",
       key: "datetime",
