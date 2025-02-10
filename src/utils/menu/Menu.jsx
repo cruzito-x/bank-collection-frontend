@@ -21,21 +21,23 @@ import { useMediaQuery } from "react-responsive";
 
 const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
   const { authState } = useAuth();
-  const token = authState.token;
   const user_id = authState.user_id;
   const navigate = useNavigate();
   const isSupervisor = authState.isSupervisor;
 
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+  const isTablet = useMediaQuery({
+    query: "(min-width:769px) and (max-width: 1024px)",
+  });
   const isDesktop = useMediaQuery({ query: "(min-width: 769px)" });
 
   useEffect(() => {
-    if (isMobile) {
+    if (isMobile || isTablet) {
       setCollapsed(true);
     } else if (isDesktop) {
       setCollapsed(false);
     }
-  }, [isMobile, isDesktop, setCollapsed]);
+  }, [isMobile, isTablet, isDesktop, setCollapsed]);
 
   const menuItems = [
     isSupervisor
@@ -135,7 +137,7 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
         }
       : null,
 
-    !isMobile
+    !isMobile && !isTablet
       ? {
           key: "#",
           icon: collapsed ? (

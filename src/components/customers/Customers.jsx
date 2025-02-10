@@ -317,7 +317,7 @@ const Customers = () => {
               <label className="fw-semibold text-black"> Buscar Por </label>
             </div>
           </div>
-          <div className="row ms-2 mb-3 pe-3">
+          <div className="row ms-2 pe-3">
             <Form
               layout="inline"
               className="align-items-center"
@@ -363,7 +363,7 @@ const Customers = () => {
               </Form.Item>
             </Form>
           </div>
-          <div className="row ms-2 mb-3 pe-3">
+          <div className="row ms-2 mt-3 mb-3 pe-3">
             <div className="col-12">
               <Table
                 dataSource={customers}
