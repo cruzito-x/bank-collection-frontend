@@ -318,55 +318,45 @@ const Customers = () => {
               <label className="fw-semibold text-black"> Buscar Por </label>
             </div>
           </div>
-          <div className="row ms-2 pe-3 align-items-center">
-            <Form
-              layout="inline"
-              className="align-items-center"
-              form={form}
-              onFinish={searchCustomers}
-            >
-              <div className="mb-3 d-flex align-items-center">
-                <label className="me-2 fw-semibold text-black"> Nombre </label>
-                <Form.Item
-                  className="col-xxl-3 col-xl-4 col-md-6 col-sm-12 w-auto"
-                  name="name"
-                  initialValue=""
-                >
-                  <Input
-                    placeholder="Nombre de Cliente"
-                    prefix={<UserOutlined />}
-                    style={{
-                      width: 183,
-                    }}
-                  />
-                </Form.Item>
-              </div>
-              <div className="mb-3 d-flex align-items-center">
-                <label className="me-2 fw-semibold text-black"> DUI </label>
-                <Form.Item
-                  className="col-xxl-3 col-xl-4 col-sm-12 w-auto"
-                  name="identity_doc"
-                  initialValue=""
-                >
-                  <Input
-                    placeholder="00000000-0"
-                    prefix={<IdcardOutlined />}
-                    style={{
-                      width: 183,
-                    }}
-                  />
-                </Form.Item>
-              </div>
-              <div className="mb-3 d-flex align-items-center">
-                <Form.Item className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-                  <Button type="primary" htmlType="submit">
-                    {" "}
-                    Buscar{" "}
-                  </Button>
-                </Form.Item>
-              </div>
-            </Form>
-          </div>
+          <Form
+            className="row ms-2 pe-3 align-items-center"
+            layout="inline"
+            form={form}
+            onFinish={searchCustomers}
+          >
+            <div className="col-xxl-2 col-xl-3 col-md-2 col-sm-12 mb-3 d-flex align-items-center w-auto">
+              <label className="me-2 fw-semibold text-black"> Nombre </label>
+              <Form.Item name="name" initialValue="">
+                <Input
+                  placeholder="Nombre de Cliente"
+                  prefix={<UserOutlined />}
+                  style={{
+                    width: 183,
+                  }}
+                />
+              </Form.Item>
+            </div>
+            <div className="col-xxl-2 col-xl-3 col-md-2 col-sm-12 mb-3 d-flex align-items-center">
+              <label className="me-2 fw-semibold text-black"> DUI </label>
+              <Form.Item name="identity_doc" initialValue="">
+                <Input
+                  placeholder="00000000-0"
+                  prefix={<IdcardOutlined />}
+                  style={{
+                    width: 183,
+                  }}
+                />
+              </Form.Item>
+            </div>
+            <div className="col-xxl-2 col-xl-3 col-md-12 col-sm-12 mb-3 d-lg-flex d-sm-block align-items-center w-sm-100">
+              <Form.Item>
+                <Button className="w-100" type="primary" htmlType="submit">
+                  {" "}
+                  Buscar{" "}
+                </Button>
+              </Form.Item>
+            </div>
+          </Form>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">
               <Table
