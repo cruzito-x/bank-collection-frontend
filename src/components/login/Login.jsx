@@ -8,11 +8,17 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const navigate = useNavigate();
-  const { setAuthState } = useAuth();
+  const { setAuthState, authState } = useAuth();
+  const token = authState.token;
 
   useEffect(() => {
-    localStorage.removeItem("authState");
-  }, []);
+    if (token) {
+      navigate("/dashboard");
+    } else {
+      localStorage.removeItem("authState");
+      localStorage.clear();
+    }
+  }, [token, navigate]);
 
   const loginUser = async (user) => {
     setLoading(true);
