@@ -14,7 +14,12 @@ import TextArea from "antd/es/input/TextArea";
 import { useCollectorsData } from "../../../contexts/collectorsDataContext/CollectorsDataContext";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
 
-const AddNewServiceModal = ({ isOpen, isClosed, setAlertMessage }) => {
+const AddNewServiceModal = ({
+  isOpen,
+  isClosed,
+  getServices,
+  setAlertMessage,
+}) => {
   const { authState } = useAuth();
   const { collectors, getCollectors } = useCollectorsData();
   const [sendingData, setSendingData] = useState(false);
@@ -50,6 +55,7 @@ const AddNewServiceModal = ({ isOpen, isClosed, setAlertMessage }) => {
         form.resetFields();
         setSendingData(false);
         isClosed();
+        getServices();
       } else if (response.status === 401 || response.status === 403) {
         localStorage.removeItem("token");
         window.location.href = "/";

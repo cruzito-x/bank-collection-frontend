@@ -386,6 +386,7 @@ const Services = () => {
         <AddNewServiceModal
           isOpen={isServicePaymentsModalOpen}
           isClosed={() => setIsServicePaymentsModalOpen(false)}
+          getServices={getServices}
           setAlertMessage={messageAlert}
         />
 

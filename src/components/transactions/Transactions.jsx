@@ -68,14 +68,23 @@ const Transactions = () => {
       });
 
       const typesData = await response.json();
-      const transactionsTypes = typesData.map((transactionType) => {
-        return {
-          value: transactionType.id,
-          label: transactionType.transaction_type,
-        };
-      });
 
-      setTransactionTypes(transactionsTypes);
+      if (response.status === 200) {
+        const transactionsTypes = typesData.map((transactionType) => {
+          return {
+            value: transactionType.id,
+            label: transactionType.transaction_type,
+          };
+        });
+
+        setTransactionTypes(transactionsTypes);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+        return;
+      } else {
+        messageAlert.error(typesData.message);
+      }
     } catch (error) {
       messageAlert.error(
         "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
