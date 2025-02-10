@@ -314,15 +314,15 @@ const Collectors = () => {
               <label className="fw-semibold text-black"> Buscar Por </label>
             </div>
           </div>
-          <div className="row ms-2 pe-3">
-            <div className="col-xxl-3 col-xl-5 col-md-8 col-sm-12 w-auto">
+          <div className="row ms-2 pe-3 align-items-center">
+            <div className="col-xxl-10 col-xl-9 col-md-12 col-sm-12">
               <Form
+                className="row"
                 layout="inline"
                 form={form}
-                className="align-items-center"
                 onFinish={searchCollector}
               >
-                <div className="mb-3 d-flex align-items-center">
+                <div className="col-xxl-2 col-xl-3 col-md-12 col-sm-12 mb-3 d-flex align-items-center w-auto">
                   <label className="me-2 fw-semibold text-black">
                     {" "}
                     Nombre{" "}
@@ -337,18 +337,18 @@ const Collectors = () => {
                     />
                   </Form.Item>
                 </div>
-                <div className="mb-3 d-flex align-items-center">
+                <div className="col-xxl-2 col-xl-3 col-md-12 col-sm-12 mb-3 d-lg-flex d-sm-block align-items-center w-sm-100">
                   <Form.Item>
-                    <Button type="primary" htmlType="submit">
+                    <Button className="w-100" type="primary" htmlType="submit">
                       Buscar
                     </Button>
                   </Form.Item>
                 </div>
               </Form>
             </div>
-            <div className="col-xxl-9 col-xl-7 col-md-4 col-sm-12 text-md-end text-sm-start pe-0">
+            <div className="col-xxl-2 col-xl-3 col-md-12 col-sm-12 mb-3 text-end">
               <Button
-                className="mb-3"
+                className="w-100"
                 type="primary"
                 onClick={() => setIsCollectorPaymentsModalOpen(true)}
               >
