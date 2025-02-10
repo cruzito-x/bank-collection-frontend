@@ -28,105 +28,117 @@ const DashboardCharts = ({
     start = datesRange[0].format("YYYY-MM-DD"),
     end = datesRange[1].format("YYYY-MM-DD")
   ) => {
-    const response = await fetch(
-      `http://localhost:3001/dashboard/transactions-by-dates/${start}/${end}/${amountRangeFilter}/${transactionTypeFilter}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    try {
+      const response = await fetch(
+        `http://localhost:3001/dashboard/transactions-by-dates/${start}/${end}/${amountRangeFilter}/${transactionTypeFilter}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    const transactionsByDateAndTypeData = await response.json();
-    setTransactionsByDate(transactionsByDateAndTypeData);
+      const transactionsByDateAndTypeData = await response.json();
+      setTransactionsByDate(transactionsByDateAndTypeData);
+    } catch (error) {}
   };
 
   const getApprovalAndRejectionRates = async (
     start = datesRange[0].format("YYYY-MM-DD"),
     end = datesRange[1].format("YYYY-MM-DD")
   ) => {
-    const response = await fetch(
-      `http://localhost:3001/dashboard/approval-and-rejection-rates/${start}/${end}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    try {
+      const response = await fetch(
+        `http://localhost:3001/dashboard/approval-and-rejection-rates/${start}/${end}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    const approvalAndRejectionRatesData = await response.json();
-    setApprovalAndRejectionRates(approvalAndRejectionRatesData);
+      const approvalAndRejectionRatesData = await response.json();
+      setApprovalAndRejectionRates(approvalAndRejectionRatesData);
+    } catch (error) {}
   };
 
   const getProccessedAmountByTransactionsAndCollectorsPayments = async (
     start = datesRange[0].format("YYYY-MM-DD"),
     end = datesRange[1].format("YYYY-MM-DD")
   ) => {
-    const response = await fetch(
-      `http://localhost:3001/dashboard/processed-amount-by-transactions-and-collectors-payments/${start}/${end}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    try {
+      const response = await fetch(
+        `http://localhost:3001/dashboard/processed-amount-by-transactions-and-collectors-payments/${start}/${end}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    const totalProcessedAmountsData = await response.json();
-    setTotalProcessedAmounts(totalProcessedAmountsData);
+      const totalProcessedAmountsData = await response.json();
+      setTotalProcessedAmounts(totalProcessedAmountsData);
+    } catch (error) {}
   };
 
   const getPaymentsByCollector = async () => {
-    const response = await fetch(
-      "http://localhost:3001/dashboard/payments-by-collector",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    try {
+      const response = await fetch(
+        "http://localhost:3001/dashboard/payments-by-collector",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    const paymentsByCollectorData = await response.json();
-    setPaymentsByCollector(paymentsByCollectorData);
+      const paymentsByCollectorData = await response.json();
+      setPaymentsByCollector(paymentsByCollectorData);
+    } catch (error) {}
   };
 
   const getPaymentsByCollectorDenominations = async () => {
-    const response = await fetch(
-      "http://localhost:3001/dashboard/payments-by-collector-denominations",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    try {
+      const response = await fetch(
+        "http://localhost:3001/dashboard/payments-by-collector-denominations",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    const paymentsByCollectorDenominationsData = await response.json();
-    setPaymentsByCollectorDenominations(paymentsByCollectorDenominationsData);
+      const paymentsByCollectorDenominationsData = await response.json();
+      setPaymentsByCollectorDenominations(paymentsByCollectorDenominationsData);
+    } catch (error) {}
   };
 
   const getCustomersWithTheMostMoneyPaid = async () => {
-    const response = await fetch(
-      "http://localhost:3001/dashboard/customers-with-the-most-money-paid",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    try {
+      const response = await fetch(
+        "http://localhost:3001/dashboard/customers-with-the-most-money-paid",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    const customersWithTheMostMoneyPaidData = await response.json();
-    setCustomersWithTheMostMoneyPaid(customersWithTheMostMoneyPaidData);
+      const customersWithTheMostMoneyPaidData = await response.json();
+      setCustomersWithTheMostMoneyPaid(customersWithTheMostMoneyPaidData);
+    } catch (error) {}
   };
 
   useEffect(() => {

@@ -5,8 +5,7 @@ import { useAuth } from "../../contexts/authContext/AuthContext";
 
 const LogoutCard = ({ setAlertMessage }) => {
   const { authState } = useAuth();
-  const { user_id } = authState;
-  const { username } = authState;
+  const { user_id, username } = authState;
 
   const logout = async () => {
     try {
@@ -23,9 +22,12 @@ const LogoutCard = ({ setAlertMessage }) => {
       const logoutData = await response.json();
 
       if (response.status === 200) {
+        localStorage.removeItem("authState");
+        localStorage.clear();
         window.location.href = "/";
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
+        localStorage.clear();
         window.location.href = "/";
         return;
       } else {
@@ -37,6 +39,7 @@ const LogoutCard = ({ setAlertMessage }) => {
       );
     } finally {
       localStorage.removeItem("authState");
+      localStorage.clear();
     }
   };
 

@@ -10,13 +10,19 @@ const Login = () => {
   const navigate = useNavigate();
   const { setAuthState, authState } = useAuth();
   const token = authState.token;
+  const isSupervisor = authState.isSupervisor;
 
   useEffect(() => {
     if (token) {
-      navigate("/dashboard");
+      if (isSupervisor) {
+        navigate("/dashboard");
+      } else {
+        navigate("/customers");
+      }
     } else {
       localStorage.removeItem("authState");
       localStorage.clear();
+      navigate("/");
     }
   }, [token, navigate]);
 

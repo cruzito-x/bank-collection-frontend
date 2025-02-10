@@ -164,10 +164,12 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
     );
 
     if (response.status === 200) {
+      localStorage.removeItem("authState");
+      localStorage.clear();
       window.location.href = "/";
-      localStorage.removeItem("token");
     } else if (response.status === 401 || response.status === 403) {
-      localStorage.removeItem("token");
+      localStorage.removeItem("authState");
+      localStorage.clear();
       window.location.href = "/";
       return;
     }
