@@ -7,6 +7,8 @@ import { Card, Empty } from "antd";
 const PaymentsCollectorsCharts = ({ isOpen, dates }) => {
   const { authState } = useAuth();
   const [paymentsByCollectors, setPaymentsByCollectors] = useState([]);
+  const [loadingPaymentsByCollectorsCard, setLoadingPaymentsByCollectorsCard] =
+    useState(true);
   const paymentsByCollectorChartRef = useRef(null);
   const paymentsByCollectorChartInstance = useRef(null);
   const token = authState.token;
@@ -66,22 +68,25 @@ const PaymentsCollectorsCharts = ({ isOpen, dates }) => {
   ];
 
   const getPaymentsByCollectors = async () => {
-    const startDay = moment(dates[0]).format("YYYY-MM-DD");
-    const endDay = moment(dates[1]).format("YYYY-MM-DD");
+    try {
+      const startDay = moment(dates[0]).format("YYYY-MM-DD");
+      const endDay = moment(dates[1]).format("YYYY-MM-DD");
 
-    const response = await fetch(
-      `http://localhost:3001/payments-collectors/payments-by-collector/${startDay}/${endDay}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+      const response = await fetch(
+        `http://localhost:3001/payments-collectors/payments-by-collector/${startDay}/${endDay}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    const paymentsByCollectorsData = await response.json();
-    setPaymentsByCollectors(paymentsByCollectorsData);
+      const paymentsByCollectorsData = await response.json();
+      setPaymentsByCollectors(paymentsByCollectorsData);
+      setLoadingPaymentsByCollectorsCard(false);
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -163,7 +168,7 @@ const PaymentsCollectorsCharts = ({ isOpen, dates }) => {
   }, [paymentsByCollectors]);
 
   return (
-    <Card>
+    <Card loading={loadingPaymentsByCollectorsCard}>
       {paymentsByCollectors.length === 0 ? (
         <Empty />
       ) : (
