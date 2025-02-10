@@ -382,7 +382,7 @@ const Approvals = () => {
               <label className="fw-semibold text-black"> Buscar Por </label>
             </div>
           </div>
-          <div className="row ms-2 mb-3 pe-3">
+          <div className="row ms-2 pe-3">
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
               <Form
                 layout="inline"
@@ -390,38 +390,44 @@ const Approvals = () => {
                 className="align-items-center"
                 onFinish={searchApproval}
               >
-                <label className="me-2 fw-semibold text-black">
-                  {" "}
-                  Código de Transacción{" "}
-                </label>
-                <Form.Item name="transaction_id" initialValue="">
-                  <Input
-                    placeholder="TSC000000"
-                    prefix={<NumberOutlined />}
-                    style={{
-                      width: 183,
-                    }}
-                  />
-                </Form.Item>
-                <label className="me-2 fw-semibold text-black">
-                  {" "}
-                  Autorizado Por{" "}
-                </label>
-                <Form.Item name="authorizer">
-                  <Input
-                    placeholder="Nombre de Usuario"
-                    prefix={<UserOutlined />}
-                    style={{
-                      width: 183,
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item>
-                  <Button type="primary" htmlType="submit">
+                <div className="mb-3 d-flex align-items-center">
+                  <label className="me-2 fw-semibold text-black">
                     {" "}
-                    Buscar{" "}
-                  </Button>
-                </Form.Item>
+                    Código{" "}
+                  </label>
+                  <Form.Item name="transaction_id" initialValue="">
+                    <Input
+                      placeholder="TSC000000"
+                      prefix={<NumberOutlined />}
+                      style={{
+                        width: 183,
+                      }}
+                    />
+                  </Form.Item>
+                </div>
+                <div className="mb-3 d-flex align-items-center">
+                  <label className="me-2 fw-semibold text-black">
+                    {" "}
+                    Usuario{" "}
+                  </label>
+                  <Form.Item name="authorizer">
+                    <Input
+                      placeholder="Nombre de Usuario"
+                      prefix={<UserOutlined />}
+                      style={{
+                        width: 183,
+                      }}
+                    />
+                  </Form.Item>
+                </div>
+                <div className="mb-3 d-flex align-items-center">
+                  <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                      {" "}
+                      Buscar{" "}
+                    </Button>
+                  </Form.Item>
+                </div>
               </Form>
             </div>
           </div>

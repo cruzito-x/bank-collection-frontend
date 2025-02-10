@@ -317,7 +317,7 @@ const Users = () => {
               <label className="fw-semibold text-black"> Buscar Por </label>
             </div>
           </div>
-          <div className="row ms-2 mb-3 pe-3">
+          <div className="row ms-2 pe-3">
             <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
               <Form
                 layout="inline"
@@ -325,33 +325,42 @@ const Users = () => {
                 className="align-items-center"
                 onFinish={searchUser}
               >
-                <label className="me-2 fw-semibold text-black"> Nombre </label>
-                <Form.Item name="username" initialValue="">
-                  <Input
-                    placeholder="Nombre de Usuario"
-                    prefix={<UserOutlined />}
-                    style={{
-                      width: 183,
-                    }}
-                  />
-                </Form.Item>
-                <label className="me-2 fw-semibold text-black"> Rol </label>
-                <Form.Item name="role" initialValue={1}>
-                  <Select
-                    defaultValue={1}
-                    prefix={<CrownOutlined />}
-                    style={{
-                      width: 183,
-                    }}
-                    options={roles}
-                  />
-                </Form.Item>
-                <Form.Item>
-                  <Button type="primary" htmlType="submit">
+                <div className="mb-3 d-flex align-items-center">
+                  <label className="me-2 fw-semibold text-black">
                     {" "}
-                    Buscar{" "}
-                  </Button>
-                </Form.Item>
+                    Nombre{" "}
+                  </label>
+                  <Form.Item name="username" initialValue="">
+                    <Input
+                      placeholder="Nombre de Usuario"
+                      prefix={<UserOutlined />}
+                      style={{
+                        width: 183,
+                      }}
+                    />
+                  </Form.Item>
+                </div>
+                <div className="mb-3 d-flex align-items-center">
+                  <label className="me-2 fw-semibold text-black"> Rol </label>
+                  <Form.Item name="role" initialValue={1}>
+                    <Select
+                      defaultValue={1}
+                      prefix={<CrownOutlined />}
+                      style={{
+                        width: 183,
+                      }}
+                      options={roles}
+                    />
+                  </Form.Item>
+                </div>
+                <div className="mb-3 d-flex align-items-center">
+                  <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                      {" "}
+                      Buscar{" "}
+                    </Button>
+                  </Form.Item>
+                </div>
               </Form>
             </div>
           </div>
