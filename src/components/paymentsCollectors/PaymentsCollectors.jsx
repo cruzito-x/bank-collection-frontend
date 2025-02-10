@@ -260,42 +260,51 @@ const PaymentsCollectors = () => {
               <label className="fw-semibold text-black"> Buscar Por </label>
             </div>
           </div>
-          <div className="row ms-2 pe-3 mb-3">
-            <div className="col-xxl-3 col-xl-3 col-sm-12 w-auto">
+          <div className="row ms-2 pe-3 align-items-center">
+            <div className="col-xxl-8 col-xl-6 col-md-12 col-sm-12">
               <Form
+                className="row"
                 layout="inline"
-                className="align-items-center"
                 form={form}
                 onFinish={searchPaymentsCollector}
               >
-                <label className="me-2 fw-semibold text-black"> Nombre </label>
-                <Form.Item name="collector" initialValue="">
-                  <Input
-                    placeholder="Nombre de Colector"
-                    prefix={<SolutionOutlined />}
-                    style={{
-                      width: 183,
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item>
-                  <Button type="primary" htmlType="submit">
+                <div className="col-xxl-2 col-xl-3 col-md-12 col-sm-12 mb-3 d-flex align-items-center w-auto">
+                  <label className="me-2 fw-semibold text-black">
                     {" "}
-                    Buscar{" "}
-                  </Button>
-                </Form.Item>
+                    Nombre{" "}
+                  </label>
+                  <Form.Item name="collector" initialValue="">
+                    <Input
+                      placeholder="Nombre de Colector"
+                      prefix={<SolutionOutlined />}
+                      style={{
+                        width: 183,
+                      }}
+                    />
+                  </Form.Item>
+                </div>
+                <div className="col-xxl-2 col-xl-3 col-md-12 col-sm-12 mb-3 d-lg-flex d-sm-block align-items-center w-sm-100">
+                  <Form.Item>
+                    <Button className="w-100" type="primary" htmlType="submit">
+                      {" "}
+                      Buscar{" "}
+                    </Button>
+                  </Form.Item>
+                </div>
               </Form>
             </div>
-            <div className="col-xxl-7 col-xl-4 col-sm-12 text-end">
+            <div className="col-xxl-2 col-xl-3 col-md-12 col-sm-12 mb-3 text-end">
               <Button
+                className="w-100"
                 type="primary"
                 onClick={() => setViewCollectorsPaymentsModal(true)}
               >
                 Ver Pagos de Colectores{" "}
               </Button>
             </div>
-            <div className="col-xxl-2 col-xl-3 col-sm-12 text-end pe-0">
+            <div className="col-xxl-2 col-xl-3 col-md-12 col-sm-12 mb-3 text-end pe-3">
               <Button
+                className="w-100"
                 type="primary"
                 onClick={() => setOpenRegisterPayment(true)}
               >
