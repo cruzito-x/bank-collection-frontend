@@ -148,7 +148,7 @@ const AddNewServiceModal = ({
             className="w-100"
             min={0}
             max={100000}
-            placeholder="Precio del Servicio"
+            placeholder="0.00"
           />
         </Form.Item>
         <label className="fw-semibold text-black">
