@@ -8,15 +8,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const navigate = useNavigate();
-  const { setAuthState, authState } = useAuth();
-  const token = authState?.token;
-  const isSupervisor = authState.isSupervisor;
-
-  useEffect(() => {
-    if (token) {
-      navigate(isSupervisor ? "/dashboard" : "/customers");
-    }
-  }, [token, isSupervisor, navigate]);
+  const { setAuthState } = useAuth();
 
   const loginUser = async (user) => {
     setLoading(true);
@@ -25,7 +17,6 @@ const Login = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(user),
       });
