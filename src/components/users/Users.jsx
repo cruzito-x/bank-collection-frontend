@@ -335,7 +335,7 @@ const Users = () => {
                 />
               </Form.Item>
             </div>
-            <div className="col-xxl-2 col-xl-3 col-md-2 col-sm-12 mb-3 d-flex align-items-center">
+            <div className="col-xxl-2 col-xl-3 col-md-2 col-sm-12 mb-3 d-flex align-items-center w-auto">
               <label className="me-2 fw-semibold text-black"> Rol </label>
               <Form.Item name="role" initialValue={1}>
                 <Select
