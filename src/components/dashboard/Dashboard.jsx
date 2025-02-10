@@ -419,7 +419,12 @@ const Dashboard = () => {
                     {collectors.length || 0}
                   </h1>
                   <div className="dashboard-blue-card text-center w-100 rounded">
-                    <label className="fw-semibold text-white p-3">
+                    <label
+                      className="fw-semibold text-white p-3"
+                      style={{
+                        fontSize: "12.5px",
+                      }}
+                    >
                       Reciente:{" "}
                       {latestCollectorAndCollectorPayment.most_recent_collector}
                     </label>
@@ -441,7 +446,12 @@ const Dashboard = () => {
                     {totalPayments.length || 0}
                   </h1>
                   <div className="dashboard-yellow-card text-center w-100 rounded">
-                    <label className="fw-semibold text-white p-3">
+                    <label
+                      className="fw-semibold text-white p-3"
+                      style={{
+                        fontSize: "12.5px",
+                      }}
+                    >
                       Reciente:{" "}
                       {latestCollectorAndCollectorPayment.payed_service}
                     </label>
@@ -463,7 +473,12 @@ const Dashboard = () => {
                     ${totalProcessedAmounts || 0}
                   </h1>
                   <div className="dashboard-green-card text-center w-100 rounded">
-                    <label className="fw-semibold text-white p-3">
+                    <label
+                      className="fw-semibold text-white p-3"
+                      style={{
+                        fontSize: "12.5px",
+                      }}
+                    >
                       Reciente: {latestCollectorAndCollectorPayment.collector} -
                       ${latestCollectorAndCollectorPayment.amount}
                     </label>
@@ -476,7 +491,7 @@ const Dashboard = () => {
                   className="cursor-pointer"
                   onClick={() => setIsNotificationsModalOpen(true)}
                 >
-                  <label className="fw-semibold text-start p-1">
+                  <label className="fw-semibold text-start p-1 cursor-pointer">
                     <BellOutlined
                       className="me-1"
                       style={{
@@ -489,7 +504,12 @@ const Dashboard = () => {
                     {notifications.length || 0}
                   </h1>
                   <div className="dashboard-red-card text-center w-100 rounded">
-                    <label className="fw-semibold text-white cursor-pointer p-3">
+                    <label
+                      className="fw-semibold text-white cursor-pointer p-3"
+                      style={{
+                        fontSize: "12.5px",
+                      }}
+                    >
                       Reciente:{" "}
                       {
                         latestCollectorAndCollectorPayment.latest_approved_transaction

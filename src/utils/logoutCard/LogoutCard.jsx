@@ -68,7 +68,12 @@ const LogoutCard = ({ setAlertMessage }) => {
       >
         <UserOutlined className="fs-1" />
         <div className="dashboard-user-card mt-1 w-100 rounded">
-          <label className="fw-semibold text-white cursor-pointer p-2">
+          <label
+            className="fw-semibold text-white cursor-pointer p-2"
+            style={{
+              fontSize: "12.5px",
+            }}
+          >
             {username}
           </label>
         </div>
