@@ -36,6 +36,7 @@ const Dashboard = () => {
   const [isRegisterPaymentOpen, setIsRegisterPaymentOpen] = useState(false);
   const [isReportsModalOpen, setIsReportsModalOpen] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(false);
+  const [loadingCard, setLoadingCard] = useState(true);
   const [
     latestCollectorAndCollectorPayment,
     setLatestCollectorAndCollectorPayment,
@@ -172,6 +173,8 @@ const Dashboard = () => {
         setLatestCollectorAndCollectorPayment(
           latestCollectorAndCollectorPaymentData[0]
         );
+
+        setLoadingCard(false);
       } else if (response.status === 401 || response.status === 403) {
         localStorage.removeItem("token");
         window.location.href = "/";
@@ -405,7 +408,7 @@ const Dashboard = () => {
           <div className="col-xxl-11 col-xl-10">
             <div className="row">
               <div className="col-xxl-3 col-xl-6 col-md-6 col-sm-12 mb-4">
-                <Card>
+                <Card loading={loadingCard}>
                   <label className="fw-semibold text-start p-1">
                     <SolutionOutlined
                       className="me-1"
@@ -432,7 +435,7 @@ const Dashboard = () => {
                 </Card>
               </div>
               <div className="col-xxl-3 col-xl-6 col-md-6 col-sm-12 mb-4">
-                <Card>
+                <Card loading={loadingCard}>
                   <label className="fw-semibold text-start p-1">
                     <FileTextOutlined
                       className="me-1"
@@ -459,7 +462,7 @@ const Dashboard = () => {
                 </Card>
               </div>
               <div className="col-xxl-3 col-xl-6 col-md-6 col-sm-12 mb-4">
-                <Card>
+                <Card loading={loadingCard}>
                   <label className="fw-semibold text-start p-1">
                     <DollarOutlined
                       className="me-1"
@@ -487,6 +490,7 @@ const Dashboard = () => {
               </div>
               <div className="col-xxl-3 col-xl-6 col-md-6 col-sm-12 mb-4">
                 <Card
+                  loading={loadingCard}
                   hoverable
                   className="cursor-pointer"
                   onClick={() => setIsNotificationsModalOpen(true)}

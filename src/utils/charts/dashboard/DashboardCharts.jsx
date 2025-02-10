@@ -22,6 +22,28 @@ const DashboardCharts = ({
   ] = useState([]);
   const [customersWithTheMostMoneyPaid, setCustomersWithTheMostMoneyPaid] =
     useState([]);
+  const [
+    loadingTransactionsByDateAndAmountRangeAndTypeCard,
+    setLoadingTransactionsByDateAndAmountRangeAndTypeCard,
+  ] = useState(true);
+  const [
+    loadingApprovalAndRejectionRatesCard,
+    setLoadingApprovalAndRejectionRatesCard,
+  ] = useState(true);
+  const [
+    loadingProccessedAmountByTransactionsAndCollectorsPaymentsCard,
+    setLoadingProccessedAmountByTransactionsAndCollectorsPaymentsCard,
+  ] = useState(true);
+  const [loadingPaymentsByCollectorCard, setLoadingPaymentsByCollectorCard] =
+    useState(true);
+  const [
+    loadingCustomersWithTheMostMoneyPaidCard,
+    setLoadingCustomersWithTheMostMoneyPaidCard,
+  ] = useState(true);
+  const [
+    loadingPaymentsByCollectorDenominationsCard,
+    setLoadingPaymentsByCollectorDenominationsCard,
+  ] = useState(true);
   const token = authState.token;
 
   const getTransactionsByDateAndAmountRangeAndType = async (
@@ -42,6 +64,7 @@ const DashboardCharts = ({
 
       const transactionsByDateAndTypeData = await response.json();
       setTransactionsByDate(transactionsByDateAndTypeData);
+      setLoadingTransactionsByDateAndAmountRangeAndTypeCard(false);
     } catch (error) {}
   };
 
@@ -63,6 +86,7 @@ const DashboardCharts = ({
 
       const approvalAndRejectionRatesData = await response.json();
       setApprovalAndRejectionRates(approvalAndRejectionRatesData);
+      setLoadingApprovalAndRejectionRatesCard(false);
     } catch (error) {}
   };
 
@@ -84,42 +108,7 @@ const DashboardCharts = ({
 
       const totalProcessedAmountsData = await response.json();
       setTotalProcessedAmounts(totalProcessedAmountsData);
-    } catch (error) {}
-  };
-
-  const getPaymentsByCollector = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost:3001/dashboard/payments-by-collector",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const paymentsByCollectorData = await response.json();
-      setPaymentsByCollector(paymentsByCollectorData);
-    } catch (error) {}
-  };
-
-  const getPaymentsByCollectorDenominations = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost:3001/dashboard/payments-by-collector-denominations",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const paymentsByCollectorDenominationsData = await response.json();
-      setPaymentsByCollectorDenominations(paymentsByCollectorDenominationsData);
+      setLoadingProccessedAmountByTransactionsAndCollectorsPaymentsCard(false);
     } catch (error) {}
   };
 
@@ -138,6 +127,45 @@ const DashboardCharts = ({
 
       const customersWithTheMostMoneyPaidData = await response.json();
       setCustomersWithTheMostMoneyPaid(customersWithTheMostMoneyPaidData);
+      setLoadingCustomersWithTheMostMoneyPaidCard(false);
+    } catch (error) {}
+  };
+
+  const getPaymentsByCollector = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/dashboard/payments-by-collector",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const paymentsByCollectorData = await response.json();
+      setPaymentsByCollector(paymentsByCollectorData);
+      setLoadingPaymentsByCollectorCard(false);
+    } catch (error) {}
+  };
+
+  const getPaymentsByCollectorDenominations = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/dashboard/payments-by-collector-denominations",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const paymentsByCollectorDenominationsData = await response.json();
+      setPaymentsByCollectorDenominations(paymentsByCollectorDenominationsData);
+      setLoadingPaymentsByCollectorDenominationsCard(false);
     } catch (error) {}
   };
 
@@ -680,6 +708,7 @@ const DashboardCharts = ({
       <div className="row mb-2">
         <div className="col-xl-8 col-lg-8 col-md-8 col-sm-12">
           <Card
+            loading={loadingTransactionsByDateAndAmountRangeAndTypeCard}
             className={`mb-2 h-100 cursor-pointer ${
               transactionsByDate.length === 0
                 ? "d-flex align-items-center justify-content-center"
@@ -699,6 +728,7 @@ const DashboardCharts = ({
         </div>
         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12">
           <Card
+            loading={loadingApprovalAndRejectionRatesCard}
             className={`mb-2 cursor-pointer ${
               approvalAndRejectionRates.length === 0
                 ? "d-flex align-items-center justify-content-center"
@@ -716,6 +746,9 @@ const DashboardCharts = ({
             )}
           </Card>
           <Card
+            loading={
+              loadingProccessedAmountByTransactionsAndCollectorsPaymentsCard
+            }
             className={`mb-2 h-50 cursor-pointer ${
               totalProcessedAmount.length === 0
                 ? "d-flex align-items-center justify-content-center"
@@ -743,6 +776,7 @@ const DashboardCharts = ({
         </div>
         <div className="col-xl-8 col-lg-8 col-md-8 col-sm-12 mb-2">
           <Card
+            loading={loadingCustomersWithTheMostMoneyPaidCard}
             className={`mb-2 h-100 cursor-pointer ${
               customersWithTheMostMoneyPaid.length === 0
                 ? "d-flex align-items-center justify-content-center"
@@ -762,6 +796,7 @@ const DashboardCharts = ({
         </div>
         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
           <Card
+            loading={loadingPaymentsByCollectorCard}
             className={`mb-2 cursor-pointer ${
               paymentsByCollector.length === 0
                 ? "d-flex align-items-center justify-content-center"
@@ -779,6 +814,7 @@ const DashboardCharts = ({
             )}
           </Card>
           <Card
+            loading={loadingPaymentsByCollectorDenominationsCard}
             className={`h-50 cursor-pointer ${
               paymentsByCollectorDenominations.length === 0
                 ? "d-flex align-items-center justify-content-center"
