@@ -35,6 +35,12 @@ const Audit = () => {
     getAudits();
   }, []);
 
+  const formatClientDetails = (text) => {
+    if (!text) return "";
+
+    return text.split(";").join(";\n");
+  };
+
   const getAudits = async () => {
     setLoading(true);
 
@@ -53,6 +59,7 @@ const Audit = () => {
         const audit = auditData.map((audit) => {
           return {
             ...audit,
+            client_details: formatClientDetails(audit.client_details),
             datetime: moment(audit.datetime).format("DD/MM/YYYY - hh:mm A"),
           };
         });
@@ -97,6 +104,7 @@ const Audit = () => {
         const audit = auditData.map((audit) => {
           return {
             ...audit,
+            client_details: formatClientDetails(audit.client_details),
             datetime: moment(audit.datetime).format("DD/MM/YYYY - hh:mm A"),
           };
         });
@@ -144,6 +152,16 @@ const Audit = () => {
       dataIndex: "client_details",
       key: "client_details",
       align: "center",
+      render: (text) => (
+        <span
+          style={{
+            whiteSpace: "pre-wrap",
+            wordWrap: "break-word",
+          }}
+        >
+          {text}
+        </span>
+      ),
     },
     {
       title: "Fecha y Hora",

@@ -337,7 +337,7 @@ const PaymentsCollectorsModal = ({
             min={5}
             max={10000}
             placeholder="0.00"
-            disabled={sendingDataLoading ? true : false}
+            disabled={sendingDataLoading}
             value={form.getFieldValue("amount")}
             onChange={(value) => {
               form.setFieldsValue({ amount: value });
@@ -353,7 +353,7 @@ const PaymentsCollectorsModal = ({
             type="text"
             className="form-control"
             value={moment().format("DD/MM/YYYY - hh:mm A")}
-            disabled={sendingDataLoading ? true : false}
+            disabled={sendingDataLoading}
             readOnly
           />
         </Form.Item>
@@ -363,7 +363,7 @@ const PaymentsCollectorsModal = ({
             type="primary"
             danger
             onClick={isClosed}
-            disabled={sendingDataLoading ? true : false}
+            disabled={sendingDataLoading}
           >
             Cerrar
           </Button>
@@ -373,7 +373,7 @@ const PaymentsCollectorsModal = ({
             htmlType="submit"
             loading={sendingDataLoading}
           >
-            Registrar Pago
+            Pagar
           </Button>
         </Form.Item>
       </Form>

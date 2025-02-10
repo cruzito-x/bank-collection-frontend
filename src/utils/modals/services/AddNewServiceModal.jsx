@@ -146,7 +146,7 @@ const AddNewServiceModal = ({
           <InputNumber
             prefix="$"
             className="w-100"
-            min={5}
+            min={0}
             max={100000}
             placeholder="Precio del Servicio"
           />
