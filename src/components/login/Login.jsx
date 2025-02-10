@@ -9,22 +9,14 @@ const Login = () => {
   const [messageAlert, messageContext] = message.useMessage();
   const navigate = useNavigate();
   const { setAuthState, authState } = useAuth();
-  const token = authState.token;
+  const token = authState?.token;
   const isSupervisor = authState.isSupervisor;
 
   useEffect(() => {
     if (token) {
-      if (isSupervisor) {
-        navigate("/dashboard");
-      } else {
-        navigate("/customers");
-      }
-    } else {
-      localStorage.removeItem("authState");
-      localStorage.clear();
-      navigate("/");
+      navigate(isSupervisor ? "/dashboard" : "/customers");
     }
-  }, [token, navigate]);
+  }, [token, isSupervisor, navigate]);
 
   const loginUser = async (user) => {
     setLoading(true);
@@ -33,6 +25,7 @@ const Login = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(user),
       });
@@ -48,11 +41,7 @@ const Login = () => {
           token: loggedUserData.token,
         });
 
-        if (loggedUserData.isSupervisor) {
-          navigate("/dashboard");
-        } else {
-          navigate("/customers");
-        }
+        navigate(loggedUserData.isSupervisor ? "/dashboard" : "/customers");
       } else {
         messageAlert.error(loggedUserData.message);
       }
