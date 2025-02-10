@@ -716,7 +716,7 @@ const DashboardCharts = ({
             )}
           </Card>
           <Card
-            className={`mb-2 cursor-pointer ${
+            className={`mb-2 h-50 cursor-pointer ${
               totalProcessedAmount.length === 0
                 ? "d-flex align-items-center justify-content-center"
                 : ""
@@ -779,7 +779,7 @@ const DashboardCharts = ({
             )}
           </Card>
           <Card
-            className={`cursor-pointer ${
+            className={`h-50 cursor-pointer ${
               paymentsByCollectorDenominations.length === 0
                 ? "d-flex align-items-center justify-content-center"
                 : ""
