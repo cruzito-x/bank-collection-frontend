@@ -364,14 +364,14 @@ const Transactions = () => {
             </div>
           </div>
           <div className="row ms-2 pe-3 align-items-center">
-            <div className="col-xxl-9 col-xl-9 col-md-12 col-sm-12">
+            <div className="col-xxl-10 col-xl-9 col-md-12 col-sm-12">
               <Form
+                className="row"
                 layout="inline"
-                className="align-items-center"
                 form={form}
                 onFinish={searchTransactions}
               >
-                <div className="mb-3 d-flex align-items-center">
+                <div className="col-xxl-2 col-xl-3 col-md-12 col-sm-12 mb-3 d-flex align-items-center w-auto">
                   <label className="me-2 fw-semibold text-black">Código</label>
                   <Form.Item name="transaction_id" initialValue="">
                     <Input
@@ -381,7 +381,7 @@ const Transactions = () => {
                     />
                   </Form.Item>
                 </div>
-                <div className="mb-3 d-flex align-items-center">
+                <div className="col-xxl-2 col-xl-3 col-md-12 col-sm-12 mb-3 d-flex align-items-center w-auto">
                   <label className="me-2 fw-semibold text-black">Cajero</label>
                   <Form.Item name="realized_by" initialValue="">
                     <Input
@@ -391,7 +391,7 @@ const Transactions = () => {
                     />
                   </Form.Item>
                 </div>
-                <div className="mb-3 d-flex align-items-center">
+                <div className="col-xxl-2 col-xl-3 col-md-12 col-sm-12 mb-3 d-flex align-items-center w-auto">
                   <label className="me-2 fw-semibold text-black">Tipo</label>
                   <Form.Item name="transaction_type" initialValue={1}>
                     <Select
@@ -401,7 +401,7 @@ const Transactions = () => {
                     />
                   </Form.Item>
                 </div>
-                <div className="mb-3 d-flex align-items-center">
+                <div className="col-xxl-2 col-xl-3 col-md-12 col-sm-12 mb-3 d-flex align-items-center w-auto">
                   <label className="me-2 fw-semibold text-black">Fecha</label>
                   <Form.Item name="date" initialValue="">
                     <DatePicker
@@ -414,18 +414,18 @@ const Transactions = () => {
                     />
                   </Form.Item>
                 </div>
-                <div className="mb-3 d-flex align-items-center">
+                <div className="col-xxl-2 col-xl-3 col-md-12 col-sm-12 mb-3 d-lg-flex d-sm-block align-items-center w-sm-100">
                   <Form.Item>
-                    <Button type="primary" htmlType="submit">
+                    <Button className="w-100" type="primary" htmlType="submit">
                       Buscar
                     </Button>
                   </Form.Item>
                 </div>
               </Form>
             </div>
-            <div className="col-xxl-3 col-xl-3 col-md-12 col-sm-12 text-xxl-end text-md-start">
+            <div className="col-xxl-2 col-xl-3 col-md-12 col-sm-12 mb-3 text-end">
               <Button
-                className="mb-3"
+                className="w-100"
                 type="primary"
                 onClick={() => setIsNewTransactionModalOpen(true)}
               >
