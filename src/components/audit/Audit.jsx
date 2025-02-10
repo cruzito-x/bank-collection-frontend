@@ -247,10 +247,9 @@ const Audit = () => {
                 />
               </Form.Item>
             </div>
-
             <div className="col-xxl-2 col-xl-3 col-md-12 col-sm-12 mb-3 d-lg-flex d-sm-block align-items-center w-sm-100">
               <Form.Item>
-                <Button type="primary" htmlType="submit" className="w-100">
+                <Button className="w-100" type="primary" htmlType="submit">
                   Buscar
                 </Button>
               </Form.Item>

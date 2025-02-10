@@ -317,53 +317,46 @@ const Users = () => {
               <label className="fw-semibold text-black"> Buscar Por </label>
             </div>
           </div>
-          <div className="row ms-2 pe-3">
-            <div className="col-xxl-3 col-xl-4 col-sm-12 w-auto">
-              <Form
-                layout="inline"
-                form={form}
-                className="align-items-center"
-                onFinish={searchUser}
-              >
-                <div className="mb-3 d-flex align-items-center">
-                  <label className="me-2 fw-semibold text-black">
-                    {" "}
-                    Nombre{" "}
-                  </label>
-                  <Form.Item name="username" initialValue="">
-                    <Input
-                      placeholder="Nombre de Usuario"
-                      prefix={<UserOutlined />}
-                      style={{
-                        width: 183,
-                      }}
-                    />
-                  </Form.Item>
-                </div>
-                <div className="mb-3 d-flex align-items-center">
-                  <label className="me-2 fw-semibold text-black"> Rol </label>
-                  <Form.Item name="role" initialValue={1}>
-                    <Select
-                      defaultValue={1}
-                      prefix={<CrownOutlined />}
-                      style={{
-                        width: 183,
-                      }}
-                      options={roles}
-                    />
-                  </Form.Item>
-                </div>
-                <div className="mb-3 d-flex align-items-center">
-                  <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                      {" "}
-                      Buscar{" "}
-                    </Button>
-                  </Form.Item>
-                </div>
-              </Form>
+          <Form
+            className="row ms-2 pe-3 align-items-center"
+            layout="inline"
+            form={form}
+            onFinish={searchUser}
+          >
+            <div className="col-xxl-2 col-xl-3 col-md-2 col-sm-12 mb-3 d-flex align-items-center w-auto">
+              <label className="me-2 fw-semibold text-black"> Nombre </label>
+              <Form.Item name="username" initialValue="">
+                <Input
+                  placeholder="Nombre de Usuario"
+                  prefix={<UserOutlined />}
+                  style={{
+                    width: 183,
+                  }}
+                />
+              </Form.Item>
             </div>
-          </div>
+            <div className="col-xxl-2 col-xl-3 col-md-2 col-sm-12 mb-3 d-flex align-items-center">
+              <label className="me-2 fw-semibold text-black"> Rol </label>
+              <Form.Item name="role" initialValue={1}>
+                <Select
+                  defaultValue={1}
+                  prefix={<CrownOutlined />}
+                  style={{
+                    width: 183,
+                  }}
+                  options={roles}
+                />
+              </Form.Item>
+            </div>
+            <div className="col-xxl-2 col-xl-3 col-md-12 col-sm-12 mb-3 d-lg-flex d-sm-block align-items-center w-sm-100">
+              <Form.Item>
+                <Button className="w-100" type="primary" htmlType="submit">
+                  {" "}
+                  Buscar{" "}
+                </Button>
+              </Form.Item>
+            </div>
+          </Form>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">
               <Table
