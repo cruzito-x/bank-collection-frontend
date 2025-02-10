@@ -507,31 +507,34 @@ const Dashboard = () => {
 
         <Card className="mb-5">
           <div className="row ms-2 align-items-center">
-            <div className="col-xxl-6 col-xl-5 col-lg-3 col-md-4 col-sm-12 text-start">
+            <div className="col-xxl-6 col-xl-5 col-lg-3 col-md-3 col-sm-12 text-start">
               <label className="fw-semibold fs-5 text-black mb-2 mt-2 text-black">
                 Transacciones Recientes
               </label>
             </div>
-            <div className="col-xxl-6 col-xl-7 col-md-8 col-sm-12 d-flex justify-content-end pe-xxl-5">
+            <div className="col-xxl-6 col-xl-7 col-md-9 col-sm-12 d-flex justify-content-end pe-xxl-5">
               <div className="row">
-                <div className="col-xxl-4 col-lg-3 col-md-1 col-sm-12 mb-2 mt-2 w-auto">
+                <div className="col-xxl-4 col-lg-4 col-md-4 col-sm-12 mb-2 mt-2 w-sm-100">
                   <Button
+                    className="w-100"
                     type="primary"
                     onClick={() => setIsCollectorModalOpen(true)}
                   >
                     Añadir Colector
                   </Button>
                 </div>
-                <div className="col-xxl-2 col-lg-2 col-md-1 col-sm-12 mb-2 mt-2 w-auto">
+                <div className="col-xxl-4 col-lg-4 col-md-4 col-sm-12 mb-2 mt-2 w-sm-100">
                   <Button
+                    className="w-100"
                     type="primary"
                     onClick={() => setIsRegisterPaymentOpen(true)}
                   >
                     Pagar a Colector
                   </Button>
                 </div>
-                <div className="col-xxl-2 col-lg-2 col-md-1 col-sm-12 mb-2 mt-2 w-auto">
+                <div className="col-xxl-4 col-lg-4 col-md-4 col-sm-12 mb-2 mt-2 w-sm-100">
                   <Button
+                    className="w-100"
                     type="primary"
                     onClick={() => setIsReportsModalOpen(true)}
                   >

@@ -311,6 +311,7 @@ const Customers = () => {
             },
           ]}
         />
+
         <Card className="mt-3">
           <div className="row ms-2 pt-3 pe-3 mb-2">
             <div className="col-12 text-start">
@@ -338,10 +339,7 @@ const Customers = () => {
                   }}
                 />
               </Form.Item>
-              <label className="me-2 fw-semibold text-black">
-                {" "}
-                Documento de Identidad{" "}
-              </label>
+              <label className="me-2 fw-semibold text-black"> DUI </label>
               <Form.Item
                 className="col-xxl-3 col-xl-4 col-sm-12 w-auto"
                 name="identity_doc"
