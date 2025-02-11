@@ -124,13 +124,14 @@ const Sidebar = () => {
             className="text-center text-black"
             style={{
               background: "transparent",
-              marginTop: "-50px",
+              marginTop: "-55px",
               width: "100%",
+              fontSize: "11.5px",
             }}
           >
-            &copy; {new Date().getFullYear()} - Banco Bambú de El Salvador
-            S.A&reg; <br />
-            Desarrollado por &copy; cruzito-x - All Rights Reserved.
+            &copy; {new Date().getFullYear()} Banco Bambú de El Salvador, S.A.
+            de C.V.&reg; <br />
+            Desarrollado por cruzito-x - Todos los Derechos Reservados.
           </Footer>
         </Content>
       </Layout>
