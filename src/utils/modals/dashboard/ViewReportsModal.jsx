@@ -116,6 +116,9 @@ const ViewReportsModal = ({ isOpen, isClosed, setAlertMessage }) => {
 
           { text: "\nTotales por Tipo de Transacción", style: "subheader" },
           {
+            text: "Total de los Distintos Movimientos Realizados",
+          },
+          {
             table: {
               widths: ["*", "auto"],
               body: [
