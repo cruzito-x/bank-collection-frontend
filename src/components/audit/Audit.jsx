@@ -15,6 +15,7 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import { useForm } from "antd/es/form/Form";
+import EmptyData from "../../utils/emptyData/EmptyData";
 
 const Audit = () => {
   const { authState } = useAuth();
@@ -258,18 +259,22 @@ const Audit = () => {
 
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">
-              <Table
-                dataSource={audit}
-                columns={auditTableColumns}
-                pagination={{
-                  pageSize: 10,
-                  showSizeChanger: false,
-                  showTotal: (total) => `Total: ${total} registro(s)`,
-                  hideOnSinglePage: true,
-                }}
-                loading={loading}
-                scroll={{ x: "max-content" }}
-              />
+              {audit.length === 0 ? (
+                <EmptyData />
+              ) : (
+                <Table
+                  dataSource={audit}
+                  columns={auditTableColumns}
+                  pagination={{
+                    pageSize: 10,
+                    showSizeChanger: false,
+                    showTotal: (total) => `Total: ${total} registro(s)`,
+                    hideOnSinglePage: true,
+                  }}
+                  loading={loading}
+                  scroll={{ x: "max-content" }}
+                />
+              )}
             </div>
           </div>
         </Card>

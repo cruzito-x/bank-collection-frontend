@@ -76,6 +76,7 @@ const PaymentsCollectorsChartModal = ({ isOpen, isClosed }) => {
       width={900}
       onCancel={isClosed}
       footer={null}
+      maskClosable={false}
     >
       <div className="row">
         <div className="col-12 w-auto">

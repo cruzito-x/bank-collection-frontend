@@ -21,6 +21,7 @@ import { useAuth } from "../../contexts/authContext/AuthContext";
 import moment from "moment";
 import ApprovalTransactionDetails from "../../utils/modals/approvals/ApprovalTransactionDetails";
 import { useForm } from "antd/es/form/Form";
+import EmptyData from "../../utils/emptyData/EmptyData";
 
 const Approvals = () => {
   const { authState } = useAuth();
@@ -423,22 +424,26 @@ const Approvals = () => {
           </Form>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">
-              <Table
-                dataSource={approvals}
-                columns={approvalsTableColumns}
-                onRow={(record) => ({
-                  onClick: () => setSelectedApproval(record),
-                })}
-                pagination={{
-                  pageSize: 10,
-                  showSizeChanger: false,
-                  showTotal: (total) =>
-                    `Total: ${total} Transacción(es) Aprobada(s)`,
-                  hideOnSinglePage: true,
-                }}
-                loading={loading}
-                scroll={{ x: "max-content" }}
-              />
+              {approvals.length === 0 ? (
+                <EmptyData />
+              ) : (
+                <Table
+                  dataSource={approvals}
+                  columns={approvalsTableColumns}
+                  onRow={(record) => ({
+                    onClick: () => setSelectedApproval(record),
+                  })}
+                  pagination={{
+                    pageSize: 10,
+                    showSizeChanger: false,
+                    showTotal: (total) =>
+                      `Total: ${total} Transacción(es) Aprobada(s)`,
+                    hideOnSinglePage: true,
+                  }}
+                  loading={loading}
+                  scroll={{ x: "max-content" }}
+                />
+              )}
             </div>
           </div>
         </Card>

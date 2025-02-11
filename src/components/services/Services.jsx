@@ -23,6 +23,7 @@ import PaymentsDetailsModal from "../../utils/modals/services/PaymentsDetailsMod
 import EditServiceModal from "../../utils/modals/services/EditServiceModal";
 import AddNewServiceModal from "../../utils/modals/services/AddNewServiceModal";
 import { useForm } from "antd/es/form/Form";
+import EmptyData from "../../utils/emptyData/EmptyData";
 
 const Services = () => {
   const [services, setServices] = useState([]);
@@ -370,22 +371,26 @@ const Services = () => {
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">
-              <Table
-                dataSource={services}
-                columns={servicesTableColumns}
-                onRow={(record) => ({
-                  onClick: () => setSelectedService(record),
-                })}
-                pagination={{
-                  pageSize: 10,
-                  showSizeChanger: false,
-                  showTotal: (total) =>
-                    `Total: ${total} servicio(s) registrado(s)`,
-                  hideOnSinglePage: true,
-                }}
-                loading={loading}
-                scroll={{ x: "max-content" }}
-              />
+              {services.length === 0 ? (
+                <EmptyData />
+              ) : (
+                <Table
+                  dataSource={services}
+                  columns={servicesTableColumns}
+                  onRow={(record) => ({
+                    onClick: () => setSelectedService(record),
+                  })}
+                  pagination={{
+                    pageSize: 10,
+                    showSizeChanger: false,
+                    showTotal: (total) =>
+                      `Total: ${total} servicio(s) registrado(s)`,
+                    hideOnSinglePage: true,
+                  }}
+                  loading={loading}
+                  scroll={{ x: "max-content" }}
+                />
+              )}
             </div>
           </div>
         </Card>

@@ -2,6 +2,7 @@ import {
   Breadcrumb,
   Button,
   Card,
+  Empty,
   Form,
   Input,
   Layout,
@@ -23,6 +24,7 @@ import PaymentsCollectorsDetailsModal from "../../utils/modals/paymentsCollector
 import PaymentsCollectorsModal from "../../utils/modals/dashboard/PaymentsCollectorsModal";
 import { useForm } from "antd/es/form/Form";
 import PaymentsCollectorsChartModal from "../../utils/modals/paymentsCollectors/PaymentsCollectorsChartModal";
+import EmptyData from "../../utils/emptyData/EmptyData";
 
 const PaymentsCollectors = () => {
   const { authState } = useAuth();
@@ -314,21 +316,26 @@ const PaymentsCollectors = () => {
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">
-              <Table
-                dataSource={paymentsCollector}
-                columns={paymentsCollectorsTableColumns}
-                onRow={(record) => ({
-                  onClick: () => setSelectedPaymentCollector(record),
-                })}
-                pagination={{
-                  pageSize: 10,
-                  showSizeChanger: false,
-                  showTotal: (total) => `Total: ${total} pago(s) registrado(s)`,
-                  hideOnSinglePage: true,
-                }}
-                loading={loading}
-                scroll={{ x: "max-content" }}
-              />
+              {paymentsCollector.length === 0 ? (
+                <EmptyData />
+              ) : (
+                <Table
+                  dataSource={paymentsCollector}
+                  columns={paymentsCollectorsTableColumns}
+                  onRow={(record) => ({
+                    onClick: () => setSelectedPaymentCollector(record),
+                  })}
+                  pagination={{
+                    pageSize: 10,
+                    showSizeChanger: false,
+                    showTotal: (total) =>
+                      `Total: ${total} pago(s) registrado(s)`,
+                    hideOnSinglePage: true,
+                  }}
+                  loading={loading}
+                  scroll={{ x: "max-content" }}
+                />
+              )}
             </div>
           </div>
         </Card>

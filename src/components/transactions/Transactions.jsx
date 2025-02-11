@@ -25,6 +25,7 @@ import moment from "moment";
 import TransactionDetailsModal from "../../utils/modals/transactions/TransactionDetailsModal";
 import AddNewTransactionModal from "../../utils/modals/transactions/AddNewTransactionModal";
 import { useForm } from "antd/es/form/Form";
+import EmptyData from "../../utils/emptyData/EmptyData";
 
 const Transactions = () => {
   const { authState } = useAuth();
@@ -430,22 +431,26 @@ const Transactions = () => {
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">
-              <Table
-                dataSource={transactions}
-                columns={transactionsTableColumns}
-                onRow={(record) => ({
-                  onClick: () => setSelectedTransaction(record),
-                })}
-                pagination={{
-                  pageSize: 10,
-                  showSizeChanger: false,
-                  showTotal: (total) =>
-                    `Total: ${total} transferencia(s) registrada(s)`,
-                  hideOnSinglePage: true,
-                }}
-                loading={loading}
-                scroll={{ x: "max-content" }}
-              />
+              {transactions.length === 0 ? (
+                <EmptyData />
+              ) : (
+                <Table
+                  dataSource={transactions}
+                  columns={transactionsTableColumns}
+                  onRow={(record) => ({
+                    onClick: () => setSelectedTransaction(record),
+                  })}
+                  pagination={{
+                    pageSize: 10,
+                    showSizeChanger: false,
+                    showTotal: (total) =>
+                      `Total: ${total} transferencia(s) registrada(s)`,
+                    hideOnSinglePage: true,
+                  }}
+                  loading={loading}
+                  scroll={{ x: "max-content" }}
+                />
+              )}
             </div>
           </div>
         </Card>

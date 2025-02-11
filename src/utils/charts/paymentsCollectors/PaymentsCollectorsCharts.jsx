@@ -168,16 +168,18 @@ const PaymentsCollectorsCharts = ({ isOpen, dates }) => {
   }, [paymentsByCollectors]);
 
   return (
-    <Card loading={loadingPaymentsByCollectorsCard}>
+    <>
       {paymentsByCollectors.length === 0 ? (
-        <Empty />
+        <Empty className="p-5" description="No Hay Datos Disponibles" />
       ) : (
-        <canvas
-          className="cursor-pointer"
-          ref={paymentsByCollectorChartRef}
-        ></canvas>
+        <Card loading={loadingPaymentsByCollectorsCard}>
+          <canvas
+            className="cursor-pointer"
+            ref={paymentsByCollectorChartRef}
+          ></canvas>{" "}
+        </Card>
       )}
-    </Card>
+    </>
   );
 };
 

@@ -22,6 +22,7 @@ import AddNewCollectorModal from "../../utils/modals/dashboard/AddNewCollectorMo
 import PaymentsDetailsModal from "../../utils/modals/collectors/PaymentsDetailsModal";
 import EditCollectorModal from "../../utils/modals/collectors/EditCollectorModal";
 import { useForm } from "antd/es/form/Form";
+import EmptyData from "../../utils/emptyData/EmptyData";
 
 const Collectors = () => {
   const [collectors, setCollectors] = useState([]);
@@ -358,22 +359,26 @@ const Collectors = () => {
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">
-              <Table
-                dataSource={collectors}
-                columns={collectorsTableColumns}
-                onRow={(record) => ({
-                  onClick: () => setSelectedCollector(record),
-                })}
-                pagination={{
-                  pageSize: 10,
-                  showSizeChanger: false,
-                  showTotal: (total) =>
-                    `Total: ${total} colector(es) regisrado(s)`,
-                  hideOnSinglePage: true,
-                }}
-                loading={loading}
-                scroll={{ x: "max-content" }}
-              />
+              {collectors.length === 0 ? (
+                <EmptyData />
+              ) : (
+                <Table
+                  dataSource={collectors}
+                  columns={collectorsTableColumns}
+                  onRow={(record) => ({
+                    onClick: () => setSelectedCollector(record),
+                  })}
+                  pagination={{
+                    pageSize: 10,
+                    showSizeChanger: false,
+                    showTotal: (total) =>
+                      `Total: ${total} colector(es) regisrado(s)`,
+                    hideOnSinglePage: true,
+                  }}
+                  loading={loading}
+                  scroll={{ x: "max-content" }}
+                />
+              )}
             </div>
           </div>
         </Card>

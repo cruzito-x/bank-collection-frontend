@@ -22,6 +22,7 @@ import { useAuth } from "../../contexts/authContext/AuthContext";
 import AddNewTransactionTypeModal from "../../utils/modals/transactionTypes/AddNewTransactionTypeModal";
 import EditTransactionTypeModal from "../../utils/modals/transactionTypes/EditTransactionTypeModal";
 import { useForm } from "antd/es/form/Form";
+import EmptyData from "../../utils/emptyData/EmptyData";
 
 const TransactionTypes = () => {
   const { authState } = useAuth();
@@ -339,22 +340,26 @@ const TransactionTypes = () => {
           </div>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">
-              <Table
-                dataSource={transactionsTypes}
-                columns={transactionsTypesTableColumns}
-                onRow={(record) => ({
-                  onClick: () => setSelectedTransactionType(record),
-                })}
-                pagination={{
-                  pageSize: 10,
-                  showSizeChanger: false,
-                  showTotal: (total) =>
-                    `Total: ${total} tipo(s) de transacción(es)`,
-                  hideOnSinglePage: true,
-                }}
-                loading={loading}
-                scroll={{ x: "max-content" }}
-              />
+              {transactionsTypes.length === 0 ? (
+                <EmptyData />
+              ) : (
+                <Table
+                  dataSource={transactionsTypes}
+                  columns={transactionsTypesTableColumns}
+                  onRow={(record) => ({
+                    onClick: () => setSelectedTransactionType(record),
+                  })}
+                  pagination={{
+                    pageSize: 10,
+                    showSizeChanger: false,
+                    showTotal: (total) =>
+                      `Total: ${total} tipo(s) de transacción(es)`,
+                    hideOnSinglePage: true,
+                  }}
+                  loading={loading}
+                  scroll={{ x: "max-content" }}
+                />
+              )}
             </div>
           </div>
         </Card>

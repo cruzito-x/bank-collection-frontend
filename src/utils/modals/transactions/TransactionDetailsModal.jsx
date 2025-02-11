@@ -47,7 +47,7 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
             <div className="col-12 text-center">
               <Image
                 className="w-75"
-                src={`${process.env.PUBLIC_URL}/logo_details_3.png`}
+                src={`${process.env.PUBLIC_URL}/logo_details.png`}
                 preview={false}
                 alt="Banco Bambú Logo"
               />

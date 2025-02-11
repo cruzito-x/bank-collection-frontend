@@ -1,4 +1,4 @@
-import { Button, Col, Modal, Row, Select, Space, Table } from "antd";
+import { Button, Col, Empty, Modal, Row, Select, Space, Table } from "antd";
 import { FileExcelOutlined, TransactionOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
@@ -235,6 +235,7 @@ const TransactionsModal = ({
       width={1800}
       onCancel={isClosed}
       footer={null}
+      maskClosable={false}
     >
       <div className="row">
         <div className="col-12 w-auto">
@@ -279,18 +280,22 @@ const TransactionsModal = ({
       </div>
       <div className="row">
         <div className="col-12 mb-3">
-          <Table
-            dataSource={transactions}
-            columns={transactionsColumns}
-            pagination={{
-              pageSize: 10,
-              showSizeChanger: false,
-              showTotal: (total) => `Total: ${total} transacción(es)`,
-              hideOnSinglePage: true,
-            }}
-            loading={loading}
-            scroll={{ x: "max-content" }}
-          />
+          {transactions.length === 0 ? (
+            <Empty className="p-5" description="No Hay Datos Disponibles" />
+          ) : (
+            <Table
+              dataSource={transactions}
+              columns={transactionsColumns}
+              pagination={{
+                pageSize: 10,
+                showSizeChanger: false,
+                showTotal: (total) => `Total: ${total} transacción(es)`,
+                hideOnSinglePage: true,
+              }}
+              loading={loading}
+              scroll={{ x: "max-content" }}
+            />
+          )}
         </div>
         <div className="col-12">
           <div className="text-end">

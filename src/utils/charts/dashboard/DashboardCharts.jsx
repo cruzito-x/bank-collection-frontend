@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Chart } from "chart.js/auto";
-import { Card, Empty } from "antd";
+import { Card } from "antd";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
+import EmptyData from "../../emptyData/EmptyData";
 
 const DashboardCharts = ({
   datesRange,
@@ -717,7 +718,7 @@ const DashboardCharts = ({
             bodyStyle={{ padding: 0 }}
           >
             {transactionsByDate.length === 0 ? (
-              <Empty />
+              <EmptyData />
             ) : (
               <canvas
                 className="ms-3 me-3 mb-4"
@@ -737,7 +738,7 @@ const DashboardCharts = ({
             bodyStyle={{ padding: 0 }}
           >
             {approvalAndRejectionRates.length === 0 ? (
-              <Empty />
+              <EmptyData />
             ) : (
               <canvas
                 className="ms-2 me-2 mb-2"
@@ -757,7 +758,7 @@ const DashboardCharts = ({
             bodyStyle={{ padding: 0 }}
           >
             {totalProcessedAmount.length === 0 ? (
-              <Empty />
+              <EmptyData />
             ) : (
               <canvas
                 className="ms-2 me-2 mb-2"
@@ -785,7 +786,7 @@ const DashboardCharts = ({
             bodyStyle={{ padding: 0 }}
           >
             {customersWithTheMostMoneyPaid.length === 0 ? (
-              <Empty />
+              <EmptyData />
             ) : (
               <canvas
                 className="mb-2"
@@ -805,7 +806,7 @@ const DashboardCharts = ({
             bodyStyle={{ padding: 0 }}
           >
             {paymentsByCollector.length === 0 ? (
-              <Empty />
+              <EmptyData />
             ) : (
               <canvas
                 className="mb-2"
@@ -823,7 +824,7 @@ const DashboardCharts = ({
             bodyStyle={{ padding: 0 }}
           >
             {paymentsByCollectorDenominations.length === 0 ? (
-              <Empty />
+              <EmptyData />
             ) : (
               <canvas
                 className="mb-2"

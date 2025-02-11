@@ -1,10 +1,11 @@
-import { Button, Col, Modal, Row, Table } from "antd";
+import { Button, Col, Modal, Row, Select, Space, Table } from "antd";
 import { DollarCircleOutlined, FileExcelOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import moment from "moment";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
+import EmptyData from "../../emptyData/EmptyData";
 
 const PaymentsDetailsModal = ({
   isOpen,
@@ -15,14 +16,65 @@ const PaymentsDetailsModal = ({
   const { authState } = useAuth();
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [dates, setDates] = useState([
+    moment().startOf("day"),
+    moment().endOf("day"),
+  ]);
   const token = authState.token;
+
+  const datesFilter = (filter) => {
+    let range;
+
+    switch (filter) {
+      case "today":
+        range = [moment().startOf("day"), moment().endOf("day")];
+        break;
+      case "lastWeek":
+        range = [
+          moment().subtract(7, "days").startOf("day"),
+          moment().endOf("day"),
+        ];
+        break;
+      case "lastMonth":
+        range = [
+          moment().subtract(1, "month").startOf("day"),
+          moment().endOf("day"),
+        ];
+        break;
+      case "lastQuarter":
+        range = [
+          moment().subtract(3, "months").startOf("day"),
+          moment().endOf("day"),
+        ];
+        break;
+      case "lastSemester":
+        range = [
+          moment().subtract(6, "months").startOf("day"),
+          moment().endOf("day"),
+        ];
+        break;
+      case "lastYear":
+        range = [
+          moment().subtract(1, "year").startOf("day"),
+          moment().endOf("day"),
+        ];
+        break;
+      default:
+        range = [moment().startOf("day"), moment().endOf("day")];
+    }
+
+    setDates(range);
+  };
 
   const getPaymentsDetails = async () => {
     setLoading(true);
 
     try {
+      const startDay = moment(dates[0]).format("YYYY-MM-DD");
+      const endDay = moment(dates[1]).format("YYYY-MM-DD");
+
       const response = await fetch(
-        `http://localhost:3001/services/view-payments-by-service-details/${selectedService.id}`,
+        `http://localhost:3001/services/view-payments-by-service-details/${selectedService.id}/${startDay}/${endDay}`,
         {
           method: "GET",
           headers: {
@@ -51,7 +103,7 @@ const PaymentsDetailsModal = ({
 
   useEffect(() => {
     getPaymentsDetails();
-  }, [isOpen, selectedService]);
+  }, [isOpen, selectedService, dates[0], dates[1]]);
 
   const paymentsDetailsColumns = [
     {
@@ -161,18 +213,63 @@ const PaymentsDetailsModal = ({
       footer={null}
     >
       <div className="row">
+        <div className="col-12 w-auto">
+          <label className="fw-semibold text-black me-2"> Fecha </label>
+          <Space wrap>
+            <Select
+              className="mb-2"
+              defaultValue="today"
+              style={{
+                width: 183,
+              }}
+              onChange={datesFilter}
+              options={[
+                {
+                  value: "today",
+                  label: "Hoy",
+                },
+                {
+                  value: "lastWeek",
+                  label: "Última Semana",
+                },
+                {
+                  value: "lastMonth",
+                  label: "Último Mes",
+                },
+                {
+                  value: "lastQuarter",
+                  label: "Últimos 3 Meses",
+                },
+                {
+                  value: "lastSemester",
+                  label: "Últimos 6 Meses",
+                },
+                {
+                  value: "lastYear",
+                  label: "Último Año",
+                },
+              ]}
+            />
+          </Space>
+        </div>
+      </div>
+      <div className="row">
         <div className="col-12 mb-3">
-          <Table
-            dataSource={payments}
-            columns={paymentsDetailsColumns}
-            loading={loading}
-            pagination={{
-              pageSize: 10,
-              showSizeChanger: false,
-              showTotal: (total) => `Total: ${total} Pago(s) Registrado(s)`,
-              hideOnSinglePage: true,
-            }}
-          />
+          {payments.length === 0 ? (
+            <EmptyData />
+          ) : (
+            <Table
+              dataSource={payments}
+              columns={paymentsDetailsColumns}
+              loading={loading}
+              pagination={{
+                pageSize: 10,
+                showSizeChanger: false,
+                showTotal: (total) => `Total: ${total} Pago(s) Registrado(s)`,
+                hideOnSinglePage: true,
+              }}
+            />
+          )}
         </div>
         <div className="col-12">
           <div className="text-end">

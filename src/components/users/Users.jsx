@@ -17,6 +17,7 @@ import { useAuth } from "../../contexts/authContext/AuthContext";
 import EditUserModal from "../../utils/modals/users/EditUserModal";
 import SetNewUserRoleModal from "../../utils/modals/users/SetNewUserRoleModal";
 import { useForm } from "antd/es/form/Form";
+import EmptyData from "../../utils/emptyData/EmptyData";
 
 const Users = () => {
   const { authState } = useAuth();
@@ -359,22 +360,26 @@ const Users = () => {
           </Form>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">
-              <Table
-                dataSource={users}
-                columns={usersTableColumns}
-                onRow={(record) => ({
-                  onClick: () => setSelectedUser(record),
-                })}
-                pagination={{
-                  pageSize: 10,
-                  showSizeChanger: false,
-                  showTotal: (total) =>
-                    `Total: ${total} usuario(s) registrado(s)`,
-                  hideOnSinglePage: true,
-                }}
-                loading={loading}
-                scroll={{ x: "max-content" }}
-              />
+              {users.length === 0 ? (
+                <EmptyData />
+              ) : (
+                <Table
+                  dataSource={users}
+                  columns={usersTableColumns}
+                  onRow={(record) => ({
+                    onClick: () => setSelectedUser(record),
+                  })}
+                  pagination={{
+                    pageSize: 10,
+                    showSizeChanger: false,
+                    showTotal: (total) =>
+                      `Total: ${total} usuario(s) registrado(s)`,
+                    hideOnSinglePage: true,
+                  }}
+                  loading={loading}
+                  scroll={{ x: "max-content" }}
+                />
+              )}
             </div>
           </div>
         </Card>

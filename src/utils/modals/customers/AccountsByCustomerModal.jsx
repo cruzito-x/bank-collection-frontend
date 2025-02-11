@@ -1,4 +1,4 @@
-import { Button, Col, Modal, Row, Table } from "antd";
+import { Button, Col, Empty, Modal, Row, Table } from "antd";
 import { BookOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
@@ -130,24 +130,29 @@ const AccountsByCustomerModal = ({
       width={900}
       onCancel={isClosed}
       footer={null}
+      maskClosable={false}
     >
       <div className="row">
         <div className="col-12 mb-3">
-          <Table
-            dataSource={accounts}
-            columns={accountsColumns}
-            onRow={(record) => ({
-              onClick: () => setselectedAccountNumber(record),
-            })}
-            pagination={{
-              pageSize: 10,
-              showSizeChanger: false,
-              showTotal: (total) => `Total: ${total} cuenta(s)`,
-              hideOnSinglePage: true,
-            }}
-            loading={loading}
-            scroll={{ x: "max-content" }}
-          />
+          {accounts.length === 0 ? (
+            <Empty className="p-5" description="No Hay Datos Disponibles" />
+          ) : (
+            <Table
+              dataSource={accounts}
+              columns={accountsColumns}
+              onRow={(record) => ({
+                onClick: () => setselectedAccountNumber(record),
+              })}
+              pagination={{
+                pageSize: 10,
+                showSizeChanger: false,
+                showTotal: (total) => `Total: ${total} cuenta(s)`,
+                hideOnSinglePage: true,
+              }}
+              loading={loading}
+              scroll={{ x: "max-content" }}
+            />
+          )}
         </div>
         <div className="col-12">
           <div className="text-end">

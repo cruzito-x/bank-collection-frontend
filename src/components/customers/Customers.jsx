@@ -21,6 +21,7 @@ import EditCustomerModal from "../../utils/modals/customers/EditCustomerModal";
 import { useForm } from "antd/es/form/Form";
 import AccountsByCustomerModal from "../../utils/modals/customers/AccountsByCustomerModal";
 import { useAuth } from "../../contexts/authContext/AuthContext";
+import EmptyData from "../../utils/emptyData/EmptyData";
 
 const Customers = () => {
   const { authState } = useAuth();
@@ -359,22 +360,26 @@ const Customers = () => {
           </Form>
           <div className="row ms-2 mb-3 pe-3">
             <div className="col-12">
-              <Table
-                dataSource={customers}
-                columns={customersTableColumns}
-                onRow={(record) => ({
-                  onClick: () => setSelectedCustomer(record),
-                })}
-                pagination={{
-                  pageSize: 10,
-                  showSizeChanger: false,
-                  showTotal: (total) =>
-                    `Total: ${total} cliente(s) registrado(s)`,
-                  hideOnSinglePage: true,
-                }}
-                loading={loading}
-                scroll={{ x: "max-content" }}
-              />
+              {customers.length === 0 ? (
+                <EmptyData />
+              ) : (
+                <Table
+                  dataSource={customers}
+                  columns={customersTableColumns}
+                  onRow={(record) => ({
+                    onClick: () => setSelectedCustomer(record),
+                  })}
+                  pagination={{
+                    pageSize: 10,
+                    showSizeChanger: false,
+                    showTotal: (total) =>
+                      `Total: ${total} cliente(s) registrado(s)`,
+                    hideOnSinglePage: true,
+                  }}
+                  loading={loading}
+                  scroll={{ x: "max-content" }}
+                />
+              )}
             </div>
           </div>
         </Card>
