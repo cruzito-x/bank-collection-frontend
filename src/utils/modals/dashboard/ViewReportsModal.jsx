@@ -78,7 +78,6 @@ const ViewReportsModal = ({ isOpen, isClosed, setAlertMessage }) => {
           {
             text: "Una Visión General de las Actividades Durante el Periodo Especificado.",
           },
-
           { text: "\nTransacciones Detalladas", style: "subheader" },
           {
             table: {
@@ -89,9 +88,9 @@ const ViewReportsModal = ({ isOpen, isClosed, setAlertMessage }) => {
                   moment(transaction.datetime).format("DD/MM/YYYY"),
                   `${
                     transaction.transaction_type === "Deposito"
-                      ? transaction.sender + " Deposito a la Cuenta"
+                      ? transaction.sender + " Depositó a la Cuenta"
                       : transaction.transaction_type === "Retiro"
-                      ? transaction.sender + " Retiro de la Cuenta"
+                      ? transaction.sender + " Retiró de la Cuenta"
                       : transaction.transaction_type === "Transferencia"
                       ? transaction.sender + " Transfirió desde la cuenta: "
                       : ""
@@ -245,6 +244,7 @@ const ViewReportsModal = ({ isOpen, isClosed, setAlertMessage }) => {
       open={isOpen}
       onCancel={isClosed}
       footer={null}
+      maskClosable={false}
     >
       {reports.map((report, index) => (
         <Card key={index} hoverable className="mb-2">
