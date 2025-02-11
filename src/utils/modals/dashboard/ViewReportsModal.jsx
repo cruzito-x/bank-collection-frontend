@@ -156,7 +156,6 @@ const ViewReportsModal = ({ isOpen, isClosed, setAlertMessage }) => {
           },
           {
             table: {
-              headerRows: 1,
               widths: ["*", "auto"],
               body: [
                 ["Servicio", "Total"],
