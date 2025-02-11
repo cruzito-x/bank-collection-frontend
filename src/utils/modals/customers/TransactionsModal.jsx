@@ -115,27 +115,47 @@ const TransactionsModal = ({
   ];
 
   const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(transactions);
+    const headers = transactions.map((transaction) => ({
+      "Código de Transacción": transaction.transaction_id,
+      "Enviado Por": transaction.customer,
+      "Recibido Por": transaction.receiver,
+      "Tipo de Transacción": transaction.transaction_type,
+      "Cuenta Origen": transaction.sender_account,
+      Monto: transaction.amount,
+      "Cuenta Destino": transaction.receiver_account,
+      "Fecha y Hora": transaction.datetime,
+      "Autorizado Por": transaction.authorized_by,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(headers);
     const workbook = XLSX.utils.book_new();
+
     XLSX.utils.book_append_sheet(
       workbook,
       worksheet,
-      `Transacciones - ${transactions[0].customer}`
+      `${("Transacciones - " + transactions[0].customer)
+        .replace(/[\\/:?*[\]]/g, "")
+        .slice(0, 31)}`
     );
 
-    const fileName = `${moment(new Date()).format(
-      "YYYYMMDDHHmmss"
-    )} - Transacciones de ${selectedCustomerAccountNumber.account_number}.xlsx`;
+    const xlsxName = `${
+      moment(new Date()).format("YYYYMMDDHHmmss") +
+      "_Transacciones de " +
+      transactions[0].customer +
+      "_" +
+      selectedCustomerAccountNumber.account_number
+    }.xlsx`;
 
     const excelBuffer = XLSX.write(workbook, {
       bookType: "xlsx",
       type: "array",
     });
-    const data = new Blob([excelBuffer], {
+
+    const transactionsData = new Blob([excelBuffer], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
 
-    saveAs(data, fileName);
+    saveAs(transactionsData, xlsxName);
   };
 
   return (
@@ -182,7 +202,7 @@ const TransactionsModal = ({
             </Button>
             <Button className="ms-2" type="primary" onClick={exportToExcel}>
               <FileExcelOutlined />
-              Exportar a Excel
+              Descargar Excel
             </Button>
           </div>
         </div>

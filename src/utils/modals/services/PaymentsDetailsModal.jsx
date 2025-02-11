@@ -93,33 +93,50 @@ const PaymentsDetailsModal = ({
   ];
 
   const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(payments);
+    const headers = payments.map((payment) => ({
+      Servicio: payment.service,
+      Colector: payment.collector,
+      Monto: payment.amount,
+      "Pagado Por": payment.payed_by,
+      "Registrado Por": payment.registered_by,
+      "Fecha y Hora": payment.datetime,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(headers);
     const workbook = XLSX.utils.book_new();
+
     XLSX.utils.book_append_sheet(
       workbook,
       worksheet,
-      `${
+      `${(
         selectedService.collector +
         "_" +
         selectedService.service +
-        " - " +
+        "_" +
         moment(new Date()).format("DD-MM-YYYY")
-      }`
+      )
+        .replace(/[\\/:?*[\]]/g, "")
+        .slice(0, 31)}`
     );
 
-    const fileName = `${moment(new Date()).format(
-      "YYYYMMDDHHmmss"
-    )} - Pagos de ${selectedService.service}_${selectedService.collector}.xlsx`;
+    const xlsxName = `${
+      moment(new Date()).format("YYYYMMDDHHmmss") +
+      "_Pagos de " +
+      selectedService.service +
+      "_" +
+      selectedService.collector
+    }.xlsx`;
 
     const excelBuffer = XLSX.write(workbook, {
       bookType: "xlsx",
       type: "array",
     });
-    const data = new Blob([excelBuffer], {
+
+    const paymentsServicesData = new Blob([excelBuffer], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
 
-    saveAs(data, fileName);
+    saveAs(paymentsServicesData, xlsxName);
   };
 
   return (
@@ -164,7 +181,7 @@ const PaymentsDetailsModal = ({
             </Button>
             <Button className="ms-2" type="primary" onClick={exportToExcel}>
               <FileExcelOutlined />
-              Exportar a Excel
+              Descargar Excel
             </Button>
           </div>
         </div>
