@@ -1,4 +1,4 @@
-import { Button, Col, Modal, Row, Tag } from "antd";
+import { Button, Col, Divider, Modal, Row, Tag } from "antd";
 import { FileTextOutlined, PrinterOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef } from "react";
 
@@ -44,7 +44,7 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
       {transactionData && (
         <>
           <div ref={printRef} className="row mt-4">
-            <div className="col-12 mb-3 text-center">
+            <div className="col-12 mb-4 text-center">
               <h1 className="fw-bold text-black" style={{ fontSize: "60px" }}>
                 {transactionData.amount}
               </h1>
@@ -53,9 +53,10 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
               </label>{" "}
               <br />
               <label style={{ color: "var(--gray)", fontSize: "13px" }}>
-                Realizado: {transactionData.datetime}
+                Realizada: {transactionData.datetime}
               </label>
             </div>
+            <Divider variant="dashed" style={{ borderColor: "var(--gray)" }} />
             <div className="col-12">
               <label className="fw-semibold text-black">
                 {" "}
@@ -83,74 +84,66 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
                 </Tag>
               </p>
             </div>
-            <div className="col-12">
-              <label className="fw-semibold text-black"> Remitente </label>
-              <p>
-                {" "}
-                {transactionData.customer}
-                <br />
-                <span
-                  style={{
-                    color: "var(--gray)",
-                    fontSize: "12px",
-                  }}
-                >
-                  {transactionData.customer_email}
-                </span>{" "}
-              </p>
-            </div>
             {transactionData.sender_account !==
               transactionData.receiver_account &&
               transactionData.sender_account !== null && (
                 <div className="col-12">
                   <label className="fw-semibold text-black">
-                    N.º Cuenta{" "}
+                    Cuenta{" "}
                     {transactionData.receiver_account !== null &&
                     transactionData.sender_account !==
                       transactionData.receiver_account
                       ? "Remitente"
-                      : ""}
+                      : "Destino"}
                   </label>
-                  <p> {transactionData.sender_account} </p>
+                  <p>
+                    {" "}
+                    {transactionData.sender_account +
+                      ", " +
+                      transactionData.customer}{" "}
+                    <br />
+                    <span
+                      style={{
+                        color: "var(--gray)",
+                        fontSize: "12px",
+                      }}
+                    >
+                      {transactionData.customer_email}
+                    </span>{" "}
+                  </p>
                 </div>
               )}
-            <div className="col-12">
-              <label className="fw-semibold text-black"> Destinatario </label>
-              <p>
-                {" "}
-                {transactionData.receiver}
-                <br />
-                <span
-                  style={{
-                    color: "var(--gray)",
-                    fontSize: "12px",
-                  }}
-                >
-                  {transactionData.receiver_email}
-                </span>{" "}
-              </p>
-            </div>
             {transactionData.receiver_account && (
               <div className="col-12">
                 <label className="fw-semibold text-black">
                   {" "}
-                  N.º Cuenta Destino{" "}
+                  Cuenta Destino{" "}
                 </label>
-                <p> {transactionData.receiver_account} </p>
-              </div>
-            )}
-            {transactionData.transaction_type === "Transferencia" && (
-              <div className="col-12">
-                <label className="fw-semibold text-black"> Concepto </label>
                 <p>
                   {" "}
-                  {transactionData.concept === "" ||
-                  transactionData.concept === null
-                    ? "Sin Concepto"
-                    : transactionData.concept}{" "}
+                  {transactionData.receiver_account +
+                    ", " +
+                    transactionData.receiver}{" "}
+                  <br />
+                  <span
+                    style={{
+                      color: "var(--gray)",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {transactionData.receiver_email}
+                  </span>{" "}
                 </p>
               </div>
             )}
+            {transactionData.transaction_type === "Transferencia" &&
+              transactionData.concept === "" &&
+              transactionData.concept === null && (
+                <div className="col-12">
+                  <label className="fw-semibold text-black"> Concepto </label>
+                  <p>{transactionData.concept}</p>
+                </div>
+              )}
             <div className="col-12">
               <label className="fw-semibold text-black"> Realizado Por </label>
               <p> {transactionData.realized_by} </p>
