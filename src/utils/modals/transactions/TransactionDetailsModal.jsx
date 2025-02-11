@@ -16,7 +16,6 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
       document.body.innerHTML = originalContents;
       window.location.reload();
     } else {
-      console.error("printRef.current is undefined");
     }
   };
 
@@ -40,6 +39,7 @@ const TransactionDetailsModal = ({ isOpen, isClosed, transactionData }) => {
       open={isOpen}
       onCancel={isClosed}
       footer={null}
+      maskClosable={false}
     >
       {transactionData && (
         <>

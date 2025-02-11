@@ -1,4 +1,4 @@
-import { Button, Col, Modal, Row } from "antd";
+import { Button, Col, Divider, Modal, Row } from "antd";
 import { FileTextOutlined, PrinterOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef } from "react";
 
@@ -19,7 +19,6 @@ const PaymentsCollectorsDetailsModal = ({
       document.body.innerHTML = originalContents;
       window.location.reload();
     } else {
-      console.error("printRef.current is undefined");
     }
   };
 
@@ -45,11 +44,12 @@ const PaymentsCollectorsDetailsModal = ({
       width={450}
       onCancel={isClosed}
       footer={null}
+      maskClosable={false}
     >
       {paymentsCollectorsData && (
         <>
           <div ref={printRef} className="row mt-4">
-            <div className="col-12 mb-3 text-center">
+            <div className="col-12 mb-4 text-center">
               <h1 className="fw-bold text-black" style={{ fontSize: "60px" }}>
                 {paymentsCollectorsData.amount}
               </h1>
@@ -59,21 +59,27 @@ const PaymentsCollectorsDetailsModal = ({
                 Realizado: {paymentsCollectorsData.datetime}
               </label>
             </div>
+            <Divider variant="dashed" style={{ borderColor: "var(--gray)" }} />
             <div className="col-12">
               <label className="fw-semibold text-black"> Código de Pago </label>
               <p> {paymentsCollectorsData.payment_id} </p>
             </div>
             <div className="col-12">
-              <label className="fw-semibold text-black"> Cancelado Por </label>
+              <label className="fw-semibold text-black"> Pagado Por </label>
               <p>{paymentsCollectorsData.customer}</p>
             </div>
             <div className="col-12">
-              <label className="fw-semibold text-black"> Colector </label>
-              <p>{paymentsCollectorsData.collector}</p>
-            </div>
-            <div className="col-12">
-              <label className="fw-semibold text-black"> Concepto </label>
-              <p> Pago por {paymentsCollectorsData.service} </p>
+              <label className="fw-semibold text-black">
+                {" "}
+                Concepto de Pago{" "}
+              </label>
+              <p>
+                {" "}
+                Servicio de {paymentsCollectorsData.service} <br />{" "}
+                <span style={{ color: "var(--gray)", fontSize: "12px" }}>
+                  Proveedor: {paymentsCollectorsData.collector}
+                </span>{" "}
+              </p>
             </div>
             <div className="col-12">
               <label className="fw-semibold text-black"> Registrado Por </label>

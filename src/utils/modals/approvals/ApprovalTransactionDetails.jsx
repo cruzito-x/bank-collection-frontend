@@ -1,4 +1,4 @@
-import { Button, Col, Modal, Row, Tag } from "antd";
+import { Button, Col, Divider, Modal, Row, Tag } from "antd";
 import { FileTextOutlined, PrinterOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef } from "react";
 
@@ -16,7 +16,6 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
       document.body.innerHTML = originalContents;
       window.location.reload();
     } else {
-      console.error("printRef.current is undefined");
     }
   };
 
@@ -40,11 +39,12 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
       open={isOpen}
       onCancel={isClosed}
       footer={null}
+      maskClosable={false}
     >
       {approvalData && (
         <>
           <div ref={printRef} className="row mt-4">
-            <div className="col-12 mb-3 text-center">
+            <div className="col-12 mb-4 text-center">
               <h1 className="fw-bold text-black" style={{ fontSize: "60px" }}>
                 {approvalData.amount}
               </h1>
@@ -57,6 +57,7 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
                 Autorizado: {approvalData.authorized_at}
               </label>
             </div>
+            <Divider variant="dashed" style={{ borderColor: "var(--gray)" }} />
             <div className="col-12">
               <label className="fw-semibold text-black">
                 {" "}
@@ -92,34 +93,29 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
               </p>
             </div>
             <div className="col-12">
-              <label className="fw-semibold text-black"> Remitente </label>
-              <p> {approvalData.sender_name} </p>
-            </div>
-            <div className="col-12">
-              <label className="fw-semibold text-black">
-                {" "}
-                E-mail de Remitente{" "}
-              </label>
-              <p> {approvalData.sender_email} </p>
-            </div>
-            <div className="col-12">
               <label className="fw-semibold text-black"> Destinatario </label>
-              <p> {approvalData.receiver_name} </p>
-            </div>
-            <div className="col-12">
-              <label className="fw-semibold text-black">
+              <p>
                 {" "}
-                E-mail de Destinatario{" "}
-              </label>
-              <p> {approvalData.receiver_email} </p>
+                {approvalData.receiver_account +
+                  ", " +
+                  approvalData.receiver_name}{" "}
+                <br />
+                <span
+                  style={{
+                    color: "var(--gray)",
+                    fontSize: "12px",
+                  }}
+                >
+                  {approvalData.receiver_email}
+                </span>{" "}
+              </p>
             </div>
-            {approvalData.concept !== null ||
-              (approvalData.concept === "" && (
-                <div className="col-12">
-                  <label className="fw-semibold text-black"> Concepto </label>
-                  <p> {approvalData.concept} </p>
-                </div>
-              ))}
+            {approvalData.concept === "" && approvalData.concept === null && (
+              <div className="col-12">
+                <label className="fw-semibold text-black"> Concepto </label>
+                <p> {approvalData.concept} </p>
+              </div>
+            )}
             <div className="col-12">
               <label className="fw-semibold text-black"> Realizado Por </label>
               <p> {approvalData.realized_by} </p>
