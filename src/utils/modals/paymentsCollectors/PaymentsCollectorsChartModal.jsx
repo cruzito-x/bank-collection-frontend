@@ -79,6 +79,9 @@ const PaymentsCollectorsChartModal = ({ isOpen, isClosed }) => {
       maskClosable={false}
     >
       <div className="row">
+        <div className="col-12 text-start">
+          <label className="fw-semibold text-black"> Buscar Por </label>
+        </div>
         <div className="col-12 w-auto">
           <label className="fw-semibold text-black me-2"> Fecha </label>
           <Space wrap>

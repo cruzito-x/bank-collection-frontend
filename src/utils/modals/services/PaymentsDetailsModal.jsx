@@ -217,6 +217,11 @@ const PaymentsDetailsModal = ({
       footer={null}
     >
       <div className="row">
+        <div className="col-12">
+          <div className="col-12 text-start">
+            <label className="fw-semibold text-black"> Buscar Por </label>
+          </div>
+        </div>
         <div className="col-12 w-auto">
           <label className="fw-semibold text-black me-2"> Fecha </label>
           <Space wrap>
@@ -272,6 +277,7 @@ const PaymentsDetailsModal = ({
                 showTotal: (total) => `Total: ${total} Pago(s) Registrado(s)`,
                 hideOnSinglePage: true,
               }}
+              scroll={{ x: "max-content" }}
             />
           )}
         </div>
