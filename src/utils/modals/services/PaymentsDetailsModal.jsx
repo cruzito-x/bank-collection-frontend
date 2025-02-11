@@ -176,7 +176,11 @@ const PaymentsDetailsModal = ({
       "_Pagos de " +
       selectedService.service +
       "_" +
-      selectedService.collector
+      selectedService.collector +
+      " " +
+      moment(dates[0]).format("YYYY-MM-DD") +
+      "_" +
+      moment(dates[1]).format("YYYY-MM-DD")
     }.xlsx`;
 
     const excelBuffer = XLSX.write(workbook, {
@@ -276,7 +280,12 @@ const PaymentsDetailsModal = ({
             <Button type="primary" danger onClick={isClosed}>
               Cerrar
             </Button>
-            <Button className="ms-2" type="primary" onClick={exportToExcel}>
+            <Button
+              className="ms-2"
+              type="primary"
+              onClick={exportToExcel}
+              disabled={payments.length === 0 ? true : false}
+            >
               <FileExcelOutlined />
               Descargar Excel
             </Button>

@@ -200,7 +200,9 @@ const TransactionsModal = ({
       "_Transacciones de " +
       transactions[0].customer +
       "_" +
-      selectedCustomerAccountNumber.account_number
+      moment(dates[0]).format("YYYY-MM-DD") +
+      "_" +
+      moment(dates[1]).format("YYYY-MM-DD")
     }.xlsx`;
 
     const excelBuffer = XLSX.write(workbook, {
@@ -303,7 +305,12 @@ const TransactionsModal = ({
               {" "}
               Cerrar{" "}
             </Button>
-            <Button className="ms-2" type="primary" onClick={exportToExcel}>
+            <Button
+              className="ms-2"
+              type="primary"
+              onClick={exportToExcel}
+              disabled={transactions.length === 0 ? true : false}
+            >
               <FileExcelOutlined />
               Descargar Excel
             </Button>
