@@ -54,7 +54,7 @@ const Login = () => {
         <div className="w-100 d-flex justify-content-center mb-3">
           <Image
             className="rounded mt-3"
-            src={`${process.env.PUBLIC_URL}/logo_login.png`}
+            src={`${process.env.PUBLIC_URL}/assets/img/logo_login.png`}
             preview={false}
             style={{
               width: "200px",
