@@ -1,8 +1,9 @@
 import { Button, Col, Modal, Row, Table } from "antd";
 import { DollarCircleOutlined, FileExcelOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
-import { CSVLink } from "react-csv";
 import moment from "moment";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
 
 const PaymentsDetailsModal = ({
@@ -91,14 +92,33 @@ const PaymentsDetailsModal = ({
     },
   ];
 
-  const paymentsDetailsHeader = [
-    { label: "Colector", key: "collector" },
-    { label: "Servicio", key: "service" },
-    { label: "Monto", key: "amount" },
-    { label: "Pagado Por", key: "payed_by" },
-    { label: "Registrado Por", key: "registered_by" },
-    { label: "Fecha y Hora", key: "datetime" },
-  ];
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(payments);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(
+      workbook,
+      worksheet,
+      `${
+        selectedCollector.collector +
+        " - " +
+        moment(new Date()).format("DD-MM-YYYY")
+      }`
+    );
+
+    const fileName = `${moment(new Date()).format(
+      "YYYYMMDDHHmmss"
+    )} - Pagos Realizados a ${selectedCollector.collector}.xlsx`;
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const data = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    saveAs(data, fileName);
+  };
 
   return (
     <Modal
@@ -143,19 +163,10 @@ const PaymentsDetailsModal = ({
               {" "}
               Cerrar{" "}
             </Button>
-
-            <CSVLink
-              filename={`${moment(new Date()).format(
-                "YYYYMMDDHHmmss"
-              )} - Pagos Realizados a ${selectedCollector.collector}.csv`}
-              headers={paymentsDetailsHeader}
-              data={payments}
-            >
-              <Button className="ms-2" type="primary">
-                <FileExcelOutlined />
-                Descargar CSV
-              </Button>
-            </CSVLink>
+            <Button className="ms-2" type="primary" onClick={exportToExcel}>
+              <FileExcelOutlined />
+              Exportar a Excel
+            </Button>
           </div>
         </div>
       </div>

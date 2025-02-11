@@ -2,7 +2,8 @@ import { Button, Col, Modal, Row, Table } from "antd";
 import { FileExcelOutlined, TransactionOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-import { CSVLink } from "react-csv";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
 
 const TransactionsModal = ({
@@ -113,17 +114,29 @@ const TransactionsModal = ({
     },
   ];
 
-  const transactionsHeader = [
-    { label: "Código de Transacción", key: "transaction_id" },
-    { label: "Enviado Por", key: "customer" },
-    { label: "Recibido Por", key: "receiver" },
-    { label: "Tipo de Transacción", key: "transaction_type" },
-    { label: "Cuenta Origen", key: "sender_account" },
-    { label: "Monto", key: "amount" },
-    { label: "Cuenta Destino", key: "receiver_account" },
-    { label: "Fecha y Hora", key: "datetime" },
-    { label: "Autorizado Por", key: "authorized_by" },
-  ];
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(transactions);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(
+      workbook,
+      worksheet,
+      `Transacciones - ${transactions[0].customer}`
+    );
+
+    const fileName = `${moment(new Date()).format(
+      "YYYYMMDDHHmmss"
+    )} - Transacciones de ${selectedCustomerAccountNumber.account_number}.xlsx`;
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const data = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    saveAs(data, fileName);
+  };
 
   return (
     <Modal
@@ -167,19 +180,10 @@ const TransactionsModal = ({
               {" "}
               Cerrar{" "}
             </Button>
-
-            <CSVLink
-              filename={`${moment(new Date()).format(
-                "YYYYMMDDHHmmss"
-              )} - Transactions.csv`}
-              headers={transactionsHeader}
-              data={transactions}
-            >
-              <Button className="ms-2" type="primary">
-                <FileExcelOutlined />
-                Descargar CSV
-              </Button>
-            </CSVLink>
+            <Button className="ms-2" type="primary" onClick={exportToExcel}>
+              <FileExcelOutlined />
+              Exportar a Excel
+            </Button>
           </div>
         </div>
       </div>
