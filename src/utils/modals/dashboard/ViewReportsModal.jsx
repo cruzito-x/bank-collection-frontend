@@ -171,7 +171,7 @@ const ViewReportsModal = ({ isOpen, isClosed, setAlertMessage }) => {
         ],
 
         footer: (currentPage, pageCount) => ({
-          text: `Página ${currentPage} de ${pageCount}\n © ${new Date().getFullYear()} - Banco Bambú de El Salvador S.A®`,
+          text: `Página ${currentPage} de ${pageCount}\n © ${new Date().getFullYear()} - Banco Bambú de El Salvador, S.A. de C.V.®`,
           alignment: "center",
           margin: [0, 10],
           fontSize: 10,
@@ -209,7 +209,7 @@ const ViewReportsModal = ({ isOpen, isClosed, setAlertMessage }) => {
         pageMargins: [40, 60, 40, 60],
       };
 
-      pdfMake.createPdf(docDefinition).download(`${title} - ${period}.pdf`);
+      pdfMake.createPdf(docDefinition).download(`${title}_${period}.pdf`);
     } catch (error) {
       setAlertMessage.error(
         "Ha Ocurrido Un Error Inesperado, Por Favor Intente en unos Instantes"
