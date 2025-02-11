@@ -4,7 +4,11 @@ const Logo = () => {
   return (
     <div className="logo">
       <div className="logo-icon">
-        <img src={`${process.env.PUBLIC_URL}/logo.png`} className="logo-img" alt="logo" />
+        <img
+          src={`${process.env.PUBLIC_URL}/logo_menu.png`}
+          className="logo-img p-2"
+          alt="Banco Bambú Logo"
+        />
       </div>
     </div>
   );

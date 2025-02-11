@@ -53,15 +53,14 @@ const Login = () => {
       <Card>
         <div className="w-100 d-flex justify-content-center mb-3">
           <Image
-            src={`${process.env.PUBLIC_URL}/logo.png`}
+            className="rounded mt-3"
+            src={`${process.env.PUBLIC_URL}/logo_login.png`}
             preview={false}
             style={{
-              width: "75px",
-              height: "75px",
-              borderRadius: "50%",
-              marginTop: 25,
+              width: "200px",
+              height: "100px",
             }}
-            alt="Logo del Sistema"
+            alt="Banco Bambú Logo"
           />
         </div>
         <Form

@@ -1,4 +1,4 @@
-import { Button, Col, Divider, Modal, Row } from "antd";
+import { Button, Col, Divider, Image, Modal, Row } from "antd";
 import { FileTextOutlined, PrinterOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef } from "react";
 
@@ -48,7 +48,15 @@ const PaymentsCollectorsDetailsModal = ({
     >
       {paymentsCollectorsData && (
         <>
-          <div ref={printRef} className="row mt-4">
+          <div ref={printRef} className="row">
+            <div className="col-12 text-center">
+              <Image
+                className="w-75"
+                src={`${process.env.PUBLIC_URL}/logo_details_3.png`}
+                preview={false}
+                alt="Banco Bambú Logo"
+              />
+            </div>
             <div className="col-12 mb-4 text-center">
               <h1 className="fw-bold text-black" style={{ fontSize: "60px" }}>
                 {paymentsCollectorsData.amount}
