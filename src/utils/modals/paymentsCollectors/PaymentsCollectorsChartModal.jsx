@@ -78,7 +78,6 @@ const PaymentsCollectorsChartModal = ({ isOpen, isClosed }) => {
       footer={null}
     >
       <div className="row">
-        <label className="fw-semibold text-black"> Filtrar Por </label>
         <div className="col-12 w-auto">
           <label className="fw-semibold text-black me-2"> Fecha </label>
           <Space wrap>

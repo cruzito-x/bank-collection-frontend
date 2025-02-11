@@ -1,4 +1,4 @@
-import { Button, Col, Modal, Row, Table } from "antd";
+import { Button, Col, Modal, Row, Select, Space, Table } from "antd";
 import { FileExcelOutlined, TransactionOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
@@ -16,14 +16,65 @@ const TransactionsModal = ({
   const { authState } = useAuth();
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [dates, setDates] = useState([
+    moment().startOf("day"),
+    moment().endOf("day"),
+  ]);
   const token = authState.token;
+
+  const datesFilter = (filter) => {
+    let range;
+
+    switch (filter) {
+      case "today":
+        range = [moment().startOf("day"), moment().endOf("day")];
+        break;
+      case "lastWeek":
+        range = [
+          moment().subtract(7, "days").startOf("day"),
+          moment().endOf("day"),
+        ];
+        break;
+      case "lastMonth":
+        range = [
+          moment().subtract(1, "month").startOf("day"),
+          moment().endOf("day"),
+        ];
+        break;
+      case "lastQuarter":
+        range = [
+          moment().subtract(3, "months").startOf("day"),
+          moment().endOf("day"),
+        ];
+        break;
+      case "lastSemester":
+        range = [
+          moment().subtract(6, "months").startOf("day"),
+          moment().endOf("day"),
+        ];
+        break;
+      case "lastYear":
+        range = [
+          moment().subtract(1, "year").startOf("day"),
+          moment().endOf("day"),
+        ];
+        break;
+      default:
+        range = [moment().startOf("day"), moment().endOf("day")];
+    }
+
+    setDates(range);
+  };
 
   const transactionsByCustomer = async () => {
     setLoading(true);
 
     try {
+      const startDay = moment(dates[0]).format("YYYY-MM-DD");
+      const endDay = moment(dates[1]).format("YYYY-MM-DD");
+
       const response = await fetch(
-        `http://localhost:3001/transactions/transactions-by-customer/${selectedCustomerId}/account/${selectedCustomerAccountNumber.account_number}`,
+        `http://localhost:3001/transactions/transactions-by-customer/${selectedCustomerId}/account/${selectedCustomerAccountNumber.account_number}/${startDay}/${endDay}`,
         {
           method: "GET",
           headers: {
@@ -55,7 +106,13 @@ const TransactionsModal = ({
 
   useEffect(() => {
     transactionsByCustomer();
-  }, [isOpen, selectedCustomerId, selectedCustomerAccountNumber]);
+  }, [
+    isOpen,
+    selectedCustomerId,
+    selectedCustomerAccountNumber,
+    dates[0],
+    dates[1],
+  ]);
 
   const transactionsColumns = [
     {
@@ -179,6 +236,47 @@ const TransactionsModal = ({
       onCancel={isClosed}
       footer={null}
     >
+      <div className="row">
+        <div className="col-12 w-auto">
+          <label className="fw-semibold text-black me-2"> Fecha </label>
+          <Space wrap>
+            <Select
+              className="mb-2"
+              defaultValue="today"
+              style={{
+                width: 183,
+              }}
+              onChange={datesFilter}
+              options={[
+                {
+                  value: "today",
+                  label: "Hoy",
+                },
+                {
+                  value: "lastWeek",
+                  label: "Última Semana",
+                },
+                {
+                  value: "lastMonth",
+                  label: "Último Mes",
+                },
+                {
+                  value: "lastQuarter",
+                  label: "Últimos 3 Meses",
+                },
+                {
+                  value: "lastSemester",
+                  label: "Últimos 6 Meses",
+                },
+                {
+                  value: "lastYear",
+                  label: "Último Año",
+                },
+              ]}
+            />
+          </Space>
+        </div>
+      </div>
       <div className="row">
         <div className="col-12 mb-3">
           <Table
