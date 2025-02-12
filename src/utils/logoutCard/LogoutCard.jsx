@@ -71,7 +71,7 @@ const LogoutCard = ({ setAlertMessage }) => {
           <label
             className="fw-semibold text-white cursor-pointer p-2"
             style={{
-              fontSize: "12.5px",
+              fontSize: "11px",
             }}
           >
             {username}

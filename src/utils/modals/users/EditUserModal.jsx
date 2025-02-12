@@ -25,10 +25,15 @@ const EditUserModal = ({
       form.setFieldsValue({
         username: userData.username,
         email: userData.email,
-        password: userData.password,
       });
     }
   }, [isOpen, userData, form]);
+
+  useEffect(() => {
+    if (isClosed) {
+      form.resetFields();
+    }
+  });
 
   const updateUser = async (user) => {
     setSendingData(true);
@@ -123,7 +128,12 @@ const EditUserModal = ({
         <label className="fw-semibold text-black"> Nueva Contraseña </label>
         <Form.Item
           name="new_password"
-          rules={[{ message: "Por Favor Introduzca una Contraseña" }]}
+          rules={[
+            {
+              message:
+                "Por Favor Introduzca una Contraseña de Al Menos 6 Caracteres",
+            },
+          ]}
           initialValue={userData.password}
         >
           <Input.Password
