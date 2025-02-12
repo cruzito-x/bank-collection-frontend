@@ -74,7 +74,7 @@ const Login = () => {
           />
           <br />
           <label className="fw-semibold" style={{ color: "var(--blue)" }}>
-            Banco Bambú de El Salvador, S.A de C.V.
+            Banco Bambú de El Salvador, S.A de C.V.&reg;
           </label>
         </div>
         <Form
