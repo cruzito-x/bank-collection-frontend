@@ -9,6 +9,7 @@ const DashboardCharts = ({
   amountRangeFilter,
   transactionTypeFilter,
   refreshCharts,
+  setAlertMessage,
 }) => {
   const { authState } = useAuth();
   const [transactionsByDate, setTransactionsByDate] = useState([]);
@@ -64,9 +65,22 @@ const DashboardCharts = ({
       );
 
       const transactionsByDateAndTypeData = await response.json();
-      setTransactionsByDate(transactionsByDateAndTypeData);
-      setLoadingTransactionsByDateAndAmountRangeAndTypeCard(false);
-    } catch (error) {}
+
+      if (response.status === 200) {
+        setTransactionsByDate(transactionsByDateAndTypeData);
+        setLoadingTransactionsByDateAndAmountRangeAndTypeCard(false);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("authState");
+        window.location.href = "/";
+        return;
+      } else {
+        setAlertMessage.error(transactionsByDateAndTypeData.message);
+      }
+    } catch (error) {
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
+    }
   };
 
   const getApprovalAndRejectionRates = async (
@@ -86,9 +100,22 @@ const DashboardCharts = ({
       );
 
       const approvalAndRejectionRatesData = await response.json();
-      setApprovalAndRejectionRates(approvalAndRejectionRatesData);
-      setLoadingApprovalAndRejectionRatesCard(false);
-    } catch (error) {}
+
+      if (response.status === 200) {
+        setApprovalAndRejectionRates(approvalAndRejectionRatesData);
+        setLoadingApprovalAndRejectionRatesCard(false);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("authState");
+        window.location.href = "/";
+        return;
+      } else {
+        setAlertMessage.error(approvalAndRejectionRatesData.message);
+      }
+    } catch (error) {
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
+    }
   };
 
   const getProccessedAmountByTransactionsAndCollectorsPayments = async (
@@ -108,9 +135,24 @@ const DashboardCharts = ({
       );
 
       const totalProcessedAmountsData = await response.json();
-      setTotalProcessedAmounts(totalProcessedAmountsData);
-      setLoadingProccessedAmountByTransactionsAndCollectorsPaymentsCard(false);
-    } catch (error) {}
+
+      if (response.status === 200) {
+        setTotalProcessedAmounts(totalProcessedAmountsData);
+        setLoadingProccessedAmountByTransactionsAndCollectorsPaymentsCard(
+          false
+        );
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("authState");
+        window.location.href = "/";
+        return;
+      } else {
+        setAlertMessage.error(totalProcessedAmountsData.message);
+      }
+    } catch (error) {
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
+    }
   };
 
   const getCustomersWithTheMostMoneyPaid = async () => {
@@ -127,9 +169,22 @@ const DashboardCharts = ({
       );
 
       const customersWithTheMostMoneyPaidData = await response.json();
-      setCustomersWithTheMostMoneyPaid(customersWithTheMostMoneyPaidData);
-      setLoadingCustomersWithTheMostMoneyPaidCard(false);
-    } catch (error) {}
+
+      if (response.status === 200) {
+        setCustomersWithTheMostMoneyPaid(customersWithTheMostMoneyPaidData);
+        setLoadingCustomersWithTheMostMoneyPaidCard(false);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("authState");
+        window.location.href = "/";
+        return;
+      } else {
+        setAlertMessage.error(customersWithTheMostMoneyPaidData.message);
+      }
+    } catch (error) {
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
+    }
   };
 
   const getPaymentsByCollector = async () => {
@@ -146,9 +201,22 @@ const DashboardCharts = ({
       );
 
       const paymentsByCollectorData = await response.json();
-      setPaymentsByCollector(paymentsByCollectorData);
-      setLoadingPaymentsByCollectorCard(false);
-    } catch (error) {}
+
+      if (response.status === 200) {
+        setPaymentsByCollector(paymentsByCollectorData);
+        setLoadingPaymentsByCollectorCard(false);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("authState");
+        window.location.href = "/";
+        return;
+      } else {
+        setAlertMessage.error(paymentsByCollectorData.message);
+      }
+    } catch (error) {
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
+    }
   };
 
   const getPaymentsByCollectorDenominations = async () => {
@@ -165,9 +233,24 @@ const DashboardCharts = ({
       );
 
       const paymentsByCollectorDenominationsData = await response.json();
-      setPaymentsByCollectorDenominations(paymentsByCollectorDenominationsData);
-      setLoadingPaymentsByCollectorDenominationsCard(false);
-    } catch (error) {}
+
+      if (response.status === 200) {
+        setPaymentsByCollectorDenominations(
+          paymentsByCollectorDenominationsData
+        );
+        setLoadingPaymentsByCollectorDenominationsCard(false);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("authState");
+        window.location.href = "/";
+        return;
+      } else {
+        setAlertMessage.error(paymentsByCollectorDenominationsData.message);
+      }
+    } catch (error) {
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
+    }
   };
 
   useEffect(() => {

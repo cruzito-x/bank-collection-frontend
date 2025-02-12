@@ -351,6 +351,7 @@ const PaymentsCollectors = () => {
         <PaymentsCollectorsChartModal
           isOpen={viewCollectorsPaymentsModal}
           isClosed={() => setViewCollectorsPaymentsModal(false)}
+          setAlertMessage={messageAlert}
         />
 
         <PaymentsCollectorsDetailsModal

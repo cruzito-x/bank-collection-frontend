@@ -4,7 +4,7 @@ import { useAuth } from "../../../contexts/authContext/AuthContext";
 import moment from "moment";
 import { Card, Empty } from "antd";
 
-const PaymentsCollectorsCharts = ({ isOpen, dates }) => {
+const PaymentsCollectorsCharts = ({ isOpen, dates, setAlertMessage }) => {
   const { authState } = useAuth();
   const [paymentsByCollectors, setPaymentsByCollectors] = useState([]);
   const [loadingPaymentsByCollectorsCard, setLoadingPaymentsByCollectorsCard] =
@@ -84,9 +84,24 @@ const PaymentsCollectorsCharts = ({ isOpen, dates }) => {
       );
 
       const paymentsByCollectorsData = await response.json();
-      setPaymentsByCollectors(paymentsByCollectorsData);
-      setLoadingPaymentsByCollectorsCard(false);
-    } catch (error) {}
+
+      if (response.status === 200) {
+        setPaymentsByCollectors(paymentsByCollectorsData);
+        setLoadingPaymentsByCollectorsCard(false);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("authState");
+        window.location.href = "/";
+        return;
+      } else {
+        setAlertMessage.error(
+          "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+        );
+      }
+    } catch (error) {
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
+    }
   };
 
   useEffect(() => {

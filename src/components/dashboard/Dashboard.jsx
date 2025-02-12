@@ -670,6 +670,7 @@ const Dashboard = () => {
               amountRangeFilter={amountRangeFilter}
               transactionTypeFilter={transactionTypeFilter}
               refreshCharts={refreshCharts}
+              setAlertMessage={messageAlert}
             />
           </div>
         </Card>
