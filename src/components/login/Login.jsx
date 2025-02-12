@@ -8,7 +8,15 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [messageAlert, messageContext] = message.useMessage();
   const navigate = useNavigate();
-  const { setAuthState } = useAuth();
+  const { setAuthState, authState } = useAuth();
+  const token = authState.token;
+  const isSupervisor = authState.isSupervisor;
+
+  useEffect(() => {
+    if (token) {
+      navigate(isSupervisor ? "/dashboard" : "/customers");
+    }
+  }, [navigate]);
 
   const loginUser = async (user) => {
     setLoading(true);
