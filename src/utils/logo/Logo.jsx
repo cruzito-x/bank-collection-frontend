@@ -5,7 +5,7 @@ const Logo = () => {
     <div className="logo">
       <div className="logo-icon">
         <img
-          src={`${process.env.PUBLIC_URL}/assets/img/logo_menu.png`}
+          src={`${process.env.PUBLIC_URL}/assets/img/logo/main_logo.png`}
           className="logo-img p-2"
           alt="Banco Bambú Logo"
         />

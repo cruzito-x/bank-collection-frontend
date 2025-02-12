@@ -47,7 +47,7 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
             <div className="col-12 mb-2 text-center">
               <Image
                 className="w-50"
-                src={`${process.env.PUBLIC_URL}/assets/img/logo_details.png`}
+                src={`${process.env.PUBLIC_URL}/assets/img/logo/main_logo.png`}
                 preview={false}
                 alt="Banco Bambú Logo"
               />

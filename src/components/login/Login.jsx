@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Card, Form, message, Image, Input } from "antd";
+import { Button, Card, Form, message, Input } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { useAuth } from "../../contexts/authContext/AuthContext";
+import Logo from "../../utils/logo/Logo";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -62,18 +63,9 @@ const Login = () => {
       {messageContext}
       <Card>
         <div className="w-100 text-center mb-3">
-          <Image
-            className="mt-3 w-100"
-            src={`${process.env.PUBLIC_URL}/assets/img/logo_details.png`}
-            preview={false}
-            style={{
-              width: "180px",
-              height: "90px",
-            }}
-            alt="Banco Bambú Logo"
-          />
+          <Logo/>
           <br />
-          <label className="fw-semibold" style={{ color: "var(--blue)" }}>
+          <label className="fw-semibold mt-2" style={{ color: "var(--blue)" }}>
             Banco Bambú de El Salvador, S.A de C.V.&reg;
           </label>
         </div>
