@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Menu } from "antd";
 import {
   LineChartOutlined,
@@ -6,8 +6,6 @@ import {
   TransactionOutlined,
   CheckCircleOutlined,
   UserOutlined,
-  LeftOutlined,
-  RightOutlined,
   SolutionOutlined,
   AuditOutlined,
   LogoutOutlined,
@@ -19,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import { useMediaQuery } from "react-responsive";
 
-const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
+const MenuList = ({ darkTheme, setCollapsed }) => {
   const { authState } = useAuth();
   const user_id = authState.user_id;
   const navigate = useNavigate();
@@ -134,20 +132,6 @@ const MenuList = ({ darkTheme, collapsed, setCollapsed }) => {
           icon: <LogoutOutlined className="text-white" />,
           label: "Salir",
           className: "text-white",
-        }
-      : null,
-
-    !isMobile && !isTablet
-      ? {
-          key: "#",
-          icon: collapsed ? (
-            <RightOutlined className="text-white" />
-          ) : (
-            <LeftOutlined className="text-white" />
-          ),
-          label: collapsed ? "Abrir Menú" : "Cerrar Menú",
-          className: "toggle",
-          onClick: () => setCollapsed(!collapsed),
         }
       : null,
   ];
