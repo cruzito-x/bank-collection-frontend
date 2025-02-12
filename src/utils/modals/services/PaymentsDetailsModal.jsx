@@ -85,13 +85,22 @@ const PaymentsDetailsModal = ({
       );
 
       const paymentsDetailsData = await response.json();
-      const payments = paymentsDetailsData.map((payment) => ({
-        ...payment,
-        amount: "$" + payment.amount,
-        datetime: moment(payment.datetime).format("DD/MM/YYYY - hh:mm A"),
-      }));
 
-      setPayments(payments);
+      if (response.status === 200) {
+        const payments = paymentsDetailsData.map((payment) => ({
+          ...payment,
+          amount: "$" + payment.amount,
+          datetime: moment(payment.datetime).format("DD/MM/YYYY - hh:mm A"),
+        }));
+
+        setPayments(payments);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("authState");
+        window.location.href = "/";
+        return;
+      } else {
+        setAlertMessage.error(paymentsDetailsData.message);
+      }
     } catch (error) {
       setAlertMessage.error(
         "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"

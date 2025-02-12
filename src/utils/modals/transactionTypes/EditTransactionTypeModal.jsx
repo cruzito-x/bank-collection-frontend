@@ -51,6 +51,10 @@ const EditTransactionTypeModal = ({
         localStorage.removeItem("token");
         window.location.href = "/";
         return;
+      } else if (response.status === 409) {
+        setAlertMessage.warning(updatedTransactionType.message);
+        setSendingData(false);
+        return;
       } else {
         setAlertMessage.error(updatedTransactionType.message);
         setSendingData(false);

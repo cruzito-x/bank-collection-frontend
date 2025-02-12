@@ -53,6 +53,10 @@ const EditCustomerModal = ({
         localStorage.removeItem("token");
         window.location.href = "/";
         return;
+      } else if (response.status === 409) {
+        setAlertMessage.warning(updatedCustomer.message);
+        setSendingData(false);
+        return;
       } else {
         setAlertMessage.error(updatedCustomer.message);
       }

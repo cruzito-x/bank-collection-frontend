@@ -57,6 +57,10 @@ const EditUserModal = ({
         localStorage.removeItem("token");
         window.location.href = "/";
         return;
+      } else if (response.status === 409) {
+        setAlertMessage.warning(updatedUser.message);
+        setSendingData(false);
+        return;
       } else {
         setAlertMessage.error(updatedUser.message);
       }
