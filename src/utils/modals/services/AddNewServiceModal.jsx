@@ -34,6 +34,13 @@ const AddNewServiceModal = ({
     getCollectors();
   }, []);
 
+  useEffect(() => {
+    if (isClosed) {
+      form.resetFields();
+      setServices([{ service: "", description: "", price: 0 }]);
+    }
+  }, [isClosed]);
+
   const addOtherService = () => {
     setServices([...services, { service: "", description: "", price: 0 }]);
   };
