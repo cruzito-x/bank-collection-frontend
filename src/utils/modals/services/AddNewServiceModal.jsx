@@ -22,6 +22,9 @@ const AddNewServiceModal = ({
 }) => {
   const { authState } = useAuth();
   const { collectors, getCollectors } = useCollectorsData();
+  const [services, setServices] = useState([
+    { service: "", description: "", price: 0 },
+  ]);
   const [sendingData, setSendingData] = useState(false);
   const [form] = Form.useForm();
   const token = authState.token;
@@ -31,7 +34,22 @@ const AddNewServiceModal = ({
     getCollectors();
   }, []);
 
-  const saveNewService = async (service) => {
+  const addOtherService = () => {
+    setServices([...services, { service: "", description: "", price: 0 }]);
+  };
+
+  const removeExtraServices = (index) => {
+    const newServices = services.filter((_, n) => n !== index);
+    setServices(newServices);
+  };
+
+  const onChangeServiceName = (index, field, value) => {
+    const newServices = [...services];
+    newServices[index][field] = value;
+    setServices(newServices);
+  };
+
+  const saveNewServices = async () => {
     setSendingData(true);
 
     try {
@@ -44,7 +62,10 @@ const AddNewServiceModal = ({
             Authorization: `Bearer ${token}`,
             user_id: user_id,
           },
-          body: JSON.stringify(service),
+          body: JSON.stringify({
+            collector: form.getFieldValue("collector"),
+            services,
+          }),
         }
       );
 
@@ -53,16 +74,12 @@ const AddNewServiceModal = ({
       if (response.status === 200) {
         setAlertMessage.success(savedService.message);
         form.resetFields();
-        setSendingData(false);
+        setServices([{ service: "", description: "", price: 0 }]);
         isClosed();
         getServices();
       } else if (response.status === 401 || response.status === 403) {
         localStorage.removeItem("authState");
         window.location.href = "/";
-        return;
-      } else if (response.status === 409) {
-        setAlertMessage.warning(savedService.message);
-        setSendingData(false);
         return;
       } else {
         setAlertMessage.error(savedService.message);
@@ -98,86 +115,107 @@ const AddNewServiceModal = ({
       footer={null}
       maskClosable={false}
     >
-      <Form form={form} onFinish={saveNewService}>
-        <label className="fw-semibold text-black"> Seleccionar Colector </label>
+      <Form form={form} onFinish={saveNewServices}>
+        <label className="fw-semibold text-black">Seleccionar Colector</label>
         <Form.Item
+          className="mb-3"
           name="collector"
-          rules={[
-            {
-              required: true,
-              message: "Por Favor, Seleccione un Colector",
-            },
-          ]}
+          rules={[{ required: true, message: "Seleccione un colector" }]}
         >
           <Select
+            className="w-100"
             options={collectors}
             showSearch
             placeholder="Buscar Colector"
             disabled={sendingData}
-            optionFilterProp="label"
-            filterSort={(optionA, optionB) =>
-              (optionA?.label ?? "")
-                .toLowerCase()
-                .localeCompare((optionB?.label ?? "").toLowerCase())
-            }
-            style={{
-              width: "100%",
-            }}
           />
         </Form.Item>
-        <label className="fw-semibold text-black"> Nombre de Servicio </label>
-        <Form.Item
-          name="service"
-          rules={[
-            {
-              required: true,
-              message: "Por Favor, Introduzca un Nombre de Servicio",
-            },
-          ]}
-        >
-          <Input placeholder="Nombre del Servicio" />
-        </Form.Item>
-        <label className="fw-semibold text-black"> Costo de Servicio </label>
-        <Form.Item
-          name="price"
-          rules={[
-            {
-              required: true,
-              message: "Por Favor, Introduzca un Costo de Servicio",
-            },
-          ]}
-        >
-          <InputNumber
-            prefix="$"
-            className="w-100"
-            min={0}
-            max={100000}
-            placeholder="0.00"
-          />
-        </Form.Item>
-        <label className="fw-semibold text-black">
-          Descripción del Servicio
-        </label>
-        <Form.Item
-          name="description"
-          rules={[
-            {
-              required: true,
-              message: "Por Favor, Introduzca una Descripción Para el Servicio",
-              min: 5,
-              max: 255,
-            },
-          ]}
-        >
-          <TextArea
-            rows={4}
-            size="middle"
-            style={{
-              resize: "none",
-            }}
-            placeholder="Descripción del Servicio"
-          />
-        </Form.Item>
+
+        {services.map((service, index) => (
+          <div key={index} className="mb-3">
+            <label className="fw-semibold text-black">
+              Nombre del Servicio
+            </label>
+            <Form.Item
+              name={["services", index, "service"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Ingrese un nombre para el servicio",
+                },
+              ]}
+            >
+              <Input
+                value={service.service}
+                onChange={(event) =>
+                  onChangeServiceName(index, "service", event.target.value)
+                }
+                placeholder="Nombre del Servicio"
+              />
+            </Form.Item>
+
+            <label className="fw-semibold text-black">Costo del Servicio</label>
+            <Form.Item
+              name={["services", index, "price"]}
+              rules={[
+                {
+                  required: false,
+                  message: "Ingrese un costo para el servicio",
+                },
+              ]}
+            >
+              <InputNumber
+                prefix="$"
+                className="w-100"
+                min={0}
+                max={100000}
+                placeholder="0.00"
+                value={service.price}
+                onChange={(value) => onChangeServiceName(index, "price", value)}
+              />
+            </Form.Item>
+
+            <label className="fw-semibold text-black">
+              Descripción del Servicio
+            </label>
+            <Form.Item
+              name={["services", index, "description"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Ingrese una descripción para el servicio",
+                  min: 5,
+                  max: 255,
+                },
+              ]}
+            >
+              <TextArea
+                rows={4}
+                style={{ resize: "none" }}
+                placeholder="Descripción del Servicio"
+                value={service.description}
+                onChange={(event) =>
+                  onChangeServiceName(index, "description", event.target.value)
+                }
+              />
+            </Form.Item>
+
+            {index > 0 && (
+              <Button
+                danger
+                type="primary"
+                onClick={() => removeExtraServices(index)}
+              >
+                Eliminar Servicio
+              </Button>
+            )}
+          </div>
+        ))}
+
+        <Button className="mb-3" type="primary" onClick={addOtherService} block>
+          Agregar Otro Servicio
+        </Button>
+
         <Form.Item className="text-end">
           <Button
             type="primary"
