@@ -110,7 +110,7 @@ const Login = () => {
 
           <label
             className="text-black w-100 text-center"
-            style={{ fontSize: "12p.5x" }}
+            style={{ fontSize: "12.5px" }}
           >
             &copy; {new Date().getFullYear()} - Banco Bambú de El Salvador{" "}
             <br /> S.A. de C.V.
