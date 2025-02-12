@@ -53,13 +53,15 @@ const EditUserModal = ({
         setAlertMessage.success(updatedUser.message);
         getUsers();
         isClosed();
+      } else if (response.status === 400) {
+        setAlertMessage.warning(updatedUser.message);
+        return;
       } else if (response.status === 401 || response.status === 403) {
         localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else if (response.status === 409) {
         setAlertMessage.warning(updatedUser.message);
-        setSendingData(false);
         return;
       } else {
         setAlertMessage.error(updatedUser.message);
@@ -68,6 +70,8 @@ const EditUserModal = ({
       setAlertMessage.error(
         "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
       );
+    } finally {
+      setSendingData(false);
     }
   };
 
