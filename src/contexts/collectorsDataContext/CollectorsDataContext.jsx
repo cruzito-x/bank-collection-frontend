@@ -40,7 +40,6 @@ export const CollectorsDataProvider = ({ children }) => {
       window.location.href = "/";
       return;
     } else {
-      console.error(collectorsData.message);
     }
   };
 
