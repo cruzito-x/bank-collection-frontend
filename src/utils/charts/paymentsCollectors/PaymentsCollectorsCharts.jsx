@@ -185,7 +185,7 @@ const PaymentsCollectorsCharts = ({ isOpen, dates, setAlertMessage }) => {
   return (
     <>
       {paymentsByCollectors.length === 0 ? (
-        <Empty className="p-5" description="No Hay Datos Disponibles" />
+        <Empty className="p-5" description="Sin Datos Disponibles" />
       ) : (
         <Card loading={loadingPaymentsByCollectorsCard}>
           <canvas

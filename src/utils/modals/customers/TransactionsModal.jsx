@@ -295,7 +295,7 @@ const TransactionsModal = ({
       <div className="row">
         <div className="col-12 mb-3">
           {transactions.length === 0 ? (
-            <Empty className="p-5" description="No Hay Datos Disponibles" />
+            <Empty className="p-5" description="Sin Datos Disponibles" />
           ) : (
             <Table
               dataSource={transactions}
