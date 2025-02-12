@@ -503,7 +503,11 @@ const Dashboard = () => {
                   loading={loadingCard}
                   hoverable
                   className="cursor-pointer"
-                  onClick={() => setIsNotificationsModalOpen(true)}
+                  onClick={() =>
+                    !loadingCard
+                      ? setIsNotificationsModalOpen(true)
+                      : setIsNotificationsModalOpen(false)
+                  }
                 >
                   <label className="fw-semibold text-start p-1 cursor-pointer">
                     <BellOutlined
