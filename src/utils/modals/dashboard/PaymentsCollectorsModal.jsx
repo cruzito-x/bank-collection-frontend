@@ -129,7 +129,7 @@ const PaymentsCollectorsModal = ({
     }
   };
 
-  const startRegisterProgress = (paymentData) => {
+  const startPaymentProcess = (paymentData) => {
     setPercentage(0);
     setCancelPayment(false);
     cancelPaymentRef.current = false;
@@ -155,7 +155,7 @@ const PaymentsCollectorsModal = ({
     }, 100);
   };
 
-  const cancelRegisterPayment = () => {
+  const cancelPaymentCollector = () => {
     setCancelPayment(true);
     cancelPaymentRef.current = true;
     setPercentage(0);
@@ -231,7 +231,7 @@ const PaymentsCollectorsModal = ({
       footer={null}
     >
       <div className={percentage >= 1 ? "d-block" : "d-none"}>
-        <label className="fw-semibold mb-1 text-danger">
+        <label className="fw-semibold mb-1" style={{ color: "var(--red)" }}>
           {" "}
           ¿Desea Cancelar el Pago?{" "}
         </label>
@@ -244,15 +244,16 @@ const PaymentsCollectorsModal = ({
               showInfo={false}
             />
             <label
-              className="fw-semibold ms-3 text-danger cursor-pointer"
-              onClick={cancelRegisterPayment}
+              className="fw-semibold ms-3 cursor-pointer"
+              onClick={cancelPaymentCollector}
+              style={{ color: "var(--red)" }}
             >
               Cancelar
             </label>
           </div>
         </Flex>
       </div>
-      <Form form={form} onFinish={startRegisterProgress}>
+      <Form form={form} onFinish={startPaymentProcess}>
         <label className="fw-semibold text-black"> Seleccionar Cliente </label>
         <Form.Item
           name="customer_id"

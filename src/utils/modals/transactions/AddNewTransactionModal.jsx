@@ -1,6 +1,16 @@
-import { Button, Col, Form, InputNumber, Modal, Row, Select } from "antd";
+import {
+  Button,
+  Col,
+  Flex,
+  Form,
+  InputNumber,
+  Modal,
+  Progress,
+  Row,
+  Select,
+} from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
 import InstantOrQueuedApprovedTransactionModal from "./InstantOrQueuedApprovedTransactionModal";
@@ -18,6 +28,9 @@ const AddNewTransactionModal = ({
   const [customers, setCustomers] = useState([]);
   const [accounts, setAccounts] = useState([]);
   const [allAccounts, setAllAccounts] = useState([]);
+  const [percentage, setPercentage] = useState(0);
+  const [cancelTransaction, setCancelTransaction] = useState(false);
+  const cancelTransactionRef = useRef(cancelTransaction);
   const [sendingTransaction, setSendingTransaction] = useState(false);
   const [form] = useForm();
   const [showReceiverAccount, setShowReceiverAccount] = useState(false);
@@ -187,8 +200,44 @@ const AddNewTransactionModal = ({
         "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
       );
     } finally {
+      setPercentage(0);
       setSendingTransaction(false);
+      setCancelTransaction(false);
+      cancelTransactionRef.current = false;
     }
+  };
+
+  const startTransactionProcess = (transaction) => {
+    setPercentage(0);
+    setCancelTransaction(false);
+    cancelTransactionRef.current = false;
+    setSendingTransaction(true);
+
+    let progress = 0;
+    const interval = setInterval(() => {
+      if (cancelTransactionRef.current) {
+        clearInterval(interval);
+        setPercentage(0);
+        setSendingTransaction(false);
+
+        return;
+      }
+
+      progress += 2;
+      setPercentage(progress);
+
+      if (progress === 100) {
+        clearInterval(interval);
+        instantApproveOrQueued(transaction);
+      }
+    }, 100);
+  };
+
+  const cancelTransactionProcess = () => {
+    setCancelTransaction(true);
+    cancelTransactionRef.current = true;
+    setPercentage(0);
+    setSendingTransaction(false);
   };
 
   return (
@@ -214,9 +263,32 @@ const AddNewTransactionModal = ({
         footer={null}
         maskClosable={false}
       >
+        <div className={percentage >= 1 ? "d-block" : "d-none"}>
+          <label className="fw-semibold mb-1" style={{ color: "var(--red)" }}>
+            ¿Desea Cancelar la Transacción?
+          </label>
+          <Flex className="mb-2" vertical gap="small">
+            <div className="d-flex">
+              <Progress
+                percent={percentage}
+                type="line"
+                status="active"
+                showInfo={false}
+              />
+              <label
+                className="fw-semibold ms-3 cursor-pointer"
+                onClick={cancelTransactionProcess}
+                style={{ color: "var(--red)" }}
+              >
+                Cancelar
+              </label>
+            </div>
+          </Flex>
+        </div>
         <Form
           form={form}
-          onFinish={instantApproveOrQueued}
+          // onFinish={instantApproveOrQueued}
+          onFinish={startTransactionProcess}
           initialValues={{ transaction_type: 1 }}
           onValuesChange={(changedValues) => {
             if (changedValues.transaction_type !== undefined) {
