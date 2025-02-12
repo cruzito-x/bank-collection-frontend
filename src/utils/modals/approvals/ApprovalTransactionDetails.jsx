@@ -44,13 +44,20 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
       {approvalData && (
         <>
           <div ref={printRef} className="row">
-            <div className="col-12 text-center">
+            <div className="col-12 mb-2 text-center">
               <Image
-                className="w-75"
+                className="w-50"
                 src={`${process.env.PUBLIC_URL}/assets/img/logo_details.png`}
                 preview={false}
                 alt="Banco Bambú Logo"
               />
+              <br />
+              <label
+                className="fw-semibold mt-1"
+                style={{ color: "var(--blue)" }}
+              >
+                Banco Bambú
+              </label>
             </div>
             <div className="col-12 mb-4 text-center">
               <h1 className="fw-bold text-black" style={{ fontSize: "60px" }}>
