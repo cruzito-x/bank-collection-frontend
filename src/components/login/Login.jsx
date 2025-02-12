@@ -51,10 +51,10 @@ const Login = () => {
     >
       {messageContext}
       <Card>
-        <div className="w-100 d-flex justify-content-center mb-3">
+        <div className="w-100 text-center mb-3">
           <Image
-            className="mt-3"
-            src={`${process.env.PUBLIC_URL}/assets/img/logo_login.png`}
+            className="mt-3 w-100"
+            src={`${process.env.PUBLIC_URL}/assets/img/logo_details.png`}
             preview={false}
             style={{
               width: "180px",
@@ -62,6 +62,10 @@ const Login = () => {
             }}
             alt="Banco Bambú Logo"
           />
+          <br />
+          <label className="fw-semibold" style={{ color: "var(--blue)" }}>
+            Banco Bambú de El Salvador, S.A de C.V.
+          </label>
         </div>
         <Form
           layout="vertical"
@@ -112,8 +116,8 @@ const Login = () => {
             className="text-black w-100 text-center"
             style={{ fontSize: "12.5px" }}
           >
-            &copy; {new Date().getFullYear()} - Banco Bambú de El Salvador{" "}
-            <br /> S.A. de C.V.
+            &copy; {new Date().getFullYear()} - Desarrollado por <br />
+            cruzito-x
           </label>
         </Form>
       </Card>
