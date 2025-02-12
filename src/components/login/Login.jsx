@@ -33,6 +33,8 @@ const Login = () => {
         });
 
         navigate(loggedUserData.isSupervisor ? "/dashboard" : "/customers");
+      } else if (response.status === 400) {
+        messageAlert.warning(loggedUserData.message);
       } else {
         messageAlert.error(loggedUserData.message);
       }
