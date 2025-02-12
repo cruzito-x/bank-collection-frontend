@@ -19,20 +19,29 @@ export const CollectorsDataProvider = ({ children }) => {
     });
 
     const collectorsData = await response.json();
-    const uniqueCollector = new Map();
 
-    collectorsData.forEach((collector) => {
-      if (!uniqueCollector.has(collector.id)) {
-        uniqueCollector.set(collector.id, {
-          label: collector.collector,
-          value: collector.id,
-        });
-      }
-    });
+    if (response.status === 200) {
+      const uniqueCollector = new Map();
 
-    const collectors = Array.from(uniqueCollector.values());
+      collectorsData.forEach((collector) => {
+        if (!uniqueCollector.has(collector.id)) {
+          uniqueCollector.set(collector.id, {
+            label: collector.collector,
+            value: collector.id,
+          });
+        }
+      });
 
-    setCollectors(collectors);
+      const collectors = Array.from(uniqueCollector.values());
+
+      setCollectors(collectors);
+    } else if (response.status === 401 || response.status === 403) {
+      localStorage.removeItem("authState");
+      window.location.href = "/";
+      return;
+    } else {
+      console.error(collectorsData.message);
+    }
   };
 
   return (

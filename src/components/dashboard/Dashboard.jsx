@@ -179,6 +179,8 @@ const Dashboard = () => {
         localStorage.removeItem("token");
         window.location.href = "/";
         return;
+      } else {
+        messageAlert.error(latestCollectorAndCollectorPaymentData.message);
       }
     } catch (error) {
       messageAlert.error(
@@ -253,6 +255,8 @@ const Dashboard = () => {
         localStorage.removeItem("token");
         window.location.href = "/";
         return;
+      } else {
+        messageAlert.error(notificationsData.message);
       }
     } catch (error) {
       messageAlert.error(
@@ -324,6 +328,8 @@ const Dashboard = () => {
         localStorage.removeItem("token");
         window.location.href = "/";
         return;
+      } else {
+        messageAlert.error(totalPaymentsData.message);
       }
     } catch (error) {
       messageAlert.error(
@@ -353,6 +359,8 @@ const Dashboard = () => {
         localStorage.removeItem("token");
         window.location.href = "/";
         return;
+      } else {
+        messageAlert.error(totalProcessedAmountsData.message);
       }
     } catch (error) {
       messageAlert.error(
@@ -386,6 +394,8 @@ const Dashboard = () => {
         localStorage.removeItem("token");
         window.location.href = "/";
         return;
+      } else {
+        messageAlert.error(transactionTypesData.message);
       }
     } catch (error) {
       messageAlert.error(
