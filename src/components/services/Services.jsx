@@ -100,7 +100,7 @@ const Services = () => {
 
         setServices(services);
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {
@@ -137,7 +137,7 @@ const Services = () => {
         messageAlert.success(deletedService.message);
         getServices();
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {
@@ -215,7 +215,7 @@ const Services = () => {
         } else if (response.status === 400) {
           messageAlert.warning(servicesData.message);
         } else if (response.status === 401 || response.status === 403) {
-          localStorage.removeItem("token");
+          localStorage.removeItem("authState");
           window.location.href = "/";
           return;
         } else {

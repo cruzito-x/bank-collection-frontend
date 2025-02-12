@@ -131,7 +131,7 @@ const Approvals = () => {
 
         setApprovals(approvals);
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {
@@ -173,7 +173,7 @@ const Approvals = () => {
         messageAlert.success(transactionStatus.message);
         getApprovals();
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {
@@ -289,7 +289,7 @@ const Approvals = () => {
         } else if (response.status === 400) {
           messageAlert.warning(approvalsData.message);
         } else if (response.status === 401 || response.status === 403) {
-          localStorage.removeItem("token");
+          localStorage.removeItem("authState");
           window.location.href = "/";
           return;
         } else {

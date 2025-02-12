@@ -87,14 +87,14 @@ const InstantOrQueuedApprovedTransactionModal = ({
             );
           }
         } else if (response.status === 401 || response.status === 403) {
-          localStorage.removeItem("token");
+          localStorage.removeItem("authState");
           window.location.href = "/";
           return;
         } else {
           setAlertMessage.error(approvalsData.message);
         }
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {
@@ -136,7 +136,7 @@ const InstantOrQueuedApprovedTransactionModal = ({
       if (response.status === 200) {
         setAlertMessage.success(transactionStatus.message);
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {

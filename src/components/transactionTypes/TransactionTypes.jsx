@@ -96,7 +96,7 @@ const TransactionTypes = () => {
 
         setTransactionsTypes(transactionsTypes);
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {
@@ -135,7 +135,7 @@ const TransactionTypes = () => {
         setSendingData(false);
         getTransactionsTypes();
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {
@@ -214,7 +214,7 @@ const TransactionTypes = () => {
         } else if (response.status === 400) {
           messageAlert.warning(transactionsTypesData.message);
         } else if (response.status === 401 || response.status === 403) {
-          localStorage.removeItem("token");
+          localStorage.removeItem("authState");
           window.location.href = "/";
           return;
         } else {

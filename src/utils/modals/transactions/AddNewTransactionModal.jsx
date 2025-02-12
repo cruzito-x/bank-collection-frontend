@@ -176,7 +176,7 @@ const AddNewTransactionModal = ({
         getTransactions();
         setAlertMessage.success(transactionData.message);
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {

@@ -176,7 +176,7 @@ const Dashboard = () => {
 
         setLoadingCard(false);
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {
@@ -252,7 +252,7 @@ const Dashboard = () => {
         });
         setNotifications(notifications);
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {
@@ -292,7 +292,7 @@ const Dashboard = () => {
         messageAlert.success(transactionStatus.message);
         getNotifications();
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {
@@ -325,7 +325,7 @@ const Dashboard = () => {
       if (response.status === 200) {
         setTotalPayments(totalPaymentsData);
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {
@@ -356,7 +356,7 @@ const Dashboard = () => {
       if (response.status === 200) {
         setTotalProcessedAmounts(totalProcessedAmountsData[0].amount);
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {
@@ -391,7 +391,7 @@ const Dashboard = () => {
 
         setTransactionTypes(transactionTypes);
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {

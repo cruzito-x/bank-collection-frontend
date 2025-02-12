@@ -214,7 +214,9 @@ const ViewReportsModal = ({ isOpen, isClosed, setAlertMessage }) => {
 
         pdfMake.createPdf(docDefinition).download(`${title}_${period}.pdf`);
       } else if (response.status === 401 || response.status === 403) {
-        setAlertMessage.error(reportData.message);
+        localStorage.removeItem("authState");
+        window.location.href = "/";
+        return;
       } else {
         setAlertMessage.error(reportData.message);
       }

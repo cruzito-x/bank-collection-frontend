@@ -104,7 +104,7 @@ const Customers = () => {
 
         setCustomers(customers);
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {
@@ -142,7 +142,7 @@ const Customers = () => {
         getCustomers();
         setLoading(false);
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {
@@ -225,7 +225,7 @@ const Customers = () => {
         } else if (response.status === 400) {
           messageAlert.warning(customersData.message);
         } else if (response.status === 401 || response.status === 403) {
-          localStorage.removeItem("token");
+          localStorage.removeItem("authState");
           window.location.href = "/";
           return;
         } else {

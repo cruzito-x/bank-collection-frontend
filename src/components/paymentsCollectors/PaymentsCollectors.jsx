@@ -97,7 +97,7 @@ const PaymentsCollectors = () => {
 
         setPaymentsCollectors(paymentsCollector);
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {
@@ -168,7 +168,7 @@ const PaymentsCollectors = () => {
         } else if (response.status === 400) {
           messageAlert.warning(paymentscollectorsData.message);
         } else if (response.status === 401 || response.status === 403) {
-          localStorage.removeItem("token");
+          localStorage.removeItem("authState");
           window.location.href = "/";
           return;
         } else {

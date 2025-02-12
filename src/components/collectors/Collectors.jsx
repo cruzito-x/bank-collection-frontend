@@ -100,7 +100,7 @@ const Collectors = () => {
 
         setCollectors(collectors);
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {
@@ -137,7 +137,7 @@ const Collectors = () => {
         messageAlert.success(deletedCollector.message);
         getCollectors();
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {
@@ -212,7 +212,7 @@ const Collectors = () => {
         } else if (response.status === 400) {
           messageAlert.warning(collectorsData.message);
         } else if (response.status === 401 || response.status === 403) {
-          localStorage.removeItem("token");
+          localStorage.removeItem("authState");
           window.location.href = "/";
           return;
         } else {

@@ -67,7 +67,7 @@ const Audit = () => {
 
         setAudit(audit);
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {
@@ -114,7 +114,7 @@ const Audit = () => {
       } else if (response.status === 400) {
         messageAlert.error(auditData.message);
       } else if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authState");
         window.location.href = "/";
         return;
       } else {
