@@ -88,6 +88,10 @@ const AddNewServiceModal = ({
         localStorage.removeItem("authState");
         window.location.href = "/";
         return;
+      } else if (response.status === 409) {
+        setAlertMessage.warning(savedService.message);
+        setSendingData(false);
+        return;
       } else {
         setAlertMessage.error(savedService.message);
       }
