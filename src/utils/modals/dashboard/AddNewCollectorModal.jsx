@@ -32,7 +32,6 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
 
       if (response.status === 200) {
         setAlertMessage.success(savedCollector.message);
-        isClosed();
         form.resetFields();
       } else if (response.status === 401 || response.status === 403) {
         localStorage.removeItem("token");
@@ -51,6 +50,7 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
       );
     } finally {
       setLoading(false);
+      isClosed();
     }
   };
 

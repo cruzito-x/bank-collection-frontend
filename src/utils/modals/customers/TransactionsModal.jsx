@@ -85,16 +85,25 @@ const TransactionsModal = ({
       );
 
       const transactionsData = await response.json();
-      const transactions = transactionsData.map((transaction) => ({
-        ...transaction,
-        amount: "$" + transaction.amount,
-        receiver_account: !transaction.receiver_account
-          ? transaction.sender_account
-          : transaction.receiver_account,
-        datetime: moment(transaction.datetime).format("DD/MM/YYYY - hh:mm A"),
-      }));
 
-      setTransactions(transactions);
+      if (response.status === 200) {
+        const transactions = transactionsData.map((transaction) => ({
+          ...transaction,
+          amount: "$" + transaction.amount,
+          receiver_account: !transaction.receiver_account
+            ? transaction.sender_account
+            : transaction.receiver_account,
+          datetime: moment(transaction.datetime).format("DD/MM/YYYY - hh:mm A"),
+        }));
+
+        setTransactions(transactions);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("authState");
+        window.location.href = "/";
+        return;
+      } else {
+        setAlertMessage.error(transactionsData.message);
+      }
     } catch (error) {
       setAlertMessage.error(
         "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"

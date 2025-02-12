@@ -61,20 +61,29 @@ const PaymentsCollectorsModal = ({
       });
 
       const customersData = await response.json();
-      const uniqueCustomer = new Map();
 
-      customersData.forEach((customer) => {
-        if (!uniqueCustomer.has(customer.id)) {
-          uniqueCustomer.set(customer.id, {
-            label: `${customer.name} ${customer.identity_doc}`,
-            value: customer.id,
-          });
-        }
-      });
+      if (response.status === 200) {
+        const uniqueCustomer = new Map();
 
-      const customers = Array.from(uniqueCustomer.values());
+        customersData.forEach((customer) => {
+          if (!uniqueCustomer.has(customer.id)) {
+            uniqueCustomer.set(customer.id, {
+              label: `${customer.name} ${customer.identity_doc}`,
+              value: customer.id,
+            });
+          }
+        });
 
-      setCustomers(customers);
+        const customers = Array.from(uniqueCustomer.values());
+
+        setCustomers(customers);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("authState");
+        window.location.href = "/";
+        return;
+      } else {
+        setAlertMessage.error(customersData.message);
+      }
     } catch (error) {
       setAlertMessage.error(
         "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
@@ -100,15 +109,24 @@ const PaymentsCollectorsModal = ({
     );
 
     const servicesData = await response.json();
-    const services = servicesData.map((service) => {
-      return {
-        value: service.id,
-        label: service.service_name,
-        price: service.price,
-      };
-    });
 
-    setServices(services);
+    if (response.status === 200) {
+      const services = servicesData.map((service) => {
+        return {
+          value: service.id,
+          label: service.service_name,
+          price: service.price,
+        };
+      });
+
+      setServices(services);
+    } else if (response.status === 401 || response.status === 403) {
+      localStorage.removeItem("authState");
+      window.location.href = "/";
+      return;
+    } else {
+      setAlertMessage.error(servicesData.message);
+    }
   };
 
   const startRegisterProgress = (paymentData) => {

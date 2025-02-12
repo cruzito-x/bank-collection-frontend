@@ -50,20 +50,29 @@ const AddNewTransactionModal = ({
       },
     });
     const customersData = await response.json();
-    const uniqueCustomer = new Map();
 
-    customersData.forEach((customer) => {
-      if (!uniqueCustomer.has(customer.id)) {
-        uniqueCustomer.set(customer.id, {
-          label: `${customer.name} ${customer.identity_doc}`,
-          value: customer.id,
-        });
-      }
-    });
+    if (response.status === 200) {
+      const uniqueCustomer = new Map();
 
-    const customers = Array.from(uniqueCustomer.values());
+      customersData.forEach((customer) => {
+        if (!uniqueCustomer.has(customer.id)) {
+          uniqueCustomer.set(customer.id, {
+            label: `${customer.name} ${customer.identity_doc}`,
+            value: customer.id,
+          });
+        }
+      });
 
-    setCustomers(customers);
+      const customers = Array.from(uniqueCustomer.values());
+
+      setCustomers(customers);
+    } else if (response.status === 401 || response.status === 403) {
+      localStorage.removeItem("authState");
+      window.location.href = "/";
+      return;
+    } else {
+      setAlertMessage.error(customersData.message);
+    }
   };
 
   const getAccountsOnCustomerChange = (customer) => {
@@ -80,14 +89,23 @@ const AddNewTransactionModal = ({
       },
     });
     const accountsData = await response.json();
-    const accounts = accountsData.map((account) => {
-      return {
-        value: account.account_number,
-        label: account.account_number,
-      };
-    });
 
-    setAllAccounts(accounts);
+    if (response.status === 200) {
+      const accounts = accountsData.map((account) => {
+        return {
+          value: account.account_number,
+          label: account.account_number,
+        };
+      });
+
+      setAllAccounts(accounts);
+    } else if (response.status === 401 || response.status === 403) {
+      localStorage.removeItem("authState");
+      window.location.href = "/";
+      return;
+    } else {
+      setAlertMessage.error(accountsData.message);
+    }
   };
 
   const getAccountsByCustomer = async (customerId = 0) => {
@@ -102,14 +120,23 @@ const AddNewTransactionModal = ({
       }
     );
     const accountsData = await response.json();
-    const accounts = accountsData.map((account) => {
-      return {
-        value: account.account_number,
-        label: account.account_number,
-      };
-    });
 
-    setAccounts(accounts);
+    if (response.status === 200) {
+      const accounts = accountsData.map((account) => {
+        return {
+          value: account.account_number,
+          label: account.account_number,
+        };
+      });
+
+      setAccounts(accounts);
+    } else if (response.status === 401 || response.status === 403) {
+      localStorage.removeItem("authState");
+      window.location.href = "/";
+      return;
+    } else {
+      setAlertMessage.error(accountsData.message);
+    }
   };
 
   const instantApproveOrQueued = async (transaction) => {

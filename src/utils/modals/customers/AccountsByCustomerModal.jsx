@@ -48,26 +48,35 @@ const AccountsByCustomerModal = ({
         }
       );
       const accountsData = await response.json();
-      setAccounts(
-        accountsData.map((account) => ({
-          ...account,
-          hidden_account_number: hideAccountNumber(account.account_number),
-          account_type:
-            account.account_type === "checking"
-              ? "Cheques"
-              : "Cuentas Corrientes",
-          balance: "$" + account.balance,
-          datetime: moment(account.datetime).format("DD/MM/YYYY - hh:mm A"),
-          actions: (
-            <Button
-              type="primary"
-              onClick={() => setIsTransactionsModalOpen(true)}
-            >
-              Ver Transacciones
-            </Button>
-          ),
-        }))
-      );
+
+      if (response.status === 200) {
+        setAccounts(
+          accountsData.map((account) => ({
+            ...account,
+            hidden_account_number: hideAccountNumber(account.account_number),
+            account_type:
+              account.account_type === "checking"
+                ? "Cheques"
+                : "Cuentas Corrientes",
+            balance: "$" + account.balance,
+            datetime: moment(account.datetime).format("DD/MM/YYYY - hh:mm A"),
+            actions: (
+              <Button
+                type="primary"
+                onClick={() => setIsTransactionsModalOpen(true)}
+              >
+                Ver Transacciones
+              </Button>
+            ),
+          }))
+        );
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("authState");
+        window.location.href = "/";
+        return;
+      } else {
+        setAlertMessage.error(accountsData.message);
+      }
     } catch (error) {
       setAlertMessage.error(
         "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"

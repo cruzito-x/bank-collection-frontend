@@ -69,149 +69,155 @@ const ViewReportsModal = ({ isOpen, isClosed, setAlertMessage }) => {
 
       const reportData = await response.json();
 
-      const docDefinition = {
-        content: [
-          { text: title, style: "header" },
-          { text: `Periodo: ${period}`, style: "period" },
+      if (response.status === 200) {
+        const docDefinition = {
+          content: [
+            { text: title, style: "header" },
+            { text: `Periodo: ${period}`, style: "period" },
 
-          { text: "\nResumen General", style: "subheader" },
-          {
-            text: "Una Visión General de las Actividades Durante el Periodo Especificado.",
-          },
-          { text: "\nTransacciones Detalladas", style: "subheader" },
-          {
-            table: {
-              widths: ["auto", "*", "auto", "auto", "auto"],
-              body: [
-                ["Fecha", "Descripción", "Monto", "Tipo", "Autorizado"],
-                ...reportData[0].map((transaction) => [
-                  moment(transaction.datetime).format("DD/MM/YYYY"),
-                  `${
-                    transaction.transaction_type === "Deposito"
-                      ? transaction.sender + " Depositó a la Cuenta"
-                      : transaction.transaction_type === "Retiro"
-                      ? transaction.sender + " Retiró de la Cuenta"
-                      : transaction.transaction_type === "Transferencia"
-                      ? transaction.sender + " Transfirió desde la cuenta: "
-                      : ""
-                  } ` +
-                    transaction.sender_account +
+            { text: "\nResumen General", style: "subheader" },
+            {
+              text: "Una Visión General de las Actividades Durante el Periodo Especificado.",
+            },
+            { text: "\nTransacciones Detalladas", style: "subheader" },
+            {
+              table: {
+                widths: ["auto", "*", "auto", "auto", "auto"],
+                body: [
+                  ["Fecha", "Descripción", "Monto", "Tipo", "Autorizado"],
+                  ...reportData[0].map((transaction) => [
+                    moment(transaction.datetime).format("DD/MM/YYYY"),
                     `${
-                      transaction.transaction_type === "Transferencia"
-                        ? " a la Cuenta: " +
-                          transaction.receiver_account +
-                          " de " +
-                          transaction.receiver
+                      transaction.transaction_type === "Deposito"
+                        ? transaction.sender + " Depositó a la Cuenta"
+                        : transaction.transaction_type === "Retiro"
+                        ? transaction.sender + " Retiró de la Cuenta"
+                        : transaction.transaction_type === "Transferencia"
+                        ? transaction.sender + " Transfirió desde la cuenta: "
                         : ""
-                    } `,
-                  `$${transaction.amount}`,
-                  transaction.transaction_type,
-                  transaction.authorized_by,
-                ]),
-              ],
+                    } ` +
+                      transaction.sender_account +
+                      `${
+                        transaction.transaction_type === "Transferencia"
+                          ? " a la Cuenta: " +
+                            transaction.receiver_account +
+                            " de " +
+                            transaction.receiver
+                          : ""
+                      } `,
+                    `$${transaction.amount}`,
+                    transaction.transaction_type,
+                    transaction.authorized_by,
+                  ]),
+                ],
+              },
+              margin: [0, 10, 0, 10],
+              layout: "lightHorizontalLines",
             },
-            margin: [0, 10, 0, 10],
-            layout: "lightHorizontalLines",
-          },
 
-          { text: "\nTotales por Tipo de Transacción", style: "subheader" },
-          {
-            text: "Total de los Distintos Movimientos Realizados",
-          },
-          {
-            table: {
-              widths: ["*", "auto"],
-              body: [
-                ["Tipo de Transacción", "Total"],
-                ...reportData[1].map((transaction_type) => [
-                  transaction_type.transaction_type,
-                  `$${transaction_type.amount}`,
-                ]),
-              ],
+            { text: "\nTotales por Tipo de Transacción", style: "subheader" },
+            {
+              text: "Total de los Distintos Movimientos Realizados",
             },
-            margin: [0, 10, 0, 10],
-            layout: "lightHorizontalLines",
-          },
-
-          { text: "\nColectores con Mayores Ingresos", style: "subheader" },
-          {
-            text: "Lista de los Colectores con Mayor Índice de Pagos en el Período Especificado.",
-          },
-          {
-            table: {
-              widths: ["*", "auto"],
-              body: [
-                ["Colector", "Total"],
-                ...reportData[2].map((collector) => [
-                  collector.collector,
-                  `$${collector.amount}`,
-                ]),
-              ],
+            {
+              table: {
+                widths: ["*", "auto"],
+                body: [
+                  ["Tipo de Transacción", "Total"],
+                  ...reportData[1].map((transaction_type) => [
+                    transaction_type.transaction_type,
+                    `$${transaction_type.amount}`,
+                  ]),
+                ],
+              },
+              margin: [0, 10, 0, 10],
+              layout: "lightHorizontalLines",
             },
-            margin: [0, 10, 0, 10],
-            layout: "lightHorizontalLines",
-          },
 
-          { text: "\nServicios con Mayores Ingresos", style: "subheader" },
-          {
-            text: "Lista de los Servicios con Mayor Índice de Pagos en el Período Especificado.",
-          },
-          {
-            table: {
-              widths: ["*", "auto"],
-              body: [
-                ["Servicio", "Total"],
-                ...reportData[3].map((service) => [
-                  service.service_name + " (" + service.collector + ")",
-                  `$${service.amount}`,
-                ]),
-              ],
+            { text: "\nColectores con Mayores Ingresos", style: "subheader" },
+            {
+              text: "Lista de los Colectores con Mayor Índice de Pagos en el Período Especificado.",
             },
-            margin: [0, 10, 0, 10],
-            layout: "lightHorizontalLines",
-          },
-        ],
+            {
+              table: {
+                widths: ["*", "auto"],
+                body: [
+                  ["Colector", "Total"],
+                  ...reportData[2].map((collector) => [
+                    collector.collector,
+                    `$${collector.amount}`,
+                  ]),
+                ],
+              },
+              margin: [0, 10, 0, 10],
+              layout: "lightHorizontalLines",
+            },
 
-        footer: (currentPage, pageCount) => ({
-          text: `Página ${currentPage} de ${pageCount}\n © ${new Date().getFullYear()} - Banco Bambú de El Salvador, S.A. de C.V.®`,
-          alignment: "center",
-          margin: [0, 10],
-          fontSize: 10,
-          color: "#000000",
-        }),
+            { text: "\nServicios con Mayores Ingresos", style: "subheader" },
+            {
+              text: "Lista de los Servicios con Mayor Índice de Pagos en el Período Especificado.",
+            },
+            {
+              table: {
+                widths: ["*", "auto"],
+                body: [
+                  ["Servicio", "Total"],
+                  ...reportData[3].map((service) => [
+                    service.service_name + " (" + service.collector + ")",
+                    `$${service.amount}`,
+                  ]),
+                ],
+              },
+              margin: [0, 10, 0, 10],
+              layout: "lightHorizontalLines",
+            },
+          ],
 
-        styles: {
-          header: {
-            fontSize: 20,
-            bold: true,
+          footer: (currentPage, pageCount) => ({
+            text: `Página ${currentPage} de ${pageCount}\n © ${new Date().getFullYear()} - Banco Bambú de El Salvador, S.A. de C.V.®`,
+            alignment: "center",
+            margin: [0, 10],
+            fontSize: 10,
             color: "#000000",
-            margin: [0, 0, 0, 10],
-          },
-          period: {
-            fontSize: 11,
-            color: "#1a2d3f",
-          },
-          subheader: {
-            fontSize: 14,
-            bold: true,
-            color: "#000000",
-            margin: [0, 10, 0, 5],
-          },
-          tableHeader: {
-            color: "#ffffff",
-            fontSize: 12,
-            bold: false,
-          },
-          tableBody: {
-            fontSize: 12,
-            color: "#000000",
-          },
-        },
+          }),
 
-        pageMargins: [40, 60, 40, 60],
-      };
+          styles: {
+            header: {
+              fontSize: 20,
+              bold: true,
+              color: "#000000",
+              margin: [0, 0, 0, 10],
+            },
+            period: {
+              fontSize: 11,
+              color: "#1a2d3f",
+            },
+            subheader: {
+              fontSize: 14,
+              bold: true,
+              color: "#000000",
+              margin: [0, 10, 0, 5],
+            },
+            tableHeader: {
+              color: "#ffffff",
+              fontSize: 12,
+              bold: false,
+            },
+            tableBody: {
+              fontSize: 12,
+              color: "#000000",
+            },
+          },
 
-      pdfMake.createPdf(docDefinition).download(`${title}_${period}.pdf`);
+          pageMargins: [40, 60, 40, 60],
+        };
+
+        pdfMake.createPdf(docDefinition).download(`${title}_${period}.pdf`);
+      } else if (response.status === 401 || response.status === 403) {
+        setAlertMessage.error(reportData.message);
+      } else {
+        setAlertMessage.error(reportData.message);
+      }
     } catch (error) {
       setAlertMessage.error(
         "Ha Ocurrido Un Error Inesperado, Por Favor Intente en unos Instantes"
