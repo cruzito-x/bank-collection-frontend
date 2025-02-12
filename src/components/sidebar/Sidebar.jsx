@@ -126,7 +126,7 @@ const Sidebar = () => {
               background: "transparent",
               marginTop: "-55px",
               width: "100%",
-              fontSize: "11.5px",
+              fontSize: "12.5px",
             }}
           >
             &copy; {new Date().getFullYear()} Banco Bambú de El Salvador, S.A.

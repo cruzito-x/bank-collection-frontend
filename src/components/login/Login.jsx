@@ -53,12 +53,12 @@ const Login = () => {
       <Card>
         <div className="w-100 d-flex justify-content-center mb-3">
           <Image
-            className="rounded mt-3"
+            className="mt-3"
             src={`${process.env.PUBLIC_URL}/assets/img/logo_login.png`}
             preview={false}
             style={{
-              width: "200px",
-              height: "100px",
+              width: "180px",
+              height: "90px",
             }}
             alt="Banco Bambú Logo"
           />
@@ -69,7 +69,7 @@ const Login = () => {
           onFinish={loginUser}
           style={{ width: 350, padding: 20 }}
         >
-          <label className="text-black"> Usuario </label>
+          <label className="fw-semibold text-black"> Usuario </label>
           <Form.Item
             name="username"
             rules={[
@@ -82,7 +82,7 @@ const Login = () => {
             <Input placeholder="Usuario" />
           </Form.Item>
 
-          <label className="text-black"> Contraseña </label>
+          <label className="fw-semibold text-black"> Contraseña </label>
           <Form.Item
             name="password"
             rules={[
@@ -110,10 +110,10 @@ const Login = () => {
 
           <label
             className="text-black w-100 text-center"
-            style={{ fontSize: "12px" }}
+            style={{ fontSize: "12p.5x" }}
           >
-            Desarrollado por <br />
-            &copy; cruzito-x
+            &copy; {new Date().getFullYear()} - Banco Bambú de El Salvador{" "}
+            <br /> S.A. de C.V.
           </label>
         </Form>
       </Card>
