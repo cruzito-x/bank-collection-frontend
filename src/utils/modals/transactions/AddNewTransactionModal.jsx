@@ -287,7 +287,6 @@ const AddNewTransactionModal = ({
         </div>
         <Form
           form={form}
-          // onFinish={instantApproveOrQueued}
           onFinish={startTransactionProcess}
           initialValues={{ transaction_type: 1 }}
           onValuesChange={(changedValues) => {
@@ -328,7 +327,7 @@ const AddNewTransactionModal = ({
               },
             ]}
           >
-            <Select options={transactionTypes} />
+            <Select options={transactionTypes} disabled={sendingTransaction} />
           </Form.Item>
 
           <label className="fw-semibold text-black"> Remitente </label>
@@ -352,6 +351,7 @@ const AddNewTransactionModal = ({
                   .toLowerCase()
                   .localeCompare((optionB?.label ?? "").toLowerCase())
               }
+              disabled={sendingTransaction}
               style={{
                 width: "100%",
               }}
@@ -384,6 +384,7 @@ const AddNewTransactionModal = ({
                   .toLowerCase()
                   .localeCompare((optionB?.label ?? "").toLowerCase())
               }
+              disabled={sendingTransaction}
               style={{
                 width: "100%",
               }}
@@ -415,6 +416,7 @@ const AddNewTransactionModal = ({
                       .toLowerCase()
                       .localeCompare((optionB?.label ?? "").toLowerCase())
                   }
+                  disabled={sendingTransaction}
                   style={{
                     width: "100%",
                   }}
@@ -438,6 +440,7 @@ const AddNewTransactionModal = ({
               min={5}
               max={100000}
               placeholder="0.00"
+              disabled={sendingTransaction}
               style={{
                 width: "100%",
               }}
@@ -469,6 +472,7 @@ const AddNewTransactionModal = ({
                   size="middle"
                   style={{ resize: "none" }}
                   placeholder="Concepto"
+                  disabled={sendingTransaction}
                 />
               </Form.Item>
             </>
