@@ -174,7 +174,8 @@ const Transactions = () => {
       (transaction.realized_by === undefined ||
         transaction.realized_by === "") &&
       (transaction.transaction_type === undefined ||
-        transaction.transaction_type === "" || transaction.transaction_type === 0) &&
+        transaction.transaction_type === "" ||
+        transaction.transaction_type === 0) &&
       (transaction.date === undefined || transaction.date === "")
     ) {
       messageAlert.warning(
@@ -446,7 +447,7 @@ const Transactions = () => {
                     pageSize: 10,
                     showSizeChanger: false,
                     showTotal: (total) =>
-                      `Total: ${total} transferencia(s) registrada(s)`,
+                      `Total: ${total} transacción(es) registrada(s)`,
                     hideOnSinglePage: true,
                   }}
                   loading={loading}
@@ -462,7 +463,9 @@ const Transactions = () => {
           isClosed={() => {
             setIsNewTransactionModalOpen(false);
           }}
-          transactionTypes={transactionsTypes}
+          transactionTypes={transactionsTypes.filter(
+            (type) => type.label !== "Todos"
+          )}
           getTransactions={getTransactions}
           isSupervisor={authState.isSupervisor}
           setAlertMessage={messageAlert}
