@@ -107,7 +107,7 @@ const AddNewTransactionModal = ({
       const accounts = accountsData.map((account) => {
         return {
           value: account.account_number,
-          label: account.account_number +" - "+ account.owner,
+          label: account.account_number + " - " + account.owner,
         };
       });
 
