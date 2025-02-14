@@ -353,7 +353,7 @@ const PaymentsCollectorsModal = ({
         >
           <InputNumber
             prefix="$"
-            min={5}
+            min={0}
             max={10000}
             placeholder="0.00"
             disabled={sendingDataLoading}

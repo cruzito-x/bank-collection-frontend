@@ -438,7 +438,7 @@ const AddNewTransactionModal = ({
             <InputNumber
               prefix="$"
               min={5}
-              max={100000}
+              max={1000000}
               placeholder="0.00"
               disabled={sendingTransaction}
               style={{
