@@ -66,6 +66,8 @@ const Transactions = () => {
       const typesData = await response.json();
 
       if (response.status === 200) {
+        typesData.unshift({ id: 0, transaction_type: "Todos" });
+
         const transactionsTypes = typesData.map((transactionType) => {
           return {
             value: transactionType.id,
@@ -172,7 +174,7 @@ const Transactions = () => {
       (transaction.realized_by === undefined ||
         transaction.realized_by === "") &&
       (transaction.transaction_type === undefined ||
-        transaction.transaction_type === "") &&
+        transaction.transaction_type === "" || transaction.transaction_type === 0) &&
       (transaction.date === undefined || transaction.date === "")
     ) {
       messageAlert.warning(
@@ -389,9 +391,9 @@ const Transactions = () => {
                 </div>
                 <div className="col-xxl-2 col-xl-3 col-md-12 col-sm-12 mb-3 d-flex align-items-center w-auto">
                   <label className="me-2 fw-semibold text-black">Tipo</label>
-                  <Form.Item name="transaction_type" initialValue={1}>
+                  <Form.Item name="transaction_type" initialValue={0}>
                     <Select
-                      defaultValue={1}
+                      defaultValue={0}
                       style={{ width: 183 }}
                       options={transactionsTypes}
                     />
