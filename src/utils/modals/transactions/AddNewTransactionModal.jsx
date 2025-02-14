@@ -473,6 +473,8 @@ const AddNewTransactionModal = ({
                   style={{ resize: "none" }}
                   placeholder="Concepto"
                   disabled={sendingTransaction}
+                  maxLength={255}
+                  showCount
                 />
               </Form.Item>
             </>

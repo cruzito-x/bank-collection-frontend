@@ -122,6 +122,8 @@ const EditCollectorModal = ({
               size="middle"
               style={{ resize: "none" }}
               placeholder="Descripción del Colector"
+              maxLength={255}
+              showCount
             />
           </Form.Item>
           <Form.Item className="text-end">

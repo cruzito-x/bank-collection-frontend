@@ -156,6 +156,8 @@ const EditServiceModal = ({
               size="middle"
               style={{ resize: "none" }}
               placeholder="Descripción del Servicio"
+              maxLength={255}
+              showCount
             />
           </Form.Item>
           <Form.Item className="text-end">

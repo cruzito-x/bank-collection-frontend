@@ -152,7 +152,7 @@ const AddNewServiceModal = ({
               rules={[
                 {
                   required: true,
-                  message: "Ingrese un nombre para el servicio",
+                  message: "Introduzca un nombre para el servicio",
                 },
               ]}
             >
@@ -171,7 +171,7 @@ const AddNewServiceModal = ({
               rules={[
                 {
                   required: false,
-                  message: "Ingrese un costo para el servicio",
+                  message: "Introduzca un Precio Para el Servicio",
                 },
               ]}
             >
@@ -194,7 +194,7 @@ const AddNewServiceModal = ({
               rules={[
                 {
                   required: true,
-                  message: "Ingrese una descripción para el servicio",
+                  message: "Introduzca una descripción para el servicio",
                   min: 5,
                   max: 255,
                 },
@@ -208,6 +208,8 @@ const AddNewServiceModal = ({
                 onChange={(event) =>
                   onChangeServiceName(index, "description", event.target.value)
                 }
+                maxLength={255}
+                showCount
               />
             </Form.Item>
 

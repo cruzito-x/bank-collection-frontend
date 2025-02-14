@@ -115,6 +115,8 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
               resize: "none",
             }}
             placeholder="Descripción del Colector"
+            maxLength={255}
+            showCount
           />
         </Form.Item>
         <label className="fw-semibold text-black"> Servicio </label>
@@ -134,15 +136,15 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
           name="price"
           rules={[
             {
-              required: true,
-              message: "Por Favor, Introduzca una Cantidad Mínima de $5.00",
+              required: false,
+              message: "Por Favor, Introduzca un Precio Para el Servicio",
             },
           ]}
         >
           <InputNumber
             className="w-100"
             prefix="$"
-            min={5}
+            min={0}
             max={10000}
             placeholder="0.00"
           />
@@ -169,6 +171,8 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
               resize: "none",
             }}
             placeholder="Descripción del Servicio"
+            maxLength={255}
+            showCount
           />
         </Form.Item>
         <Form.Item className="text-end">
