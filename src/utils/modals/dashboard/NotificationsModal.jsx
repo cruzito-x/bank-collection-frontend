@@ -1,4 +1,4 @@
-import { Button, Col, Modal, Row, Table } from "antd";
+import { Button, Col, Empty, Modal, Row, Table } from "antd";
 import { TransactionOutlined } from "@ant-design/icons";
 import React from "react";
 
@@ -71,15 +71,19 @@ const NotificationsModal = ({ isOpen, isClosed, notificationsData }) => {
       footer={null}
       maskClosable={false}
     >
-      <Table
-        dataSource={notificationsData}
-        columns={notificationColumns}
-        pagination={{
-          pageSize: 10,
-          hideOnSinglePage: true,
-        }}
-        scroll={{ x: "max-content" }}
-      />
+      {notificationsData.length === 0 ? (
+        <Empty className="p-5" description="Sin Datos Disponibles" />
+      ) : (
+        <Table
+          dataSource={notificationsData}
+          columns={notificationColumns}
+          pagination={{
+            pageSize: 10,
+            hideOnSinglePage: true,
+          }}
+          scroll={{ x: "max-content" }}
+        />
+      )}
       <div className="mt-3 text-end">
         <Button key="back" type="primary" danger onClick={isClosed}>
           Cerrar
