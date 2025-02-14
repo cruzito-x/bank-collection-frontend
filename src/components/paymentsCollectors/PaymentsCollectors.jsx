@@ -273,7 +273,7 @@ const PaymentsCollectors = () => {
                 <div className="col-xxl-2 col-xl-3 col-md-12 col-sm-12 mb-3 d-flex align-items-center w-auto">
                   <label className="me-2 fw-semibold text-black">
                     {" "}
-                    Nombre{" "}
+                    Colector{" "}
                   </label>
                   <Form.Item name="collector" initialValue="">
                     <Input
