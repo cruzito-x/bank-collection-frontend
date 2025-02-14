@@ -97,6 +97,7 @@ const PaymentsCollectorsModal = ({
       service_id: services.value,
       amount: services.price,
     });
+    
     getServicesByCollector(value);
   };
 

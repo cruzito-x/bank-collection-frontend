@@ -90,6 +90,10 @@ const AddNewTransactionModal = ({
 
   const getAccountsOnCustomerChange = (customer) => {
     form.setFieldsValue({ customer: customer });
+    form.setFieldsValue({
+      sender_account_number: customer.value,
+    });
+
     getAccountsByCustomer(customer);
   };
 
