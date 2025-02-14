@@ -93,39 +93,49 @@ const PaymentsCollectorsModal = ({
 
   const getServiceOnCollectorsChange = (value) => {
     form.setFieldsValue({ collector_id: value });
+    form.setFieldsValue({
+      service_id: services.value,
+      amount: services.price,
+    });
     getServicesByCollector(value);
   };
 
   const getServicesByCollector = async (collectorId = 0) => {
-    const response = await fetch(
-      `http://localhost:3001/services/services-by-collector/${collectorId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+    try {
+      const response = await fetch(
+        `http://localhost:3001/services/services-by-collector/${collectorId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const servicesData = await response.json();
+
+      if (response.status === 200) {
+        const services = servicesData.map((service) => {
+          return {
+            value: service.id,
+            label: service.service_name,
+            price: service.price,
+          };
+        });
+
+        setServices(services);
+      } else if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("authState");
+        window.location.href = "/";
+        return;
+      } else {
+        setAlertMessage.error(servicesData.message);
       }
-    );
-
-    const servicesData = await response.json();
-
-    if (response.status === 200) {
-      const services = servicesData.map((service) => {
-        return {
-          value: service.id,
-          label: service.service_name,
-          price: service.price,
-        };
-      });
-
-      setServices(services);
-    } else if (response.status === 401 || response.status === 403) {
-      localStorage.removeItem("authState");
-      window.location.href = "/";
-      return;
-    } else {
-      setAlertMessage.error(servicesData.message);
+    } catch (error) {
+      setAlertMessage.error(
+        "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
+      );
     }
   };
 
