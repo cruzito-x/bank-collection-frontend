@@ -139,6 +139,7 @@ const AddNewTransactionModal = ({
         return {
           value: account.account_number,
           label: account.account_number,
+          balance: account.balance,
         };
       });
 
@@ -216,6 +217,14 @@ const AddNewTransactionModal = ({
     ) {
       setAlertMessage.warning(
         "No Puede Transferir Dinero a su Mismo Número de Cuenta"
+      );
+
+      return;
+    }
+
+    if (transaction.amount > accounts[0].balance) {
+      setAlertMessage.warning(
+        "Saldo Insuficiente para Completar la Transacción"
       );
 
       return;
