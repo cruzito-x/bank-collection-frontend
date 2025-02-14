@@ -138,6 +138,12 @@ const AddNewServiceModal = ({
             options={collectors}
             showSearch
             placeholder="Buscar Colector"
+            optionFilterProp="label"
+            filterSort={(optionA, optionB) =>
+              (optionA?.label ?? "")
+                .toLowerCase()
+                .localeCompare((optionB?.label ?? "").toLowerCase())
+            }
             disabled={sendingData}
           />
         </Form.Item>
@@ -214,20 +220,34 @@ const AddNewServiceModal = ({
             </Form.Item>
 
             {index > 0 && (
-              <Button
-                danger
-                type="primary"
-                onClick={() => removeExtraServices(index)}
-              >
-                Eliminar Servicio
-              </Button>
+              <div className="text-start">
+                <Button
+                  danger
+                  type="primary"
+                  onClick={() => removeExtraServices(index)}
+                >
+                  Eliminar Servicio
+                </Button>
+
+                {index === services.length - 1 && (
+                  <Button
+                    className="ms-2 mb-3"
+                    type="primary"
+                    onClick={addOtherService}
+                  >
+                    Agregar Otro Servicio
+                  </Button>
+                )}
+              </div>
             )}
           </div>
         ))}
 
-        <Button className="mb-3" type="primary" onClick={addOtherService} block>
-          Agregar Otro Servicio
-        </Button>
+        {services.length <= 1 && (
+          <Button className="mb-3" type="primary" onClick={addOtherService}>
+            Agregar Otro Servicio
+          </Button>
+        )}
 
         <Form.Item className="text-end">
           <Button
