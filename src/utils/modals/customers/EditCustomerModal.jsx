@@ -121,7 +121,7 @@ const EditCustomerModal = ({
             ]}
             initialValue={selectedCustomer.identity_doc}
           >
-            <Input placeholder="00000000-0" />
+            <Input placeholder="00000000-0" readOnly />
           </Form.Item>
           <label className="fw-semibold text-black"> E-mail </label>
           <Form.Item
