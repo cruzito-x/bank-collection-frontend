@@ -69,7 +69,7 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
               <br />
               <label style={{ color: "var(--gray)", fontSize: "13px" }}>
                 Realizada: {approvalData.datetime} <br />
-                {approvalData.is_approved ? "Aprobada" : "Rechazada"}:{" "}
+                {approvalData.is_approved ? "Aprobada" : "Denegada"}:{" "}
                 {approvalData.authorized_at}
               </label>
             </div>
@@ -92,7 +92,7 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
                   }`}
                 >
                   {" "}
-                  {approvalData.is_approved ? "Aprobado" : "Rechazado"}
+                  {approvalData.is_approved ? "Aprobado" : "Denegado"}
                 </Tag>{" "}
               </p>
             </div>
