@@ -341,6 +341,7 @@ const Customers = () => {
               <label className="me-2 fw-semibold text-black"> DUI </label>
               <Form.Item name="identity_doc" initialValue="">
                 <Input
+                  maxLength={10}
                   placeholder="00000000-0"
                   prefix={<IdcardOutlined />}
                   style={{
