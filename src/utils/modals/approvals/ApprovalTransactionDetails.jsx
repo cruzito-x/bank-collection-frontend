@@ -69,7 +69,7 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
               <br />
               <label style={{ color: "var(--gray)", fontSize: "13px" }}>
                 Realizada: {approvalData.datetime} <br />
-                {approvalData.is_approved ? "Autorizada" : "Rechazada"}:{" "}
+                {approvalData.is_approved ? "Aprobada" : "Rechazada"}:{" "}
                 {approvalData.authorized_at}
               </label>
             </div>
