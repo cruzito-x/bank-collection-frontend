@@ -68,8 +68,9 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
               </label>{" "}
               <br />
               <label style={{ color: "var(--gray)", fontSize: "13px" }}>
-                Realizado: {approvalData.datetime} <br />
-                Autorizado: {approvalData.authorized_at}
+                Realizada: {approvalData.datetime} <br />
+                {approvalData.is_approved ? "Autorizada" : "Rechazada"}:{" "}
+                {approvalData.authorized_at}
               </label>
             </div>
             <Divider variant="dashed" style={{ borderColor: "var(--gray)" }} />
@@ -78,7 +79,22 @@ const ApprovalTransactionDetails = ({ isOpen, isClosed, approvalData }) => {
                 {" "}
                 Código de Aprobación{" "}
               </label>
-              <p> {approvalData.approval_id} </p>
+              <p>
+                {" "}
+                {approvalData.approval_id}{" "}
+                <Tag
+                  color={`${
+                    approvalData.is_approved
+                      ? "success"
+                      : !approvalData.is_approved
+                      ? "error"
+                      : "processing"
+                  }`}
+                >
+                  {" "}
+                  {approvalData.is_approved ? "Aprobado" : "Rechazado"}
+                </Tag>{" "}
+              </p>
             </div>
             <div className="col-12">
               <label className="fw-semibold text-black">
