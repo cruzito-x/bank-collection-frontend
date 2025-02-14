@@ -188,6 +188,8 @@ const AddNewTransactionModal = ({
         isClosed();
         getTransactions();
         setAlertMessage.success(transactionData.message);
+      } else if (response.status === 400) {
+        setAlertMessage.warning(transactionData.message);
       } else if (response.status === 401 || response.status === 403) {
         localStorage.removeItem("authState");
         window.location.href = "/";
@@ -208,6 +210,17 @@ const AddNewTransactionModal = ({
   };
 
   const startTransactionProcess = (transaction) => {
+    if (
+      transaction.transaction_type === 3 &&
+      transaction.sender_account_number === transaction.receiver_account_number
+    ) {
+      setAlertMessage.warning(
+        "No Puede Transferir Dinero a su Mismo Número de Cuenta"
+      );
+
+      return;
+    }
+
     setPercentage(0);
     setCancelTransaction(false);
     cancelTransactionRef.current = false;
