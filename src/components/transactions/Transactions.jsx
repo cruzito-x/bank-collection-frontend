@@ -188,7 +188,7 @@ const Transactions = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:3001/transactions/search-transactions?transaction_id=${
+          `http://localhost:3001/transactions/search-transactions-by?transaction_id=${
             transaction.transaction_id ?? ""
           }&realized_by=${transaction.realized_by ?? ""}&transaction_type=${
             transaction.transaction_type ?? ""
