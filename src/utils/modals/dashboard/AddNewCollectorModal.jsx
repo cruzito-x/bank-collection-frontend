@@ -1,15 +1,44 @@
 import { Button, Col, Form, Input, InputNumber, Modal, Row } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
+import { applyMaskOnlyLetters } from "../../masks/InputMasks";
 
 const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
   const { authState } = useAuth();
   const [loading, setLoading] = useState(false);
+  const collectorRef = useRef(null);
+  const collectorDescriptionRef = useRef(null);
+  const serviceRef = useRef(null);
+  const serviceDescriptionRef = useRef(null);
   const [form] = Form.useForm();
   const token = authState.token;
   const user_id = authState.user_id;
+
+  useEffect(() => {
+    if (isOpen) {
+      form.resetFields();
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (collectorRef.current?.input) {
+      applyMaskOnlyLetters(collectorRef.current.input);
+    }
+
+    if (collectorDescriptionRef.current?.input) {
+      applyMaskOnlyLetters(collectorDescriptionRef.current.input);
+    }
+
+    if (serviceRef.current?.input) {
+      applyMaskOnlyLetters(serviceRef.current.input);
+    }
+
+    if (serviceDescriptionRef.current?.input) {
+      applyMaskOnlyLetters(serviceDescriptionRef.current.input);
+    }
+  }, []);
 
   const saveNewCollector = async (collector) => {
     setLoading(true);
@@ -54,12 +83,6 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
     }
   };
 
-  useEffect(() => {
-    if (isOpen) {
-      form.resetFields();
-    }
-  }, [isOpen]);
-
   return (
     <Modal
       title={
@@ -83,7 +106,10 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
       maskClosable={false}
     >
       <Form form={form} onFinish={saveNewCollector}>
-        <label className="fw-semibold text-black"> Nombre de Colector </label>
+        <label className="fw-semibold text-black">
+          {" "}
+          Nombre de Colector<span style={{ color: "var(--red)" }}>*</span>{" "}
+        </label>
         <Form.Item
           name="collector_name"
           rules={[
@@ -93,11 +119,11 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
             },
           ]}
         >
-          <Input placeholder="Nombre de Colector" />
+          <Input ref={collectorRef} placeholder="Nombre de Colector" />
         </Form.Item>
         <label className="fw-semibold text-black">
           {" "}
-          Descripción del Colector{" "}
+          Descripción del Colector<span style={{ color: "var(--red)" }}>*</span>
         </label>
         <Form.Item
           name="collector_description"
@@ -109,6 +135,7 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
           ]}
         >
           <TextArea
+            ref={collectorDescriptionRef}
             rows={4}
             size="middle"
             style={{
@@ -119,7 +146,10 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
             showCount
           />
         </Form.Item>
-        <label className="fw-semibold text-black"> Servicio </label>
+        <label className="fw-semibold text-black">
+          {" "}
+          Servicio<span style={{ color: "var(--red)" }}>*</span>{" "}
+        </label>
         <Form.Item
           name="service_name"
           rules={[
@@ -129,9 +159,11 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
             },
           ]}
         >
-          <Input placeholder="Nombre de Servicio" />
+          <Input ref={serviceRef} placeholder="Nombre de Servicio" />
         </Form.Item>
-        <label className="fw-semibold text-black">Precio de Servicio</label>
+        <label className="fw-semibold text-black">
+          Costo del Servicio<span style={{ color: "var(--red)" }}>*</span>
+        </label>
         <Form.Item
           name="price"
           rules={[
@@ -151,7 +183,7 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
         </Form.Item>
         <label className="fw-semibold text-black">
           {" "}
-          Descripción del Servicio{" "}
+          Descripción del Servicio<span style={{ color: "var(--red)" }}>*</span>
         </label>
         <Form.Item
           name="service_description"
@@ -165,6 +197,7 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
           ]}
         >
           <TextArea
+            ref={serviceDescriptionRef}
             rows={4}
             size="middle"
             style={{

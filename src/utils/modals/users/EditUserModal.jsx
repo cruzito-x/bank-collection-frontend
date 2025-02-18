@@ -4,8 +4,9 @@ import {
   EyeInvisibleOutlined,
   EyeTwoTone,
 } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
+import { applyMaskOnlyLetters } from "../../masks/InputMasks";
 
 const EditUserModal = ({
   isOpen,
@@ -16,6 +17,7 @@ const EditUserModal = ({
 }) => {
   const { authState } = useAuth();
   const [sendingData, setSendingData] = useState(false);
+  const userNameRef = useRef(null);
   const [form] = Form.useForm();
   const token = authState.token;
   const user_id = authState.user_id;
@@ -30,10 +32,16 @@ const EditUserModal = ({
   }, [isOpen, userData, form]);
 
   useEffect(() => {
-    if (isClosed) {
+    if (!isOpen) {
       form.resetFields();
     }
-  });
+  }, [isOpen, form]);
+
+  useEffect(() => {
+    if (userNameRef.current?.input) {
+      applyMaskOnlyLetters(userNameRef.current.input);
+    }
+  }, []);
 
   const updateUser = async (user) => {
     setSendingData(true);
@@ -115,7 +123,7 @@ const EditUserModal = ({
           ]}
           initialValue={userData.username}
         >
-          <Input placeholder="Nombre de Usuario" />
+          <Input ref={userNameRef} placeholder="Nombre de Usuario" />
         </Form.Item>
         <label className="fw-semibold text-black"> E-mail </label>
         <Form.Item

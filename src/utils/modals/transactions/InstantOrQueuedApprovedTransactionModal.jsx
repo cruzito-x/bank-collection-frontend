@@ -190,7 +190,7 @@ const InstantOrQueuedApprovedTransactionModal = ({
       <Form form={form} onFinish={sendSupervisorPin}>
         <label className="fw-semibold text-black">
           {" "}
-          Clave de Aprobación{" "}
+          Clave de Aprobación<span style={{ color: "var(--red)" }}>*</span>
           <span className="text-primary" style={{ fontSize: "11px" }}>
             {" "}
             (Supervisor){" "}

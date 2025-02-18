@@ -9,10 +9,11 @@ import {
   Select,
 } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { useCollectorsData } from "../../../contexts/collectorsDataContext/CollectorsDataContext";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
+import { applyMaskOnlyLetters } from "../../masks/InputMasks";
 
 const AddNewServiceModal = ({
   isOpen,
@@ -26,6 +27,9 @@ const AddNewServiceModal = ({
     { service: "", description: "", price: 0 },
   ]);
   const [sendingData, setSendingData] = useState(false);
+  const collectorRef = useRef(null);
+  const serviceRef = useRef(null);
+  const serviceDescriptionRef = useRef(null);
   const [form] = Form.useForm();
   const token = authState.token;
   const user_id = authState.user_id;
@@ -40,6 +44,20 @@ const AddNewServiceModal = ({
       setServices([{ service: "", description: "", price: 0 }]);
     }
   }, [isClosed]);
+
+  useEffect(() => {
+    if (collectorRef.current?.input) {
+      applyMaskOnlyLetters(collectorRef.current.input);
+    }
+
+    if (serviceRef.current?.input) {
+      applyMaskOnlyLetters(serviceRef.current.input);
+    }
+
+    if (serviceDescriptionRef.current?.input) {
+      applyMaskOnlyLetters(serviceDescriptionRef.current.input);
+    }
+  }, []);
 
   const addOtherService = () => {
     setServices([...services, { service: "", description: "", price: 0 }]);
@@ -127,13 +145,16 @@ const AddNewServiceModal = ({
       maskClosable={false}
     >
       <Form form={form} onFinish={saveNewServices}>
-        <label className="fw-semibold text-black">Seleccionar Colector</label>
+        <label className="fw-semibold text-black">
+          Seleccionar Colector<span style={{ color: "var(--red)" }}>*</span>
+        </label>
         <Form.Item
           className="mb-3"
           name="collector"
           rules={[{ required: true, message: "Seleccione un colector" }]}
         >
           <Select
+            ref={collectorRef}
             className="w-100"
             options={collectors}
             showSearch
@@ -151,7 +172,7 @@ const AddNewServiceModal = ({
         {services.map((service, index) => (
           <div key={index} className="mb-3">
             <label className="fw-semibold text-black">
-              Nombre del Servicio
+              Nombre del Servicio<span style={{ color: "var(--red)" }}>*</span>
             </label>
             <Form.Item
               name={["services", index, "service"]}
@@ -163,6 +184,7 @@ const AddNewServiceModal = ({
               ]}
             >
               <Input
+                ref={serviceRef}
                 value={service.service}
                 onChange={(event) =>
                   onChangeServiceName(index, "service", event.target.value)
@@ -171,7 +193,9 @@ const AddNewServiceModal = ({
               />
             </Form.Item>
 
-            <label className="fw-semibold text-black">Costo del Servicio</label>
+            <label className="fw-semibold text-black">
+              Costo del Servicio<span style={{ color: "var(--red)" }}>*</span>
+            </label>
             <Form.Item
               name={["services", index, "price"]}
               rules={[
@@ -194,6 +218,7 @@ const AddNewServiceModal = ({
 
             <label className="fw-semibold text-black">
               Descripción del Servicio
+              <span style={{ color: "var(--red)" }}>*</span>
             </label>
             <Form.Item
               name={["services", index, "description"]}
@@ -207,6 +232,7 @@ const AddNewServiceModal = ({
               ]}
             >
               <TextArea
+                ref={serviceDescriptionRef}
                 rows={4}
                 style={{ resize: "none" }}
                 placeholder="Descripción del Servicio"

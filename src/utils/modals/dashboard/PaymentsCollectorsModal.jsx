@@ -15,6 +15,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "antd/es/form/Form";
 import { useCollectorsData } from "../../../contexts/collectorsDataContext/CollectorsDataContext";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
+import { applyMaskOnlyLetters } from "../../masks/InputMasks";
 
 const PaymentsCollectorsModal = ({
   isOpen,
@@ -31,6 +32,9 @@ const PaymentsCollectorsModal = ({
   const { collectors, getCollectors } = useCollectorsData();
   const [customers, setCustomers] = useState([]);
   const [services, setServices] = useState([]);
+  const customerRef = useRef(null);
+  const collectorRef = useRef(null);
+  const serviceRef = useRef(null);
   const [form] = useForm();
   const token = authState.token;
   const user_id = authState.user_id;
@@ -44,6 +48,20 @@ const PaymentsCollectorsModal = ({
   useEffect(() => {
     getCollectors();
     getCustomers();
+  }, []);
+
+  useEffect(() => {
+    if (customerRef.current?.input) {
+      applyMaskOnlyLetters(customerRef.current.input);
+    }
+
+    if (collectorRef.current?.input) {
+      applyMaskOnlyLetters(collectorRef.current.input);
+    }
+
+    if (serviceRef.current?.input) {
+      applyMaskOnlyLetters(collectorRef.current.input);
+    }
   }, []);
 
   useEffect(() => {
@@ -97,7 +115,7 @@ const PaymentsCollectorsModal = ({
       service_id: services.value,
       amount: services.price,
     });
-    
+
     getServicesByCollector(value);
   };
 
@@ -265,7 +283,10 @@ const PaymentsCollectorsModal = ({
         </Flex>
       </div>
       <Form form={form} onFinish={startPaymentProcess}>
-        <label className="fw-semibold text-black"> Seleccionar Cliente </label>
+        <label className="fw-semibold text-black">
+          {" "}
+          Seleccionar Cliente<span style={{ color: "var(--red)" }}>*</span>
+        </label>
         <Form.Item
           name="customer_id"
           rules={[
@@ -276,6 +297,7 @@ const PaymentsCollectorsModal = ({
           ]}
         >
           <Select
+            ref={customerRef}
             options={customers}
             onChange={(value) => {
               form.setFieldsValue({ customer_id: value });
@@ -294,7 +316,10 @@ const PaymentsCollectorsModal = ({
             }}
           />
         </Form.Item>
-        <label className="fw-semibold text-black"> Seleccionar Colector </label>
+        <label className="fw-semibold text-black">
+          {" "}
+          Seleccionar Colector<span style={{ color: "var(--red)" }}>*</span>
+        </label>
         <Form.Item
           name="collector_id"
           rules={[
@@ -305,6 +330,7 @@ const PaymentsCollectorsModal = ({
           ]}
         >
           <Select
+            ref={collectorRef}
             options={collectors}
             onChange={getServiceOnCollectorsChange}
             showSearch
@@ -321,7 +347,10 @@ const PaymentsCollectorsModal = ({
             }}
           />
         </Form.Item>
-        <label className="fw-semibold text-black"> Seleccionar Servicio </label>
+        <label className="fw-semibold text-black">
+          {" "}
+          Seleccionar Servicio<span style={{ color: "var(--red)" }}>*</span>
+        </label>
         <Form.Item
           name="service_id"
           rules={[
@@ -332,6 +361,7 @@ const PaymentsCollectorsModal = ({
           ]}
         >
           <Select
+            ref={serviceRef}
             options={services}
             onChange={(value) => {
               const selectedService = services.find(
@@ -352,7 +382,10 @@ const PaymentsCollectorsModal = ({
             }}
           />
         </Form.Item>
-        <label className="fw-semibold text-black"> Monto </label>
+        <label className="fw-semibold text-black">
+          {" "}
+          Monto<span style={{ color: "var(--red)" }}>*</span>
+        </label>
         <Form.Item
           name="amount"
           rules={[

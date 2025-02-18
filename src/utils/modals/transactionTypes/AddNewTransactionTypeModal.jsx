@@ -1,7 +1,8 @@
 import { Button, Col, Form, Input, Modal, Row } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
+import { applyMaskOnlyLetters } from "../../masks/InputMasks";
 
 const AddNewTransactionTypeModal = ({
   isOpen,
@@ -11,9 +12,16 @@ const AddNewTransactionTypeModal = ({
 }) => {
   const { authState } = useAuth();
   const [sendingData, setSendingData] = useState(false);
+  const transactionTypeRef = useRef(null);
   const [form] = Form.useForm();
   const token = authState.token;
   const user_id = authState.user_id;
+
+  useEffect(() => {
+    if (transactionTypeRef.current?.input) {
+      applyMaskOnlyLetters(transactionTypeRef.current.input);
+    }
+  }, []);
 
   const saveNewTransactionType = async (transactionType) => {
     setSendingData(true);
@@ -82,7 +90,10 @@ const AddNewTransactionTypeModal = ({
       maskClosable={false}
     >
       <Form form={form} onFinish={saveNewTransactionType}>
-        <label className="fw-semibold text-black"> Tipo de Transacción </label>
+        <label className="fw-semibold text-black">
+          {" "}
+          Tipo de Transacción<span style={{ color: "var(--red)" }}>*</span>
+        </label>
         <Form.Item
           name="transactionType"
           rules={[
@@ -92,7 +103,7 @@ const AddNewTransactionTypeModal = ({
             },
           ]}
         >
-          <Input placeholder="Tipo de Transacción" />
+          <Input ref={transactionTypeRef} placeholder="Tipo de Transacción" />
         </Form.Item>
         <Form.Item className="text-end">
           <Button

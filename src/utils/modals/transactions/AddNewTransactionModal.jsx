@@ -15,6 +15,7 @@ import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
 import InstantOrQueuedApprovedTransactionModal from "./InstantOrQueuedApprovedTransactionModal";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
+import { applyMaskOnlyLetters } from "../../masks/InputMasks";
 
 const AddNewTransactionModal = ({
   isOpen,
@@ -32,6 +33,9 @@ const AddNewTransactionModal = ({
   const [cancelTransaction, setCancelTransaction] = useState(false);
   const cancelTransactionRef = useRef(cancelTransaction);
   const [sendingTransaction, setSendingTransaction] = useState(false);
+  const transactionTypeRef = useRef(null);
+  const senderRef = useRef(null);
+  const receiverRef = useRef(null);
   const [form] = useForm();
   const [showReceiverAccount, setShowReceiverAccount] = useState(false);
   const [
@@ -53,6 +57,16 @@ const AddNewTransactionModal = ({
       form.resetFields();
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (transactionTypeRef.current?.input) {
+      applyMaskOnlyLetters(transactionTypeRef.current.input);
+    }
+
+    if (senderRef.current?.input) {
+      applyMaskOnlyLetters(senderRef.current.input);
+    }
+  }, []);
 
   const getCustomers = async () => {
     const response = await fetch("http://localhost:3001/customers", {
@@ -342,7 +356,7 @@ const AddNewTransactionModal = ({
         >
           <label className="fw-semibold text-black">
             {" "}
-            Tipo de Transacción{" "}
+            Tipo de Transacción<span style={{ color: "var(--red)" }}>*</span>
           </label>
           <Form.Item
             name="transaction_type"
@@ -353,10 +367,17 @@ const AddNewTransactionModal = ({
               },
             ]}
           >
-            <Select options={transactionTypes} disabled={sendingTransaction} />
+            <Select
+              ref={transactionTypeRef}
+              options={transactionTypes}
+              disabled={sendingTransaction}
+            />
           </Form.Item>
 
-          <label className="fw-semibold text-black"> Remitente </label>
+          <label className="fw-semibold text-black">
+            {" "}
+            Remitente<span style={{ color: "var(--red)" }}>*</span>{" "}
+          </label>
           <Form.Item
             name="customer"
             rules={[
@@ -367,6 +388,7 @@ const AddNewTransactionModal = ({
             ]}
           >
             <Select
+              ref={senderRef}
               options={customers}
               onChange={getAccountsOnCustomerChange}
               showSearch
@@ -386,7 +408,8 @@ const AddNewTransactionModal = ({
 
           <label className="fw-semibold text-black">
             {" "}
-            N.º Cuenta {showReceiverAccount ? "Origen" : ""}{" "}
+            N.º Cuenta{showReceiverAccount ? " Origen" : ""}
+            <span style={{ color: "var(--red)" }}>*</span>
           </label>
           <Form.Item
             name="sender_account_number"
@@ -421,7 +444,7 @@ const AddNewTransactionModal = ({
             <>
               <label className="fw-semibold text-black">
                 {" "}
-                N.º Cuenta Destino
+                N.º Cuenta Destino<span style={{ color: "var(--red)" }}>*</span>
               </label>
               <Form.Item
                 name="receiver_account_number"
@@ -451,7 +474,10 @@ const AddNewTransactionModal = ({
             </>
           )}
 
-          <label className="fw-semibold text-black"> Monto </label>
+          <label className="fw-semibold text-black">
+            {" "}
+            Monto<span style={{ color: "var(--red)" }}>*</span>{" "}
+          </label>
           <Form.Item
             name="amount"
             rules={[
