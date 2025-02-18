@@ -56,7 +56,14 @@ const AddNewTransactionModal = ({
       setShowReceiverAccount(false);
       form.resetFields();
     }
-  }, [isOpen]);
+  }, [isOpen, form]);
+
+  useEffect(() => {
+    if (isClosed) {
+      setShowReceiverAccount(false);
+      form.resetFields();
+    }
+  }, [isClosed, form]);
 
   useEffect(() => {
     if (transactionTypeRef.current?.input) {
@@ -558,6 +565,8 @@ const AddNewTransactionModal = ({
         isOpen={openInstantOrQueuedApprovedTransaction}
         isClosed={() => {
           setOpenInstantOrQueuedApprovedTransaction(false);
+          isClosed();
+          cancelTransactionProcess();
         }}
         isSupervisor={isSupervisor}
         sendToQueue={registerTransaction}
