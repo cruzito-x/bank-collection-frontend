@@ -16,15 +16,17 @@ import {
   SolutionOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import AddNewCollectorModal from "../../utils/modals/dashboard/AddNewCollectorModal";
 import PaymentsDetailsModal from "../../utils/modals/collectors/PaymentsDetailsModal";
 import EditCollectorModal from "../../utils/modals/collectors/EditCollectorModal";
 import { useForm } from "antd/es/form/Form";
 import EmptyData from "../../utils/emptyData/EmptyData";
+import { applyMaskOnlyLetters } from "../../utils/masks/InputMasks";
 
 const Collectors = () => {
+  const { authState } = useAuth();
   const [collectors, setCollectors] = useState([]);
   const [isCollectorPaymentsModalOpen, setIsCollectorPaymentsModalOpen] =
     useState(false);
@@ -34,7 +36,7 @@ const Collectors = () => {
     useState(false);
   const [selectedCollector, setSelectedCollector] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { authState } = useAuth();
+  const collectorRef = useRef(null);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const [form] = useForm();
@@ -48,6 +50,12 @@ const Collectors = () => {
   useEffect(() => {
     document.title = "Banco Bambú | Colectores";
     getCollectors();
+  }, []);
+
+  useEffect(() => {
+    if (collectorRef.current?.input) {
+      applyMaskOnlyLetters(collectorRef.current.input);
+    }
   }, []);
 
   const getCollectors = async () => {
@@ -330,6 +338,7 @@ const Collectors = () => {
                   </label>
                   <Form.Item name="collector">
                     <Input
+                      ref={collectorRef}
                       placeholder="Nombre de Colector"
                       prefix={<SolutionOutlined />}
                       style={{

@@ -19,13 +19,17 @@ import {
   PlusCircleOutlined,
   BankOutlined,
 } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import moment from "moment";
 import TransactionDetailsModal from "../../utils/modals/transactions/TransactionDetailsModal";
 import AddNewTransactionModal from "../../utils/modals/transactions/AddNewTransactionModal";
 import { useForm } from "antd/es/form/Form";
 import EmptyData from "../../utils/emptyData/EmptyData";
+import {
+  applyMaskAlphaNumeric,
+  applyMaskOnlyLetters,
+} from "../../utils/masks/InputMasks";
 
 const Transactions = () => {
   const { authState } = useAuth();
@@ -38,6 +42,8 @@ const Transactions = () => {
     useState(false);
   const [isTransactionDetailsModalOpen, setIsTransactionDetailsModalOpen] =
     useState(false);
+  const transactionIdRef = useRef(null);
+  const cashierRef = useRef(null);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const [form] = useForm();
@@ -51,6 +57,16 @@ const Transactions = () => {
     document.title = "Banco Bambú | Transacciones";
     getTransactionsTypes();
     getTransactions();
+  }, []);
+
+  useEffect(() => {
+    if (transactionIdRef.current?.input) {
+      applyMaskAlphaNumeric(transactionIdRef.current.input);
+    }
+
+    if (cashierRef.current?.input) {
+      applyMaskOnlyLetters(cashierRef.current.input);
+    }
   }, []);
 
   const getTransactionsTypes = async () => {
@@ -374,6 +390,7 @@ const Transactions = () => {
                   <label className="me-2 fw-semibold text-black">Código</label>
                   <Form.Item name="transaction_id" initialValue="">
                     <Input
+                      ref={transactionIdRef}
                       placeholder="TSC000000"
                       prefix={<NumberOutlined />}
                       style={{ width: 183 }}
@@ -384,6 +401,7 @@ const Transactions = () => {
                   <label className="me-2 fw-semibold text-black">Cajero</label>
                   <Form.Item name="realized_by" initialValue="">
                     <Input
+                      ref={cashierRef}
                       placeholder="Nombre de Usuario"
                       prefix={<UserOutlined />}
                       style={{ width: 183 }}

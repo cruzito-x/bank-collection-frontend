@@ -12,12 +12,13 @@ import {
   theme,
 } from "antd";
 import { BankOutlined, CrownOutlined, UserOutlined } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import EditUserModal from "../../utils/modals/users/EditUserModal";
 import SetNewUserRoleModal from "../../utils/modals/users/SetNewUserRoleModal";
 import { useForm } from "antd/es/form/Form";
 import EmptyData from "../../utils/emptyData/EmptyData";
+import { applyMaskOnlyLetters } from "../../utils/masks/InputMasks";
 
 const Users = () => {
   const { authState } = useAuth();
@@ -28,6 +29,7 @@ const Users = () => {
     useState(false);
   const [selectedUser, setSelectedUser] = useState([]);
   const [loading, setLoading] = useState(false);
+  const userRef = useRef(null);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const [form] = useForm();
@@ -43,6 +45,12 @@ const Users = () => {
 
     getRoles();
     getUsers();
+  }, []);
+
+  useEffect(() => {
+    if (userRef.current?.input) {
+      applyMaskOnlyLetters(userRef.current.input);
+    }
   }, []);
 
   const getRoles = async () => {
@@ -328,6 +336,7 @@ const Users = () => {
               <label className="me-2 fw-semibold text-black"> Nombre </label>
               <Form.Item name="username" initialValue="">
                 <Input
+                  ref={userRef}
                   placeholder="Nombre de Usuario"
                   prefix={<UserOutlined />}
                   style={{

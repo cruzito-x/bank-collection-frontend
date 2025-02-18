@@ -17,12 +17,13 @@ import {
   TransactionOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import AddNewTransactionTypeModal from "../../utils/modals/transactionTypes/AddNewTransactionTypeModal";
 import EditTransactionTypeModal from "../../utils/modals/transactionTypes/EditTransactionTypeModal";
 import { useForm } from "antd/es/form/Form";
 import EmptyData from "../../utils/emptyData/EmptyData";
+import { applyMaskOnlyLetters } from "../../utils/masks/InputMasks";
 
 const TransactionTypes = () => {
   const { authState } = useAuth();
@@ -34,6 +35,7 @@ const TransactionTypes = () => {
   const [selectedTransactionType, setSelectedTransactionType] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sendingData, setSendingData] = useState(false);
+  const transactionTypeRef = useRef(null);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const [form] = useForm();
@@ -47,6 +49,12 @@ const TransactionTypes = () => {
   useEffect(() => {
     document.title = "Banco Bambú | Tipos de Transacciones";
     getTransactionsTypes();
+  }, []);
+
+  useEffect(() => {
+    if (transactionTypeRef.current?.input) {
+      applyMaskOnlyLetters(transactionTypeRef.current.input);
+    }
   }, []);
 
   const getTransactionsTypes = async () => {
@@ -310,6 +318,7 @@ const TransactionTypes = () => {
                   <label className="me-2 fw-semibold text-black"> Tipo </label>
                   <Form.Item name="transaction_type" initialValue="">
                     <Input
+                      ref={transactionTypeRef}
                       placeholder="Tipo de Transacción"
                       prefix={<AuditOutlined />}
                       style={{

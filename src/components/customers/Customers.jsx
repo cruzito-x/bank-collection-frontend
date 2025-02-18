@@ -16,12 +16,16 @@ import {
   TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import EditCustomerModal from "../../utils/modals/customers/EditCustomerModal";
 import { useForm } from "antd/es/form/Form";
 import AccountsByCustomerModal from "../../utils/modals/customers/AccountsByCustomerModal";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import EmptyData from "../../utils/emptyData/EmptyData";
+import {
+  applyMaskIdentityDoc,
+  applyMaskOnlyLetters,
+} from "../../utils/masks/InputMasks";
 
 const Customers = () => {
   const { authState } = useAuth();
@@ -31,6 +35,8 @@ const Customers = () => {
   const [isAccountsByCustomerModalOpen, setIsAccountsByCustomerModalOpen] =
     useState(false);
   const [loading, setLoading] = useState(false);
+  const customerRef = useRef(null);
+  const inputDUIRef = useRef(null);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const [form] = useForm();
@@ -44,6 +50,16 @@ const Customers = () => {
   useEffect(() => {
     document.title = "Banco Bambú | Clientes";
     getCustomers();
+  }, []);
+
+  useEffect(() => {
+    if (inputDUIRef.current?.input) {
+      applyMaskIdentityDoc(inputDUIRef.current.input);
+    }
+
+    if (customerRef.current?.input) {
+      applyMaskOnlyLetters(customerRef.current.input);
+    }
   }, []);
 
   function hideIdentityDoc(identity_doc) {
@@ -255,7 +271,7 @@ const Customers = () => {
       align: "center",
     },
     {
-      title: "Documento de Identidad",
+      title: "Documento Único de Identidad",
       dataIndex: "identity_doc",
       key: "identity_doc",
       align: "center",
@@ -329,6 +345,7 @@ const Customers = () => {
               <label className="me-2 fw-semibold text-black"> Nombre </label>
               <Form.Item name="name" initialValue="">
                 <Input
+                  ref={customerRef}
                   placeholder="Nombre de Cliente"
                   prefix={<UserOutlined />}
                   style={{
@@ -341,6 +358,7 @@ const Customers = () => {
               <label className="me-2 fw-semibold text-black"> DUI </label>
               <Form.Item name="identity_doc" initialValue="">
                 <Input
+                  ref={inputDUIRef}
                   maxLength={10}
                   placeholder="00000000-0"
                   prefix={<IdcardOutlined />}

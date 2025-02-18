@@ -17,15 +17,17 @@ import {
   SolutionOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import PaymentsDetailsModal from "../../utils/modals/services/PaymentsDetailsModal";
 import EditServiceModal from "../../utils/modals/services/EditServiceModal";
 import AddNewServiceModal from "../../utils/modals/services/AddNewServiceModal";
 import { useForm } from "antd/es/form/Form";
 import EmptyData from "../../utils/emptyData/EmptyData";
+import { applyMaskOnlyLetters } from "../../utils/masks/InputMasks";
 
 const Services = () => {
+  const { authState } = useAuth();
   const [services, setServices] = useState([]);
   const [isServicePaymentsModalOpen, setIsServicePaymentsModalOpen] =
     useState(false);
@@ -34,7 +36,8 @@ const Services = () => {
     useState(false);
   const [selectedService, setSelectedService] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { authState } = useAuth();
+  const collectorRef = useRef(null);
+  const serviceRef = useRef(null);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const [form] = useForm();
@@ -48,6 +51,16 @@ const Services = () => {
   useEffect(() => {
     document.title = "Banco Bambú | Colectores - Servicios";
     getServices();
+  }, []);
+
+  useEffect(() => {
+    if (collectorRef.current?.input) {
+      applyMaskOnlyLetters(collectorRef.current.input);
+    }
+
+    if (serviceRef.current?.input) {
+      applyMaskOnlyLetters(serviceRef.current.input);
+    }
   }, []);
 
   const getServices = async () => {
@@ -326,6 +339,7 @@ const Services = () => {
                   </label>
                   <Form.Item name="collector" initialValue="">
                     <Input
+                      ref={collectorRef}
                       placeholder="Nombre de Colector"
                       prefix={<SolutionOutlined />}
                       style={{
@@ -341,6 +355,7 @@ const Services = () => {
                   </label>
                   <Form.Item name="service" initialValue="">
                     <Input
+                      ref={serviceRef}
                       placeholder="Nombre de Servicio"
                       prefix={<BulbOutlined />}
                       style={{

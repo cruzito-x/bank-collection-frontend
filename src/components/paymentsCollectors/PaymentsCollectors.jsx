@@ -17,7 +17,7 @@ import {
   SolutionOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import moment from "moment";
 import PaymentsCollectorsDetailsModal from "../../utils/modals/paymentsCollectors/PaymentsCollectorsDetailsModal";
@@ -25,6 +25,7 @@ import PaymentsCollectorsModal from "../../utils/modals/dashboard/PaymentsCollec
 import { useForm } from "antd/es/form/Form";
 import PaymentsCollectorsChartModal from "../../utils/modals/paymentsCollectors/PaymentsCollectorsChartModal";
 import EmptyData from "../../utils/emptyData/EmptyData";
+import { applyMaskOnlyLetters } from "../../utils/masks/InputMasks";
 
 const PaymentsCollectors = () => {
   const { authState } = useAuth();
@@ -38,6 +39,7 @@ const PaymentsCollectors = () => {
   const [viewCollectorsPaymentsModal, setViewCollectorsPaymentsModal] =
     useState(false);
   const [loading, setLoading] = useState(false);
+  const collectorRef = useRef(null);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const [form] = useForm();
@@ -50,6 +52,12 @@ const PaymentsCollectors = () => {
   useEffect(() => {
     document.title = "Banco Bambú | Pagos a Colectores";
     getPaymentsCollectors();
+  }, []);
+
+  useEffect(() => {
+    if (collectorRef.current?.input) {
+      applyMaskOnlyLetters(collectorRef.current.input);
+    }
   }, []);
 
   const getPaymentsCollectors = async () => {
@@ -277,6 +285,7 @@ const PaymentsCollectors = () => {
                   </label>
                   <Form.Item name="collector" initialValue="">
                     <Input
+                      ref={collectorRef}
                       placeholder="Nombre de Colector"
                       prefix={<SolutionOutlined />}
                       style={{

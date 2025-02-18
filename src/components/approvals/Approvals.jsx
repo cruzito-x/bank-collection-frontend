@@ -16,12 +16,16 @@ import {
   NumberOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import moment from "moment";
 import ApprovalTransactionDetails from "../../utils/modals/approvals/ApprovalTransactionDetails";
 import { useForm } from "antd/es/form/Form";
 import EmptyData from "../../utils/emptyData/EmptyData";
+import {
+  applyMaskAlphaNumeric,
+  applyMaskOnlyLetters,
+} from "../../utils/masks/InputMasks";
 
 const Approvals = () => {
   const { authState } = useAuth();
@@ -31,6 +35,8 @@ const Approvals = () => {
   const [selectedApproval, setSelectedApproval] = useState([]);
   const [loading, setLoading] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(false);
+  const transactionIdRef = useRef(null);
+  const authorizerRef = useRef(null);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const [form] = useForm();
@@ -44,6 +50,16 @@ const Approvals = () => {
   useEffect(() => {
     document.title = "Banco Bambú | Aprobaciones";
     getApprovals();
+  }, []);
+
+  useEffect(() => {
+    if (transactionIdRef.current?.input) {
+      applyMaskAlphaNumeric(transactionIdRef.current.input);
+    }
+
+    if (authorizerRef.current?.input) {
+      applyMaskOnlyLetters(authorizerRef.current.input);
+    }
   }, []);
 
   const getApprovals = async () => {
@@ -393,6 +409,7 @@ const Approvals = () => {
               <label className="me-2 fw-semibold text-black"> Código </label>
               <Form.Item name="transaction_id" initialValue="">
                 <Input
+                  ref={transactionIdRef}
                   placeholder="TSC000000"
                   prefix={<NumberOutlined />}
                   style={{
@@ -405,6 +422,7 @@ const Approvals = () => {
               <label className="me-2 fw-semibold text-black"> Usuario </label>
               <Form.Item name="authorizer">
                 <Input
+                  ref={authorizerRef}
                   placeholder="Nombre de Usuario"
                   prefix={<UserOutlined />}
                   style={{
