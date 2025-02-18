@@ -1,7 +1,12 @@
 import { Button, Col, Form, Input, Modal, Row } from "antd";
 import { EditOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
+import {
+  applyMaskEmail,
+  applyMaskIdentityDoc,
+  applyMaskOnlyLetters,
+} from "../../masks/InputMasks";
 
 const EditCustomerModal = ({
   isOpen,
@@ -12,6 +17,9 @@ const EditCustomerModal = ({
 }) => {
   const { authState } = useAuth();
   const [sendingData, setSendingData] = useState(false);
+  const customerRef = useRef(null);
+  const DUIRef = useRef(null);
+  const EmailRef = useRef(null);
   const [form] = Form.useForm();
   const token = authState.token;
   const user_id = authState.user_id;
@@ -25,6 +33,20 @@ const EditCustomerModal = ({
       });
     }
   }, [isOpen, selectedCustomer, form]);
+
+  useEffect(() => {
+    if (customerRef.current?.input) {
+      applyMaskOnlyLetters(customerRef.current.input);
+    }
+
+    if (DUIRef.current?.input) {
+      applyMaskIdentityDoc(DUIRef.current.input);
+    }
+
+    if (EmailRef.current?.input) {
+      applyMaskEmail(EmailRef.current.input);
+    }
+  }, []);
 
   const updateCustomer = async (customer) => {
     setSendingData(true);
@@ -104,7 +126,7 @@ const EditCustomerModal = ({
             ]}
             initialValue={selectedCustomer.name}
           >
-            <Input placeholder="Nombre de Cliente" />
+            <Input ref={customerRef} placeholder="Nombre de Cliente" />
           </Form.Item>
           <label className="fw-semibold text-black">
             {" "}
@@ -121,7 +143,7 @@ const EditCustomerModal = ({
             ]}
             initialValue={selectedCustomer.identity_doc}
           >
-            <Input placeholder="00000000-0" readOnly />
+            <Input ref={DUIRef} placeholder="00000000-0" readOnly />
           </Form.Item>
           <label className="fw-semibold text-black"> E-mail </label>
           <Form.Item
@@ -135,7 +157,7 @@ const EditCustomerModal = ({
             ]}
             initialValue={selectedCustomer.email}
           >
-            <Input placeholder="email@gmail.com" />
+            <Input ref={EmailRef} placeholder="email@mail.com" />
           </Form.Item>
           <Form.Item className="text-end">
             <Button type="primary" danger onClick={isClosed}>

@@ -15,7 +15,10 @@ import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
 import InstantOrQueuedApprovedTransactionModal from "./InstantOrQueuedApprovedTransactionModal";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
-import { applyMaskOnlyLetters } from "../../masks/InputMasks";
+import {
+  applyMaskOnlyLetters,
+  applyMaskOnlyNumbersWithDecimal,
+} from "../../masks/InputMasks";
 
 const AddNewTransactionModal = ({
   isOpen,
@@ -36,6 +39,7 @@ const AddNewTransactionModal = ({
   const transactionTypeRef = useRef(null);
   const senderRef = useRef(null);
   const receiverRef = useRef(null);
+  const amountToSend = useRef(null);
   const [form] = useForm();
   const [showReceiverAccount, setShowReceiverAccount] = useState(false);
   const [
@@ -72,6 +76,10 @@ const AddNewTransactionModal = ({
 
     if (senderRef.current?.input) {
       applyMaskOnlyLetters(senderRef.current.input);
+    }
+
+    if (amountToSend.current?.input) {
+      applyMaskOnlyNumbersWithDecimal(amountToSend.current.input);
     }
   }, []);
 
@@ -495,6 +503,7 @@ const AddNewTransactionModal = ({
             ]}
           >
             <InputNumber
+              ref={amountToSend}
               prefix="$"
               min={5}
               max={1000000}

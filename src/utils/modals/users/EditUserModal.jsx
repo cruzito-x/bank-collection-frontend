@@ -6,7 +6,7 @@ import {
 } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
-import { applyMaskOnlyLetters } from "../../masks/InputMasks";
+import { applyMaskEmail, applyMaskOnlyLetters } from "../../masks/InputMasks";
 
 const EditUserModal = ({
   isOpen,
@@ -17,7 +17,8 @@ const EditUserModal = ({
 }) => {
   const { authState } = useAuth();
   const [sendingData, setSendingData] = useState(false);
-  const userNameRef = useRef(null);
+  const userRef = useRef(null);
+  const emailRef = useRef(null);
   const [form] = Form.useForm();
   const token = authState.token;
   const user_id = authState.user_id;
@@ -38,8 +39,12 @@ const EditUserModal = ({
   }, [isOpen, form]);
 
   useEffect(() => {
-    if (userNameRef.current?.input) {
-      applyMaskOnlyLetters(userNameRef.current.input);
+    if (userRef.current?.input) {
+      applyMaskOnlyLetters(userRef.current.input);
+    }
+
+    if (emailRef.current?.input) {
+      applyMaskEmail(emailRef.current.input);
     }
   }, []);
 
@@ -123,7 +128,7 @@ const EditUserModal = ({
           ]}
           initialValue={userData.username}
         >
-          <Input ref={userNameRef} placeholder="Nombre de Usuario" />
+          <Input ref={userRef} placeholder="Nombre de Usuario" />
         </Form.Item>
         <label className="fw-semibold text-black"> E-mail </label>
         <Form.Item
@@ -131,7 +136,7 @@ const EditUserModal = ({
           rules={[{ message: "Por Favor Introduzca un E-mail" }]}
           initialValue={userData.email}
         >
-          <Input type="email" placeholder="E-mail" />
+          <Input ref={emailRef} type="email" placeholder="E-mail" />
         </Form.Item>
         <label className="fw-semibold text-black"> Nueva Contraseña </label>
         <Form.Item
@@ -151,7 +156,7 @@ const EditUserModal = ({
             }
           />
         </Form.Item>
-        <label className="fw-semibold text-black"> Rol </label>
+        <label className="fw-semibold text-black"> Rol Actual </label>
         <Form.Item
           name="role"
           rules={[{ message: "Por Favor Seleccione un Rol" }]}

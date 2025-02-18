@@ -3,7 +3,10 @@ import { EditOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
-import { applyMaskOnlyLetters } from "../../masks/InputMasks";
+import {
+  applyMaskOnlyLetters,
+  applyMaskOnlyNumbersWithDecimal,
+} from "../../masks/InputMasks";
 
 const EditServiceModal = ({
   isOpen,
@@ -16,6 +19,7 @@ const EditServiceModal = ({
   const [sendingData, setSendingData] = useState(false);
   const collectorRef = useRef(null);
   const serviceRef = useRef(null);
+  const servicePriceRef = useRef(null);
   const serviceDescriptionRef = useRef(null);
   const [form] = Form.useForm();
   const token = authState.token;
@@ -39,6 +43,10 @@ const EditServiceModal = ({
 
     if (serviceRef.current?.input) {
       applyMaskOnlyLetters(serviceRef.current.input);
+    }
+
+    if (servicePriceRef.current?.input) {
+      applyMaskOnlyNumbersWithDecimal(servicePriceRef.current.input);
     }
 
     if (serviceDescriptionRef.current?.input) {
@@ -157,6 +165,7 @@ const EditServiceModal = ({
             ]}
           >
             <InputNumber
+              ref={servicePriceRef}
               className="w-100"
               prefix="$"
               min={5}

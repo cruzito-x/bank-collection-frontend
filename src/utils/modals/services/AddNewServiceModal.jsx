@@ -13,7 +13,10 @@ import React, { useEffect, useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { useCollectorsData } from "../../../contexts/collectorsDataContext/CollectorsDataContext";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
-import { applyMaskOnlyLetters } from "../../masks/InputMasks";
+import {
+  applyMaskOnlyLetters,
+  applyMaskOnlyNumbersWithDecimal,
+} from "../../masks/InputMasks";
 
 const AddNewServiceModal = ({
   isOpen,
@@ -29,6 +32,7 @@ const AddNewServiceModal = ({
   const [sendingData, setSendingData] = useState(false);
   const collectorRef = useRef(null);
   const serviceRef = useRef(null);
+  const servicePriceRef = useRef(null);
   const serviceDescriptionRef = useRef(null);
   const [form] = Form.useForm();
   const token = authState.token;
@@ -52,6 +56,10 @@ const AddNewServiceModal = ({
 
     if (serviceRef.current?.input) {
       applyMaskOnlyLetters(serviceRef.current.input);
+    }
+
+    if (servicePriceRef.current?.input) {
+      applyMaskOnlyNumbersWithDecimal(servicePriceRef.current.input);
     }
 
     if (serviceDescriptionRef.current?.input) {
@@ -206,6 +214,7 @@ const AddNewServiceModal = ({
               ]}
             >
               <InputNumber
+                ref={servicePriceRef}
                 prefix="$"
                 className="w-100"
                 min={0}

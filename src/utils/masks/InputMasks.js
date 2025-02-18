@@ -33,3 +33,21 @@ export function applyMaskAlphaNumeric(inputTransactionId) {
     event.target.value = value;
   });
 }
+
+export function applyMaskOnlyNumbersWithDecimal(inputAmount) {
+  if (!inputAmount) return;
+
+  inputAmount.addEventListener("input", (event) => {
+    event.target.value = event.target.value
+      .replace(/[^0-9.]/g, "")
+      .replace(/(\..*)\./g, "$1");
+  });
+}
+
+export function applyMaskEmail(inputEmail) {
+  if (!inputEmail) return;
+
+  inputEmail.addEventListener("input", (event) => {
+    event.target.value = event.target.value.replace(/[^a-zA-Z0-9@._-]/g, "");
+  });
+}

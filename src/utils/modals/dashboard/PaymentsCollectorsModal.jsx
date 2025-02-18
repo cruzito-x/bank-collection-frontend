@@ -15,7 +15,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "antd/es/form/Form";
 import { useCollectorsData } from "../../../contexts/collectorsDataContext/CollectorsDataContext";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
-import { applyMaskOnlyLetters } from "../../masks/InputMasks";
+import {
+  applyMaskOnlyLetters,
+  applyMaskOnlyNumbersWithDecimal,
+} from "../../masks/InputMasks";
 
 const PaymentsCollectorsModal = ({
   isOpen,
@@ -35,6 +38,7 @@ const PaymentsCollectorsModal = ({
   const customerRef = useRef(null);
   const collectorRef = useRef(null);
   const serviceRef = useRef(null);
+  const amountToPayRef = useRef(null);
   const [form] = useForm();
   const token = authState.token;
   const user_id = authState.user_id;
@@ -61,6 +65,10 @@ const PaymentsCollectorsModal = ({
 
     if (serviceRef.current?.input) {
       applyMaskOnlyLetters(collectorRef.current.input);
+    }
+
+    if (amountToPayRef.current?.input) {
+      applyMaskOnlyNumbersWithDecimal(amountToPayRef.current.input);
     }
   }, []);
 
@@ -396,6 +404,7 @@ const PaymentsCollectorsModal = ({
           ]}
         >
           <InputNumber
+            ref={amountToPayRef}
             prefix="$"
             min={0}
             max={10000}
