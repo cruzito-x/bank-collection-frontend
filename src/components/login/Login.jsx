@@ -119,7 +119,7 @@ const Login = () => {
             style={{ fontSize: "12.5px" }}
           >
             &copy; {new Date().getFullYear()} - Desarrollado por <br />
-            cruzito-x
+            David Cruz
           </label>
         </Form>
       </Card>
