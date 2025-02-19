@@ -59,7 +59,7 @@ const NotificationsModal = ({ isOpen, isClosed, notificationsData }) => {
             />
           </Col>
           <Col>
-            <label className="fs-6">Transacciones por Aprobar</label>
+            <label className="fs-6">Transacciones en Espera</label>
           </Col>
         </Row>
       }
