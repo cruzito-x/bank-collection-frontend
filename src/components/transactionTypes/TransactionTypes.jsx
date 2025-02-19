@@ -54,6 +54,10 @@ const TransactionTypes = () => {
   useEffect(() => {
     if (transactionTypeRef.current?.input) {
       applyMaskOnlyLetters(transactionTypeRef.current.input);
+
+      transactionTypeRef.current.input.addEventListener("input", (event) => {
+        form.setFieldsValue({ transaction_type: event.target.value });
+      });
     }
   }, []);
 

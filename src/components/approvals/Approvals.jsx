@@ -55,10 +55,18 @@ const Approvals = () => {
   useEffect(() => {
     if (transactionIdRef.current?.input) {
       applyMaskAlphaNumeric(transactionIdRef.current.input);
+
+      transactionIdRef.current.input.addEventListener("input", (event) => {
+        form.setFieldsValue({ transaction_id: event.target.value });
+      });
     }
 
     if (authorizerRef.current?.input) {
       applyMaskOnlyLetters(authorizerRef.current.input);
+
+      authorizerRef.current.input.addEventListener("input", (event) => {
+        form.setFieldsValue({ authorizer: event.target.value });
+      });
     }
   }, []);
 
@@ -419,11 +427,11 @@ const Approvals = () => {
               </Form.Item>
             </div>
             <div className="col-xxl-2 col-xl-3 col-md-2 col-sm-12 mb-3 d-flex align-items-center w-auto">
-              <label className="me-2 fw-semibold text-black"> Usuario </label>
+              <label className="me-2 fw-semibold text-black"> Autorizador </label>
               <Form.Item name="authorizer">
                 <Input
                   ref={authorizerRef}
-                  placeholder="Nombre de Usuario"
+                  placeholder="Nombre de Supervisor"
                   prefix={<UserOutlined />}
                   style={{
                     width: 183,

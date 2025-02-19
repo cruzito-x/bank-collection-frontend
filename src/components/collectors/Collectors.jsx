@@ -55,6 +55,10 @@ const Collectors = () => {
   useEffect(() => {
     if (collectorRef.current?.input) {
       applyMaskOnlyLetters(collectorRef.current.input);
+
+      collectorRef.current.input.addEventListener("input", (event) => {
+        form.setFieldsValue({ collector: event.target.value });
+      });
     }
   }, []);
 

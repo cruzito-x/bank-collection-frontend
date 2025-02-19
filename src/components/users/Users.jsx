@@ -50,6 +50,10 @@ const Users = () => {
   useEffect(() => {
     if (userRef.current?.input) {
       applyMaskOnlyLetters(userRef.current.input);
+
+      userRef.current.input.addEventListener("input", (event) => {
+        form.setFieldsValue({ username: event.target.value });
+      });
     }
   }, []);
 
@@ -333,7 +337,7 @@ const Users = () => {
             onFinish={searchUser}
           >
             <div className="col-xxl-2 col-xl-3 col-md-2 col-sm-12 mb-3 d-flex align-items-center w-auto">
-              <label className="me-2 fw-semibold text-black"> Nombre </label>
+              <label className="me-2 fw-semibold text-black"> Usuario </label>
               <Form.Item name="username" initialValue="">
                 <Input
                   ref={userRef}

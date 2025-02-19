@@ -28,6 +28,7 @@ import { useForm } from "antd/es/form/Form";
 import EmptyData from "../../utils/emptyData/EmptyData";
 import {
   applyMaskAlphaNumeric,
+  applyMaskDate,
   applyMaskOnlyLetters,
 } from "../../utils/masks/InputMasks";
 
@@ -44,6 +45,7 @@ const Transactions = () => {
     useState(false);
   const transactionIdRef = useRef(null);
   const cashierRef = useRef(null);
+  const dateRef = useRef(null);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const [form] = useForm();
@@ -62,10 +64,26 @@ const Transactions = () => {
   useEffect(() => {
     if (transactionIdRef.current?.input) {
       applyMaskAlphaNumeric(transactionIdRef.current.input);
+
+      transactionIdRef.current.input.addEventListener("input", (event) => {
+        form.setFieldsValue({ transaction_id: event.target.value });
+      });
     }
 
     if (cashierRef.current?.input) {
       applyMaskOnlyLetters(cashierRef.current.input);
+
+      cashierRef.current.input.addEventListener("input", (event) => {
+        form.setFieldsValue({ realized_by: event.target.value });
+      });
+    }
+
+    if (dateRef.current?.input) {
+      applyMaskDate(dateRef.current.input);
+
+      dateRef.current.input.addEventListener("input", (event) => {
+        form.setFieldsValue({ date: event.target.value });
+      });
     }
   }, []);
 
@@ -402,7 +420,7 @@ const Transactions = () => {
                   <Form.Item name="realized_by" initialValue="">
                     <Input
                       ref={cashierRef}
-                      placeholder="Nombre de Usuario"
+                      placeholder="Nombre de Cajero"
                       prefix={<UserOutlined />}
                       style={{ width: 183 }}
                     />
@@ -422,6 +440,7 @@ const Transactions = () => {
                   <label className="me-2 fw-semibold text-black">Fecha</label>
                   <Form.Item name="date" initialValue="">
                     <DatePicker
+                      ref={dateRef}
                       className="cusor-pointer"
                       value={date}
                       onChange={(date) => setDate(date)}

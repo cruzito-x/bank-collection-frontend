@@ -51,3 +51,23 @@ export function applyMaskEmail(inputEmail) {
     event.target.value = event.target.value.replace(/[^a-zA-Z0-9@._-]/g, "");
   });
 }
+
+export function applyMaskDate(inputDate) {
+  if (!inputDate) return;
+
+  inputDate.addEventListener("input", (event) => {
+    let value = event.target.value.replace(/\D/g, "");
+
+    if (value.length > 2) {
+      value = value.slice(0, 2) + "/" + value.slice(2);
+    }
+    if (value.length > 5) {
+      value = value.slice(0, 5) + "/" + value.slice(5, 9);
+    }
+    if (value.length > 10) {
+      value = value.slice(0, 10);
+    }
+
+    event.target.value = value;
+  });
+}

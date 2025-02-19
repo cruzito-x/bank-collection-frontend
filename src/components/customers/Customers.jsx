@@ -55,10 +55,18 @@ const Customers = () => {
   useEffect(() => {
     if (inputDUIRef.current?.input) {
       applyMaskIdentityDoc(inputDUIRef.current.input);
+
+      inputDUIRef.current.input.addEventListener("input", (event) => {
+        form.setFieldsValue({ identity_doc: event.target.value });
+      });
     }
 
     if (customerRef.current?.input) {
       applyMaskOnlyLetters(customerRef.current.input);
+
+      customerRef.current.input.addEventListener("input", (event) => {
+        form.setFieldsValue({ name: event.target.value });
+      });
     }
   }, []);
 

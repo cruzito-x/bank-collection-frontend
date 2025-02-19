@@ -56,10 +56,18 @@ const Services = () => {
   useEffect(() => {
     if (collectorRef.current?.input) {
       applyMaskOnlyLetters(collectorRef.current.input);
+
+      collectorRef.current.input.addEventListener("input", (event) => {
+        form.setFieldsValue({ collector: event.target.value });
+      });
     }
 
     if (serviceRef.current?.input) {
       applyMaskOnlyLetters(serviceRef.current.input);
+
+      serviceRef.current.input.addEventListener("input", (event) => {
+        form.setFieldsValue({ service: event.target.value });
+      });
     }
   }, []);
 

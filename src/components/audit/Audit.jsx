@@ -11,17 +11,20 @@ import {
   theme,
 } from "antd";
 import { BankOutlined, HistoryOutlined, UserOutlined } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import moment from "moment";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import { useForm } from "antd/es/form/Form";
 import EmptyData from "../../utils/emptyData/EmptyData";
+import { applyMaskDate, applyMaskOnlyLetters } from "../../utils/masks/InputMasks";
 
 const Audit = () => {
   const { authState } = useAuth();
   const [audit, setAudit] = useState([]);
   const [date, setDate] = useState(null);
   const [loading, setLoading] = useState(false);
+  const userRef = useRef(null);
+  const dateRef = useRef(null);
   const [messageAlert, messageContext] = message.useMessage();
   const { Content } = Layout;
   const [form] = useForm();
@@ -34,6 +37,24 @@ const Audit = () => {
   useEffect(() => {
     document.title = "Banco Bambú | Auditoría";
     getAudits();
+  }, []);
+
+  useEffect(() => {
+    if (userRef.current?.input) {
+      applyMaskOnlyLetters(userRef.current.input);
+
+      userRef.current.input.addEventListener("input", (event) => {
+        form.setFieldsValue({ username: event.target.value });
+      });
+    }
+
+    if (dateRef.current?.input) {
+      applyMaskDate(dateRef.current.input);
+
+      dateRef.current.input.addEventListener("input", (event) => {
+        form.setFieldsValue({ date: event.target.value });
+      });
+    }
   }, []);
 
   const formatClientDetails = (text) => {
@@ -227,6 +248,7 @@ const Audit = () => {
               <label className="me-2 fw-semibold text-black"> Usuario </label>
               <Form.Item name="username" initialValue="">
                 <Input
+                  ref={userRef}
                   placeholder="Nombre de Usuario"
                   prefix={<UserOutlined />}
                   style={{
@@ -239,6 +261,7 @@ const Audit = () => {
               <label className="me-2 fw-semibold text-black"> Fecha </label>
               <Form.Item name="date" initialValue="">
                 <DatePicker
+                  ref={dateRef}
                   className="cursor-pointer"
                   value={date}
                   onChange={(date) => setDate(date)}
