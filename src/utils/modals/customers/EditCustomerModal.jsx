@@ -19,7 +19,7 @@ const EditCustomerModal = ({
   const [sendingData, setSendingData] = useState(false);
   const customerRef = useRef(null);
   const DUIRef = useRef(null);
-  const EmailRef = useRef(null);
+  const emailRef = useRef(null);
   const [form] = Form.useForm();
   const token = authState.token;
   const user_id = authState.user_id;
@@ -35,18 +35,34 @@ const EditCustomerModal = ({
   }, [isOpen, selectedCustomer, form]);
 
   useEffect(() => {
-    if (customerRef.current?.input) {
-      applyMaskOnlyLetters(customerRef.current.input);
-    }
+    if (isOpen) {
+      setTimeout(() => {
+        if (customerRef.current?.input) {
+          applyMaskOnlyLetters(customerRef.current.input);
 
-    if (DUIRef.current?.input) {
-      applyMaskIdentityDoc(DUIRef.current.input);
-    }
+          customerRef.current.input.addEventListener("input", (event) => {
+            form.setFieldsValue({ name: event.target.value });
+          });
+        }
 
-    if (EmailRef.current?.input) {
-      applyMaskEmail(EmailRef.current.input);
+        if (DUIRef.current?.input) {
+          applyMaskIdentityDoc(DUIRef.current.input);
+
+          DUIRef.current.input.addEventListener("input", (event) => {
+            form.setFieldsValue({ identity_doc: event.target.value });
+          });
+        }
+
+        if (emailRef.current?.input) {
+          applyMaskEmail(emailRef.current.input);
+
+          emailRef.current.input.addEventListener("input", (event) => {
+            form.setFieldsValue({ email: event.target.value });
+          });
+        }
+      }, 100);
     }
-  }, []);
+  }, [isOpen]);
 
   const updateCustomer = async (customer) => {
     setSendingData(true);
@@ -157,7 +173,7 @@ const EditCustomerModal = ({
             ]}
             initialValue={selectedCustomer.email}
           >
-            <Input ref={EmailRef} placeholder="email@mail.com" />
+            <Input ref={emailRef} placeholder="email@mail.com" />
           </Form.Item>
           <Form.Item className="text-end">
             <Button type="primary" danger onClick={isClosed}>

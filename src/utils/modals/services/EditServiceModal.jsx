@@ -20,7 +20,6 @@ const EditServiceModal = ({
   const collectorRef = useRef(null);
   const serviceRef = useRef(null);
   const servicePriceRef = useRef(null);
-  const serviceDescriptionRef = useRef(null);
   const [form] = Form.useForm();
   const token = authState.token;
   const user_id = authState.user_id;
@@ -37,22 +36,34 @@ const EditServiceModal = ({
   }, [isOpen]);
 
   useEffect(() => {
-    if (collectorRef.current?.input) {
-      applyMaskOnlyLetters(collectorRef.current.input);
-    }
+    if (isOpen) {
+      setTimeout(() => {
+        if (collectorRef.current?.input) {
+          applyMaskOnlyLetters(collectorRef.current.input);
 
-    if (serviceRef.current?.input) {
-      applyMaskOnlyLetters(serviceRef.current.input);
-    }
+          collectorRef.current.input.addEventListener("input", (event) => {
+            form.setFieldsValue({ collector: event.target.value });
+          });
+        }
 
-    if (servicePriceRef.current?.input) {
-      applyMaskOnlyNumbersWithDecimal(servicePriceRef.current.input);
-    }
+        if (serviceRef.current?.input) {
+          applyMaskOnlyLetters(serviceRef.current.input);
 
-    if (serviceDescriptionRef.current?.input) {
-      applyMaskOnlyLetters(serviceDescriptionRef.current.input);
+          serviceRef.current.input.addEventListener("input", (event) => {
+            form.setFieldsValue({ service: event.target.value });
+          });
+        }
+
+        if (servicePriceRef.current?.input) {
+          applyMaskOnlyNumbersWithDecimal(servicePriceRef.current.input);
+
+          servicePriceRef.current.input.addEventListener("input", (event) => {
+            form.setFieldsValue({ price: event.target.value });
+          });
+        }
+      }, 100);
     }
-  }, []);
+  }, [isOpen]);
 
   const updateService = async (serviceData) => {
     setSendingData(true);
@@ -190,7 +201,6 @@ const EditServiceModal = ({
             ]}
           >
             <TextArea
-              ref={serviceDescriptionRef}
               rows={4}
               size="middle"
               style={{ resize: "none" }}

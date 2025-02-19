@@ -70,18 +70,45 @@ const AddNewTransactionModal = ({
   }, [isClosed, form]);
 
   useEffect(() => {
-    if (transactionTypeRef.current?.input) {
-      applyMaskOnlyLetters(transactionTypeRef.current.input);
-    }
+    if (isOpen) {
+      setTimeout(() => {
+        if (transactionTypeRef.current?.input) {
+          applyMaskOnlyLetters(transactionTypeRef.current.input);
 
-    if (senderRef.current?.input) {
-      applyMaskOnlyLetters(senderRef.current.input);
-    }
+          transactionTypeRef.current.input.addEventListener(
+            "input",
+            (event) => {
+              form.setFieldsValue({ transaction_type: event.target.value });
+            }
+          );
+        }
 
-    if (amountToSend.current?.input) {
-      applyMaskOnlyNumbersWithDecimal(amountToSend.current.input);
+        if (senderRef.current?.input) {
+          applyMaskOnlyLetters(senderRef.current.input);
+
+          senderRef.current.input.addEventListener("input", (event) => {
+            form.setFieldsValue({ customer: event.target.value });
+          });
+        }
+
+        // if (receiverRef.current?.input) {
+        //   applyMaskOnlyLetters(receiverRef.current.input);
+
+        //   receiverRef.current.input.addEventListener("input", (event) => {
+        //     form.setFieldsValue({ receiver_account_number: event.target.value });
+        //   });
+        // }
+
+        if (amountToSend.current?.input) {
+          applyMaskOnlyNumbersWithDecimal(amountToSend.current.input);
+
+          amountToSend.current.input.addEventListener("input", (event) => {
+            form.setFieldsValue({ amount: event.target.value });
+          });
+        }
+      }, 100);
     }
-  }, []);
+  }, [isOpen]);
 
   const getCustomers = async () => {
     const response = await fetch("http://localhost:3001/customers", {
@@ -471,6 +498,7 @@ const AddNewTransactionModal = ({
                 ]}
               >
                 <Select
+                  ref={receiverRef}
                   options={allAccounts}
                   showSearch
                   placeholder="Introduzca un Número de Cuenta"

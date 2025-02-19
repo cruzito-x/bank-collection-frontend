@@ -1,8 +1,9 @@
 import { Button, Col, Form, Input, Modal, Row } from "antd";
 import { EditOutlined } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
+import { applyMaskOnlyLetters } from "../../masks/InputMasks";
 
 const EditCollectorModal = ({
   isOpen,
@@ -13,6 +14,7 @@ const EditCollectorModal = ({
 }) => {
   const { authState } = useAuth();
   const [sendingData, setSendingData] = useState(false);
+  const collectorRef = useRef(null);
   const [form] = Form.useForm();
   const token = authState.token;
   const user_id = authState.user_id;
@@ -23,6 +25,20 @@ const EditCollectorModal = ({
         collector: selectedCollector.collector,
         description: selectedCollector.description,
       });
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        if (collectorRef.current?.input) {
+          applyMaskOnlyLetters(collectorRef.current.input);
+
+          collectorRef.current.input.addEventListener("input", (event) => {
+            form.setFieldsValue({ collector: event.target.value });
+          });
+        }
+      }, 100);
     }
   }, [isOpen]);
 
@@ -102,7 +118,7 @@ const EditCollectorModal = ({
               },
             ]}
           >
-            <Input placeholder="Nombre de Colector" />
+            <Input ref={collectorRef} placeholder="Nombre de Colector" />
           </Form.Item>
           <label className="fw-semibold text-black">
             Descripción del Colector

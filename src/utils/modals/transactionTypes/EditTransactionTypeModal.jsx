@@ -25,10 +25,18 @@ const EditTransactionTypeModal = ({
   }, [isOpen, selectedTransactionType, form]);
 
   useEffect(() => {
-    if (transactionTypeRef.current?.input) {
-      applyMaskOnlyLetters(transactionTypeRef.current.input);
+    if (isOpen) {
+      setTimeout(() => {
+        if (transactionTypeRef.current?.input) {
+          applyMaskOnlyLetters(transactionTypeRef.current.input);
+        }
+      }, 100);
+
+      transactionTypeRef.current.input.addEventListener("input", (event) => {
+        form.setFieldsValue({ transaction_type: event.target.value });
+      });
     }
-  }, []);
+  }, [isOpen]);
 
   const updateTransactionType = async (transactionType) => {
     setSendingData(true);

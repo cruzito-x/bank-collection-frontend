@@ -12,10 +12,8 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
   const { authState } = useAuth();
   const [loading, setLoading] = useState(false);
   const collectorRef = useRef(null);
-  const collectorDescriptionRef = useRef(null);
   const serviceRef = useRef(null);
   const servicePriceRef = useRef(null);
-  const serviceDescriptionRef = useRef(null);
   const [form] = Form.useForm();
   const token = authState.token;
   const user_id = authState.user_id;
@@ -27,26 +25,34 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
   }, [isOpen]);
 
   useEffect(() => {
-    if (collectorRef.current?.input) {
-      applyMaskOnlyLetters(collectorRef.current.input);
-    }
+    if (isOpen) {
+      setTimeout(() => {
+        if (collectorRef.current?.input) {
+          applyMaskOnlyLetters(collectorRef.current.input);
 
-    if (collectorDescriptionRef.current?.input) {
-      applyMaskOnlyLetters(collectorDescriptionRef.current.input);
-    }
+          collectorRef.current.input.addEventListener("input", (event) => {
+            form.setFieldsValue({ collector_name: event.target.value });
+          });
+        }
 
-    if (serviceRef.current?.input) {
-      applyMaskOnlyLetters(serviceRef.current.input);
-    }
+        if (serviceRef.current?.input) {
+          applyMaskOnlyLetters(serviceRef.current.input);
 
-    if (servicePriceRef.current?.input) {
-      applyMaskOnlyNumbersWithDecimal(servicePriceRef.current.input);
-    }
+          serviceRef.current.input.addEventListener("input", (event) => {
+            form.setFieldsValue({ service_name: event.target.value });
+          });
+        }
 
-    if (serviceDescriptionRef.current?.input) {
-      applyMaskOnlyLetters(serviceDescriptionRef.current.input);
+        if (servicePriceRef.current?.input) {
+          applyMaskOnlyNumbersWithDecimal(servicePriceRef.current.input);
+
+          servicePriceRef.current.input.addEventListener("input", (event) => {
+            form.setFieldsValue({ price: event.target.value });
+          });
+        }
+      }, 100);
     }
-  }, []);
+  }, [isOpen]);
 
   const saveNewCollector = async (collector) => {
     setLoading(true);
@@ -143,7 +149,6 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
           ]}
         >
           <TextArea
-            ref={collectorDescriptionRef}
             rows={4}
             size="middle"
             style={{
@@ -206,7 +211,6 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
           ]}
         >
           <TextArea
-            ref={serviceDescriptionRef}
             rows={4}
             size="middle"
             style={{

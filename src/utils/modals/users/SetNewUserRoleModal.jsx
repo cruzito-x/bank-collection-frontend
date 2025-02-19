@@ -1,7 +1,8 @@
 import { Button, Col, Form, Input, Modal, Row, Select } from "antd";
 import { UserSwitchOutlined } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
+import { applyMaskOnlyLetters } from "../../masks/InputMasks";
 
 const SetNewUserRoleModal = ({
   isOpen,
@@ -13,6 +14,7 @@ const SetNewUserRoleModal = ({
 }) => {
   const { authState } = useAuth();
   const [sendingData, setSendingData] = useState(false);
+  const roleRef = useRef(null);
   const [form] = Form.useForm();
   const token = authState.token;
   const user_id = authState.user_id;
@@ -24,6 +26,20 @@ const SetNewUserRoleModal = ({
       });
     }
   }, [isOpen, userData, form]);
+
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        if (roleRef.current?.input) {
+          applyMaskOnlyLetters(roleRef.current.input);
+
+          roleRef.current.input.addEventListener("input", (event) => {
+            form.setFieldsValue({ role: event.target.value });
+          });
+        }
+      }, 100);
+    }
+  }, [isOpen]);
 
   const updateUserRole = async (user) => {
     setSendingData(true);
@@ -90,7 +106,7 @@ const SetNewUserRoleModal = ({
       <Form form={form} onFinish={updateUserRole}>
         <label className="fw-semibold text-black"> Rol Actual </label>
         <Form.Item name="role">
-          <Input readOnly />
+          <Input ref={roleRef} readOnly />
         </Form.Item>
         <label className="fw-semibold text-black">
           {" "}

@@ -39,14 +39,26 @@ const EditUserModal = ({
   }, [isOpen, form]);
 
   useEffect(() => {
-    if (userRef.current?.input) {
-      applyMaskOnlyLetters(userRef.current.input);
-    }
+    if (isOpen) {
+      setTimeout(() => {
+        if (userRef.current?.input) {
+          applyMaskOnlyLetters(userRef.current.input);
 
-    if (emailRef.current?.input) {
-      applyMaskEmail(emailRef.current.input);
+          userRef.current.input.addEventListener("input", (event) => {
+            form.setFieldsValue({ username: event.target.value });
+          });
+        }
+
+        if (emailRef.current?.input) {
+          applyMaskEmail(emailRef.current.input);
+
+          emailRef.current.input.addEventListener("input", (event) => {
+            form.setFieldsValue({ email: event.target.value });
+          });
+        }
+      }, 100);
     }
-  }, []);
+  }, [isOpen]);
 
   const updateUser = async (user) => {
     setSendingData(true);

@@ -18,10 +18,18 @@ const AddNewTransactionTypeModal = ({
   const user_id = authState.user_id;
 
   useEffect(() => {
-    if (transactionTypeRef.current?.input) {
-      applyMaskOnlyLetters(transactionTypeRef.current.input);
+    if (isOpen) {
+      setTimeout(() => {
+        if (transactionTypeRef.current?.input) {
+          applyMaskOnlyLetters(transactionTypeRef.current.input);
+        }
+      }, 100);
+
+      transactionTypeRef.current.input.addEventListener("input", (event) => {
+        form.setFieldsValue({ transaction_type: event.target.value });
+      });
     }
-  }, []);
+  }, [isOpen]);
 
   const saveNewTransactionType = async (transactionType) => {
     setSendingData(true);

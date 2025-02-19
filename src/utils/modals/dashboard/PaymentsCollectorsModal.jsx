@@ -55,22 +55,42 @@ const PaymentsCollectorsModal = ({
   }, []);
 
   useEffect(() => {
-    if (customerRef.current?.input) {
-      applyMaskOnlyLetters(customerRef.current.input);
-    }
+    if (isOpen) {
+      setTimeout(() => {
+        if (customerRef.current?.input) {
+          applyMaskOnlyLetters(customerRef.current.input);
 
-    if (collectorRef.current?.input) {
-      applyMaskOnlyLetters(collectorRef.current.input);
-    }
+          customerRef.current.input.addEventListener("input", (event) => {
+            form.setFieldsValue({ customer_id: event.target.value });
+          });
+        }
 
-    if (serviceRef.current?.input) {
-      applyMaskOnlyLetters(collectorRef.current.input);
-    }
+        if (collectorRef.current?.input) {
+          applyMaskOnlyLetters(collectorRef.current.input);
 
-    if (amountToPayRef.current?.input) {
-      applyMaskOnlyNumbersWithDecimal(amountToPayRef.current.input);
+          collectorRef.current.input.addEventListener("input", (event) => {
+            form.setFieldsValue({ collector_id: event.target.value });
+          });
+        }
+
+        if (serviceRef.current?.input) {
+          applyMaskOnlyLetters(collectorRef.current.input);
+
+          serviceRef.current.input.addEventListener("input", (event) => {
+            form.setFieldsValue({ service_id: event.target.value });
+          });
+        }
+
+        if (amountToPayRef.current?.input) {
+          applyMaskOnlyNumbersWithDecimal(amountToPayRef.current.input);
+
+          amountToPayRef.current.input.addEventListener("input", (event) => {
+            form.setFieldsValue({ amount: event.target.value });
+          });
+        }
+      }, 100);
     }
-  }, []);
+  }, [isOpen]);
 
   useEffect(() => {
     cancelPaymentRef.current = cancelPayment;
