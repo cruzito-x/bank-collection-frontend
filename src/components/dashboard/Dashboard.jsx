@@ -453,7 +453,7 @@ const Dashboard = () => {
                         color: "var(--yellow)",
                       }}
                     />
-                    Total de Pagos Realizados
+                    Pagos Realizados
                   </label>
                   <h1 className="fw-semibold text-black text-center pt-3 pb-3">
                     {totalPayments.length || 0}
@@ -480,7 +480,7 @@ const Dashboard = () => {
                         color: "var(--green)",
                       }}
                     />
-                    Total de Pagos Procesados
+                    Monto Procesado
                   </label>
                   <h1 className="fw-semibold text-black text-center pt-3 pb-3">
                     ${totalProcessedAmounts || 0}
@@ -516,7 +516,7 @@ const Dashboard = () => {
                         color: "var(--red)",
                       }}
                     />
-                    Notificaciones Pendientes
+                    Notificaciones Recientes
                   </label>
                   <h1 className="fw-semibold text-black text-center pt-3 pb-3">
                     {notifications.length || 0}
