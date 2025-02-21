@@ -37,8 +37,6 @@ const AddNewTransactionModal = ({
   const cancelTransactionRef = useRef(cancelTransaction);
   const [sendingTransaction, setSendingTransaction] = useState(false);
   const transactionTypeRef = useRef(null);
-  const senderRef = useRef(null);
-  const receiverRef = useRef(null);
   const amountToSend = useRef(null);
   const [form] = useForm();
   const [showReceiverAccount, setShowReceiverAccount] = useState(false);
@@ -82,22 +80,6 @@ const AddNewTransactionModal = ({
             }
           );
         }
-
-        if (senderRef.current?.input) {
-          applyMaskOnlyLetters(senderRef.current.input);
-
-          senderRef.current.input.addEventListener("input", (event) => {
-            form.setFieldsValue({ customer: event.target.value });
-          });
-        }
-
-        // if (receiverRef.current?.input) {
-        //   applyMaskOnlyLetters(receiverRef.current.input);
-
-        //   receiverRef.current.input.addEventListener("input", (event) => {
-        //     form.setFieldsValue({ receiver_account_number: event.target.value });
-        //   });
-        // }
 
         if (amountToSend.current?.input) {
           applyMaskOnlyNumbersWithDecimal(amountToSend.current.input);
@@ -430,7 +412,6 @@ const AddNewTransactionModal = ({
             ]}
           >
             <Select
-              ref={senderRef}
               options={customers}
               onChange={getAccountsOnCustomerChange}
               showSearch
@@ -498,7 +479,6 @@ const AddNewTransactionModal = ({
                 ]}
               >
                 <Select
-                  ref={receiverRef}
                   options={allAccounts}
                   showSearch
                   placeholder="Introduzca un Número de Cuenta"
