@@ -131,7 +131,7 @@ const Sidebar = () => {
           >
             &copy; {new Date().getFullYear()} Banco Bambú de El Salvador, S.A.
             de C.V.&reg; <br />
-            Desarrollado por cruzito-x - Todos los Derechos Reservados.
+            Desarrollado por David Cruz - Todos los Derechos Reservados.
           </Footer>
         </Content>
       </Layout>
