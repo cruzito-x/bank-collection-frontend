@@ -291,7 +291,7 @@ const Audit = () => {
                   pagination={{
                     pageSize: 10,
                     showSizeChanger: false,
-                    showTotal: (total) => `Total: ${total} registro(s)`,
+                    showTotal: (total) => `Total: ${total} acción(es) auditada(s)`,
                     hideOnSinglePage: true,
                   }}
                   loading={loading}
