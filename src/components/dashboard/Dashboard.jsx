@@ -426,9 +426,9 @@ const Dashboard = () => {
                         color: "var(--blue)",
                       }}
                     />
-                    Colectores Registrados
+                    Colectores
                   </label>
-                  <h1 className="fw-semibold text-black text-center pt-3 pb-3">
+                  <h1 className="fw-bold text-black text-center pt-3 pb-3">
                     {collectors.length || 0}
                   </h1>
                   <div className="dashboard-blue-card text-center w-100 rounded">
@@ -453,9 +453,9 @@ const Dashboard = () => {
                         color: "var(--yellow)",
                       }}
                     />
-                    Pagos Realizados
+                    Pagos Registrados
                   </label>
-                  <h1 className="fw-semibold text-black text-center pt-3 pb-3">
+                  <h1 className="fw-bold text-black text-center pt-3 pb-3">
                     {totalPayments.length || 0}
                   </h1>
                   <div className="dashboard-yellow-card text-center w-100 rounded">
@@ -465,8 +465,7 @@ const Dashboard = () => {
                         fontSize: "12.5px",
                       }}
                     >
-                      Reciente:{" "}
-                      {latestCollectorAndCollectorPayment.payed_service}
+                      Reciente: {latestCollectorAndCollectorPayment.collector}
                     </label>
                   </div>
                 </Card>
@@ -480,9 +479,9 @@ const Dashboard = () => {
                         color: "var(--green)",
                       }}
                     />
-                    Monto Procesado
+                    Monto Total Procesado
                   </label>
-                  <h1 className="fw-semibold text-black text-center pt-3 pb-3">
+                  <h1 className="fw-bold text-black text-center pt-3 pb-3">
                     ${totalProcessedAmounts || 0}
                   </h1>
                   <div className="dashboard-green-card text-center w-100 rounded">
@@ -492,8 +491,11 @@ const Dashboard = () => {
                         fontSize: "12.5px",
                       }}
                     >
-                      Reciente: {latestCollectorAndCollectorPayment.collector} -
-                      ${latestCollectorAndCollectorPayment.amount}
+                      Reciente:{" "}
+                      {`$` +
+                        latestCollectorAndCollectorPayment.amount +
+                        ` - ` +
+                        latestCollectorAndCollectorPayment.payed_service}
                     </label>
                   </div>
                 </Card>
@@ -516,9 +518,9 @@ const Dashboard = () => {
                         color: "var(--red)",
                       }}
                     />
-                    Notificaciones Recientes
+                    Notificaciones
                   </label>
-                  <h1 className="fw-semibold text-black text-center pt-3 pb-3">
+                  <h1 className="fw-bold text-black text-center pt-3 pb-3">
                     {notifications.length || 0}
                   </h1>
                   <div className="dashboard-red-card text-center w-100 rounded">
