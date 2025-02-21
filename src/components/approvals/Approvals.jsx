@@ -463,7 +463,7 @@ const Approvals = () => {
                     pageSize: 10,
                     showSizeChanger: false,
                     showTotal: (total) =>
-                      `Total: ${total} Transacción(es) Aprobada(s)`,
+                      `Total: ${total} Transacción(es) Aprobada(s) y/o Rechazada(s)`,
                     hideOnSinglePage: true,
                   }}
                   loading={loading}
