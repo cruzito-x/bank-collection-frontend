@@ -25,9 +25,11 @@ import PaymentsCollectorsModal from "../../utils/modals/dashboard/PaymentsCollec
 import { useCollectorsData } from "../../contexts/collectorsDataContext/CollectorsDataContext";
 import ViewReportsModal from "../../utils/modals/dashboard/ViewReportsModal";
 import { useAuth } from "../../contexts/authContext/AuthContext";
+import { useServerStatus } from "../../contexts/serverStatusContext/ServerStatusContext";
 
 const Dashboard = () => {
   const { authState } = useAuth();
+  const { serverOnline } = useServerStatus();
   const [notifications, setNotifications] = useState([]);
   const [transactionTypes, setTransactionTypes] = useState([]);
   const [totalPayments, setTotalPayments] = useState([]);

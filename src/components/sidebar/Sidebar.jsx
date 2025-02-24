@@ -25,13 +25,13 @@ import ServerOffline from "../../utils/results/serverOffline/ServerOffline";
 const Sidebar = () => {
   const darkTheme = true;
   const { authState } = useAuth();
-  const { serverStatus } = useServerStatus();
+  const { serverOnline } = useServerStatus();
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    if (authState.username && location.pathname === "/" && serverStatus) {
+    if (authState.username && location.pathname === "/" && serverOnline) {
       if (authState.isSupervisor) {
         navigate("/dashboard");
       } else {
@@ -40,13 +40,13 @@ const Sidebar = () => {
     } else if (
       !authState.username &&
       location.pathname !== "/" &&
-      serverStatus
+      serverOnline
     ) {
       navigate("/");
     }
   }, [authState.username, location.pathname]);
 
-  if (!serverStatus) {
+  if (!serverOnline) {
     return (
       <Routes>
         <Route path="*" element={<ServerOffline />} />

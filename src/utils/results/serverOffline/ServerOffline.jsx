@@ -8,7 +8,7 @@ import { useServerStatus } from "../../../contexts/serverStatusContext/ServerSta
 const ServerOffline = () => {
   const navigate = useNavigate();
   const { authState } = useAuth();
-  const { serverStatus } = useServerStatus();
+  const { serverOnline } = useServerStatus();
   const token = authState.token;
   const isSupervisor = authState.isSupervisor;
 
@@ -16,22 +16,22 @@ const ServerOffline = () => {
   const hour = timestamp.hour();
   const minutes = timestamp.minute();
 
-  const goToHome = () => {
-    if (token) {
+  const isInBusinessHours =
+    hour > 8 && (hour < 18 || (hour === 18 && minutes < 30));
+
+  const reloadViews = () => {
+    if (token && isInBusinessHours) {
       navigate(isSupervisor ? "/dashboard" : "/customers");
     } else {
       navigate("/");
     }
   };
 
-  const isInBusinessHours =
-    (hour >= 0 && hour < 18) || (hour === 18 && minutes < 30);
-
-    const subTitle = isInBusinessHours
-    ? !serverStatus
+  const subTitle = isInBusinessHours
+    ? !serverOnline
       ? "Lamentamos los Inconvenientes. Por Favor, Intente Nuevamente en unos Instantes."
       : ""
-    : !serverStatus
+    : !serverOnline
     ? "El Acceso al Sistema está Restringido Fuera del Horario Laboral"
     : "El Acceso al Sistema está Restringido Fuera del Horario Laboral";
 
@@ -46,15 +46,17 @@ const ServerOffline = () => {
     >
       <Result
         status="warning"
-        title={isInBusinessHours ? "El Servidor está Fuera de Línea" : "El Servidor está Fuera de Línea"}
-        subTitle={
-          <label className="fw-regular text-black">{subTitle}</label>
+        title={
+          isInBusinessHours
+            ? "El Servidor está Fuera de Línea"
+            : "El Servidor está Fuera de Línea"
         }
+        subTitle={<label className="fw-regular text-black">{subTitle}</label>}
         extra={
           <>
             <div>
-              <Button type="primary" onClick={goToHome}>
-                Volver
+              <Button type="primary" onClick={reloadViews}>
+                Recargar
               </Button>
             </div>{" "}
             <br />

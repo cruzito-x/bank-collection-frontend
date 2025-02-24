@@ -2,15 +2,22 @@ import React from "react";
 import { Button, Result } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
+import moment from "moment";
 
 const NotFound = () => {
   const navigate = useNavigate();
   const { authState } = useAuth();
   const token = authState.token;
   const isSupervisor = authState.isSupervisor;
+  const timestamp = moment();
+  const hour = timestamp.hour();
+  const minutes = timestamp.minute();
+
+  const isInBusinessHours =
+    hour > 8 && (hour < 18 || (hour === 18 && minutes < 30));
 
   const goToHome = () => {
-    if (token) {
+    if (token && isInBusinessHours) {
       navigate(isSupervisor ? "/dashboard" : "/customers");
     } else {
       navigate("/");
