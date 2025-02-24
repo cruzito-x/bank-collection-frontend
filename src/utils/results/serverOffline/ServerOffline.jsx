@@ -3,10 +3,12 @@ import { Button, Result } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
 import moment from "moment";
+import { useServerStatus } from "../../../contexts/serverStatusContext/ServerStatusContext";
 
 const ServerOffline = () => {
   const navigate = useNavigate();
   const { authState } = useAuth();
+  const { serverStatus } = useServerStatus();
   const token = authState.token;
   const isSupervisor = authState.isSupervisor;
 
@@ -25,6 +27,14 @@ const ServerOffline = () => {
   const isInBusinessHours =
     (hour >= 8 && hour < 18) || (hour === 18 && minutes < 30);
 
+    const subTitle = isInBusinessHours
+    ? !serverStatus
+      ? "Lamentamos los Inconvenientes. Por Favor, Intente Nuevamente en unos Instantes."
+      : ""
+    : !serverStatus
+    ? "El Acceso al Sistema está Restringido Fuera del Horario Laboral"
+    : "El Acceso al Sistema está Restringido Fuera del Horario Laboral";
+
   return (
     <div
       style={{
@@ -36,13 +46,9 @@ const ServerOffline = () => {
     >
       <Result
         status="warning"
-        title={isInBusinessHours ? "" : "El Servidor está Fuera de Línea"}
+        title={isInBusinessHours ? "El Servidor está Fuera de Línea" : "El Servidor está Fuera de Línea"}
         subTitle={
-          <label className="fw-regular text-black">
-            {isInBusinessHours
-              ? "Lamentamos los Inconvenientes. Por Favor, Intente Nuevamente en unos Instantes."
-              : "El Acceso al Sistema está Restringido Fuera del Horario Laboral"}
-          </label>
+          <label className="fw-regular text-black">{subTitle}</label>
         }
         extra={
           <>
