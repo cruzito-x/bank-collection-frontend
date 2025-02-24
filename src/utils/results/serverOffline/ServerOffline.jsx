@@ -2,12 +2,17 @@ import React from "react";
 import { Button, Result } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
+import moment from "moment";
 
 const ServerOffline = () => {
   const navigate = useNavigate();
   const { authState } = useAuth();
   const token = authState.token;
   const isSupervisor = authState.isSupervisor;
+
+  const timestamp = moment();
+  const hour = timestamp.hour();
+  const minutes = timestamp.minute();
 
   const goToHome = () => {
     if (token) {
@@ -16,6 +21,9 @@ const ServerOffline = () => {
       navigate("/");
     }
   };
+
+  const isInBusinessHours =
+    (hour >= 8 && hour < 18) || (hour === 18 && minutes < 30);
 
   return (
     <div
@@ -28,11 +36,12 @@ const ServerOffline = () => {
     >
       <Result
         status="warning"
-        title="El Servidor está Fuera de Línea"
+        title={isInBusinessHours ? "" : "El Servidor está Fuera de Línea"}
         subTitle={
           <label className="fw-regular text-black">
-            Lamentamos los Inconvenientes. Por Favor, Intente Nuevamente en unos
-            Instantes.
+            {isInBusinessHours
+              ? "Lamentamos los Inconvenientes. Por Favor, Intente Nuevamente en unos Instantes."
+              : "El Acceso al Sistema está Restringido Fuera del Horario Laboral"}
           </label>
         }
         extra={

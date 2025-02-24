@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import NotFound from "../../utils/results/notFound/NotFound";
 import { Content, Footer } from "antd/es/layout/layout";
 import Dashboard from "../dashboard/Dashboard";
@@ -27,6 +27,7 @@ const Sidebar = () => {
   const { authState } = useAuth();
   const { serverStatus } = useServerStatus();
   const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
@@ -44,10 +45,6 @@ const Sidebar = () => {
       navigate("/");
     }
   }, [authState.username, location.pathname]);
-
-  const navigate = (path) => {
-    window.location.href = path;
-  };
 
   if (!serverStatus) {
     return (
