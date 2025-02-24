@@ -25,7 +25,7 @@ const ServerOffline = () => {
   };
 
   const isInBusinessHours =
-    (hour >= 8 && hour < 18) || (hour === 18 && minutes < 30);
+    (hour >= 0 && hour < 18) || (hour === 18 && minutes < 30);
 
     const subTitle = isInBusinessHours
     ? !serverStatus

@@ -8,15 +8,22 @@ export const ServerStatusProvider = ({ children }) => {
   useEffect(() => {
     const checkServerStatus = async () => {
       try {
-        const response = await fetch("http://localhost:3001");
-        setServerOnline(response.ok);
+        const response = await fetch("http://localhost:3001", {
+          method: "GET",
+        });
+
+        if (response.status === 200) {
+          setServerOnline(true);
+        } else {
+          setServerOnline(false);
+        }
       } catch (error) {
         setServerOnline(false);
       }
     };
 
     checkServerStatus();
-    const interval = setInterval(checkServerStatus, 60000);
+    const interval = setInterval(checkServerStatus, 20000);
     return () => clearInterval(interval);
   }, []);
 
