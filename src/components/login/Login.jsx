@@ -21,6 +21,7 @@ const Login = () => {
 
   const loginUser = async (user) => {
     setLoading(true);
+
     try {
       const response = await fetch("http://localhost:3001/login/", {
         method: "POST",
@@ -44,6 +45,10 @@ const Login = () => {
         navigate(loggedUserData.isSupervisor ? "/dashboard" : "/customers");
       } else if (response.status === 400) {
         messageAlert.warning(loggedUserData.message);
+      } else if (response.status === 401 || response.status === 403) {
+        messageAlert.warning(loggedUserData.message);
+        localStorage.removeItem("authState");
+        return;
       } else {
         messageAlert.error(loggedUserData.message);
       }
@@ -51,8 +56,9 @@ const Login = () => {
       messageAlert.error(
         "Ha Ocurrido un Error Inesperado, Intente en unos Instantes"
       );
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -63,7 +69,7 @@ const Login = () => {
       {messageContext}
       <Card>
         <div className="w-100 text-center mb-3">
-          <Logo/>
+          <Logo />
           <br />
           <label className="fw-semibold mt-2" style={{ color: "var(--blue)" }}>
             Banco Bambú de El Salvador, S.A de C.V.&reg;
