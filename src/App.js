@@ -4,8 +4,11 @@ import Sidebar from "./components/sidebar/Sidebar";
 import { AuthProvider } from "./contexts/authContext/AuthContext";
 import { CollectorsDataProvider } from "./contexts/collectorsDataContext/CollectorsDataContext";
 import { ServerStatusProvider } from "./contexts/serverStatusContext/ServerStatusContext";
+import useTimeRestriction from "./utils/timeRestriction/TimeRestriction";
 
 const App = () => {
+  useTimeRestriction();
+
   return (
     <AuthProvider>
       <ServerStatusProvider>
