@@ -1,9 +1,9 @@
 import React from "react";
 import { Button, Result } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/authContext/AuthContext";
+import { useAuth } from "../../../contexts/authContext/AuthContext";
 
-const NotFound = () => {
+const ServerOffline = () => {
   const navigate = useNavigate();
   const { authState } = useAuth();
   const token = authState.token;
@@ -27,11 +27,12 @@ const NotFound = () => {
       }}
     >
       <Result
-        status="404"
-        title="404"
+        status="warning"
+        title="El Servidor está Fuera de Línea"
         subTitle={
           <label className="fw-regular text-black">
-            Lo Sentimos, la Página que Buscas no Existe
+            Lamentamos los Inconvenientes. Por Favor, Intente Nuevamente en unos
+            Instantes.
           </label>
         }
         extra={
@@ -49,7 +50,7 @@ const NotFound = () => {
               >
                 &copy;{new Date().getFullYear()} Banco Bambú de El Salvador, S.A
                 de C.V.&reg; <br />
-                Desarrollado por cruzito-x - Todos los Derechos Reservados.
+                Desarrollado por David Cruz - Todos los Derechos Reservados.
               </label>
             </div>
           </>
@@ -59,4 +60,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default ServerOffline;

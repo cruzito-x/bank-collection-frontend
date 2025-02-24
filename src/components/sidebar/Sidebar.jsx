@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import NotFound from "../../utils/notFound/NotFound";
+import NotFound from "../../utils/results/notFound/NotFound";
 import { Content, Footer } from "antd/es/layout/layout";
 import Dashboard from "../dashboard/Dashboard";
 import { Layout } from "antd";
@@ -19,17 +19,28 @@ import Users from "../users/Users";
 import Audit from "../audit/Audit";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import Services from "../services/Services";
+import { useServerStatus } from "../../contexts/serverStatusContext/ServerStatusContext";
+import ServerOffline from "../../utils/results/serverOffline/ServerOffline";
 
 const Sidebar = () => {
   const darkTheme = true;
   const { authState } = useAuth();
+  const { serverStatus } = useServerStatus();
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    if (authState.username && location.pathname === "/") {
-      navigate("/dashboard");
-    } else if (!authState.username && location.pathname !== "/") {
+    if (authState.username && location.pathname === "/" && serverStatus) {
+      if (authState.isSupervisor) {
+        navigate("/dashboard");
+      } else {
+        navigate("/customers");
+      }
+    } else if (
+      !authState.username &&
+      location.pathname !== "/" &&
+      serverStatus
+    ) {
       navigate("/");
     }
   }, [authState.username, location.pathname]);
@@ -38,11 +49,13 @@ const Sidebar = () => {
     window.location.href = path;
   };
 
-  const layoutStyle = {
-    marginLeft: collapsed ? 80 : 200,
-    transition: "all .25s ease-in-out",
-    backgroundColor: "#eef1f7",
-  };
+  if (!serverStatus) {
+    return (
+      <Routes>
+        <Route path="*" element={<ServerOffline />} />
+      </Routes>
+    );
+  }
 
   const routes = authState.isSupervisor
     ? [
@@ -96,7 +109,13 @@ const Sidebar = () => {
           />
         </Routes>
       </Sider>
-      <Layout style={layoutStyle}>
+      <Layout
+        style={{
+          marginLeft: collapsed ? 80 : 200,
+          transition: "all .25s ease-in-out",
+          backgroundColor: "#eef1f7",
+        }}
+      >
         {location.pathname !== "/dashboard" && <Header />}
         <Content
           style={{
