@@ -1,5 +1,6 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import { useAuth } from "../authContext/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const CollectorsDataContext = createContext();
 export const useCollectorsData = () => useContext(CollectorsDataContext);
@@ -7,7 +8,14 @@ export const useCollectorsData = () => useContext(CollectorsDataContext);
 export const CollectorsDataProvider = ({ children }) => {
   const { authState } = useAuth();
   const [collectors, setCollectors] = useState([]);
+  const navigate = useNavigate();
   const token = authState.token;
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/");
+    }
+  });
 
   const getCollectors = async () => {
     const response = await fetch("http://localhost:3001/collectors", {
@@ -37,7 +45,7 @@ export const CollectorsDataProvider = ({ children }) => {
       setCollectors(collectors);
     } else if (response.status === 401 || response.status === 403) {
       localStorage.removeItem("authState");
-      window.location.href = "/";
+      navigate("/");
       return;
     } else {
     }

@@ -25,6 +25,7 @@ import PaymentsCollectorsModal from "../../utils/modals/dashboard/PaymentsCollec
 import { useCollectorsData } from "../../contexts/collectorsDataContext/CollectorsDataContext";
 import ViewReportsModal from "../../utils/modals/dashboard/ViewReportsModal";
 import { useAuth } from "../../contexts/authContext/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const { authState } = useAuth();
@@ -52,6 +53,7 @@ const Dashboard = () => {
   const [amountRangeFilter, setAmountRangeFilter] = useState(1);
   const [transactionTypeFilter, setTransactionTypeFilter] = useState(1);
   const [refreshCharts, setRefreshCharts] = useState(false);
+  const navigate = useNavigate();
   const token = authState.token;
   const user_id = authState.user_id;
 
@@ -125,6 +127,12 @@ const Dashboard = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/");
+    }
+  }, [token]);
 
   useEffect(() => {
     getCollectors();
