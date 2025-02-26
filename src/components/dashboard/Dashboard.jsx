@@ -130,7 +130,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!token) {
-      navigate("/");
+      window.location.href = "/";
     }
   }, [token]);
 
