@@ -2,11 +2,9 @@ import { Card, Dropdown, Menu } from "antd";
 import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
 import React from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 const LogoutCard = ({ setAlertMessage, loading }) => {
   const { authState } = useAuth();
-  const navigate = useNavigate();
   const { user_id, username } = authState;
 
   const logout = async () => {
@@ -26,11 +24,11 @@ const LogoutCard = ({ setAlertMessage, loading }) => {
       if (response.status === 200) {
         localStorage.removeItem("authState");
         localStorage.clear();
-        navigate("/");
+        window.location.href = "/";
       } else if (response.status === 401 || response.status === 403) {
         localStorage.removeItem("authState");
         localStorage.clear();
-        navigate("/");
+        window.location.href = "/";
         return;
       } else {
         setAlertMessage.error(logoutData.message);
