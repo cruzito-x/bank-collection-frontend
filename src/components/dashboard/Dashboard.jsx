@@ -541,7 +541,7 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="d-flex justify-content-end col-xxl-1 col-xl-2 col-sm-12 mb-4">
-            <LogoutCard setAlertMessage={messageAlert} />
+            <LogoutCard setAlertMessage={messageAlert} loading={loadingCard} />
           </div>
         </div>
 

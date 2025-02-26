@@ -3,7 +3,7 @@ import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
 import React from "react";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 
-const LogoutCard = ({ setAlertMessage }) => {
+const LogoutCard = ({ setAlertMessage, loading }) => {
   const { authState } = useAuth();
   const { user_id, username } = authState;
 
@@ -62,6 +62,7 @@ const LogoutCard = ({ setAlertMessage }) => {
   return (
     <Dropdown overlay={menu} trigger={["click"]}>
       <Card
+        loading={loading}
         hoverable
         className="d-flex p-2 align-items-center justify-content-center text-center cursor-pointer user-card w-100"
         bodyStyle={{ padding: 0 }}
