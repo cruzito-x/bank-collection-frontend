@@ -3,6 +3,7 @@ import {
   Col,
   Flex,
   Form,
+  Input,
   InputNumber,
   Modal,
   Progress,
@@ -423,7 +424,7 @@ const PaymentsCollectorsModal = ({
             },
           ]}
         >
-          <InputNumber
+          <Input
             ref={amountToPayRef}
             prefix="$"
             min={0}

@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
 import {
+  applyMaskAlphaNumericOnly,
   applyMaskOnlyLetters,
   applyMaskOnlyNumbersWithDecimal,
 } from "../../masks/InputMasks";
@@ -36,7 +37,7 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
         }
 
         if (serviceRef.current?.input) {
-          applyMaskOnlyLetters(serviceRef.current.input);
+          applyMaskAlphaNumericOnly(serviceRef.current.input);
 
           serviceRef.current.input.addEventListener("input", (event) => {
             form.setFieldsValue({ service_name: event.target.value });
@@ -186,7 +187,7 @@ const AddNewCollectorModal = ({ isOpen, isClosed, setAlertMessage }) => {
             },
           ]}
         >
-          <InputNumber
+          <Input
             ref={servicePriceRef}
             className="w-100"
             prefix="$"

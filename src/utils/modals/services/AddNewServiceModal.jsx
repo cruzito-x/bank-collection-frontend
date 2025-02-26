@@ -1,19 +1,11 @@
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  InputNumber,
-  Modal,
-  Row,
-  Select,
-} from "antd";
+import { Button, Col, Form, Input, Modal, Row, Select } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { useCollectorsData } from "../../../contexts/collectorsDataContext/CollectorsDataContext";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
 import {
+  applyMaskAlphaNumericOnly,
   applyMaskOnlyLetters,
   applyMaskOnlyNumbersWithDecimal,
 } from "../../masks/InputMasks";
@@ -60,7 +52,7 @@ const AddNewServiceModal = ({
         }
 
         if (serviceRef.current?.input) {
-          applyMaskOnlyLetters(serviceRef.current.input);
+          applyMaskAlphaNumericOnly(serviceRef.current.input);
 
           serviceRef.current.input.addEventListener("input", (event) => {
             form.setFieldsValue({ service: event.target.value });
@@ -224,7 +216,7 @@ const AddNewServiceModal = ({
                 },
               ]}
             >
-              <InputNumber
+              <Input
                 ref={servicePriceRef}
                 prefix="$"
                 className="w-100"

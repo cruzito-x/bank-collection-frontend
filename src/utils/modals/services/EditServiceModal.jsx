@@ -1,9 +1,10 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Row } from "antd";
+import { Button, Col, Form, Input, Modal, Row } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
 import {
+  applyMaskAlphaNumericOnly,
   applyMaskOnlyLetters,
   applyMaskOnlyNumbersWithDecimal,
 } from "../../masks/InputMasks";
@@ -47,7 +48,7 @@ const EditServiceModal = ({
         }
 
         if (serviceRef.current?.input) {
-          applyMaskOnlyLetters(serviceRef.current.input);
+          applyMaskAlphaNumericOnly(serviceRef.current.input);
 
           serviceRef.current.input.addEventListener("input", (event) => {
             form.setFieldsValue({ service: event.target.value });
@@ -175,7 +176,7 @@ const EditServiceModal = ({
               },
             ]}
           >
-            <InputNumber
+            <Input
               ref={servicePriceRef}
               className="w-100"
               prefix="$"

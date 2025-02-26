@@ -34,6 +34,17 @@ export function applyMaskAlphaNumeric(inputTransactionId) {
   });
 }
 
+export function applyMaskAlphaNumericOnly(inputElement) {
+  if (!inputElement) return;
+
+  inputElement.addEventListener("input", (event) => {
+    event.target.value = event.target.value.replace(
+      /[^a-zA-Z0-9ÁÉÍÓÚáéíóúÑñ ]/g,
+      ""
+    );
+  });
+}
+
 export function applyMaskOnlyNumbersWithDecimal(inputAmount) {
   if (!inputAmount) return;
 
