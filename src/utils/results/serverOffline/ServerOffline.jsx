@@ -3,12 +3,10 @@ import { Button, Result } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/authContext/AuthContext";
 import moment from "moment";
-import { useServerStatus } from "../../../contexts/serverStatusContext/ServerStatusContext";
 
 const ServerOffline = () => {
   const navigate = useNavigate();
   const { authState } = useAuth();
-  const { serverOnline } = useServerStatus();
   const token = authState.token;
   const isSupervisor = authState.isSupervisor;
 
@@ -27,13 +25,8 @@ const ServerOffline = () => {
     }
   };
 
-  const subTitle = isInBusinessHours
-    ? !serverOnline
-      ? "Lamentamos los Inconvenientes. Por Favor, Intente Nuevamente en unos Instantes."
-      : ""
-    : !serverOnline
-    ? "El Acceso al Sistema está Restringido Fuera del Horario Laboral"
-    : "El Acceso al Sistema está Restringido Fuera del Horario Laboral";
+  const subTitle =
+    "Lamentamos los Inconvenientes. Por Favor, Intente Nuevamente en unos Instantes.";
 
   return (
     <div

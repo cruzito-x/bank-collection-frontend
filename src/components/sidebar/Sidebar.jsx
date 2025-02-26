@@ -19,40 +19,26 @@ import Users from "../users/Users";
 import Audit from "../audit/Audit";
 import { useAuth } from "../../contexts/authContext/AuthContext";
 import Services from "../services/Services";
-import { useServerStatus } from "../../contexts/serverStatusContext/ServerStatusContext";
 import ServerOffline from "../../utils/results/serverOffline/ServerOffline";
 
 const Sidebar = () => {
   const darkTheme = true;
   const { authState } = useAuth();
-  const { serverOnline } = useServerStatus();
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    if (authState.username && location.pathname === "/" && serverOnline) {
+    if (authState.username && location.pathname === "/") {
       if (authState.isSupervisor) {
         navigate("/dashboard");
       } else {
         navigate("/customers");
       }
-    } else if (
-      !authState.username &&
-      location.pathname !== "/" &&
-      serverOnline
-    ) {
+    } else if (!authState.username && location.pathname !== "/") {
       navigate("/");
     }
   }, [authState.username, location.pathname]);
-
-  if (!serverOnline) {
-    return (
-      <Routes>
-        <Route path="*" element={<ServerOffline />} />
-      </Routes>
-    );
-  }
 
   const routes = authState.isSupervisor
     ? [
